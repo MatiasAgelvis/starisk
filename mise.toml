@@ -30,7 +30,44 @@ run = "npm run test:unit"
 description = "Run end-to-end tests (requires a prior build)"
 run = "npm run test:e2e"
 
+[tasks."engine:test"]
+description = "Run the JavaScript engine tests with Node's test runner"
+run = "node --test engine/*.test.js"
+
 [tasks."pipeline:test"]
 description = "Run the Python pipeline tests"
 dir = "pipeline"
 run = "python -m unittest discover -s tests"
+
+[tasks."pipeline:crawl"]
+description = "Crawl the courses listed in pipeline/data/sources.json"
+dir = "pipeline"
+run = "python -m stellaid.crawl"
+
+[tasks."pipeline:score"]
+description = "Score local review snapshots in samples/live"
+dir = "pipeline"
+run = "python score.py ../samples/live/*.html"
+
+[tasks."web:install"]
+description = "Install web dependencies"
+dir = "web"
+run = "npm install"
+
+[tasks."web:dev"]
+description = "Run the Astro dev server (localhost:4321)"
+dir = "web"
+run = "npm run dev"
+
+[tasks."web:build"]
+description = "Build the static site using the current data copy"
+dir = "web"
+run = "npm run build"
+
+[tasks."site:build"]
+description = "Copy fresh scores from the pipeline, then build the site"
+run = "./build.sh"
+
+[tasks.check]
+description = "Run pipeline tests and build the site"
+depends = ["pipeline:test", "site:build"]
