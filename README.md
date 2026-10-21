@@ -19,11 +19,21 @@ You can use it anywhere where you see ⭐ star ratings ⭐ in Coursera,
 ![Stellaid How to use in Search](media/Search.png)
 
 
+## Toolchain
+
+Development toolchains are pinned with [mise](https://mise.jdx.dev/):
+
+1. [Install mise](https://mise.jdx.dev/getting-started.html)
+1. run `mise trust` once, then `mise install` to install the pinned Node.js and Python versions
+1. run `mise run install` to install the extension dependencies
+
+Run `mise tasks` to list the available tasks (`build`, `watch`, `lint`, `test`, `test:unit`, `test:e2e`, `pipeline:test`).
+
 ## Build locally
 
 1. Checkout the copied repository to your local machine eg. with `git clone https://github.com/my-username/my-awesome-extension/`
-1. run `npm install` to install all required dependencies
-1. run `npm run build`
+1. run `npm install` (or `mise run install`) to install all required dependencies
+1. run `npm run build` (or `mise run build`)
 
 The build step will create the `distribution` folder, this folder will contain the generated extension.
 
