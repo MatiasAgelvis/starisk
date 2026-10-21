@@ -45,7 +45,7 @@
 
   {#if result}
     {#if result.record}
-      <h3 class="mt-6 text-left text-lg font-semibold">
+      <h3 class="font-display mt-6 text-left text-lg font-semibold">
         <a
           class="link link-hover"
           href={`https://www.coursera.org/${result.record.slug}`}
