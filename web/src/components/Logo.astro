@@ -1,0 +1,25 @@
+---
+// A logo "tile": every provider mark sits on the same light chip, and the image
+// gets a 1px dark drop-shadow. `drop-shadow` follows the image's alpha channel,
+// so white-on-transparent logos (which would otherwise vanish) get a visible
+// edge, while dark/coloured logos are unaffected.
+interface Props {
+  src?: string | null;
+  class?: string;
+}
+
+const { src, class: className = 'h-8 w-14' } = Astro.props;
+---
+
+<span
+  class={`inline-flex shrink-0 items-center justify-center rounded bg-white p-1 ring-1 ring-base-300/60 ${className}`}
+>
+  <img
+    src={src ?? '/coursera-logo.png'}
+    alt=""
+    class="h-full w-full object-contain drop-shadow-[0_0_1px_rgba(0,0,0,0.6)]"
+    loading="lazy"
+    decoding="async"
+    referrerpolicy="no-referrer"
+  />
+</span>

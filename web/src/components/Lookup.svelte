@@ -46,12 +46,7 @@
   {#if result}
     {#if result.record}
       <h3 class="font-display mt-6 text-left text-lg font-semibold">
-        <a
-          class="link link-hover"
-          href={`https://www.coursera.org/${result.record.slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a class="link link-hover" href={`/${result.record.slug}`}>
           {result.record.title ?? result.key}
         </a>
       </h3>

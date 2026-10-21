@@ -1,12 +1,14 @@
 ---
 import Stars from './Stars.astro';
+import Logo from './Logo.astro';
 
 interface Row {
   slug: string;
   title?: string | null;
+  provider?: string | null;
+  image?: string | null;
   coursera: number | null;
   stellaid: number;
-  reviews: number;
 }
 
 interface Props {
@@ -36,7 +38,6 @@ function signal(row: Row) {
         <th class="text-right">Coursera</th>
         <th class="text-right">Starisk</th>
         <th class="text-right">Gap</th>
-        <th class="text-right">Reviews</th>
         <th>Signal</th>
       </tr>
     </thead>
@@ -48,15 +49,24 @@ function signal(row: Row) {
           return (
             <tr>
               <td>
-                <div class="font-medium">{row.title ?? row.slug}</div>
-                <a
-                  class="link link-hover font-mono text-xs text-base-content/50"
-                  href={`https://www.coursera.org/${row.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {row.slug}
-                </a>
+                <div class="flex items-center gap-3">
+                  <Logo src={row.image} />
+                  <div class="min-w-0">
+                    <div class="truncate font-medium">
+                      <a class="link link-hover" href={`/${row.slug}`}>
+                        {row.title ?? row.slug}
+                      </a>
+                    </div>
+                    <a
+                      class="link link-hover truncate font-mono text-xs text-base-content/50"
+                      href={`https://www.coursera.org/${row.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {row.slug}
+                    </a>
+                  </div>
+                </div>
               </td>
               <td class="text-right">
                 <div class="flex items-center justify-end gap-2">
@@ -71,7 +81,6 @@ function signal(row: Row) {
                 </div>
               </td>
               <td class="text-right">{value == null ? '—' : value.toFixed(1)}</td>
-              <td class="text-right">{row.reviews}</td>
               <td>
                 <span class={`badge ${badge.className}`}>{badge.label}</span>
               </td>
