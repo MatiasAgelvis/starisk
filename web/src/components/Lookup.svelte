@@ -1,4 +1,6 @@
 <script>
+  import Stars from './Stars.svelte';
+
   let { scores = {} } = $props();
 
   let query = $state('');
@@ -43,17 +45,31 @@
 
   {#if result}
     {#if result.record}
-      <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
+      <h3 class="mt-6 text-left text-lg font-semibold">
+        <a
+          class="link link-hover"
+          href={`https://www.coursera.org/${result.record.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {result.record.title ?? result.key}
+        </a>
+      </h3>
+      <div class="stats stats-vertical mt-3 w-full shadow sm:stats-horizontal">
         <div class="stat">
           <div class="stat-title">Coursera</div>
           <div class="stat-value text-2xl">
             {result.record.coursera == null ? '—' : result.record.coursera.toFixed(1)}
           </div>
+          {#if result.record.coursera != null}
+            <Stars value={result.record.coursera} size={16} />
+          {/if}
           <div class="stat-desc">{result.record.reviews} reviews read</div>
         </div>
         <div class="stat">
           <div class="stat-title">Stellaid</div>
-          <div class="stat-value text-2xl">{result.record.stellaid.toFixed(2)}</div>
+          <div class="stat-value text-2xl">{result.record.stellaid.toFixed(1)}</div>
+          <Stars value={result.record.stellaid} size={16} />
           <div class="stat-desc">{gapLabel(result.record)}</div>
         </div>
       </div>

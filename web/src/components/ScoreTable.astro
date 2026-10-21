@@ -1,6 +1,9 @@
 ---
+import Stars from './Stars.astro';
+
 interface Row {
   slug: string;
+  title?: string | null;
   coursera: number | null;
   stellaid: number;
   reviews: number;
@@ -44,11 +47,29 @@ function signal(row: Row) {
           const badge = signal(row);
           return (
             <tr>
-              <td class="font-mono text-sm">{row.slug}</td>
-              <td class="text-right">
-                {row.coursera == null ? '—' : row.coursera.toFixed(1)}
+              <td>
+                <div class="font-medium">{row.title ?? row.slug}</div>
+                <a
+                  class="link link-hover font-mono text-xs text-base-content/50"
+                  href={`https://www.coursera.org/${row.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {row.slug}
+                </a>
               </td>
-              <td class="text-right font-bold">{row.stellaid.toFixed(2)}</td>
+              <td class="text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <span>{row.coursera == null ? '—' : row.coursera.toFixed(1)}</span>
+                  {row.coursera == null ? null : <Stars value={row.coursera} />}
+                </div>
+              </td>
+              <td class="text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <span class="font-bold">{row.stellaid.toFixed(1)}</span>
+                  <Stars value={row.stellaid} />
+                </div>
+              </td>
               <td class="text-right">{value == null ? '—' : value.toFixed(1)}</td>
               <td class="text-right">{row.reviews}</td>
               <td>

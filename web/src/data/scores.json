@@ -1,50 +1,56 @@
 {
   "learn/machine-learning": {
+    "title": "Supervised Machine Learning: Regression and Classification",
     "coursera": 4.9,
-    "stellaid": 3.15,
+    "stellaid": 3.1,
     "reviews": 19,
     "model": "simple",
     "slug": "learn/machine-learning",
-    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+    "scrapedAt": "2026-10-21T09:37:55.894178+00:00"
   },
   "learn/learning-how-to-learn": {
+    "title": "Learning How to Learn: Powerful mental tools to help you master tough subjects",
     "coursera": 4.8,
-    "stellaid": 3.61,
+    "stellaid": 3.6,
     "reviews": 20,
     "model": "simple",
     "slug": "learn/learning-how-to-learn",
-    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+    "scrapedAt": "2026-10-21T09:37:55.894178+00:00"
   },
   "learn/algorithms-part1": {
+    "title": "Algorithms, Part I",
     "coursera": 4.9,
-    "stellaid": 3.26,
+    "stellaid": 3.3,
     "reviews": 20,
     "model": "simple",
     "slug": "learn/algorithms-part1",
-    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+    "scrapedAt": "2026-10-21T09:37:55.894178+00:00"
   },
   "learn/neural-networks-deep-learning": {
+    "title": "Neural Networks and Deep Learning",
     "coursera": 4.9,
-    "stellaid": 2.88,
+    "stellaid": 2.9,
     "reviews": 20,
     "model": "simple",
     "slug": "learn/neural-networks-deep-learning",
-    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+    "scrapedAt": "2026-10-21T09:37:55.894178+00:00"
   },
   "learn/ai-for-everyone": {
+    "title": "AI For Everyone",
     "coursera": 4.8,
-    "stellaid": 4.78,
+    "stellaid": 4.8,
     "reviews": 20,
     "model": "simple",
     "slug": "learn/ai-for-everyone",
-    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+    "scrapedAt": "2026-10-21T09:37:55.894178+00:00"
   },
   "learn/financial-markets-global": {
+    "title": "Financial Markets",
     "coursera": 4.8,
-    "stellaid": 2.49,
+    "stellaid": 2.5,
     "reviews": 20,
     "model": "simple",
     "slug": "learn/financial-markets-global",
-    "scrapedAt": "2026-10-21T09:14:41.842024+00:00"
+    "scrapedAt": "2026-10-21T09:37:55.894178+00:00"
   }
 }

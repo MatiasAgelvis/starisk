@@ -23,7 +23,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .adapter import extract_coursera_score, extract_reviews
+from .adapter import extract_coursera_score, extract_reviews, extract_title
 from .engine import SIMPLE, course_score
 from .fetch import fetch_page
 
@@ -60,9 +60,10 @@ def score_page(html: str) -> dict | None:
 
     coursera = extract_coursera_score(html)
     return {
-        "coursera": None if coursera != coursera else round(coursera, 2),  # NaN -> None
+        "title": extract_title(html),
+        "coursera": None if coursera != coursera else round(coursera, 1),  # NaN -> None
         "stellaid": round(
-            course_score({"reviews": reviews, "coursera": coursera}, SIMPLE), 2
+            course_score({"reviews": reviews, "coursera": coursera}, SIMPLE), 1
         ),
         "reviews": len(reviews),
         "model": "simple",

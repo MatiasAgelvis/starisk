@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from stellaid.adapter import extract_coursera_score, extract_reviews
+from stellaid.adapter import extract_coursera_score, extract_reviews, extract_title
 
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 
@@ -13,6 +13,9 @@ class AdapterTest(unittest.TestCase):
 
     def test_reads_the_aggregate_rating_from_json_ld(self):
         self.assertEqual(extract_coursera_score(self.html), 4.9)
+
+    def test_reads_the_display_name_from_json_ld(self):
+        self.assertEqual(extract_title(self.html), "Sample Course")
 
     def test_extracts_every_review_card(self):
         self.assertEqual(len(extract_reviews(self.html)), 3)

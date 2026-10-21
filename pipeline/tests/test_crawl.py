@@ -15,6 +15,8 @@ class ScorePageTest(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result["reviews"], 3)
         self.assertEqual(result["model"], "simple")
+        self.assertEqual(result["title"], "Sample Course")
+        self.assertEqual(result["stellaid"], 1.5)
         self.assertAlmostEqual(result["coursera"], 4.9)
 
     def test_returns_none_when_there_are_no_reviews(self):

@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import re
 from datetime import datetime, timezone
+from html import unescape
 
 REVIEW_CARD = 'data-e2e="review-table-card"'
 
@@ -31,6 +32,11 @@ _STARS = re.compile(r"Rated ([\d.]+) out of 5 stars")
 _LIKES = re.compile(r"This was helpful \((\d+)\)")
 _DATE = re.compile(r"\b([A-Z][a-z]{2,8} \d{1,2}, \d{4})\b")
 _OLD_RATING = re.compile(r'data-test="number-star-rating">([\d.]+)')
+_OG_TITLE = (
+    re.compile(r'<meta[^>]+property="og:title"[^>]+content="([^"]*)"'),
+    re.compile(r'<meta[^>]+content="([^"]*)"[^>]+property="og:title"'),
+)
+_TITLE_TAG = re.compile(r"<title[^>]*>([^<]+)</title>")
 
 _DATE_FORMATS = (
     "%b %d, %Y",
@@ -74,6 +80,26 @@ def extract_coursera_score(html: str) -> float:
 
     match = _OLD_RATING.search(html)
     return float(match.group(1)) if match else float("nan")
+
+
+def extract_title(html: str) -> str | None:
+    """The course's display name: JSON-LD first, then og:title, then <title>."""
+    for block in _LD_JSON.findall(html):
+        try:
+            data = json.loads(block)
+        except json.JSONDecodeError:
+            continue
+        product = _find_type(data, ("Product", "Course"))
+        if product and product.get("name"):
+            return unescape(str(product["name"])).strip()
+
+    for pattern in _OG_TITLE:
+        match = pattern.search(html)
+        if match and match.group(1).strip():
+            return unescape(match.group(1)).strip()
+
+    match = _TITLE_TAG.search(html)
+    return unescape(match.group(1)).strip() if match else None
 
 
 def _age_days(text: str) -> float:
