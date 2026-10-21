@@ -1,0 +1,36 @@
+[tools]
+node = "24"
+python = "3.13"
+
+[tasks.install]
+description = "Install extension dependencies"
+run = "npm install"
+
+[tasks.build]
+description = "Build the extension into distribution/"
+run = "npm run build"
+
+[tasks.watch]
+description = "Rebuild the extension on file changes"
+run = "npm run watch"
+
+[tasks.lint]
+description = "Lint JavaScript and CSS"
+run = "npm run lint"
+
+[tasks.test]
+description = "Run unit and end-to-end tests"
+run = "npm test"
+
+[tasks."test:unit"]
+description = "Run unit tests"
+run = "npm run test:unit"
+
+[tasks."test:e2e"]
+description = "Run end-to-end tests (requires a prior build)"
+run = "npm run test:e2e"
+
+[tasks."pipeline:test"]
+description = "Run the Python pipeline tests"
+dir = "pipeline"
+run = "python -m unittest discover -s tests"
