@@ -6,6 +6,9 @@
       "@context": "https://schema.org",
       "@type": "Product",
       "name": "Sample Course",
+      "description": "A sample course used to test the parser.",
+      "brand": { "@type": "Organization", "name": "Test University" },
+      "image": "https://example.com/image.png",
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.9",
@@ -19,21 +22,21 @@
   <div data-e2e="review-table-card" class="card">
     <div data-testid="rating-line" role="img" aria-label="Rated 1.0 out of 5 stars"></div>
     <p>Nov 14, 2022</p>
-    <p>Terrible course.</p>
+    <div class="rc-CML review-card-cml"><div data-testid="cml-viewer"><p>I really wanted to like this course, but the second half is rushed and the exercises are unclear.</p></div></div>
     <button data-e2e="helpful-button" aria-label="This was helpful (80)">This was helpful (80)</button>
   </div>
 
   <div data-e2e="review-table-card" class="card">
     <div data-testid="rating-line" role="img" aria-label="Rated 5.0 out of 5 stars"></div>
     <p>Oct 9, 2022</p>
-    <p>Loved it.</p>
+    <div class="rc-CML review-card-cml"><div data-testid="cml-viewer"><p>Excellent pacing and clear explanations throughout the whole course.</p></div></div>
     <button data-e2e="helpful-button" aria-label="This was helpful (3)">This was helpful (3)</button>
   </div>
 
   <div data-e2e="review-table-card" class="card">
     <div data-testid="rating-line" role="img" aria-label="Rated 3.5 out of 5 stars"></div>
     <p>May 7, 2019</p>
-    <p>Mid.</p>
+    <div class="rc-CML review-card-cml"><div data-testid="cml-viewer"><p>It was okay, though several lectures felt outdated and slow to get through.</p></div></div>
     <button data-e2e="helpful-button" aria-label="This was helpful (12)">This was helpful (12)</button>
   </div>
 </body>

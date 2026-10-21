@@ -31,6 +31,7 @@ _LD_JSON = re.compile(
 _STARS = re.compile(r"Rated ([\d.]+) out of 5 stars")
 _LIKES = re.compile(r"This was helpful \((\d+)\)")
 _DATE = re.compile(r"\b([A-Z][a-z]{2,8} \d{1,2}, \d{4})\b")
+_TEXT_NODE = re.compile(r">([^<>]{40,})<")
 _OLD_RATING = re.compile(r'data-test="number-star-rating">([\d.]+)')
 _OG_TITLE = (
     re.compile(r'<meta[^>]+property="og:title"[^>]+content="([^"]*)"'),
@@ -102,6 +103,50 @@ def extract_title(html: str) -> str | None:
     return unescape(match.group(1)).strip() if match else None
 
 
+def extract_details(html: str) -> dict:
+    """Course metadata from JSON-LD: title, description, provider, image URL."""
+    details = {
+        "title": None,
+        "description": None,
+        "provider": None,
+        "image": None,
+    }
+
+    for block in _LD_JSON.findall(html):
+        try:
+            data = json.loads(block)
+        except json.JSONDecodeError:
+            continue
+        product = _find_type(data, ("Product", "Course"))
+        if not product:
+            continue
+
+        if product.get("name"):
+            details["title"] = unescape(str(product["name"])).strip()
+        if product.get("description"):
+            details["description"] = unescape(str(product["description"])).strip()
+
+        brand = product.get("brand")
+        if isinstance(brand, dict):
+            brand = brand.get("name")
+        if brand:
+            details["provider"] = unescape(str(brand)).strip()
+
+        image = product.get("image")
+        if isinstance(image, list):
+            image = image[0] if image else None
+        if image:
+            details["image"] = str(image)
+
+        if details["title"]:
+            break
+
+    if details["title"] is None:
+        details["title"] = extract_title(html)
+
+    return details
+
+
 def _age_days(text: str) -> float:
     cleaned = text.strip()
     for date_format in _DATE_FORMATS:
@@ -111,6 +156,16 @@ def _age_days(text: str) -> float:
             continue
         return (parsed - _EPOCH).total_seconds() / 86_400
     return float("nan")
+
+
+def _review_text(block: str) -> str | None:
+    """The review body: the longest plain-text node in the card."""
+    candidates = [
+        unescape(text).strip()
+        for text in _TEXT_NODE.findall(block)
+        if not text.strip().startswith("This was helpful")
+    ]
+    return max(candidates, key=len) if candidates else None
 
 
 def _reviews_from_cards(html: str) -> list[dict]:
@@ -133,6 +188,7 @@ def _reviews_from_cards(html: str) -> list[dict]:
                 "stars": float(stars_match.group(1)),
                 "likes": int(likes_match.group(1)) if likes_match else 0,
                 "age_days": _age_days(date_match.group(1)) if date_match else float("nan"),
+                "text": _review_text(block),
             }
         )
 
@@ -166,6 +222,7 @@ def _reviews_from_jsonld(html: str) -> list[dict]:
                     "stars": float(rating),
                     "likes": 0,
                     "age_days": _age_days(str(published)) if published else float("nan"),
+                    "text": unescape(str(review.get("reviewBody") or "")).strip() or None,
                 }
             )
 

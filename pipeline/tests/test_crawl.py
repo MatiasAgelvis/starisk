@@ -16,8 +16,12 @@ class ScorePageTest(unittest.TestCase):
         self.assertEqual(result["reviews"], 3)
         self.assertEqual(result["model"], "simple")
         self.assertEqual(result["title"], "Sample Course")
+        self.assertEqual(result["provider"], "Test University")
         self.assertEqual(result["stellaid"], 1.5)
         self.assertAlmostEqual(result["coursera"], 4.9)
+        self.assertEqual(result["top_review"]["likes"], 80)
+        self.assertEqual(result["top_review"]["stars"], 1.0)
+        self.assertIn("rushed", result["top_review"]["text"])
 
     def test_returns_none_when_there_are_no_reviews(self):
         self.assertIsNone(score_page("<html><body>nothing</body></html>"))

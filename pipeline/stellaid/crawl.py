@@ -23,7 +23,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .adapter import extract_coursera_score, extract_reviews, extract_title
+from .adapter import extract_coursera_score, extract_details, extract_reviews
 from .engine import SIMPLE, course_score
 from .fetch import fetch_page
 
@@ -52,20 +52,38 @@ def reviews_url(source: str) -> str:
     return f"https://www.coursera.org/{normalize_source(source)}/reviews"
 
 
+def _top_review(reviews: list[dict]) -> dict | None:
+    """The most-upvoted *critical* review (<=3 stars), else the most upvoted."""
+    if not reviews:
+        return None
+    critical = [review for review in reviews if review["stars"] <= 3] or reviews
+    top = max(critical, key=lambda review: review["likes"])
+    return {
+        "text": (top.get("text") or "").strip()[:600] or None,
+        "stars": top["stars"],
+        "likes": top["likes"],
+    }
+
+
 def score_page(html: str) -> dict | None:
     """Score one reviews page. Returns None when there is nothing to score."""
     reviews = extract_reviews(html)
     if not reviews:
         return None
 
+    details = extract_details(html)
     coursera = extract_coursera_score(html)
     return {
-        "title": extract_title(html),
+        "title": details["title"],
+        "provider": details["provider"],
+        "description": details["description"],
+        "image": details["image"],
         "coursera": None if coursera != coursera else round(coursera, 1),  # NaN -> None
         "stellaid": round(
             course_score({"reviews": reviews, "coursera": coursera}, SIMPLE), 1
         ),
         "reviews": len(reviews),
+        "top_review": _top_review(reviews),
         "model": "simple",
     }
 
