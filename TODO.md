@@ -7,9 +7,10 @@ Bigger threads (the bookmarklet, polarization, the corpus, the dataset) live in
 for the small, near-term stuff.
 
 ## Next
-- **I1 — bookmarklet.** First: the 5-minute CSP spike. Then copy `scores.json` to
-  `web/public/data/` (it is only imported at build time today, so it isn't
-  fetchable) and add a `_headers` file for CORS.
+- **I1 — bookmarklet.** First: the 5-minute CSP spike (CORS is already fine —
+  both GH Pages and CF Pages send `Access-Control-Allow-Origin: *`). Then copy
+  `scores.json` to `web/public/data/`: it is only imported at build time today, so
+  it isn't fetchable.
 - **I2 — polarization.** Add the weighted standard deviation to the crawl output,
   then the quadrant view.
 - **I5 spike.** Do Coursera credential pages expose the course slug? Decides how

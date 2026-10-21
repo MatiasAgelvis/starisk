@@ -56,8 +56,9 @@ const m = location.pathname.match(/^\/(learn|specializations)\/([^/]+)/);
   `web/src/data/scores.json`, so it is *not* fetchable. `build.sh` must also copy
   it to `web/public/data/scores.json` (and the page can then be generated from
   the same file).
-- CORS: `Access-Control-Allow-Origin: *` for `/data/*` — a `_headers` file on
-  Cloudflare Pages.
+- CORS: **already solved on both hosts.** GitHub Pages and Cloudflare Pages
+  both send `access-control-allow-origin: *` (verified with `curl -I`), so no
+  `_headers` file is needed. The remaining blocker is Coursera's CSP.
 - **A 5-minute CSP spike.** If Coursera's `connect-src` blocks a cross-origin
   fetch from a bookmarklet, this idea is dead on arrival. Test before building.
 
