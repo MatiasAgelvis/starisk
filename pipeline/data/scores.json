@@ -31,9 +31,6 @@
     "slug": "learn/neural-networks-deep-learning",
     "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
   },
-  "learn/financial-markets": {
-    "error": "fetch: failed to fetch https://www.coursera.org/learn/financial-markets/reviews: HTTP Error 404: Not Found"
-  },
   "learn/ai-for-everyone": {
     "coursera": 4.8,
     "stellaid": 4.78,
@@ -41,5 +38,13 @@
     "model": "simple",
     "slug": "learn/ai-for-everyone",
     "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+  },
+  "learn/financial-markets-global": {
+    "coursera": 4.8,
+    "stellaid": 2.49,
+    "reviews": 20,
+    "model": "simple",
+    "slug": "learn/financial-markets-global",
+    "scrapedAt": "2026-10-21T09:14:41.842024+00:00"
   }
 }
