@@ -1,0 +1,63 @@
+---
+interface Row {
+  slug: string;
+  coursera: number | null;
+  stellaid: number;
+  reviews: number;
+}
+
+interface Props {
+  rows: Row[];
+}
+
+const { rows } = Astro.props;
+
+function gap(row: Row): number | null {
+  return row.coursera == null ? null : row.stellaid - row.coursera;
+}
+
+function signal(row: Row) {
+  const value = gap(row);
+  if (value == null) return { label: 'no headline', className: 'badge-ghost' };
+  if (value <= -1.5) return { label: 'contested', className: 'badge-error' };
+  if (value <= -0.5) return { label: 'softened', className: 'badge-warning' };
+  return { label: 'agrees', className: 'badge-success' };
+}
+---
+
+<div class="overflow-x-auto">
+  <table class="table table-zebra">
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th class="text-right">Coursera</th>
+        <th class="text-right">Stellaid</th>
+        <th class="text-right">Gap</th>
+        <th class="text-right">Reviews</th>
+        <th>Signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => {
+          const value = gap(row);
+          const badge = signal(row);
+          return (
+            <tr>
+              <td class="font-mono text-sm">{row.slug}</td>
+              <td class="text-right">
+                {row.coursera == null ? '—' : row.coursera.toFixed(1)}
+              </td>
+              <td class="text-right font-bold">{row.stellaid.toFixed(2)}</td>
+              <td class="text-right">{value == null ? '—' : value.toFixed(1)}</td>
+              <td class="text-right">{row.reviews}</td>
+              <td>
+                <span class={`badge ${badge.className}`}>{badge.label}</span>
+              </td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>

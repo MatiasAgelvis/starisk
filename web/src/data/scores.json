@@ -1,0 +1,50 @@
+{
+  "learn/machine-learning": {
+    "coursera": 4.9,
+    "stellaid": 3.15,
+    "reviews": 19,
+    "model": "simple",
+    "slug": "learn/machine-learning",
+    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+  },
+  "learn/learning-how-to-learn": {
+    "coursera": 4.8,
+    "stellaid": 3.61,
+    "reviews": 20,
+    "model": "simple",
+    "slug": "learn/learning-how-to-learn",
+    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+  },
+  "learn/algorithms-part1": {
+    "coursera": 4.9,
+    "stellaid": 3.26,
+    "reviews": 20,
+    "model": "simple",
+    "slug": "learn/algorithms-part1",
+    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+  },
+  "learn/neural-networks-deep-learning": {
+    "coursera": 4.9,
+    "stellaid": 2.88,
+    "reviews": 20,
+    "model": "simple",
+    "slug": "learn/neural-networks-deep-learning",
+    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+  },
+  "learn/ai-for-everyone": {
+    "coursera": 4.8,
+    "stellaid": 4.78,
+    "reviews": 20,
+    "model": "simple",
+    "slug": "learn/ai-for-everyone",
+    "scrapedAt": "2026-10-21T09:13:57.749830+00:00"
+  },
+  "learn/financial-markets-global": {
+    "coursera": 4.8,
+    "stellaid": 2.49,
+    "reviews": 20,
+    "model": "simple",
+    "slug": "learn/financial-markets-global",
+    "scrapedAt": "2026-10-21T09:14:41.842024+00:00"
+  }
+}
