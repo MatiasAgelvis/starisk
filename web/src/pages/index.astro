@@ -10,14 +10,17 @@ const rows = Object.entries(scores)
   .sort((a, b) => a.stellaid - b.stellaid);
 ---
 
-<Base title="Stellaid — what learners actually say">
+<Base title="Starisk — what learners actually say">
   <section class="py-10 text-center">
     <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
       Coursera says 4.9.<br />The reviews say something else.
     </h1>
     <p class="mx-auto mt-4 max-w-2xl text-base-content/70">
-      Stellaid reads the written reviews — and the votes other learners gave them — then
+      Starisk reads the written reviews — and the votes other learners gave them — then
       shows what the most-endorsed reviews actually say.
+    </p>
+    <p class="mt-2 text-sm italic text-base-content/50">
+      Every rating deserves an asterisk.
     </p>
     <div class="mt-8">
       <Lookup client:load scores={scores} />
@@ -41,7 +44,7 @@ const rows = Object.entries(scores)
         A review with 80 upvotes counts far more than one with 2.
       </p>
       <p>
-        That means Stellaid measures <strong>what the most-endorsed reviews say</strong>,
+        That means Starisk measures <strong>what the most-endorsed reviews say</strong>,
         not “true quality.” Upvoted reviews often carry a grievance — about access,
         pricing, or certificates — rather than a judgment of the teaching. We put the
         numbers next to Coursera's own rating so you can see the disagreement, not to

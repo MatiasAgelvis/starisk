@@ -67,7 +67,7 @@
           <div class="stat-desc">{result.record.reviews} reviews read</div>
         </div>
         <div class="stat">
-          <div class="stat-title">Stellaid</div>
+          <div class="stat-title">Starisk</div>
           <div class="stat-value text-2xl">{result.record.stellaid.toFixed(1)}</div>
           <Stars value={result.record.stellaid} size={16} />
           <div class="stat-desc">{gapLabel(result.record)}</div>
