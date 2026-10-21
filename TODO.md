@@ -2,6 +2,19 @@
 
 Ideas and deferred work. Not commitments — just a place so they stop living in my head.
 
+Bigger threads (the bookmarklet, polarization, the corpus, the dataset) live in
+[`IDEAS.md`](IDEAS.md) with their reasoning and an order of work. This file is
+for the small, near-term stuff.
+
+## Next
+- **I1 — bookmarklet.** First: the 5-minute CSP spike. Then copy `scores.json` to
+  `web/public/data/` (it is only imported at build time today, so it isn't
+  fetchable) and add a `_headers` file for CORS.
+- **I2 — polarization.** Add the weighted standard deviation to the crawl output,
+  then the quadrant view.
+- **I5 spike.** Do Coursera credential pages expose the course slug? Decides how
+  expensive the personal corpus is.
+
 ## Front end
 - **Logo polarity.** White-on-transparent marks are handled by the shared logo tile +
   alpha drop-shadow in `Logo.astro`. If more edge cases show up, consider a checkerboard
@@ -12,6 +25,7 @@ Ideas and deferred work. Not commitments — just a place so they stop living in
 - **Model choice:** `SIMPLE` vs a size-aware shrinkage model — decide by calibration.
 - **Tame the amplification:** try `sqrt(likes)` or a like cap so one review can't own a score.
 - Search / filter / sort controls for the leaderboard.
+- Find where to add the copy '5 stars... would not reccomend'
 
 ## Pipeline
 - **Rename internals** `stellaid` → `starisk` (JSON field and Python package). No user impact.
@@ -25,8 +39,9 @@ Ideas and deferred work. Not commitments — just a place so they stop living in
 - Grow the crawl list from `sources.json`; later, from user requests.
 
 ## V2 / later
-- **Classify reviews** (quality vs policy vs praise) with Jev or a small model. Validate on
-  ~50 hand-labeled reviews before trusting it.
+- **Classify reviews** (quality vs policy vs praise) — **parked**, see `IDEAS.md` I3.
+  Too much complication for now; it is the honest escape hatch if the premise gets
+  challenged, and needs validation on ~50 hand-labeled reviews before any trust.
 - **Live lookup** for non-indexed courses (Cloudflare Worker — not Vercel functions / Deno).
 - **"Request this course"** — start with a GitHub issue link; Turso only if it becomes real.
 - **Calibration** against the 74 labeled courses in `calibration/courses.json`.
