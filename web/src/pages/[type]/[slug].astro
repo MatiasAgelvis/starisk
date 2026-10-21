@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import Stars from '../../components/Stars.astro';
+import Logo from '../../components/Logo.astro';
+import scores from '../../data/scores.json';
+
+export function getStaticPaths() {
+  return Object.entries(scores)
+    .filter(([, record]) => typeof record.stellaid === 'number')
+    .map(([key, record]) => {
+      const [type, slug] = key.split('/');
+      return { params: { type, slug }, props: { record, key } };
+    });
+}
+
+const { record, key } = Astro.props;
+const gap = record.coursera == null ? null : record.stellaid - record.coursera;
+const top = record.top_review;
+
+function signalText() {
+  if (gap == null) return 'No headline rating to compare';
+  if (gap <= -1.5) return 'Contested';
+  if (gap <= -0.5) return 'Softened';
+  return 'Agrees with Coursera';
+}
+---
+
+<Base title={`${record.title ?? key} — Starisk`}>
+  <article class="mx-auto max-w-3xl">
+    <a href="/" class="link link-hover text-sm text-base-content/60">← all courses</a>
+
+    <header class="mt-4 flex items-start gap-4">
+      <Logo src={record.image} class="mt-1 h-12 w-20" />
+      <div>
+        <h1 class="font-display text-3xl font-bold tracking-tight">
+          {record.title ?? key}
+        </h1>
+        <p class="mt-1 text-sm text-base-content/60">
+          {record.provider ?? 'Unknown provider'} ·
+          <a
+            class="link link-hover"
+            href={`https://www.coursera.org/${key}`}
+            target="_blank"
+            rel="noopener noreferrer">View on Coursera ↗</a
+          >
+        </p>
+      </div>
+    </header>
+
+    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
+      <div class="stat">
+        <div class="stat-title">Coursera</div>
+        <div class="stat-value text-2xl">
+          {record.coursera == null ? '—' : record.coursera.toFixed(1)}
+        </div>
+        {record.coursera == null ? null : <Stars value={record.coursera} size={16} />}
+        <div class="stat-desc">headline rating</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Starisk</div>
+        <div class="stat-value text-2xl">{record.stellaid.toFixed(1)}</div>
+        <Stars value={record.stellaid} size={16} />
+        <div class="stat-desc">{signalText()}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Reviews read</div>
+        <div class="stat-value text-2xl">{record.reviews}</div>
+        <div class="stat-desc">most helpful, first page</div>
+      </div>
+    </div>
+
+    {
+      record.description && (
+        <section class="mt-8">
+          <h2 class="font-display text-xl font-bold">About the course</h2>
+          <p class="mt-2 whitespace-pre-line text-base-content/80">
+            {record.description}
+          </p>
+        </section>
+      )
+    }
+
+    {
+      top && top.text && (
+        <section class="mt-8">
+          <h2 class="font-display text-xl font-bold">The dissent</h2>
+          <p class="mt-1 text-sm text-base-content/60">
+            The most-upvoted critical review ({top.likes} votes, {top.stars.toFixed(1)}★).
+          </p>
+          <blockquote class="mt-4 rounded-box bg-base-200 p-5">
+            <p class="text-base-content/90">“{top.text}”</p>
+            <footer class="mt-3 flex items-center gap-2 text-sm text-base-content/60">
+              <Stars value={top.stars} />
+              <span>{top.stars.toFixed(1)} / 5</span>
+            </footer>
+          </blockquote>
+        </section>
+      )
+    }
+
+    <section class="mt-10 text-sm text-base-content/60">
+      <p>
+        Starisk reads the first page of reviews — the ones Coursera surfaces as most helpful —
+        and weights them by their upvotes. It measures what the most-endorsed reviews say, not
+        “true quality.”
+      </p>
+    </section>
+  </article>
+</Base>

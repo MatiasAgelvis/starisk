@@ -1,0 +1,104 @@
+{
+  "learn/machine-learning": {
+    "title": "Supervised Machine Learning: Regression and Classification",
+    "provider": "DeepLearning.AI",
+    "description": "In the first course of the Machine Learning Specialization, you will:\n• Build machine learning models in Python using popular machine learning libraries NumPy and scikit-learn.\n• Build and train supervised machine learning models for prediction and binary classification tasks, including linear regression and logistic regression\n\nThe Machine Learning Specialization is a foundational online program created in collaboration between DeepLearning.AI and Stanford Online. In this beginner-friendly program, you will learn the fundamentals of machine learning and how to use these techniques to build real-world AI applications. \n\nThis Specialization is taught by Andrew Ng, an AI visionary who has led critical research at Stanford University and groundbreaking work at Google Brain, Baidu, and Landing.AI to advance the AI field.\n\nThis 3-course Specialization is an updated and expanded version of Andrew’s pioneering Machine Learning course, rated 4.9 out of 5 and taken by over 4.8 million learners since it launched in 2012. \n\nIt provides a broad introduction to modern machine learning, including supervised learning (multiple linear regression, logistic regression, neural networks, and decision trees), unsupervised learning (clustering, dimensionality reduction, recommender systems), and some of the best practices used in Silicon Valley for artificial intelligence and machine learning innovation (evaluating and tuning models, taking a data-centric approach to improving performance, and more.)\n\nBy the end of this Specialization, you will have mastered key concepts and gained the practical know-how to quickly and powerfully apply machine learning to challenging real-world problems. If you’re looking to break into AI or build a career in machine learning, the new Machine Learning Specialization is the best place to start.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.9,
+    "stellaid": 3.1,
+    "reviews": 19,
+    "top_review": {
+      "text": "I have completed this course in full and as a result, I am highly satisfued with how Professor Andrew Ng explains the materials. Thank you for this! However, I cannot understand, why after completing the course a part of studying materials are not accessible, even though I paid a sufficient price for the course. These unaccessible materials include Python programs which were used as a practice. Frankly, I find it unfair, since this practice would be extremely important to revise the materials while improving my skills in Machine Learning in the future. Moreover, a part of the montly fee was pa",
+      "stars": 1.0,
+      "likes": 80
+    },
+    "model": "simple",
+    "slug": "learn/machine-learning",
+    "scrapedAt": "2026-10-21T13:25:24.445716+00:00"
+  },
+  "learn/learning-how-to-learn": {
+    "title": "Learning How to Learn: Powerful mental tools to help you master tough subjects",
+    "provider": "Deep Teaching Solutions",
+    "description": "This course gives you easy access to the invaluable learning techniques used by experts in art, music, literature, math, science, sports, and many other disciplines. We’ll learn about how the brain uses two very different learning modes and how it encapsulates (“chunks”) information. We’ll also cover illusions of learning, memory techniques, dealing with procrastination, and best practices shown by research to be most effective in helping you master tough subjects.  \n\nUsing these approaches, no matter what your skill levels in topics you would like to master, you can change your thinking and change your life. If you’re already an expert, this peep under the mental hood will give you ideas for turbocharging successful learning, including counter-intuitive test-taking tips and insights that will help you make the best use of your time on homework and problem sets. If you’re struggling, you’ll see a structured treasure trove of practical techniques that walk you through what you need to do to get on track. If you’ve ever wanted to become better at anything, this course will help serve as your guide.\n\nThis course can be taken independent of, concurrent with, or prior to, its companion course, Mindshift. (Learning How to Learn is more learning-focused, and Mindshift is more career-focused.)  A related course by the same instructors is Uncommon Sense Teaching.\n\nTo join the fully translated Portuguese version of the course, visit: https://www.coursera.org/learn/aprender\nTo join the fully translated Spanish version of the course, visit: https://www.coursera.org/learn/aprendiendo-a-aprender\nTo join the fully translated Chinese version of the course, visit: https://www.coursera.org/learn/ruhe-xuexi\nTo join the fully translated French version of the course, visit : http://www.coursera.org/learn/apprendre-comment-apprendre",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/55/2e9a93e5384e289f25a0b487f6b4c5/white--04.png",
+    "coursera": 4.8,
+    "stellaid": 3.6,
+    "reviews": 20,
+    "top_review": {
+      "text": "this course states tons of info that is obvious. I mean tons. at one point the instructor says if there is a class review before a test it would be a good idea to attend. At another point her colleague says you can get a lot of intellectual stimulation by having smart peers to talk to. They also say your brain will work better if you exercise and get a good night's sleep. Are you serious? This is your advice? Could this be any more obvious? The course is filled with obvious statements like this making it much longer than it needs to be. Seriously, it could be cut in half if not by two thirds. ",
+      "stars": 1.0,
+      "likes": 206
+    },
+    "model": "simple",
+    "slug": "learn/learning-how-to-learn",
+    "scrapedAt": "2026-10-21T13:25:24.445716+00:00"
+  },
+  "learn/algorithms-part1": {
+    "title": "Algorithms, Part I",
+    "provider": "Princeton University",
+    "description": "This course covers the essential information that every serious programmer needs to know about algorithms and data structures, with emphasis on applications and scientific performance analysis of Java implementations. Part I covers elementary data structures, sorting, and searching algorithms. Part II focuses on graph- and string-processing algorithms.\n\nAll the features of this course are available for free. People who are interested in digging deeper into the content may wish to obtain the textbook Algorithms, Fourth Edition (upon which the course is based) or visit the website algs4.cs.princeton.edu for a wealth of additional material.\n\nThis course does not offer a certificate upon completion.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-university-assets.s3.amazonaws.com/94/cc9200e336d38ce029873b13cbe93b/logo-princeton-front.png",
+    "coursera": 4.9,
+    "stellaid": 3.3,
+    "reviews": 20,
+    "top_review": {
+      "text": "I am a bit dissapointed for the fact that this forces people to code in Java. Need to provide flexibility for someone coming from C/C++/Python who are well versed and can code in those. It becomes more of programming hurdle than logic implementation.",
+      "stars": 2.0,
+      "likes": 247
+    },
+    "model": "simple",
+    "slug": "learn/algorithms-part1",
+    "scrapedAt": "2026-10-21T13:25:24.445716+00:00"
+  },
+  "learn/neural-networks-deep-learning": {
+    "title": "Neural Networks and Deep Learning",
+    "provider": "DeepLearning.AI",
+    "description": "In the first course of the Deep Learning Specialization, you will study the foundational concept of neural networks and deep learning. \n\nBy the end, you will be familiar with the significant technological trends driving the rise of deep learning; build, train, and apply fully connected deep neural networks; implement efficient (vectorized) neural networks; identify key parameters in a neural network’s architecture; and apply deep learning to your own applications.\n\nThe Deep Learning Specialization is our foundational program that will help you understand the capabilities, challenges, and consequences of deep learning and prepare you to participate in the development of leading-edge AI technology. It provides a pathway for you to gain the knowledge and skills to apply machine learning to your work, level up your technical career, and take the definitive step in the world of AI.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.9,
+    "stellaid": 2.9,
+    "reviews": 20,
+    "top_review": {
+      "text": "I enjoyed the lectures and a few practice quiz. But I don't think the structure of assignments presented here is the correct way to assess learning. The assignments or exercises should be interspersed between lectures and the problems should be more interactive (pushing the student to think). Moreover, the amount of pre-written code was immense and therefore didn't really make me think a lot on my own. This structure of assignment forces the student to focus on matching the expected output instead of really understanding the concept.  I am pretty sure most students did not really grasp the con",
+      "stars": 3.0,
+      "likes": 287
+    },
+    "model": "simple",
+    "slug": "learn/neural-networks-deep-learning",
+    "scrapedAt": "2026-10-21T13:25:24.445716+00:00"
+  },
+  "learn/ai-for-everyone": {
+    "title": "AI For Everyone",
+    "provider": "DeepLearning.AI",
+    "description": "AI is not only for engineers. If you want your organization to become better at using AI, this is the course to tell everyone--especially your non-technical colleagues--to take. \n\nIn this course, you will learn:\n\n- The meaning behind common AI terminology, including neural networks, machine learning, deep learning, and data science\n- What AI realistically can--and cannot--do\n- How to spot opportunities to apply AI to problems in your own organization\n- What it feels like to build machine learning and data science projects\n- How to work with an AI team and build an AI strategy in your company\n- How to navigate ethical and societal discussions surrounding AI\n\nThough this course is largely non-technical, engineers can also take this course to learn the business aspects of AI.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.8,
+    "stellaid": 4.8,
+    "reviews": 20,
+    "top_review": {
+      "text": "I found this course to be helpful. But this is very basic. A direction on how to pursue the understanding further would have helped. Also, the fee for the content and was not that worth.",
+      "stars": 3.0,
+      "likes": 39
+    },
+    "model": "simple",
+    "slug": "learn/ai-for-everyone",
+    "scrapedAt": "2026-10-21T13:25:24.445716+00:00"
+  },
+  "learn/financial-markets-global": {
+    "title": "Financial Markets",
+    "provider": "Yale University",
+    "description": "An overview of the ideas, methods, and institutions that permit human society to manage risks and foster enterprise.  Emphasis on financially-savvy leadership skills. Description of practices today and analysis of prospects for the future. Introduction to risk management and behavioral finance principles to understand the real-world functioning of securities, insurance, and banking industries.  The ultimate goal of this course is using such industries effectively and towards a better society.",
+    "image": "https://coursera-university-assets.s3.amazonaws.com/b4/339da416653830d015f5a179f864e1/square_logo_large.png",
+    "coursera": 4.8,
+    "stellaid": 2.5,
+    "reviews": 20,
+    "top_review": {
+      "text": "This course is virtually worthless. I couldn't follow the lectures, and I have a PhD and have been a tenured professor for almost two decades. The online course is based on snippets taken from face-to-face lectures and breakout sessions, and the result is utter incoherence. The instructor frequently refers to concepts that have not yet been encountered in the online version of the course; makes extensive use of mathematical notations and formulas whose variables are never properly explained; and generally does a poor job of explaining the material. This online version of the Yale course was ob",
+      "stars": 1.0,
+      "likes": 663
+    },
+    "model": "simple",
+    "slug": "learn/financial-markets-global",
+    "scrapedAt": "2026-10-21T13:25:24.445716+00:00"
+  }
+}

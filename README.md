@@ -27,7 +27,7 @@ Development toolchains are pinned with [mise](https://mise.jdx.dev/):
 1. run `mise trust` once, then `mise install` to install the pinned Node.js and Python versions
 1. run `mise run install` to install the extension dependencies
 
-Run `mise tasks` to list the available tasks (`build`, `watch`, `lint`, `test`, `test:unit`, `test:e2e`, `pipeline:test`).
+Run `mise tasks` to list the available tasks (`build`, `watch`, `lint`, `test`, `test:unit`, `test:e2e`, `engine:test`, `pipeline:test`).
 
 ## Build locally
 

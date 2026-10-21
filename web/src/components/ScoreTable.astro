@@ -1,0 +1,93 @@
+---
+import Stars from './Stars.astro';
+import Logo from './Logo.astro';
+
+interface Row {
+  slug: string;
+  title?: string | null;
+  provider?: string | null;
+  image?: string | null;
+  coursera: number | null;
+  stellaid: number;
+}
+
+interface Props {
+  rows: Row[];
+}
+
+const { rows } = Astro.props;
+
+function gap(row: Row): number | null {
+  return row.coursera == null ? null : row.stellaid - row.coursera;
+}
+
+function signal(row: Row) {
+  const value = gap(row);
+  if (value == null) return { label: 'no headline', className: 'badge-ghost' };
+  if (value <= -1.5) return { label: 'contested', className: 'badge-error' };
+  if (value <= -0.5) return { label: 'softened', className: 'badge-warning' };
+  return { label: 'agrees', className: 'badge-success' };
+}
+---
+
+<div class="overflow-x-auto">
+  <table class="table table-zebra">
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th class="text-right">Coursera</th>
+        <th class="text-right">Starisk</th>
+        <th class="text-right">Gap</th>
+        <th>Signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => {
+          const value = gap(row);
+          const badge = signal(row);
+          return (
+            <tr>
+              <td>
+                <div class="flex items-center gap-3">
+                  <Logo src={row.image} />
+                  <div class="min-w-0">
+                    <div class="truncate font-medium">
+                      <a class="link link-hover" href={`/${row.slug}`}>
+                        {row.title ?? row.slug}
+                      </a>
+                    </div>
+                    <a
+                      class="link link-hover truncate font-mono text-xs text-base-content/50"
+                      href={`https://www.coursera.org/${row.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {row.slug}
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <span>{row.coursera == null ? '—' : row.coursera.toFixed(1)}</span>
+                  {row.coursera == null ? null : <Stars value={row.coursera} />}
+                </div>
+              </td>
+              <td class="text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <span class="font-bold">{row.stellaid.toFixed(1)}</span>
+                  <Stars value={row.stellaid} />
+                </div>
+              </td>
+              <td class="text-right">{value == null ? '—' : value.toFixed(1)}</td>
+              <td>
+                <span class={`badge ${badge.className}`}>{badge.label}</span>
+              </td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>

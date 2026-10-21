@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Starisk' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta
+      name="description"
+      content="What learners actually say about Coursera courses, weighted by the votes their reviews received."
+    />
+  </head>
+  <body>
+    <div class="navbar bg-base-200">
+      <div class="navbar-start">
+        <a href="/" class="btn btn-ghost text-xl font-display">Starisk</a>
+      </div>
+      <div class="navbar-end">
+        <a href="#method" class="btn btn-ghost">Method</a>
+      </div>
+    </div>
+
+    <main class="container mx-auto max-w-5xl px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="footer footer-center p-6 text-sm text-base-content/60">
+      <p>Ratings computed from Coursera reviews. Not affiliated with Coursera.</p>
+    </footer>
+  </body>
+</html>

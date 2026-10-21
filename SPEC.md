@@ -1,4 +1,7 @@
-# Stellaid — Spec
+# Starisk — Spec
+
+> Formerly Stellaid (the 2021 browser extension). The name is new; the thesis is
+> the same.
 
 > A living document. The north star, the goals, and the decisions — so future-me
 > remembers *why*, not just *what*.

@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import ScoreTable from '../components/ScoreTable.astro';
+import Lookup from '../components/Lookup.svelte';
+import scores from '../data/scores.json';
+
+const rows = Object.entries(scores)
+  .filter(([, record]) => typeof record.stellaid === 'number')
+  .map(([slug, record]) => ({ slug, ...record }))
+  .sort((a, b) => a.stellaid - b.stellaid);
+---
+
+<Base title="Starisk — what learners actually say">
+  <section class="py-10 text-center">
+    <h1 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
+      Coursera says 4.9.<br />The reviews say something else.
+    </h1>
+    <p class="mx-auto mt-4 max-w-2xl text-base-content/70">
+      Starisk reads the written reviews — and the votes other learners gave them — then
+      shows what the most-endorsed reviews actually say.
+    </p>
+    <p class="mt-2 text-sm italic text-base-content/50">
+      Every rating deserves an asterisk.
+    </p>
+    <div class="mt-8">
+      <Lookup client:load scores={scores} />
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="font-display mb-4 text-2xl font-bold">How contested is each course?</h2>
+    <ScoreTable rows={rows} />
+    <p class="mt-3 text-sm text-base-content/60">
+      A large negative gap means the written reviews are harsher than the headline rating.
+    </p>
+  </section>
+
+  <section id="method" class="mt-16">
+    <h2 class="font-display text-2xl font-bold">Method, honestly</h2>
+    <div class="mt-4 space-y-4 text-base-content/80">
+      <p>
+        We read the first page of reviews — the ones Coursera surfaces as{' '}
+        <strong>most helpful</strong> — and weight each review by the votes it received.
+        A review with 80 upvotes counts far more than one with 2.
+      </p>
+      <p>
+        That means Starisk measures <strong>what the most-endorsed reviews say</strong>,
+        not “true quality.” Upvoted reviews often carry a grievance — about access,
+        pricing, or certificates — rather than a judgment of the teaching. We put the
+        numbers next to Coursera's own rating so you can see the disagreement, not to
+        pretend we have the final word.
+      </p>
+      <p>
+        Sample: {rows.length} courses. Scores recomputed from saved review pages; not
+        affiliated with Coursera.
+      </p>
+    </div>
+  </section>
+</Base>
