@@ -1,0 +1,74 @@
+"""Stellaid scoring engine.
+
+A faithful Python port of the original 2021 JavaScript math. The behavior is
+deliberately identical to `engine/engine.js` (the old extension), so the ported
+tests are a spec, not a redesign.
+
+The math:
+
+    weight(review) = (base_review_value + likes) ** peer_power * age_days ** timedecay
+    peer_score     = SUM(stars * weight) / SUM(weight)
+    course_score   = peer_weight * peer_score + (1 - peer_weight) * coursera
+
+`age_days` is days since the Unix epoch, exactly as the original computed it —
+which makes the time term almost constant across years. That is a known flaw of
+the original model, reproduced here on purpose.
+"""
+
+from __future__ import annotations
+
+# The original tuning, kept verbatim so the faithful model stays reproducible.
+DEFAULTS = {
+    "peer_power": 2,
+    "timedecay": 0.3,
+    "base_review_value": 2,
+    "peer_weight": 0.8,
+}
+
+# The simplified model, expressible purely as parameters:
+#     weight = (1 + likes) ** 1 * age_days ** 0 = 1 + likes
+#     score  = SUM(stars * (1 + likes)) / SUM(1 + likes)
+# i.e. "every reviewer is one voice, and every upvote is one more voice."
+SIMPLE = {
+    "peer_power": 1,
+    "timedecay": 0,
+    "base_review_value": 1,
+    "peer_weight": 1,
+}
+
+
+def review_weight(review: dict, options: dict | None = None) -> float:
+    """Weight of a single review: how much its star count should count."""
+    opts = options or DEFAULTS
+    peers = (opts["base_review_value"] + review["likes"]) ** opts["peer_power"]
+    if opts["timedecay"] == 0:
+        time = 1.0
+    else:
+        time = review["age_days"] ** opts["timedecay"]
+    return peers * time
+
+
+def peer_score(reviews: list[dict], options: dict | None = None) -> float:
+    """Like-weighted average of the reviewers' star ratings."""
+    opts = options or DEFAULTS
+    weighted = 0.0
+    total_weight = 0.0
+    for review in reviews:
+        weight = review_weight(review, opts)
+        weighted += review["stars"] * weight
+        total_weight += weight
+    return 0.0 if total_weight == 0 else weighted / total_weight
+
+
+def course_score(course: dict, options: dict | None = None) -> float:
+    """Final score for a course. Returns -1.0 when there is nothing to verify."""
+    opts = options or DEFAULTS
+    reviews = course["reviews"]
+    if not reviews:
+        return -1.0
+
+    peer = peer_score(reviews, opts)
+    coursera = course.get("coursera", float("nan"))
+    if coursera != coursera:  # NaN: page had no aggregate rating
+        return peer
+    return opts["peer_weight"] * peer + (1 - opts["peer_weight"]) * coursera

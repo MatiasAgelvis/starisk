@@ -1,0 +1,668 @@
+[
+  {
+    "title": "Convolutional Neural Networks in TensorFlow",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/KYMJQRU3Y4VS",
+    "issuer": "Coursera",
+    "date": "June 2021",
+    "credential_id": "KYMJQRU3Y4VS",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Getting started with TensorFlow 2",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/FVF7CWFBC3GP",
+    "issuer": "Coursera",
+    "date": "May 2021",
+    "credential_id": "FVF7CWFBC3GP",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Foundations for Big Data Analysis with SQL (with Honors)",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/4C95MRF4BQ8R",
+    "issuer": "Coursera",
+    "date": "May 2021",
+    "credential_id": "4C95MRF4BQ8R",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Custom Models, Layers, and Loss Functions with TensorFlow",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/SCEQC455GUTD",
+    "issuer": "Coursera",
+    "date": "May 2021",
+    "credential_id": "SCEQC455GUTD",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Introduction to TensorFlow for Artificial Intelligence, Machine Learning, and Deep Learning",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/7SDEBWZ4W9XV",
+    "issuer": "Coursera",
+    "date": "May 2021",
+    "credential_id": "7SDEBWZ4W9XV",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Practical Reinforcement Learning using Python - 8 AI Agents",
+    "url": "https://www.udemy.com/certificate/UC-6fca6750-5747-445e-9357-60af7266c5ff/",
+    "issuer": "Udemy",
+    "date": "April 2021",
+    "credential_id": "UC-6fca6750-5747-445e-9357-60af7266c5ff",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Deep Learning Specialization",
+    "url": "https://www.coursera.org/account/accomplishments/specialization/certificate/U8MN9XNKDRYH",
+    "issuer": "Coursera",
+    "date": "April 2021",
+    "credential_id": "U8MN9XNKDRYH",
+    "type": "specialization",
+    "label": null
+  },
+  {
+    "title": "Sequence Models",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/44JYLNQKR9F6",
+    "issuer": "Coursera",
+    "date": "April 2021",
+    "credential_id": "44JYLNQKR9F6",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Convolutional Neural Networks",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/EGN77JR9JQ2P",
+    "issuer": "Coursera",
+    "date": "March 2021",
+    "credential_id": "EGN77JR9JQ2P",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Investment Management with Python and Machine Learning Specialization",
+    "url": "https://www.coursera.org/account/accomplishments/specialization/certificate/M2492F9WCWCC",
+    "issuer": "Coursera",
+    "date": "March 2021",
+    "credential_id": "M2492F9WCWCC",
+    "type": "specialization",
+    "label": null
+  },
+  {
+    "title": "Python and Machine-Learning for Asset Management with Alternative Data Sets",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/5R2S75XJMG4V",
+    "issuer": "Coursera",
+    "date": "March 2021",
+    "credential_id": "5R2S75XJMG4V",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Reinforcement Learning Specialization",
+    "url": "https://www.coursera.org/account/accomplishments/specialization/certificate/WP88942YS9RR",
+    "issuer": "Coursera",
+    "date": "March 2021",
+    "credential_id": "WP88942YS9RR",
+    "type": "specialization",
+    "label": null
+  },
+  {
+    "title": "A Complete Reinforcement Learning System (Capstone)",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/GAYRJPYVH5FM",
+    "issuer": "Coursera",
+    "date": "March 2021",
+    "credential_id": "GAYRJPYVH5FM",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Python and Machine Learning for Asset Management",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/DT9GQNXSFHL8",
+    "issuer": "Coursera",
+    "date": "February 2021",
+    "credential_id": "DT9GQNXSFHL8",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Prediction and Control with Function Approximation",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/X85D8ZK6G3LK",
+    "issuer": "Coursera",
+    "date": "February 2021",
+    "credential_id": "X85D8ZK6G3LK",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Structuring Machine Learning Projects",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/G6SUK39F3G5L",
+    "issuer": "Coursera",
+    "date": "February 2021",
+    "credential_id": "G6SUK39F3G5L",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Sample-based Learning Methods",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/FAEDCXFJ6LUX",
+    "issuer": "Coursera",
+    "date": "January 2021",
+    "credential_id": "FAEDCXFJ6LUX",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Advanced Portfolio Construction and Analysis with Python",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/C35H6K5VMTJ7",
+    "issuer": "Coursera",
+    "date": "January 2021",
+    "credential_id": "C35H6K5VMTJ7",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Improving Deep Neural Networks: Hyperparameter Tuning, Regularization and Optimization",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/GS64XUR2HJYP",
+    "issuer": "Coursera",
+    "date": "January 2021",
+    "credential_id": "GS64XUR2HJYP",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Fundamentals of Reinforcement Learning",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/9GLNSVMU8WD6",
+    "issuer": "Coursera",
+    "date": "December 2020",
+    "credential_id": "9GLNSVMU8WD6",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Neural Networks and Deep Learning",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/E52UYTJ7NCXU",
+    "issuer": "Coursera",
+    "date": "December 2020",
+    "credential_id": "E52UYTJ7NCXU",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Introduction to Enumerative Combinatorics",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/FY8HSBTC75CN",
+    "issuer": "Coursera",
+    "date": "November 2020",
+    "credential_id": "FY8HSBTC75CN",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Introduction to Portfolio Construction and Analysis with Python",
+    "url": "https://www.coursera.org/account/accomplishments/certificate/7E5S77M8H9TY",
+    "issuer": "Coursera",
+    "date": "November 2020",
+    "credential_id": "7E5S77M8H9TY",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Version Control with Git",
+    "url": "https://www.coursera.org/account/accomplishments/verify/HT5CZLXFWEG5",
+    "issuer": "Coursera",
+    "date": "October 2020",
+    "credential_id": "HT5CZLXFWEG5",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Dog Emotion and Cognition",
+    "url": "https://www.coursera.org/account/accomplishments/verify/DV6S93VD95ZY",
+    "issuer": "Coursera",
+    "date": "October 2020",
+    "credential_id": "DV6S93VD95ZY",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Development of Secure Embedded Systems Specialization",
+    "url": "https://www.coursera.org/account/accomplishments/specialization/4Q3VNWJEV2PK",
+    "issuer": "Coursera",
+    "date": "October 2020",
+    "credential_id": "4Q3VNWJEV2PK",
+    "type": "specialization",
+    "label": null
+  },
+  {
+    "title": "Capstone: Autonomous Runway Detection for IoT",
+    "url": "https://www.coursera.org/account/accomplishments/verify/92E92SH7BLFC",
+    "issuer": "Coursera",
+    "date": "October 2020",
+    "credential_id": "92E92SH7BLFC",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Development of Real-Time Systems",
+    "url": "https://www.coursera.org/account/accomplishments/verify/PMTJ97UMQJ22",
+    "issuer": "Coursera",
+    "date": "September 2020",
+    "credential_id": "KXMZ4ZAK3RPW",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Web Connectivity and Security in Embedded Systems",
+    "url": "https://www.coursera.org/account/accomplishments/verify/KXMZ4ZAK3RPW",
+    "issuer": "Coursera",
+    "date": "August 2020",
+    "credential_id": "KXMZ4ZAK3RPW",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Embedded Hardware and Operating Systems",
+    "url": "https://www.coursera.org/account/accomplishments/verify/HTF37KWEKSXP",
+    "issuer": "Coursera",
+    "date": "August 2020",
+    "credential_id": "HTF37KWEKSXP",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Discrete Optimization",
+    "url": "https://www.coursera.org/account/accomplishments/verify/8SNFFC3GTZA8",
+    "issuer": "Coursera",
+    "date": "June 2020",
+    "credential_id": "8SNFFC3GTZA8",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Principal Component Analysis with NumPy",
+    "url": "https://www.coursera.org/account/accomplishments/verify/TNUP68XTUKT2",
+    "issuer": "Coursera",
+    "date": "June 2020",
+    "credential_id": "TNUP68XTUKT2",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Solving Algorithms for Discrete Optimization",
+    "url": "https://www.coursera.org/account/accomplishments/verify/CD7JDM99F65Y",
+    "issuer": "Coursera",
+    "date": "May 2020",
+    "credential_id": "CD7JDM99F65Y",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Accelerated Computer Science Fundamentals Specialization",
+    "url": "https://www.coursera.org/account/accomplishments/specialization/RC3A32QAY7YC",
+    "issuer": "Coursera",
+    "date": "April 2020",
+    "credential_id": "RC3A32QAY7YC",
+    "type": "specialization",
+    "label": null
+  },
+  {
+    "title": "Unordered Data Structures",
+    "url": "https://www.coursera.org/account/accomplishments/verify/ATV8YXKH5KJ3",
+    "issuer": "Coursera",
+    "date": "April 2020",
+    "credential_id": "ATV8YXKH5KJ3",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "AWS Computer Vision: Getting Started with GluonCV",
+    "url": "https://www.coursera.org/account/accomplishments/verify/LE2CLF2BC2CG",
+    "issuer": "Coursera",
+    "date": "April 2020",
+    "credential_id": "LE2CLF2BC2CG",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Getting Started with AWS Machine Learning",
+    "url": "https://www.coursera.org/account/accomplishments/verify/K9RW5NPTBGL6",
+    "issuer": "Coursera",
+    "date": "April 2020",
+    "credential_id": "K9RW5NPTBGL6",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Introduction to TCP/IP",
+    "url": "https://www.coursera.org/account/accomplishments/verify/LP34WN8247C3",
+    "issuer": "Coursera",
+    "date": "April 2020",
+    "credential_id": "LP34WN8247C3",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Ordered Data Structures",
+    "url": "https://www.coursera.org/account/accomplishments/verify/SRGQ9TNQE3AF",
+    "issuer": "Coursera",
+    "date": "April 2020",
+    "credential_id": "SRGQ9TNQE3AF",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Advanced Modeling for Discrete Optimization",
+    "url": "https://www.coursera.org/account/accomplishments/verify/MSZMWBF9AW2L",
+    "issuer": "Coursera",
+    "date": "March 2020",
+    "credential_id": "MSZMWBF9AW2L",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Linux Tools for Developers",
+    "url": "https://www.coursera.org/account/accomplishments/verify/6RH7P36EWYB4",
+    "issuer": "Coursera",
+    "date": "March 2020",
+    "credential_id": "6RH7P36EWYB4",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Linux for Developers",
+    "url": "https://www.coursera.org/account/accomplishments/verify/VVPS9LTM5YYC",
+    "issuer": "Coursera",
+    "date": "March 2020",
+    "credential_id": "VVPS9LTM5YYC",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Object-Oriented Data Structures in C++",
+    "url": "https://www.coursera.org/account/accomplishments/verify/ESKBYZN7TSJH",
+    "issuer": "Coursera",
+    "date": "March 2020",
+    "credential_id": "ESKBYZN7TSJH",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Open Source Software Development Methods",
+    "url": "https://www.coursera.org/account/accomplishments/verify/SK9PR734D4Q2",
+    "issuer": "Coursera",
+    "date": "March 2020",
+    "credential_id": "SK9PR734D4Q2",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Open Source Software Development, Linux and Git Specialization",
+    "url": "https://www.coursera.org/account/accomplishments/specialization/7YBZRNZU32KP",
+    "issuer": "Coursera",
+    "date": "March 2020",
+    "credential_id": "7YBZRNZU32KP",
+    "type": "specialization",
+    "label": null
+  },
+  {
+    "title": "Using Git for Distributed Development",
+    "url": "https://www.coursera.org/account/accomplishments/verify/U6MF4E4G9DSS",
+    "issuer": "Coursera",
+    "date": "March 2020",
+    "credential_id": "U6MF4E4G9DSS",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Basic Modeling for Discrete Optimization",
+    "url": "https://www.coursera.org/account/accomplishments/verify/UH4LD6T7WFV4",
+    "issuer": "Coursera",
+    "date": "February 2020",
+    "credential_id": "UH4LD6T7WFV4",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Financial Markets (with Honors)",
+    "url": "https://www.coursera.org/account/accomplishments/verify/NR4ESPT3EUF4",
+    "issuer": "Coursera",
+    "date": "February 2020",
+    "credential_id": "NR4ESPT3EUF4",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Python and Statistics for Financial Analysis",
+    "url": "https://www.coursera.org/account/accomplishments/verify/94A4K2D5LX3Y",
+    "issuer": "Coursera",
+    "date": "February 2020",
+    "credential_id": "94A4K2D5LX3Y",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Programming Languages, Part C",
+    "url": "https://www.coursera.org/account/accomplishments/verify/YPLQMUGB7F4F",
+    "issuer": "Coursera",
+    "date": "January 2020",
+    "credential_id": "YPLQMUGB7F4F",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Programming Languages, Part B",
+    "url": "https://www.coursera.org/account/accomplishments/verify/2DMA5A498DMG",
+    "issuer": "Coursera",
+    "date": "December 2019",
+    "credential_id": "2DMA5A498DMG",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Algorithms Specialization",
+    "url": "https://www.coursera.org/account/accomplishments/specialization/LT4VHMTJG382",
+    "issuer": "Coursera",
+    "date": "November 2019",
+    "credential_id": "LT4VHMTJG382",
+    "type": "specialization",
+    "label": null
+  },
+  {
+    "title": "Greedy Algorithms, Minimum Spanning Trees, and Dynamic Programming",
+    "url": "https://www.coursera.org/account/accomplishments/verify/49HFP6ZP9AN7",
+    "issuer": "Coursera",
+    "date": "November 2019",
+    "credential_id": "49HFP6ZP9AN7",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Programming Languages, Part A",
+    "url": "https://www.coursera.org/account/accomplishments/verify/J38GV286BU5A",
+    "issuer": "Coursera",
+    "date": "November 2019",
+    "credential_id": "J38GV286BU5A",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Shortest Paths Revisited, NP-Complete Problems and What To Do About Them",
+    "url": "https://www.coursera.org/account/accomplishments/verify/98JCEY8NUQW5",
+    "issuer": "Coursera",
+    "date": "November 2019",
+    "credential_id": "98JCEY8NUQW5",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Divide and Conquer, Sorting and Searching, and Randomized Algorithms",
+    "url": "https://www.coursera.org/account/accomplishments/verify/XWQ2W9XUCAKA",
+    "issuer": "Coursera",
+    "date": "October 2019",
+    "credential_id": "XWQ2W9XUCAKA",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Graph Search, Shortest Paths, and Data Structures",
+    "url": "https://www.coursera.org/account/accomplishments/verify/XVNDZXYAD446",
+    "issuer": "Coursera",
+    "date": "October 2019",
+    "credential_id": "XVNDZXYAD446",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Machine Learning",
+    "url": "https://www.coursera.org/account/accomplishments/verify/EW9B9DVH4P79",
+    "issuer": "Coursera",
+    "date": "September 2019",
+    "credential_id": "EW9B9DVH4P79",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Origins Of Life",
+    "url": "https://www.complexityexplorer.org/courses/95-origins-of-life-2019/certificates/2757558273.pdf",
+    "issuer": "Santa Fe Institute",
+    "date": "September 2019",
+    "credential_id": "2757558273",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Build a Modern Computer from First Principles: Nand to Tetris Part II (project-centered course)",
+    "url": "https://www.coursera.org/account/accomplishments/verify/RYES9RCWKX2K",
+    "issuer": "Coursera",
+    "date": "August 2019",
+    "credential_id": "RYES9RCWKX2K",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course)",
+    "url": "https://www.coursera.org/account/accomplishments/verify/DE5592NKDZXF",
+    "issuer": "Coursera",
+    "date": "May 2019",
+    "credential_id": "DE5592NKDZXF",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "C Tutorial course",
+    "url": "https://www.sololearn.com/Certificate/1089-2572827/pdf/",
+    "issuer": null,
+    "date": "April 2019",
+    "credential_id": "1089-2572827",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Data Structures",
+    "url": "https://stepik.org/cert/183578",
+    "issuer": "Stepik",
+    "date": "April 2019",
+    "credential_id": "183578",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "CSE100x: Data Structures: An Active Learning Approach",
+    "url": "https://courses.edx.org/certificates/e461197353d94ddab77210710c2fc958",
+    "issuer": "edX",
+    "date": "April 2019",
+    "credential_id": "e461197353d94ddab77210710c2fc958",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Nonlinear Dynamics: Mathematical and Computational Approaches",
+    "url": "https://www.complexityexplorer.org/courses/92-nonlinear-dynamics-mathematical-and-computational-approaches-fall-2018/certificates/1950482433.pdf",
+    "issuer": "Santa Fe Institute",
+    "date": "December 2018",
+    "credential_id": "1950482433",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Introduction to Dynamical Systems and Chaos",
+    "url": "https://www.complexityexplorer.org/courses/91-introduction-to-dynamical-systems-and-chaos-fall-2018/certificates/2133655553.pdf",
+    "issuer": "Santa Fe Institute",
+    "date": "November 2018",
+    "credential_id": "2133655553",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "C# Tutorial course",
+    "url": "https://www.sololearn.com/Certificate/1080-2572827/pdf/",
+    "issuer": "SoloLearn",
+    "date": "March 2018",
+    "credential_id": "1080-2572827",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Ruby Tutorial course",
+    "url": "https://www.sololearn.com/Certificate/1081-2572827/pdf/",
+    "issuer": "SoloLearn",
+    "date": "January 2018",
+    "credential_id": "1081-2572827",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Swift Fundamentals course",
+    "url": "https://www.sololearn.com/Certificate/1075-2572827/pdf/",
+    "issuer": "SoloLearn",
+    "date": "January 2018",
+    "credential_id": "1075-2572827",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Python 3 Tutorial course",
+    "url": "https://www.sololearn.com/Certificate/1073-2572827/pdf/",
+    "issuer": "SoloLearn",
+    "date": "December 2017",
+    "credential_id": "1073-2572827",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Introduction to Agent-Based Modeling",
+    "url": "https://www.complexityexplorer.org/courses/76-introduction-to-agent-based-modeling-2017/certificates/558235649.pdf",
+    "issuer": "Santa Fe Institute",
+    "date": "September 2017",
+    "credential_id": "558235649",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "C++ Tutorial course",
+    "url": "https://www.sololearn.com/Certificate/1051-2572827/pdf/",
+    "issuer": "SoloLearn",
+    "date": "Jun 2017",
+    "credential_id": "1051-2572827",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "SQL Fundamentals course",
+    "url": "https://www.sololearn.com/Certificate/1060-2572827/pdf/",
+    "issuer": "SoloLearn",
+    "date": "Jun 2017",
+    "credential_id": "1060-2572827",
+    "type": "course",
+    "label": null
+  },
+  {
+    "title": "Introduction to Complexity",
+    "url": "https://www.complexityexplorer.org/courses/59-introduction-to-complexity-fall-2016/certificates/4105371648.pdf",
+    "issuer": "Santa Fe Institute",
+    "date": "December 2016",
+    "credential_id": "4105371648",
+    "type": "course",
+    "label": null
+  }
+]
