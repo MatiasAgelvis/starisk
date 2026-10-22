@@ -31,6 +31,16 @@ const readOn = record.scrapedAt
     })
   : null;
 
+// Coursera publishes its whole rating distribution in the page data. That is the
+// population — every rating ever — and it is more honest than any sample we read.
+const counts = record.rating_counts ?? null;
+const ratingsTotal =
+  record.ratings_total ?? (counts ? Object.values(counts).reduce((a, b) => a + b, 0) : null);
+const lowShare =
+  counts && ratingsTotal
+    ? (((counts['1'] ?? 0) + (counts['2'] ?? 0)) / ratingsTotal) * 100
+    : null;
+
 function verdictText() {
   if (inflation == null) return 'No headline rating to compare';
   if (inflation >= 1.5) return 'Inflated';
@@ -81,8 +91,8 @@ function verdictText() {
         <div class="stat-value text-2xl">{record.reviews}</div>
         <div class="stat-desc">
           {record.reviews_total
-            ? `of ${record.reviews_total.toLocaleString('en-GB')} written`
-            : 'most helpful, first page'}
+            ? `most helpful · of ${record.reviews_total.toLocaleString('en-GB')} written`
+            : 'the most helpful ones'}
         </div>
       </div>
     </div>
@@ -128,11 +138,25 @@ function verdictText() {
       )
     }
 
+    {
+      lowShare != null && record.coursera != null && (
+        <p class="mt-4 text-sm text-base-content/70">
+          Coursera's {record.coursera.toFixed(1)} comes from{' '}
+          <strong>{ratingsTotal.toLocaleString('en-GB')} ratings</strong>. Of those,{' '}
+          <strong>{lowShare.toFixed(1)}%</strong> are 1–2★.
+        </p>
+      )
+    }
+
     <section class="mt-10 text-sm text-base-content/60">
       <p>
-        Starisk reads the first page of reviews — the ones Coursera surfaces as most helpful —
-        and weights them by their upvotes. It measures what the most-endorsed reviews say, not
-        “true quality.”
+        Starisk reads the reviews learners voted most helpful, and a vote is the whole weight: a
+        review with 80 upvotes counts far more than one with 2. Unvoted reviews are not ignored out
+        of laziness — by this model they carry no evidence that other students endorsed them.
+      </p>
+      <p class="mt-2">
+        That measures <strong>what the most-endorsed reviews say</strong>, not “true quality.” The
+        rating distribution above is the whole population, so you can see the sample next to it.
       </p>
       <p class="mt-2">
         {readOn ? `Reviews read on ${readOn}.` : null}

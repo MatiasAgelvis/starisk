@@ -63,16 +63,21 @@ const lookup = Object.fromEntries(
     <h2 class="font-display text-2xl font-bold">Method, honestly</h2>
     <div class="mt-4 space-y-4 text-base-content/80">
       <p>
-        We read the first page of reviews — the ones Coursera surfaces as{' '}
-        <strong>most helpful</strong> — and weight each review by the votes it received.
-        A review with 80 upvotes counts far more than one with 2.
+        We read the reviews learners voted <strong>most helpful</strong>, and weight each one by its
+        votes: a review with 80 upvotes counts far more than one with 2. Unvoted reviews are not
+        skipped out of laziness — by this model they carry no evidence that other students endorsed
+        them.
       </p>
       <p>
-        That means Starisk measures <strong>what the most-endorsed reviews say</strong>,
-        not “true quality.” Upvoted reviews often carry a grievance — about access,
-        pricing, or certificates — rather than a judgment of the teaching. We put the
-        numbers next to Coursera's own rating so you can see the disagreement, not to
-        pretend we have the final word.
+        Coursera publishes the full rating distribution for every course, so each page shows the
+        sample next to the whole population — including what share of all ratings are 1–2★. That is
+        the comparison worth making: a small upvoted minority, against tens of thousands of
+        five-star ratings.
+      </p>
+      <p>
+        It measures <strong>what the most-endorsed reviews say</strong>, not “true quality.” Upvoted
+        reviews often carry a grievance — about access, pricing or certificates — rather than a
+        judgment of the teaching. The disagreement is the point, not the final word.
       </p>
       <p>
         Sample: {rows.length} courses. Scores recomputed from saved review pages; not
