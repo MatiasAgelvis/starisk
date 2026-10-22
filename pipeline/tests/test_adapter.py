@@ -188,7 +188,9 @@ class PopulationTest(unittest.TestCase):
         aggregate = extract_aggregate(html)
 
         self.assertAlmostEqual(aggregate["rating"], 4.784398526785658)
-        self.assertEqual(aggregate["ratings_total"], 215972)
+        # The population total wins: it is the sum of the counts we store, so the
+        # sample statement and the distribution can never disagree.
+        self.assertEqual(aggregate["ratings_total"], 306099)
         self.assertIsNotNone(aggregate["counts"])
 
 

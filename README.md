@@ -66,6 +66,20 @@ mise run check                # tests + a full site build
 Without mise, it's still plain: `python -m unittest discover -s pipeline/tests`
 (inside `pipeline/`), `npm ci --prefix web`, and `./build.sh`.
 
+### Crawling
+
+```sh
+mise run pipeline:crawl                # anything not scraped in the last 30 days
+mise run pipeline:crawl -- --limit 10  # budget: at most 10 requests this run
+mise run pipeline:crawl -- --force     # ignore freshness, refetch everything
+```
+
+Sources are normalised (`learn/x`, `/learn/x/`, a full URL and a bare slug are
+one course), fresh records are skipped without a request, and work is ordered
+stalest-first so `--limit` always makes progress. If Coursera rate-limits a run
+(403/429), it **stops** instead of retrying — the next run resumes at the same
+course.
+
 ### Deploying
 
 The site is static files in `web/dist`. Any static host works; the settings are

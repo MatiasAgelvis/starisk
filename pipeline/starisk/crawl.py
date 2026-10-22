@@ -53,12 +53,18 @@ def normalize_source(source: str) -> str:
     """Accept a bare slug, a path, or a full Coursera URL.
 
     "learn/x", "/learn/x/", "https://www.coursera.org/learn/x" and
-    ".../learn/x/reviews" all become "learn/x".
+    ".../learn/x/reviews" all become "learn/x". A bare "x" is assumed to be a
+    course (v1 is courses-only, D17), so it cannot silently produce a URL with
+    no type segment.
     """
     match = _SOURCE_PATTERN.search(source)
     if match:
         return f"{match.group(1)}/{match.group(2)}"
-    return source.strip().strip("/")
+
+    key = source.strip().strip("/")
+    if key and "/" not in key:
+        return f"learn/{key}"
+    return key
 
 
 def reviews_url(source: str) -> str:

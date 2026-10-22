@@ -2,7 +2,17 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from starisk.crawl import crawl, normalize_source, reviews_url, score_page
+from starisk.crawl import (
+    crawl,
+    is_fresh,
+    normalize_source,
+    order_by_staleness,
+    parse_args,
+    reviews_url,
+    score_page,
+    unique_sources,
+)
+from starisk.fetch import RateLimited
 
 GOOD_FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 STAMP = datetime(2026, 1, 1, tzinfo=timezone.utc)
@@ -114,6 +124,117 @@ class CrawlTest(unittest.TestCase):
         )
 
         self.assertEqual(slept, [1.5, 1.5, 1.5])
+
+
+class SourceListTest(unittest.TestCase):
+    def test_variants_collapse_to_one_course(self):
+        sources = [
+            "learn/machine-learning",
+            "https://www.coursera.org/learn/machine-learning",
+            "/learn/machine-learning/",
+            "machine-learning",
+        ]
+        self.assertEqual(unique_sources(sources), ["learn/machine-learning"])
+
+    def test_bare_slug_gets_a_type(self):
+        self.assertEqual(normalize_source("machine-learning"), "learn/machine-learning")
+
+    def test_stalest_first_never_scraped_before_old(self):
+        scores = {
+            "learn/a": {"starisk": 1.0, "scrapedAt": "2026-03-01T00:00:00+00:00"},
+            "learn/b": {"starisk": 1.0, "scrapedAt": "2025-01-01T00:00:00+00:00"},
+        }
+        self.assertEqual(
+            order_by_staleness(["learn/a", "learn/c", "learn/b"], scores),
+            ["learn/c", "learn/b", "learn/a"],
+        )
+
+
+class FreshnessTest(unittest.TestCase):
+    now = datetime(2026, 6, 1, tzinfo=timezone.utc)
+
+    def test_recent_is_fresh(self):
+        record = {"starisk": 3.0, "scrapedAt": "2026-05-20T00:00:00+00:00"}
+        self.assertTrue(is_fresh(record, self.now, 30))
+
+    def test_old_is_stale(self):
+        record = {"starisk": 3.0, "scrapedAt": "2026-01-01T00:00:00+00:00"}
+        self.assertFalse(is_fresh(record, self.now, 30))
+
+    def test_failures_are_never_fresh(self):
+        self.assertFalse(is_fresh({"error": "fetch: HTTP 404"}, self.now, 30))
+        self.assertFalse(is_fresh({"starisk": 3.0}, self.now, 30))
+        self.assertFalse(is_fresh(None, self.now, 30))
+
+    def test_zero_max_age_is_always_stale(self):
+        record = {"starisk": 3.0, "scrapedAt": self.now.isoformat()}
+        self.assertFalse(is_fresh(record, self.now, 0))
+
+
+class IncrementalCrawlTest(unittest.TestCase):
+    def setUp(self):
+        self.html = GOOD_FIXTURE.read_text(encoding="utf-8")
+
+    def test_fresh_records_are_not_fetched(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return self.html
+
+        existing = {"learn/fresh": {"starisk": 3.0, "scrapedAt": STAMP.isoformat()}}
+        now = datetime(2026, 1, 2, tzinfo=timezone.utc)
+
+        crawl(["learn/fresh", "learn/new"], fetch=fetch, existing=existing, now=now, max_age_days=30)
+
+        self.assertEqual(calls, [reviews_url("learn/new")])
+
+    def test_limit_only_fetches_what_it_was_allowed(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return self.html
+
+        crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP, limit=2)
+
+        self.assertEqual(calls, [reviews_url("learn/a"), reviews_url("learn/b")])
+
+    def test_rate_limit_stops_the_run_and_keeps_progress(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            if len(calls) == 2:
+                raise RateLimited("HTTP 429")
+            return self.html
+
+        scores = crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP)
+
+        self.assertEqual(len(calls), 2)  # stopped at the second; never tried the third
+        self.assertIn("learn/a", scores)
+        self.assertTrue(str(scores["learn/b"]["error"]).startswith("rate limited"))
+        self.assertNotIn("learn/c", scores)
+
+
+class ArgsTest(unittest.TestCase):
+    def test_defaults(self):
+        options = parse_args([])
+
+        self.assertEqual(options["max_age"], 30.0)
+        self.assertIsNone(options["limit"])
+        self.assertIsNone(options["sources"])
+
+    def test_flags(self):
+        options = parse_args(["--delay", "3", "--max-age", "7", "--limit", "10", "learn/x"])
+
+        self.assertEqual(options["delay"], 3.0)
+        self.assertEqual(options["max_age"], 7.0)
+        self.assertEqual(options["limit"], 10)
+        self.assertEqual(options["sources"], ["learn/x"])
+
+    def test_force_means_everything_is_stale(self):
+        self.assertEqual(parse_args(["--force"])["max_age"], 0.0)
 
 
 if __name__ == "__main__":
