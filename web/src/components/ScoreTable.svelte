@@ -152,12 +152,9 @@
                 <div class="truncate font-medium">
                   <a class="link link-hover" href={`/${row.slug}`}>{row.title ?? row.slug}</a>
                 </div>
-                <a
-                  class="link link-hover hidden truncate font-mono text-xs text-base-content/50 sm:block"
-                  href={`https://www.coursera.org/${row.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer">{row.slug}</a
-                >
+                <div class="truncate text-xs text-base-content/50">
+                  {row.provider ?? 'Unknown provider'}
+                </div>
               </div>
             </div>
           </td>

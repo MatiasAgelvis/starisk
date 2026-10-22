@@ -24,8 +24,18 @@
       "4": 2391,
       "5": 30190
     },
+    "instructors": [
+      "Andrew Ng",
+      "Aarti Bagul",
+      "Geoff Ladwig",
+      "Eddy Shyu"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/machine-learning",
-    "scrapedAt": "2026-10-22T13:45:27.694742+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/learning-how-to-learn": {
     "title": "Learning How to Learn: Powerful mental tools to help you master tough subjects",
@@ -52,8 +62,16 @@
       "4": 11308,
       "5": 80320
     },
+    "instructors": [
+      "Dr. Barbara Oakley",
+      "Dr. Terrence Sejnowski"
+    ],
+    "categories": [
+      "Personal Development",
+      "Computer Science"
+    ],
     "slug": "learn/learning-how-to-learn",
-    "scrapedAt": "2026-10-22T13:45:11.742437+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/algorithms-part1": {
     "title": "Algorithms, Part I",
@@ -80,8 +98,15 @@
       "4": 1098,
       "5": 10816
     },
+    "instructors": [
+      "Kevin Wayne",
+      "Robert Sedgewick"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/algorithms-part1",
-    "scrapedAt": "2026-10-22T13:45:11.742437+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/neural-networks-deep-learning": {
     "title": "Neural Networks and Deep Learning",
@@ -108,8 +133,17 @@
       "4": 11344,
       "5": 111092
     },
+    "instructors": [
+      "Andrew Ng",
+      "Kian Katanforoosh",
+      "Younes Bensouda Mourri"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/neural-networks-deep-learning",
-    "scrapedAt": "2026-10-22T13:45:27.694742+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/ai-for-everyone": {
     "title": "AI For Everyone",
@@ -136,8 +170,14 @@
       "4": 8438,
       "5": 43794
     },
+    "instructors": [
+      "Andrew Ng"
+    ],
+    "categories": [
+      "Business"
+    ],
     "slug": "learn/ai-for-everyone",
-    "scrapedAt": "2026-10-22T13:45:11.742437+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/financial-markets-global": {
     "title": "Financial Markets",
@@ -164,8 +204,15 @@
       "4": 3790,
       "5": 27661
     },
+    "instructors": [
+      "Robert Shiller"
+    ],
+    "categories": [
+      "Business",
+      "Social Sciences"
+    ],
     "slug": "learn/financial-markets-global",
-    "scrapedAt": "2026-10-22T13:45:11.742437+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/convolutional-neural-networks-tensorflow": {
     "title": "Convolutional Neural Networks in TensorFlow",
@@ -192,8 +239,15 @@
       "4": 1266,
       "5": 6530
     },
+    "instructors": [
+      "Laurence Moroney"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/convolutional-neural-networks-tensorflow",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/foundations-big-data-analysis-sql": {
     "title": "Foundations for Big Data Analysis with SQL",
@@ -220,8 +274,15 @@
       "4": 174,
       "5": 890
     },
+    "instructors": [
+      "Glynn Durham"
+    ],
+    "categories": [
+      "Data Science",
+      "Information Technology"
+    ],
     "slug": "learn/foundations-big-data-analysis-sql",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/custom-models-layers-loss-functions-with-tensorflow": {
     "title": "Custom Models, Layers, and Loss Functions with TensorFlow",
@@ -248,8 +309,16 @@
       "4": 101,
       "5": 984
     },
+    "instructors": [
+      "Laurence Moroney",
+      "Eddy Shyu"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/custom-models-layers-loss-functions-with-tensorflow",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/convolutional-neural-networks": {
     "title": "Convolutional Neural Networks",
@@ -276,8 +345,17 @@
       "4": 4377,
       "5": 37433
     },
+    "instructors": [
+      "Andrew Ng",
+      "Kian Katanforoosh",
+      "Younes Bensouda Mourri"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/convolutional-neural-networks",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/prediction-control-function-approximation": {
     "title": "Prediction and Control with Function Approximation",
@@ -304,8 +382,16 @@
       "4": 105,
       "5": 721
     },
+    "instructors": [
+      "Martha White",
+      "Adam White"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/prediction-control-function-approximation",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/sample-based-learning-methods": {
     "title": "Sample-based Learning Methods",
@@ -332,8 +418,16 @@
       "4": 167,
       "5": 1037
     },
+    "instructors": [
+      "Martha White",
+      "Adam White"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/sample-based-learning-methods",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/fundamentals-of-reinforcement-learning": {
     "title": "Fundamentals of Reinforcement Learning",
@@ -360,8 +454,16 @@
       "4": 417,
       "5": 2380
     },
+    "instructors": [
+      "Martha White",
+      "Adam White"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/fundamentals-of-reinforcement-learning",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/version-control-with-git": {
     "title": "Version Control with Git",
@@ -388,8 +490,14 @@
       "4": 547,
       "5": 2359
     },
+    "instructors": [
+      "Steve Byrnes"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/version-control-with-git",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/dog-emotion-and-cognition": {
     "title": "Dog Emotion and Cognition",
@@ -416,8 +524,14 @@
       "4": 744,
       "5": 3697
     },
+    "instructors": [
+      "Brian Hare"
+    ],
+    "categories": [
+      "Health"
+    ],
     "slug": "learn/dog-emotion-and-cognition",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/solving-algorithms-discrete-optimization": {
     "title": "Solving Algorithms for Discrete Optimization",
@@ -445,8 +559,16 @@
       "5": 39
     },
     "low_sample": true,
+    "instructors": [
+      "Prof. Jimmy Ho Man Lee",
+      "Prof. Peter J Stuckey"
+    ],
+    "categories": [
+      "Computer Science",
+      "Math and Logic"
+    ],
     "slug": "learn/solving-algorithms-discrete-optimization",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/linux-tools-for-developers": {
     "title": "Linux Tools for Developers",
@@ -473,8 +595,14 @@
       "4": 152,
       "5": 531
     },
+    "instructors": [
+      "Kara Pritchard"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/linux-tools-for-developers",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/linux-for-developers": {
     "title": "Linux for Developers",
@@ -501,8 +629,14 @@
       "4": 291,
       "5": 967
     },
+    "instructors": [
+      "Kara Pritchard"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/linux-for-developers",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/open-source-software-development-methods": {
     "title": "Open Source Software Development Methods",
@@ -529,8 +663,14 @@
       "4": 310,
       "5": 1124
     },
+    "instructors": [
+      "Kara Pritchard"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/open-source-software-development-methods",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/git-distributed-development": {
     "title": "Using Git for Distributed Development",
@@ -557,8 +697,14 @@
       "4": 117,
       "5": 436
     },
+    "instructors": [
+      "Kara Pritchard"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/git-distributed-development",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/python-statistics-financial-analysis": {
     "title": "Python and Statistics for Financial Analysis",
@@ -585,8 +731,15 @@
       "4": 1352,
       "5": 2743
     },
+    "instructors": [
+      "Xuhu Wan"
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
     "slug": "learn/python-statistics-financial-analysis",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/programming-languages-part-c": {
     "title": "Programming Languages, Part C",
@@ -613,8 +766,14 @@
       "4": 19,
       "5": 437
     },
+    "instructors": [
+      "Dan  Grossman"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/programming-languages-part-c",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/programming-languages-part-b": {
     "title": "Programming Languages, Part B",
@@ -641,8 +800,14 @@
       "4": 43,
       "5": 741
     },
+    "instructors": [
+      "Dan  Grossman"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/programming-languages-part-b",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/machine-learning-asset-management-alternative-data": {
     "title": "Python and Machine-Learning for Asset Management with Alternative Data Sets",
@@ -669,8 +834,16 @@
       "4": 65,
       "5": 145
     },
+    "instructors": [
+      "Gideon OZIK",
+      "Sean McOwen"
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
     "slug": "learn/machine-learning-asset-management-alternative-data",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/complete-reinforcement-learning-system": {
     "title": "A Complete Reinforcement Learning System (Capstone)",
@@ -697,8 +870,16 @@
       "4": 103,
       "5": 511
     },
+    "instructors": [
+      "Martha White",
+      "Adam White"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/complete-reinforcement-learning-system",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/machine-learning-projects": {
     "title": "Structuring Machine Learning Projects",
@@ -725,8 +906,17 @@
       "4": 6832,
       "5": 41614
     },
+    "instructors": [
+      "Andrew Ng",
+      "Younes Bensouda Mourri",
+      "Kian Katanforoosh"
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
     "slug": "learn/machine-learning-projects",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/advanced-portfolio-construction-python": {
     "title": "Advanced Portfolio Construction and Analysis with Python",
@@ -753,8 +943,16 @@
       "4": 65,
       "5": 423
     },
+    "instructors": [
+      "Claudia Carrone",
+      "Vijay Vaidyanathan, PhD"
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
     "slug": "learn/advanced-portfolio-construction-python",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/introduction-portfolio-construction-python": {
     "title": "Introduction to Portfolio Construction and Analysis with Python",
@@ -781,8 +979,16 @@
       "4": 175,
       "5": 1267
     },
+    "instructors": [
+      "Vijay Vaidyanathan, PhD",
+      "Martellini"
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
     "slug": "learn/introduction-portfolio-construction-python",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/autonomous-runway-detection": {
     "title": "Capstone:  Autonomous Runway Detection for IoT",
@@ -810,8 +1016,15 @@
       "5": 54
     },
     "low_sample": true,
+    "instructors": [
+      "Farhoud Hosseinpour",
+      "Juha Plosila"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/autonomous-runway-detection",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/real-time-systems": {
     "title": "Development of Real-Time Systems",
@@ -838,8 +1051,14 @@
       "4": 131,
       "5": 368
     },
+    "instructors": [
+      "Farhoud Hosseinpour"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/real-time-systems",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/advanced-modeling": {
     "title": "Advanced Modeling for Discrete Optimization",
@@ -866,8 +1085,16 @@
       "4": 10,
       "5": 133
     },
+    "instructors": [
+      "Prof. Jimmy Ho Man Lee",
+      "Prof. Peter J Stuckey"
+    ],
+    "categories": [
+      "Computer Science",
+      "Math and Logic"
+    ],
     "slug": "learn/advanced-modeling",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/basic-modeling": {
     "title": "Basic Modeling for Discrete Optimization",
@@ -894,8 +1121,16 @@
       "4": 54,
       "5": 396
     },
+    "instructors": [
+      "Prof. Jimmy Ho Man Lee",
+      "Prof. Peter J Stuckey"
+    ],
+    "categories": [
+      "Computer Science",
+      "Math and Logic"
+    ],
     "slug": "learn/basic-modeling",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/programming-languages": {
     "title": "Programming Languages, Part A",
@@ -922,8 +1157,14 @@
       "4": 104,
       "5": 1784
     },
+    "instructors": [
+      "Dan  Grossman"
+    ],
+    "categories": [
+      "Computer Science"
+    ],
     "slug": "learn/programming-languages",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   },
   "learn/algorithms-divide-conquer": {
     "title": "Divide and Conquer, Sorting and Searching, and Randomized Algorithms",
@@ -950,7 +1191,14 @@
       "4": 725,
       "5": 4421
     },
+    "instructors": [
+      "Tim Roughgarden"
+    ],
+    "categories": [
+      "Computer Science",
+      "Math and Logic"
+    ],
     "slug": "learn/algorithms-divide-conquer",
-    "scrapedAt": "2026-10-22T13:43:06.037052+00:00"
+    "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
   }
 }

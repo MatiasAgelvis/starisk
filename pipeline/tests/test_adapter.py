@@ -6,6 +6,7 @@ from starisk.adapter import (
     extract_aggregate,
     extract_coursera_score,
     extract_details,
+    extract_landing,
     extract_population,
     extract_reviews,
     extract_title,
@@ -192,6 +193,56 @@ class PopulationTest(unittest.TestCase):
         # sample statement and the distribution can never disagree.
         self.assertEqual(aggregate["ratings_total"], 306099)
         self.assertIsNotNone(aggregate["counts"])
+
+
+class LandingTest(unittest.TestCase):
+    def test_single_instructor_from_jsonld(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"instructor":{"@type":"Person","name":"Andrew Ng"}}'
+            "</script>"
+        )
+        self.assertEqual(extract_landing(html)["instructors"], ["Andrew Ng"])
+
+    def test_multiple_instructors(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"instructor":[{"name":"Ada"},{"name":"Grace"}]}'
+            "</script>"
+        )
+        self.assertEqual(extract_landing(html)["instructors"], ["Ada", "Grace"])
+
+    def test_instructors_from_the_data_blob_when_jsonld_is_silent(self):
+        html = (
+            '"instructors":[{"__ref":"DescriptionPage_Instructor:1244"}]'
+            '"DescriptionPage_Instructor:1244":{"__typename":"X","name":"Andrew Ng"}'
+        )
+        self.assertEqual(extract_landing(html)["instructors"], ["Andrew Ng"])
+
+    def test_blob_uses_full_name(self):
+        # The real page uses `fullName`, plus fields that come before it.
+        html = (
+            '"instructors":[{"__ref":"DescriptionPage_Instructor:1244"}]'
+            '"DescriptionPage_Instructor:1244":{"__typename":"X","id":"1244",'
+            '"coursesTaught":53,"department":"Founder","fullName":"Andrew Ng",'
+            '"isTopInstructor":true}'
+        )
+        self.assertEqual(extract_landing(html)["instructors"], ["Andrew Ng"])
+
+    def test_categories_from_domains(self):
+        html = (
+            '"domains":['
+            '{"domainName":"Data Science","subdomainId":"ml","subdomainName":"Machine Learning"},'
+            '{"domainName":"Computer Science","subdomainId":"algorithms","subdomainName":"Algorithms"}]'
+        )
+        self.assertEqual(extract_landing(html)["categories"], ["Data Science", "Computer Science"])
+
+    def test_nothing(self):
+        self.assertEqual(
+            extract_landing("<html></html>"), {"instructors": [], "categories": []}
+        )
 
 
 if __name__ == "__main__":

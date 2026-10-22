@@ -31,6 +31,9 @@ const readOn = record.scrapedAt
     })
   : null;
 
+const instructors = record.instructors ?? [];
+const categories = record.categories ?? [];
+
 // Coursera publishes its whole rating distribution in the page data. That is the
 // population — every rating ever — and it is more honest than any sample we read.
 const counts = record.rating_counts ?? null;
@@ -68,6 +71,22 @@ function verdictText() {
             rel="noopener noreferrer">View on Coursera ↗</a
           >
         </p>
+        {
+          instructors.length > 0 && (
+            <p class="mt-1 text-sm text-base-content/60">
+              Taught by {instructors.join(', ')}
+            </p>
+          )
+        }
+        {
+          categories.length > 0 && (
+            <p class="mt-2 flex flex-wrap gap-1">
+              {categories.map((category) => (
+                <span class="badge badge-ghost badge-sm">{category}</span>
+              ))}
+            </p>
+          )
+        }
       </div>
     </header>
 

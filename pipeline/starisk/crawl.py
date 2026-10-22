@@ -33,7 +33,13 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from .adapter import REVIEW_CARD, extract_aggregate, extract_details, extract_reviews
+from .adapter import (
+    REVIEW_CARD,
+    extract_aggregate,
+    extract_details,
+    extract_landing,
+    extract_reviews,
+)
 from .cache import CACHE_DIR, load_page, store_page
 from .engine import SIMPLE, course_score, peer_spread, review_spread
 from .fetch import RateLimited, fetch_page
@@ -73,6 +79,10 @@ def normalize_source(source: str) -> str:
 
 def reviews_url(source: str) -> str:
     return f"https://www.coursera.org/{normalize_source(source)}/reviews"
+
+
+def details_url(source: str) -> str:
+    return f"https://www.coursera.org/{normalize_source(source)}"
 
 
 def unique_sources(sources: list[str]) -> list[str]:
@@ -169,6 +179,21 @@ def score_page(html: str) -> dict | None:
     return record
 
 
+def landing_html(key: str, fetch, cache_dir: Path) -> str | None:
+    """Instructors and subjects are nice to have; never fatal.
+
+    Waits for the caller to throttle: the crawl sleeps before calling this.
+    """
+    try:
+        landing = fetch(details_url(key))
+    except RateLimited:
+        raise
+    except Exception:  # noqa: BLE001 - a missing landing page must not fail the course
+        return None
+    store_page(f"{key}.landing", landing, cache_dir)
+    return landing
+
+
 def crawl(
     sources: list[str],
     fetch=fetch_page,
@@ -198,6 +223,7 @@ def crawl(
 
         if offline:
             html = load_page(key, cache_dir)
+            landing = load_page(f"{key}.landing", cache_dir)
             if html is None:
                 # Never let an offline gap touch a good record.
                 if "starisk" in (scores.get(key) or {}):
@@ -222,6 +248,15 @@ def crawl(
                 scores[key] = record
                 continue
             store_page(key, html, cache_dir)
+            if delay:
+                sleep(delay)  # breathe between the reviews page and the landing page
+            try:
+                landing = landing_html(key, fetch, cache_dir)
+            except RateLimited as error:
+                record = scores.get(key) or {}
+                record["error"] = f"rate limited: {error}"
+                scores[key] = record
+                break
 
         result = score_page(html)
         if result is None:
@@ -230,6 +265,8 @@ def crawl(
             record["error"] = "no reviews parsed (markup changed?)"
             scores[key] = record
         else:
+            if landing:
+                result.update(extract_landing(landing))
             # Re-parsing a cached page is not a fresh scrape: keep the old stamp.
             previous = scores.get(key) or {}
             stamped = previous.get("scrapedAt", stamp) if offline else stamp

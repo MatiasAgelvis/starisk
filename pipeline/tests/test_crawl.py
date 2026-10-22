@@ -125,7 +125,7 @@ class CrawlTest(unittest.TestCase):
             sleep=slept.append,
         )
 
-        self.assertEqual(slept, [1.5, 1.5, 1.5])
+        self.assertEqual(slept, [1.5] * 6)  # two requests per course, each throttled
 
 
 class SourceListTest(unittest.TestCase):
@@ -189,7 +189,7 @@ class IncrementalCrawlTest(unittest.TestCase):
 
         crawl(["learn/fresh", "learn/new"], fetch=fetch, existing=existing, now=now, max_age_days=30)
 
-        self.assertEqual(calls, [reviews_url("learn/new")])
+        self.assertEqual([u for u in calls if u.endswith("/reviews")], [reviews_url("learn/new")])
 
     def test_limit_only_fetches_what_it_was_allowed(self):
         calls = []
@@ -200,23 +200,26 @@ class IncrementalCrawlTest(unittest.TestCase):
 
         crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP, limit=2)
 
-        self.assertEqual(calls, [reviews_url("learn/a"), reviews_url("learn/b")])
+        self.assertEqual(
+            [u for u in calls if u.endswith("/reviews")],
+            [reviews_url("learn/a"), reviews_url("learn/b")],
+        )
 
     def test_rate_limit_stops_the_run_and_keeps_progress(self):
         calls = []
 
         def fetch(url):
             calls.append(url)
-            if len(calls) == 2:
+            if url == reviews_url("learn/b"):
                 raise RateLimited("HTTP 429")
             return self.html
 
         scores = crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP)
 
-        self.assertEqual(len(calls), 2)  # stopped at the second; never tried the third
         self.assertIn("learn/a", scores)
         self.assertTrue(str(scores["learn/b"]["error"]).startswith("rate limited"))
         self.assertNotIn("learn/c", scores)
+        self.assertFalse(any("learn/c" in url for url in calls))
 
 
 class ArgsTest(unittest.TestCase):
@@ -237,6 +240,43 @@ class ArgsTest(unittest.TestCase):
 
     def test_force_means_everything_is_stale(self):
         self.assertEqual(parse_args(["--force"])["max_age"], 0.0)
+
+
+    def test_landing_page_adds_instructors_and_categories(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        landing = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Sample",'
+            '"instructor":{"name":"Andrew Ng"}}'
+            "</script>"
+            '"domains":[{"domainName":"Data Science","subdomainId":"ml",'
+            '"subdomainName":"Machine Learning"}]'
+        )
+
+        def fetch(url):
+            return landing if url.endswith("/learn/a") else reviews
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=directory)
+
+            self.assertEqual(scores["learn/a"]["instructors"], ["Andrew Ng"])
+            self.assertEqual(scores["learn/a"]["categories"], ["Data Science"])
+            self.assertTrue(path_for("learn/a.landing", directory).exists())
+
+    def test_a_failed_landing_page_does_not_fail_the_course(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+
+        def fetch(url):
+            if url.endswith("/learn/a"):
+                raise RuntimeError("HTTP 404")
+            return reviews
+
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
+
+        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertNotIn("instructors", scores["learn/a"])
 
 
 class CacheTest(unittest.TestCase):

@@ -49,6 +49,13 @@ _RATING_COUNTS = re.compile(r'"ratingCountsByStar":\{[^}]*\}')
 _AVERAGE = re.compile(r'"averageFiveStarRating":([\d.]+)')
 _STAR_KEYS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
 
+# Landing pages carry what the reviews page does not: who teaches the course and
+# which subjects Coursera files it under. A course can sit in several domains.
+_DOMAINS = re.compile(
+    r'"domainName":"([^"]+)","subdomainId":"[^"]*","subdomainName":"([^"]*)"'
+)
+_INSTRUCTOR_REF = re.compile(r'"instructors":\[([^\]]*)\]')
+
 _DATE_FORMATS = (
     "%b %d, %Y",
     "%B %d, %Y",
@@ -73,6 +80,65 @@ def _find_type(node, types: tuple[str, ...]):
             if found:
                 return found
     return None
+
+
+def extract_landing(html: str) -> dict:
+    """Instructors and subjects from a course landing page.
+
+    The reviews page does not carry either; `/learn/<slug>` is server-rendered and
+    does. Names come from the JSON-LD (which also has bios and photos for later),
+    falling back to the page's own data blob; subjects come from `domains`.
+    """
+    result = {"instructors": [], "categories": []}
+
+    for block in _LD_JSON.findall(html):
+        try:
+            data = json.loads(block)
+        except json.JSONDecodeError:
+            continue
+        product = _find_type(data, ("Product", "Course"))
+        if not product:
+            continue
+
+        raw = product.get("instructor") or product.get("author") or []
+        if isinstance(raw, dict):
+            raw = [raw]
+        names = []
+        for person in raw:
+            name = person.get("name") if isinstance(person, dict) else person
+            if name:
+                names.append(unescape(str(name)).strip())
+        if names:
+            result["instructors"] = list(dict.fromkeys(names))
+            break
+        # Not every JSON-LD Course carries the instructor; keep looking (the
+        # @graph block usually does).
+
+    if not result["instructors"]:
+        # Resolve the blob's __ref handles. The person records use `fullName`.
+        for block in _INSTRUCTOR_REF.findall(html):
+            for identifier in re.findall(r'"__ref":"DescriptionPage_Instructor:(\d+)"', block):
+                anchor = re.search(
+                    r'"DescriptionPage_Instructor:%s":' % identifier, html
+                )
+                if not anchor:
+                    continue
+                window = html[anchor.end() : anchor.end() + 800]
+                match = re.search(r'"(?:fullName|name)":"([^"]+)"', window)
+                if match:
+                    result["instructors"].append(unescape(match.group(1)).strip())
+            if result["instructors"]:
+                break
+        result["instructors"] = list(dict.fromkeys(result["instructors"]))
+
+    categories = []
+    for domain, _subdomain in _DOMAINS.findall(html):
+        name = unescape(domain).strip()
+        if name and name not in categories:
+            categories.append(name)
+    result["categories"] = categories
+
+    return result
 
 
 def extract_population(html: str) -> dict:
