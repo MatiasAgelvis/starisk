@@ -88,9 +88,10 @@ The site is static files in `web/dist`. Any static host works; the settings are
 root `web`, build `npm run build`, output `dist` (`build.sh` only adds the data
 copy, which is already committed, so hosts can skip it).
 
-- **Vercel:** import the repo as-is — `vercel.json` runs install and build inside
-  `web/` and serves `web/dist`, so no project settings are needed. Set `SITE_URL`
-  in the project's environment to the deployment origin.
+- **Vercel:** set the project's **Root Directory to `web`** — `web/vercel.json`
+  builds and serves `dist` from there, and Vercel installs with the committed
+  lockfile. Do not add install/build commands in the dashboard: a root-level
+  `npm ci --prefix web` fails when the root directory is already `web`.
 - **Cloudflare Pages:** root `web`, build `npm run build`, output `dist`.
 - **GitHub Pages:** a *project* site serves from `/starisk/`, so absolute links
   (`/learn/...`, `/logos/...`) would break. Use a custom domain, or set `base`
