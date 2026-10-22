@@ -65,7 +65,9 @@ Front and back are **separate**, joined by one file: `scores.json`.
   write to a DB without *some* server-side trust anchor, so when this becomes
   real the options are: a GitHub-issue / mailto link (v1, zero infra), a
   **scoped Turso token used from the browser** (later), or a small serverless
-  function. That is the one genuinely tricky later decision; don't solve it now.
+  function. Seen from the crawler's side it is simply **a queue**: a row is a
+  job, and the local pipeline drains it. That is the one genuinely tricky later
+  decision; don't solve it now. (Design sketch: `IDEAS.md` I11.)
 
 ## 6. Decisions (the log)
 
@@ -173,9 +175,9 @@ stellaid/
 - **Phase 3 — The site.** Astro: static leaderboard (build-time data) + lookup
   island (Svelte) + daisyUI presentation.
 - **Phase 4 — Deploy.** Static host (Cloudflare Pages or GitHub Pages).
-- **Phase 5 — Later.** "Request a course" (Turso-from-browser with a scoped
-  token, or a serverless function — **no always-on server**), score history /
-  trends, live lookup (Cloudflare Worker, not Vercel/Deno).
+- **Phase 5 — Later.** "Request a course": a GitHub issue link first; a Turso
+  request queue (browser with a scoped token, or through a small Cloudflare
+  Worker) once someone other than me asks. Score history / trends.
 - **Phase 6 — Optional.** Python notebooks over the history (the data asset).
 
 ## 11. Open questions
@@ -184,6 +186,9 @@ stellaid/
 - Static host: Cloudflare Pages vs GitHub Pages.
 - Write path (deferred): none vs Turso-from-browser (scoped token) vs a small
   serverless function.
+- **Live lookup: a Worker cannot scrape.** Its datacenter IP is exactly what D6
+  avoids. If wanted, a Worker enqueues the slug and the local crawler picks it up
+  on its next run — queued lookup, not live lookup.
 - Professional Certificates / specializations: score their constituent courses
   and aggregate? (Landing pages expose `data-e2e="sdp-course-list-link"`.)
 - Where course **slugs** come from (my certificates are credential URLs, not
