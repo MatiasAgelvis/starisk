@@ -6,6 +6,7 @@ from starisk.adapter import (
     extract_aggregate,
     extract_coursera_score,
     extract_details,
+    extract_population,
     extract_reviews,
     extract_title,
 )
@@ -148,6 +149,47 @@ class ProviderFallbackTest(unittest.TestCase):
 
         self.assertIsNone(details["level"])
         self.assertIsNone(details["enrollment"])
+
+
+class PopulationTest(unittest.TestCase):
+    BLOB = (
+        '"ratingCountsByStar":{"__typename":"X","fiveStarRatingCount":255087,'
+        '"fourStarRatingCount":41384,"threeStarRatingCount":6492,'
+        '"twoStarRatingCount":1495,"oneStarRatingCount":1641},'
+        '"ratings":{"__typename":"Y","averageFiveStarRating":4.784398526785658}'
+    )
+
+    def test_counts_and_average(self):
+        population = extract_population(self.BLOB)
+
+        self.assertEqual(population["counts"], {1: 1641, 2: 1495, 3: 6492, 4: 41384, 5: 255087})
+        self.assertEqual(population["total"], 306099)
+        self.assertAlmostEqual(population["average"], 4.784398526785658)
+
+    def test_key_order_does_not_matter(self):
+        blob = (
+            '"ratingCountsByStar":{"oneStarRatingCount":1135,"threeStarRatingCount":3232,'
+            '"fiveStarRatingCount":66451,"twoStarRatingCount":1057,"fourStarRatingCount":16486}'
+        )
+        self.assertEqual(extract_population(blob)["total"], 88361)
+
+    def test_absent(self):
+        population = extract_population("<html></html>")
+
+        self.assertIsNone(population["counts"])
+        self.assertIsNone(population["average"])
+
+    def test_average_fills_in_for_a_missing_jsonld_rating(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Product","aggregateRating":{"ratingCount":"215972"}}'
+            "</script>" + self.BLOB
+        )
+        aggregate = extract_aggregate(html)
+
+        self.assertAlmostEqual(aggregate["rating"], 4.784398526785658)
+        self.assertEqual(aggregate["ratings_total"], 215972)
+        self.assertIsNotNone(aggregate["counts"])
 
 
 if __name__ == "__main__":
