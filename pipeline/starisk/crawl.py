@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .adapter import extract_aggregate, extract_details, extract_reviews
-from .engine import SIMPLE, course_score, peer_spread
+from .engine import SIMPLE, course_score, peer_spread, review_spread
 from .fetch import fetch_page
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
@@ -84,7 +84,8 @@ def score_page(html: str) -> dict | None:
         "starisk": round(
             course_score({"reviews": reviews, "coursera": coursera}, SIMPLE), 1
         ),
-        "spread": round(peer_spread(reviews, SIMPLE), 2),
+        "spread": round(review_spread(reviews), 2),
+        "spread_weighted": round(peer_spread(reviews, SIMPLE), 2),
         "reviews": len(reviews),
         "top_review": _top_review(reviews),
         "model": "simple",

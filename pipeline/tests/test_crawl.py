@@ -33,6 +33,7 @@ class ScorePageTest(unittest.TestCase):
         self.assertNotIn("ratings_total", result)  # the fixture has no ratingCount
         self.assertIsInstance(result["spread"], float)
         self.assertGreaterEqual(result["spread"], 0.0)
+        self.assertIsInstance(result["spread_weighted"], float)
         self.assertNotIn("level", result)
         self.assertNotIn("enrollment", result)
 
