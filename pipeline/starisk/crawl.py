@@ -23,7 +23,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .adapter import extract_aggregate, extract_details, extract_reviews
+from .adapter import REVIEW_CARD, extract_aggregate, extract_details, extract_reviews
 from .engine import SIMPLE, course_score, peer_spread, review_spread
 from .fetch import fetch_page
 
@@ -32,6 +32,9 @@ SOURCES_PATH = DATA_DIR / "sources.json"
 SCORES_PATH = DATA_DIR / "scores.json"
 
 DEFAULT_DELAY = 1.5
+
+# Below this, a score is a coin flip dressed as a number. The site says so.
+LOW_SAMPLE = 8
 
 _SOURCE_PATTERN = re.compile(r"coursera\.org/([^/?#]+)/([^/?#]+)")
 
@@ -95,11 +98,18 @@ def score_page(html: str) -> dict | None:
     for field, value in (
         ("reviews_total", aggregate["reviews_total"]),
         ("ratings_total", aggregate["ratings_total"]),
+        ("rating_counts", aggregate["counts"]),
         ("level", details["level"]),
         ("enrollment", details["enrollment"]),
     ):
         if value is not None:
             record[field] = value
+
+    # JSON-LD reviews carry no like counts, so every weight collapses to 1.
+    if REVIEW_CARD not in html:
+        record["source"] = "jsonld"
+    if len(reviews) < LOW_SAMPLE:
+        record["low_sample"] = True
 
     return record
 
