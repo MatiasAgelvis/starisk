@@ -159,12 +159,14 @@ def resolve(
             if delay:
                 sleep(delay)
 
-        # A confirmed course whose slug carries an extra distinguishing word
-        # ("Sequence Models" -> nlp-sequence-models) is probably a *different*
-        # course with the same name. Keep it, but flagged for a human.
+        # Flag only when the slug carries a word the title does not — that is the
+        # signature of a different course with the same name ("Sequence Models"
+        # -> nlp-sequence-models). A slug that merely abbreviates the title
+        # (algorithms-divide-conquer) is normal and fine.
         review = False
         if chosen:
-            review = slug_tokens(chosen[0]) != tokens(clean_title(entry["title"]))
+            extra = slug_tokens(chosen[0]) - tokens(clean_title(entry["title"]))
+            review = bool(extra)
 
         results.append(
             {
