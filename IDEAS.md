@@ -196,10 +196,12 @@ the status. The site can render a `/requests` page from the same table.
 
 **Gates before building any of it**
 
-1. **GitHub Issues already is this.** A prefilled
- `github.com/<repo>/issues/new?title=...&body=...` link is a queue, a
- notification system, and a public log — with no PII and no infra. Ship that
- first; it costs one `<a>`.
+1. **Cheapest is a mailto or a form, not an issue tracker.** A GitHub issue
+ tracker is developer-speak for someone browsing Coursera, and it needs a
+ **public, unarchived** repo — this one was archived, so the link 404'd. A
+ `mailto:` with a prefilled subject/body costs nothing; Tally/Formspree have
+ free tiers and work for anyone. One setting lives in `web/src/lib/config.js`,
+ and with it null the page simply says the course isn't indexed.
 2. **A public write needs a Worker in front.** A token held in the browser can't
  be rate-limited or validated, so: URL-shape check (`^/(learn|specializations)/`),
  dedupe by slug, per-IP cap. Otherwise the queue is someone else's spam cannon.

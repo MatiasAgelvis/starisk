@@ -175,9 +175,11 @@ stellaid/
 - **Phase 3 — The site.** Astro: static leaderboard (build-time data) + lookup
   island (Svelte) + daisyUI presentation.
 - **Phase 4 — Deploy.** Static host (Cloudflare Pages or GitHub Pages).
-- **Phase 5 — Later.** "Request a course": a GitHub issue link first; a Turso
-  request queue (browser with a scoped token, or through a small Cloudflare
-  Worker) once someone other than me asks. Score history / trends.
+- **Phase 5 — Later.** "Request a course": a **mailto / form link** first (the
+  audience isn't developers, and a GitHub issue link 404s on an archived repo —
+  `web/src/lib/config.js` holds the one setting); a Turso request queue (browser
+  with a scoped token, or through a small Cloudflare Worker) once someone other
+  than me asks. Score history / trends.
 - **Phase 6 — Optional.** Python notebooks over the history (the data asset).
 
 ## 11. Open questions

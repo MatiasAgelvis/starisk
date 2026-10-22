@@ -22,6 +22,9 @@ for the small, near-term stuff.
   backing or per-provider overrides.
 - **Real course thumbnails.** The JSON-LD `image` is the *provider* logo; `og:image` is a
   generic Coursera placeholder. A real course thumbnail needs another source.
+- **OG image.** Shared links render a bare text card. Needs a raster (satori/resvg at
+  build, or one hand-made PNG) — the pipeline can draw SVG, but social platforms
+  don't accept SVG.
 - Decide whether to keep hotlinking Coursera's CDN or download the provider logos.
 - **Model choice:** `SIMPLE` vs a size-aware shrinkage model — decide by calibration.
 - **Tame the amplification:** try `sqrt(likes)` or a like cap so one review can't own a score.

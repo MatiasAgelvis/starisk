@@ -66,6 +66,17 @@ mise run check                # tests + a full site build
 Without mise, it's still plain: `python -m unittest discover -s pipeline/tests`
 (inside `pipeline/`), `npm ci --prefix web`, and `./build.sh`.
 
+### Deploying
+
+The site is static files in `web/dist`. Any static host works; the settings are
+root `web`, build `npm run build`, output `dist` (`build.sh` only adds the data
+copy, which is already committed, so hosts can skip it).
+
+- `SITE_URL=https://your.domain` sets the canonical/Open Graph origin
+  (default: `https://starisk.pages.dev`).
+- `/data/scores.json` is published as a file — the whole dataset, CORS `*`.
+- `web/public/_headers` sets caching for Cloudflare Pages (ignored elsewhere).
+
 ### Layout
 
 ```
