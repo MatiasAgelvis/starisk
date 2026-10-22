@@ -1,14 +1,21 @@
 """Crawl Coursera courses and write `data/scores.json`.
 
     cd pipeline
-    python3 -m starisk.crawl                  # uses data/sources.json
-    python3 -m starisk.crawl --delay 2        # slower, politer
+    python3 -m starisk.crawl                     # uses data/sources.json
+    python3 -m starisk.crawl --force             # ignore freshness, refetch all
+    python3 -m starisk.crawl --max-age 7         # refetch anything older than 7 days
+    python3 -m starisk.crawl --limit 10          # budget: at most 10 fetches
+    python3 -m starisk.crawl --delay 3           # politer
     python3 -m starisk.crawl learn/machine-learning   # one-off source
 
 Design notes:
 - One request per course (the first page is sorted "Most Helpful", which is the
   signal the model cares about).
 - Fail-safe: a page that parses to zero reviews never overwrites a good record.
+- Idempotent: sources are normalised and deduped, and records younger than
+  `--max-age` are skipped without a request. So re-running is cheap.
+- Ordered by staleness (never-scraped first, then oldest), so `--limit` makes
+  progress across runs instead of re-doing the top of the list.
 - Atomic write: the file is replaced only once fully written.
 """
 
@@ -20,18 +27,21 @@ import re
 import sys
 import tempfile
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from .adapter import REVIEW_CARD, extract_aggregate, extract_details, extract_reviews
 from .engine import SIMPLE, course_score, peer_spread, review_spread
-from .fetch import fetch_page
+from .fetch import RateLimited, fetch_page
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 SOURCES_PATH = DATA_DIR / "sources.json"
 SCORES_PATH = DATA_DIR / "scores.json"
 
 DEFAULT_DELAY = 1.5
+
+# Reviews move slowly; a month-old score is still honest. `--force` ignores this.
+DEFAULT_MAX_AGE_DAYS = 30
 
 # Below this, a score is a coin flip dressed as a number. The site says so.
 LOW_SAMPLE = 8
