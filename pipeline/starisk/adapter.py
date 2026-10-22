@@ -142,7 +142,9 @@ def extract_aggregate(html: str) -> dict:
     population = extract_population(html)
     if result["rating"] is None:
         result["rating"] = population["average"]
-    if result["ratings_total"] is None:
+    # Prefer the population total: it is the sum of the counts we store, so the
+    # sample statement and the distribution can never disagree.
+    if population["total"] is not None:
         result["ratings_total"] = population["total"]
     result["counts"] = population["counts"]
 
