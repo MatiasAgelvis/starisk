@@ -61,7 +61,11 @@
           {#if result.record.coursera != null}
             <Stars value={result.record.coursera} size={16} />
           {/if}
-          <div class="stat-desc">{result.record.reviews} reviews read</div>
+          <div class="stat-desc">
+            {result.record.reviews}{result.record.reviews_total
+              ? ` of ${result.record.reviews_total.toLocaleString()}`
+              : ''} reviews read
+          </div>
         </div>
         <div class="stat">
           <div class="stat-title">Starisk</div>
