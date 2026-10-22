@@ -14,7 +14,7 @@ export function getStaticPaths() {
 }
 
 const { record, key } = Astro.props;
-const gap = record.coursera == null ? null : record.starisk - record.coursera;
+const inflation = record.coursera == null ? null : record.coursera - record.starisk;
 const top = record.top_review;
 const title = record.title ?? key;
 
@@ -31,11 +31,11 @@ const readOn = record.scrapedAt
     })
   : null;
 
-function signalText() {
-  if (gap == null) return 'No headline rating to compare';
-  if (gap <= -1.5) return 'Contested';
-  if (gap <= -0.5) return 'Softened';
-  return 'Agrees with Coursera';
+function verdictText() {
+  if (inflation == null) return 'No headline rating to compare';
+  if (inflation >= 1.5) return 'Inflated';
+  if (inflation >= 0.5) return 'Padded';
+  return 'Holds up';
 }
 ---
 
@@ -74,7 +74,7 @@ function signalText() {
         <div class="stat-title">Starisk</div>
         <div class="stat-value text-2xl">{record.starisk.toFixed(1)}</div>
         <Stars value={record.starisk} size={16} />
-        <div class="stat-desc">{signalText()}</div>
+        <div class="stat-desc">{verdictText()}</div>
       </div>
       <div class="stat">
         <div class="stat-title">Reviews read</div>

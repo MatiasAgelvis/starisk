@@ -4,50 +4,48 @@
   let { rows = [] } = $props();
 
   let query = $state('');
-  let signal = $state('all');
-  let sortKey = $state('gap');
-  // Gap is `starisk - coursera`, so the most contested courses have the smallest
-  // (most negative) value: ascending puts them first.
-  let sortDir = $state('asc');
+  let verdict = $state('all');
+  let sortKey = $state('inflation');
+  let sortDir = $state('desc');
 
-  const SIGNALS = [
+  const VERDICTS = [
     { id: 'all', label: 'All' },
-    { id: 'contested', label: 'Contested' },
-    { id: 'softened', label: 'Softened' },
-    { id: 'agrees', label: 'Agrees' },
+    { id: 'inflated', label: 'Inflated' },
+    { id: 'padded', label: 'Padded' },
+    { id: 'holds-up', label: 'Holds up' },
   ];
 
-  function gapOf(row) {
-    return row.coursera == null ? null : row.starisk - row.coursera;
+  /** Coursera minus Starisk. Positive = the headline is above the reviews. */
+  function inflationOf(row) {
+    return row.coursera == null ? null : row.coursera - row.starisk;
   }
 
-  function signalOf(row) {
-    const gap = gapOf(row);
-    if (gap == null) return 'unknown';
-    if (gap <= -1.5) return 'contested';
-    if (gap <= -0.5) return 'softened';
-    return 'agrees';
+  function verdictOf(row) {
+    const inflation = inflationOf(row);
+    if (inflation == null) return 'unknown';
+    if (inflation >= 1.5) return 'inflated';
+    if (inflation >= 0.5) return 'padded';
+    return 'holds-up';
   }
 
-  const BADGE = {
-    contested: 'badge-error',
-    softened: 'badge-warning',
-    agrees: 'badge-success',
-    unknown: 'badge-ghost',
+  const VERDICT_STYLE = {
+    inflated: { label: 'Inflated', badge: 'badge-error', bar: 'bg-error' },
+    padded: { label: 'Padded', badge: 'badge-warning', bar: 'bg-warning' },
+    'holds-up': { label: 'Holds up', badge: 'badge-success', bar: 'bg-success' },
+    unknown: { label: 'No rating', badge: 'badge-ghost', bar: 'bg-base-300' },
   };
 
   const COLUMNS = [
-    { key: 'title', label: 'Course', align: 'text-left', numeric: false },
-    { key: 'coursera', label: 'Coursera', align: 'text-right', numeric: true },
-    { key: 'starisk', label: 'Starisk', align: 'text-right', numeric: true },
-    { key: 'gap', label: 'Gap', align: 'text-right', numeric: true },
-    { key: 'signal', label: 'Signal', align: 'text-left', numeric: false },
+    { key: 'title', label: 'Course', align: 'text-left' },
+    { key: 'coursera', label: 'Coursera', align: 'text-right' },
+    { key: 'starisk', label: 'Starisk', align: 'text-right' },
+    { key: 'inflation', label: 'Inflation', align: 'text-right' },
+    { key: 'verdict', label: 'Verdict', align: 'text-left' },
   ];
 
   function value(row, key) {
     if (key === 'title') return (row.title ?? row.slug).toLowerCase();
-    if (key === 'gap') return gapOf(row);
-    if (key === 'signal') return signalOf(row);
+    if (key === 'inflation' || key === 'verdict') return inflationOf(row);
     return row[key] ?? null;
   }
 
@@ -67,7 +65,7 @@
       return;
     }
     sortKey = key;
-    sortDir = key === 'title' || key === 'gap' ? 'asc' : 'desc';
+    sortDir = key === 'title' ? 'asc' : 'desc';
   }
 
   function ariaSort(key) {
@@ -78,7 +76,7 @@
   const visible = $derived.by(() => {
     const needle = query.trim().toLowerCase();
     const filtered = rows.filter((row) => {
-      if (signal !== 'all' && signalOf(row) !== signal) return false;
+      if (verdict !== 'all' && verdictOf(row) !== verdict) return false;
       if (!needle) return true;
       return `${row.title ?? ''} ${row.provider ?? ''} ${row.slug}`.toLowerCase().includes(needle);
     });
@@ -88,11 +86,11 @@
 
 <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
   <div class="join">
-    {#each SIGNALS as option (option.id)}
+    {#each VERDICTS as option (option.id)}
       <button
-        class="btn btn-sm join-item {signal === option.id ? 'btn-neutral' : 'btn-ghost'}"
-        aria-pressed={signal === option.id}
-        onclick={() => (signal = option.id)}
+        class="btn btn-sm join-item {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
+        aria-pressed={verdict === option.id}
+        onclick={() => (verdict = option.id)}
       >
         {option.label}
       </button>
@@ -133,8 +131,8 @@
     </thead>
     <tbody>
       {#each visible as row (row.slug)}
-        {@const gap = gapOf(row)}
-        {@const badge = BADGE[signalOf(row)]}
+        {@const inflation = inflationOf(row)}
+        {@const style = VERDICT_STYLE[verdictOf(row)]}
         <tr>
           <td>
             <div class="flex items-center gap-3">
@@ -175,8 +173,19 @@
               <Stars value={row.starisk} />
             </div>
           </td>
-          <td class="text-right">{gap == null ? '—' : gap.toFixed(1)}</td>
-          <td><span class="badge {badge}">{signalOf(row)}</span></td>
+          <td class="text-right">
+            <div class="flex items-center justify-end gap-2">
+              <span class="font-mono text-sm">
+                {inflation == null ? '—' : inflation.toFixed(1)}
+              </span>
+              <span
+                class="inline-block h-1.5 rounded-full {style.bar}"
+                style={`width:${inflation == null ? 0 : Math.min(Math.max(inflation, 0) / 3, 1) * 44}px`}
+                aria-hidden="true"
+              ></span>
+            </div>
+          </td>
+          <td><span class="badge {style.badge}">{style.label}</span></td>
         </tr>
       {/each}
     </tbody>

@@ -13,12 +13,12 @@
     return input.trim().replace(/^\/+|\/+$/g, '');
   }
 
-  function gapLabel(record) {
+  function verdictLabel(record) {
     if (record.coursera == null) return 'no headline rating';
-    const gap = record.starisk - record.coursera;
-    if (gap <= -1.5) return 'contested';
-    if (gap <= -0.5) return 'softened';
-    return 'agrees with Coursera';
+    const inflation = record.coursera - record.starisk;
+    if (inflation >= 1.5) return 'inflated';
+    if (inflation >= 0.5) return 'padded';
+    return 'holds up';
   }
 
   function search() {
@@ -71,7 +71,7 @@
           <div class="stat-title">Starisk</div>
           <div class="stat-value text-2xl">{result.record.starisk.toFixed(1)}</div>
           <Stars value={result.record.starisk} size={16} />
-          <div class="stat-desc">{gapLabel(result.record)}</div>
+          <div class="stat-desc">{verdictLabel(result.record)}</div>
         </div>
       </div>
       <a class="link link-hover mt-3 inline-block text-sm" href={`/${result.record.slug}`}>
