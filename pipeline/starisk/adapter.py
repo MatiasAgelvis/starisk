@@ -65,22 +65,57 @@ def _find_type(node, types: tuple[str, ...]):
     return None
 
 
-def extract_coursera_score(html: str) -> float:
-    """Coursera's overall rating, from the JSON-LD aggregate when present."""
+def extract_aggregate(html: str) -> dict:
+    """Coursera's headline rating and the population behind it.
+
+    `ratings_total` counts star ratings, `reviews_total` counts *written* reviews.
+    We only read the first page (~20), so keeping the denominator is what makes
+    the sampling honest — and it is the input a shrinkage model needs.
+    """
+    result = {"rating": None, "ratings_total": None, "reviews_total": None}
+
     for block in _LD_JSON.findall(html):
         try:
             data = json.loads(block)
         except json.JSONDecodeError:
             continue
         product = _find_type(data, ("Product", "Course"))
-        if product:
-            aggregate = product.get("aggregateRating") or {}
-            value = aggregate.get("ratingValue")
-            if value is not None:
-                return float(value)
+        if not product:
+            continue
 
-    match = _OLD_RATING.search(html)
-    return float(match.group(1)) if match else float("nan")
+        aggregate = product.get("aggregateRating") or {}
+        result["ratings_total"] = _as_int(aggregate.get("ratingCount"))
+        result["reviews_total"] = _as_int(aggregate.get("reviewCount"))
+        value = aggregate.get("ratingValue")
+        if value is not None:
+            try:
+                result["rating"] = float(value)
+            except (TypeError, ValueError):
+                pass
+        break
+
+    if result["rating"] is None:
+        match = _OLD_RATING.search(html)
+        if match:
+            result["rating"] = float(match.group(1))
+
+    return result
+
+
+def extract_coursera_score(html: str) -> float:
+    """Coursera's overall rating, from the JSON-LD aggregate when present."""
+    rating = extract_aggregate(html)["rating"]
+    return rating if rating is not None else float("nan")
+
+
+def _as_int(value) -> int | None:
+    """'32,331' or 32331.0 -> 32331."""
+    if value is None:
+        return None
+    try:
+        return int(float(str(value).replace(",", "")))
+    except (TypeError, ValueError):
+        return None
 
 
 def extract_title(html: str) -> str | None:
@@ -104,12 +139,18 @@ def extract_title(html: str) -> str | None:
 
 
 def extract_details(html: str) -> dict:
-    """Course metadata from JSON-LD: title, description, provider, image URL."""
+    """Course metadata from JSON-LD: title, description, provider, image URL.
+
+    Partner naming is inconsistent: most pages use `brand`, some (IBM) use
+    `provider`. Missing the fallback silently blanks the logo and the label.
+    """
     details = {
         "title": None,
         "description": None,
         "provider": None,
         "image": None,
+        "level": None,
+        "enrollment": None,
     }
 
     for block in _LD_JSON.findall(html):
@@ -126,11 +167,24 @@ def extract_details(html: str) -> dict:
         if product.get("description"):
             details["description"] = unescape(str(product["description"])).strip()
 
-        brand = product.get("brand")
-        if isinstance(brand, dict):
-            brand = brand.get("name")
+        brand = None
+        for key in ("brand", "provider", "publisher"):
+            candidate = product.get(key)
+            if isinstance(candidate, dict):
+                candidate = candidate.get("name")
+            if candidate:
+                brand = candidate
+                break
         if brand:
             details["provider"] = unescape(str(brand)).strip()
+
+        level = product.get("educationalLevel")
+        if level:
+            details["level"] = unescape(str(level)).strip()
+
+        enrollment = product.get("totalHistoricalEnrollment")
+        if enrollment is not None:
+            details["enrollment"] = _as_int(enrollment)
 
         image = product.get("image")
         if isinstance(image, list):
