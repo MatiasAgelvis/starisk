@@ -36,11 +36,11 @@
   };
 
   const COLUMNS = [
-    { key: 'title', label: 'Course', align: 'text-left' },
-    { key: 'coursera', label: 'Coursera', align: 'text-right' },
-    { key: 'starisk', label: 'Starisk', align: 'text-right' },
-    { key: 'inflation', label: 'Inflation', align: 'text-right' },
-    { key: 'verdict', label: 'Verdict', align: 'text-left' },
+    { key: 'title', label: 'Course', align: 'text-left', width: 'w-[56%] sm:w-[50%]' },
+    { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[13%]', hide: true },
+    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[22%] sm:w-[13%]' },
+    { key: 'inflation', label: 'Inflation', align: 'text-right', width: 'w-[22%] sm:w-[12%]' },
+    { key: 'verdict', label: 'Verdict', align: 'text-left', width: 'w-[12%]', hide: true },
   ];
 
   function value(row, key) {
@@ -111,11 +111,11 @@
 </div>
 
 <div class="overflow-x-auto">
-  <table class="table table-zebra">
+  <table class="table table-zebra w-full table-fixed">
     <thead>
       <tr>
         {#each COLUMNS as column (column.key)}
-          <th class={column.align} aria-sort={ariaSort(column.key)}>
+          <th class="{column.align} {column.width} {column.hide ? 'hidden sm:table-cell' : ''}" aria-sort={ariaSort(column.key)}>
             <button
               class="inline-flex items-center gap-1 font-semibold hover:underline"
               onclick={() => sortBy(column.key)}
@@ -153,7 +153,7 @@
                   <a class="link link-hover" href={`/${row.slug}`}>{row.title ?? row.slug}</a>
                 </div>
                 <a
-                  class="link link-hover truncate font-mono text-xs text-base-content/50"
+                  class="link link-hover hidden truncate font-mono text-xs text-base-content/50 sm:block"
                   href={`https://www.coursera.org/${row.slug}`}
                   target="_blank"
                   rel="noopener noreferrer">{row.slug}</a
@@ -161,16 +161,16 @@
               </div>
             </div>
           </td>
-          <td class="text-right">
+          <td class="hidden text-right sm:table-cell">
             <div class="flex items-center justify-end gap-2">
               <span>{row.coursera == null ? '—' : row.coursera.toFixed(1)}</span>
-              {#if row.coursera != null}<Stars value={row.coursera} />{/if}
+              {#if row.coursera != null}<span class="hidden md:inline-flex"><Stars value={row.coursera} /></span>{/if}
             </div>
           </td>
           <td class="text-right">
             <div class="flex items-center justify-end gap-2">
               <span class="font-bold">{row.starisk.toFixed(1)}</span>
-              <Stars value={row.starisk} />
+              <span class="hidden md:inline-flex"><Stars value={row.starisk} /></span>
             </div>
           </td>
           <td class="text-right">
@@ -179,13 +179,13 @@
                 {inflation == null ? '—' : inflation.toFixed(1)}
               </span>
               <span
-                class="inline-block h-1.5 rounded-full {style.bar}"
+                class="hidden h-1.5 rounded-full sm:inline-block {style.bar}"
                 style={`width:${inflation == null ? 0 : Math.min(Math.max(inflation, 0) / 3, 1) * 44}px`}
                 aria-hidden="true"
               ></span>
             </div>
           </td>
-          <td><span class="badge whitespace-nowrap {style.badge}">{style.label}</span></td>
+          <td class="hidden sm:table-cell"><span class="badge whitespace-nowrap {style.badge}">{style.label}</span></td>
         </tr>
       {/each}
     </tbody>
