@@ -79,9 +79,25 @@ function signalText() {
       <div class="stat">
         <div class="stat-title">Reviews read</div>
         <div class="stat-value text-2xl">{record.reviews}</div>
-        <div class="stat-desc">most helpful, first page</div>
+        <div class="stat-desc">
+          {record.reviews_total
+            ? `of ${record.reviews_total.toLocaleString('en-GB')} written`
+            : 'most helpful, first page'}
+        </div>
       </div>
     </div>
+
+    {
+      record.low_sample && (
+        <div class="alert alert-warning mt-6 text-sm">
+          <span>
+            <strong>Small sample.</strong> Only {record.reviews} reviews were readable
+            {record.source === 'jsonld' ? ' and they carry no upvotes' : ''}, so this score
+            is a hint, not a verdict.
+          </span>
+        </div>
+      )
+    }
 
     {
       record.description && (
