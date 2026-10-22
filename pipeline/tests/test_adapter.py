@@ -245,5 +245,36 @@ class LandingTest(unittest.TestCase):
         )
 
 
+class ScriptTextTest(unittest.TestCase):
+    def test_serialised_json_is_not_a_review(self):
+        html = (
+            'data-e2e="review-table-card"'
+            '<div aria-label="Rated 1.0 out of 5 stars"></div>'
+            '<div aria-label="This was helpful (5)"></div>'
+            "Nov 14, 2022"
+            '<script>var x = "' + "a" * 80 + '";</script>'
+            "<p>The real review text, which is quite long and should win over the JSON.</p>"
+        )
+        reviews = extract_reviews(html)
+
+        self.assertTrue(reviews)
+        self.assertIn("real review", reviews[0]["text"])
+        self.assertNotIn("aaaa", reviews[0]["text"])
+
+    def test_footer_text_after_the_last_card_is_not_a_review(self):
+        card = (
+            'data-e2e="review-table-card"'
+            '<div aria-label="Rated 1.0 out of 5 stars"></div>'
+            '<div aria-label="This was helpful (5)"></div>'
+            "Nov 14, 2022"
+            '<div data-testid="cml-viewer"><p>The review body, long enough to be picked up here.</p></div>'
+        )
+        footer = "<footer>" + ("A far longer sidebar heading about unrelated certifications. " * 40) + "</footer>"
+        reviews = extract_reviews(card + footer)
+
+        self.assertIn("review body", reviews[0]["text"])
+        self.assertNotIn("sidebar", reviews[0]["text"])
+
+
 if __name__ == "__main__":
     unittest.main()

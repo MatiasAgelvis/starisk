@@ -22,6 +22,12 @@ from datetime import datetime, timezone
 from html import unescape
 
 REVIEW_CARD = 'data-e2e="review-table-card"'
+CML_VIEWER = 'data-testid="cml-viewer"'
+
+# A card slice ends at the next card, so the *last* slice runs to the end of the
+# document and swallows the footer. The review body starts at `cml-viewer`; the
+# window below is far larger than any review and far smaller than the footer.
+REVIEW_WINDOW = 12000
 
 _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 
@@ -327,11 +333,48 @@ def _age_days(text: str) -> float:
     return float("nan")
 
 
+def _inner_html(html: str, marker: str, tag: str = "div") -> str | None:
+    """Inner HTML of the element whose opening tag contains `marker`.
+
+    Depth-balanced rather than windowed: the review body is a div with nested
+    divs, and the last card's slice otherwise runs into the page footer.
+    """
+    start = html.find(marker)
+    if start < 0:
+        return None
+
+    open_start = html.rfind("<", 0, start)
+    open_end = html.find(">", start)
+    if open_start < 0 or open_end < 0:
+        return None
+
+    pattern = re.compile(rf"<(/?){tag}\b", re.IGNORECASE)
+    depth = 1
+    position = open_end + 1
+    while True:
+        match = pattern.search(html, position)
+        if not match:
+            return html[open_end + 1 :]
+        depth += -1 if match.group(1) else 1
+        if depth == 0:
+            return html[open_end + 1 : match.start()]
+        position = match.end()
+
+
 def _review_text(block: str) -> str | None:
-    """The review body: the longest plain-text node in the card."""
+    """The review body: the longest plain-text node inside the review element.
+
+    Scripts and styles are stripped first: the page embeds serialised JSON whose
+    strings look exactly like long text nodes, and one course's "review" came out
+    as `"id":"ComponentLink~..."`.
+    """
+    cleaned = re.sub(r"<script.*?</script>|<style.*?</style>", " ", block, flags=re.S)
+
+    region = _inner_html(cleaned, CML_VIEWER) or cleaned[:REVIEW_WINDOW]
+
     candidates = [
         unescape(text).strip()
-        for text in _TEXT_NODE.findall(block)
+        for text in _TEXT_NODE.findall(region)
         if not text.strip().startswith("This was helpful")
     ]
     return max(candidates, key=len) if candidates else None

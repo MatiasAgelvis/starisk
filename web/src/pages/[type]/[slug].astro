@@ -145,6 +145,15 @@ function verdictText() {
               <span>{top.stars.toFixed(1)} / 5</span>
             </footer>
           </blockquote>
+          <p class="mt-2 text-sm text-base-content/60">
+            {top.text.endsWith('…') ? 'Excerpt. ' : ''}
+            <a
+              class="link link-hover"
+              href={`https://www.coursera.org/${key}/reviews`}
+              target="_blank"
+              rel="noopener noreferrer">Read the full review on Coursera ↗</a
+            >
+          </p>
         </section>
       )
     }

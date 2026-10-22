@@ -56,6 +56,9 @@ DEFAULT_MAX_AGE_DAYS = 30
 # Below this, a score is a coin flip dressed as a number. The site says so.
 LOW_SAMPLE = 15
 
+# Long enough to hold most reviews whole; still an excerpt, not a repost.
+TOP_REVIEW_LIMIT = 1200
+
 _SOURCE_PATTERN = re.compile(r"coursera\.org/([^/?#]+)/([^/?#]+)")
 
 
@@ -120,14 +123,37 @@ def order_by_staleness(keys: list[str], scores: dict) -> list[str]:
     return sorted(keys, key=rank)
 
 
+def excerpt(text: str, limit: int = TOP_REVIEW_LIMIT) -> str:
+    """Trim to `limit` characters without ending mid-word or mid-sentence.
+
+    The dissent is the centrepiece of a course page; a review that stops at
+    "…fee was pa" reads as broken. Prefer a sentence end in the second half of
+    the window, else the last whole word, and mark the cut.
+    """
+    cleaned = " ".join((text or "").split())
+    if len(cleaned) <= limit:
+        return cleaned
+
+    window = cleaned[:limit]
+    sentence = max(window.rfind(". "), window.rfind("! "), window.rfind("? "))
+    if sentence >= limit * 0.5:
+        return window[: sentence + 1].rstrip() + " …"
+
+    space = window.rfind(" ")
+    return (window[:space] if space > 0 else window).rstrip(" ,;:-—") + "…"
+
+
 def _top_review(reviews: list[dict]) -> dict | None:
-    """The most-upvoted *critical* review (<=3 stars), else the most upvoted."""
+    """The most-upvoted *critical* review with a body, else the most upvoted."""
     if not reviews:
         return None
-    critical = [review for review in reviews if review["stars"] <= 3] or reviews
+    with_text = [review for review in reviews if (review.get("text") or "").strip()]
+    critical = [review for review in with_text if review["stars"] <= 3] or with_text
+    if not critical:
+        return None
     top = max(critical, key=lambda review: review["likes"])
     return {
-        "text": (top.get("text") or "").strip()[:600] or None,
+        "text": excerpt(top["text"]) or None,
         "stars": top["stars"],
         "likes": top["likes"],
     }

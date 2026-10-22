@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 from starisk.cache import load_page, path_for, store_page
 from starisk.crawl import (
     crawl,
+    excerpt,
     is_fresh,
     normalize_source,
     order_by_staleness,
@@ -346,6 +347,32 @@ class CacheTest(unittest.TestCase):
             scores = crawl(["learn/a"], now=STAMP, offline=True, cache_dir=Path(tmp))
 
         self.assertIn("offline", scores["learn/a"]["error"])
+
+
+class ExcerptTest(unittest.TestCase):
+    def test_short_text_is_untouched(self):
+        self.assertEqual(excerpt("A short review."), "A short review.")
+
+    def test_prefers_a_sentence_end(self):
+        text = "A" * 120 + ". " + "B" * 200
+        result = excerpt(text, limit=200)
+
+        self.assertTrue(result.endswith(". …"))
+        self.assertLessEqual(len(result), 125)
+
+    def test_never_ends_mid_word(self):
+        text = "word " * 200
+        result = excerpt(text.strip(), limit=100)
+
+        self.assertTrue(result.endswith("word…"))
+        self.assertNotIn("wor …", result)
+
+    def test_collapses_whitespace(self):
+        self.assertEqual(excerpt("a\n\nb   c"), "a b c")
+
+    def test_empty(self):
+        self.assertEqual(excerpt(""), "")
+        self.assertEqual(excerpt(None), "")
 
 
 if __name__ == "__main__":

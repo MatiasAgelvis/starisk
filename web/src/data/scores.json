@@ -10,7 +10,7 @@
     "spread_weighted": 1.74,
     "reviews": 19,
     "top_review": {
-      "text": "I have completed this course in full and as a result, I am highly satisfued with how Professor Andrew Ng explains the materials. Thank you for this! However, I cannot understand, why after completing the course a part of studying materials are not accessible, even though I paid a sufficient price for the course. These unaccessible materials include Python programs which were used as a practice. Frankly, I find it unfair, since this practice would be extremely important to revise the materials while improving my skills in Machine Learning in the future. Moreover, a part of the montly fee was pa",
+      "text": "I have completed this course in full and as a result, I am highly satisfued with how Professor Andrew Ng explains the materials. Thank you for this! However, I cannot understand, why after completing the course a part of studying materials are not accessible, even though I paid a sufficient price for the course. These unaccessible materials include Python programs which were used as a practice. Frankly, I find it unfair, since this practice would be extremely important to revise the materials while improving my skills in Machine Learning in the future. Moreover, a part of the montly fee was paid also for the practice materials. I may agree that these Python programs can be private, however,there should be ways to overcome this issue. Without the possibility to revise the code it will be much harder to create our own applications and programs.",
       "stars": 1.0,
       "likes": 80
     },
@@ -48,7 +48,7 @@
     "spread_weighted": 1.79,
     "reviews": 20,
     "top_review": {
-      "text": "this course states tons of info that is obvious. I mean tons. at one point the instructor says if there is a class review before a test it would be a good idea to attend. At another point her colleague says you can get a lot of intellectual stimulation by having smart peers to talk to. They also say your brain will work better if you exercise and get a good night's sleep. Are you serious? This is your advice? Could this be any more obvious? The course is filled with obvious statements like this making it much longer than it needs to be. Seriously, it could be cut in half if not by two thirds. ",
+      "text": "this course states tons of info that is obvious. I mean tons. at one point the instructor says if there is a class review before a test it would be a good idea to attend. At another point her colleague says you can get a lot of intellectual stimulation by having smart peers to talk to. They also say your brain will work better if you exercise and get a good night's sleep. Are you serious? This is your advice? Could this be any more obvious? The course is filled with obvious statements like this making it much longer than it needs to be. Seriously, it could be cut in half if not by two thirds. They also tell you the names of different chemicals in your brain. How this helps you learn better I don't know. There are a few good pieces of advice here and there. It's a shame you have to listen to so many lectures to hear them. They could have cut out the obvious stuff and got to the point much quicker.",
       "stars": 1.0,
       "likes": 206
     },
@@ -119,7 +119,7 @@
     "spread_weighted": 1.43,
     "reviews": 20,
     "top_review": {
-      "text": "I enjoyed the lectures and a few practice quiz. But I don't think the structure of assignments presented here is the correct way to assess learning. The assignments or exercises should be interspersed between lectures and the problems should be more interactive (pushing the student to think). Moreover, the amount of pre-written code was immense and therefore didn't really make me think a lot on my own. This structure of assignment forces the student to focus on matching the expected output instead of really understanding the concept.  I am pretty sure most students did not really grasp the con",
+      "text": "I enjoyed the lectures and a few practice quiz. But I don't think the structure of assignments presented here is the correct way to assess learning. The assignments or exercises should be interspersed between lectures and the problems should be more interactive (pushing the student to think). Moreover, the amount of pre-written code was immense and therefore didn't really make me think a lot on my own. This structure of assignment forces the student to focus on matching the expected output instead of really understanding the concept. I am pretty sure most students did not really grasp the concepts at an intellectual level but still passed with decent grades. This is exactly the problem with schools today and I hope that Coursera is working towards rectifying that.",
       "stars": 3.0,
       "likes": 287
     },
@@ -190,7 +190,7 @@
     "spread_weighted": 1.85,
     "reviews": 20,
     "top_review": {
-      "text": "This course is virtually worthless. I couldn't follow the lectures, and I have a PhD and have been a tenured professor for almost two decades. The online course is based on snippets taken from face-to-face lectures and breakout sessions, and the result is utter incoherence. The instructor frequently refers to concepts that have not yet been encountered in the online version of the course; makes extensive use of mathematical notations and formulas whose variables are never properly explained; and generally does a poor job of explaining the material. This online version of the Yale course was ob",
+      "text": "This course is virtually worthless. I couldn't follow the lectures, and I have a PhD and have been a tenured professor for almost two decades. The online course is based on snippets taken from face-to-face lectures and breakout sessions, and the result is utter incoherence. The instructor frequently refers to concepts that have not yet been encountered in the online version of the course; makes extensive use of mathematical notations and formulas whose variables are never properly explained; and generally does a poor job of explaining the material. This online version of the Yale course was obviously slapped together with very little thought and production value; it's one of those unsuccessful attempts to bring in revenue on the cheap, creating an online version out of existing face-to-face material, rather than building a real online course from scratch. This was wasted money and time. This attempt to capitalize on the Yale brand is pathetic.",
       "stars": 1.0,
       "likes": 663
     },
@@ -225,7 +225,7 @@
     "spread_weighted": 1.37,
     "reviews": 19,
     "top_review": {
-      "text": "This course significantly lacks depth. The topic is covered at a very high-level and represents only a lightweight introduction.  You will not gain any insights into the challenges that someone might face using CNNs on Tensorflow in a real-world scenario.",
+      "text": "This course significantly lacks depth. The topic is covered at a very high-level and represents only a lightweight introduction. You will not gain any insights into the challenges that someone might face using CNNs on Tensorflow in a real-world scenario.",
       "stars": 1.0,
       "likes": 75
     },
@@ -295,7 +295,7 @@
     "spread_weighted": 1.31,
     "reviews": 20,
     "top_review": {
-      "text": "The course is basically a presentation of semi-digested Keras tutorials, sometimes outdated. No depth and no real-world experience were communicated. The notebooks are mediocre, lazy and minimalistic, here-they-work-here-they-don't. You will not use them for your portfolio. I wouldn't call  this course \"advanced\", it's rather a shallow overview of advanced techniques.",
+      "text": "The course is basically a presentation of semi-digested Keras tutorials, sometimes outdated. No depth and no real-world experience were communicated. The notebooks are mediocre, lazy and minimalistic, here-they-work-here-they-don't. You will not use them for your portfolio. I wouldn't call this course \"advanced\", it's rather a shallow overview of advanced techniques.",
       "stars": 2.0,
       "likes": 20
     },
@@ -331,7 +331,7 @@
     "spread_weighted": 1.16,
     "reviews": 20,
     "top_review": {
-      "text": "This is most frustrating course in all of your courses so far. The instructions were completely misguiding the candidates from YOLO implementation onwards. All along you presented the course very well. But when come to most important topics, we had to focus on syntactical errors. But we are supposed to spend time on understanding the algorithms at this level. Dont know why this 180 degrees turn taken by you. If you intentionally designed this course then fine. Otherwise, you should seriously think about rework on the instructions. Few links to hints were taking to some pages in github with jus",
+      "text": "This is most frustrating course in all of your courses so far. The instructions were completely misguiding the candidates from YOLO implementation onwards. All along you presented the course very well. But when come to most important topics, we had to focus on syntactical errors. But we are supposed to spend time on understanding the algorithms at this level. Dont know why this 180 degrees turn taken by you. If you intentionally designed this course then fine. Otherwise, you should seriously think about rework on the instructions. Few links to hints were taking to some pages in github with just folders.",
       "stars": 3.0,
       "likes": 53
     },
@@ -404,7 +404,7 @@
     "spread_weighted": 1.26,
     "reviews": 20,
     "top_review": {
-      "text": "I spend 1 hour learning the material and coding the assignment while 8 hours trying to debug it so that the grader will not complain. The grader sometimes insists on a particular order of the coding which does not really matter in the real world. Also, grader inconsistently gives 0 marks to a particular part of the problem while give a full mark on other part using the same function. (Like numpy.max)  However, the forum is quite helpful and the staff is generally responsive.",
+      "text": "I spend 1 hour learning the material and coding the assignment while 8 hours trying to debug it so that the grader will not complain. The grader sometimes insists on a particular order of the coding which does not really matter in the real world. Also, grader inconsistently gives 0 marks to a particular part of the problem while give a full mark on other part using the same function. (Like numpy.max) However, the forum is quite helpful and the staff is generally responsive.",
       "stars": 2.0,
       "likes": 7
     },
@@ -544,9 +544,9 @@
     "spread_weighted": 0.89,
     "reviews": 8,
     "top_review": {
-      "text": "window.App={\"context\":{\"dispatcher\":{\"stores\":{\"ApplicationStore\":{\"csrfToken\":\"\\u003CMISSING\\u003E\",\"requestCountryCode\":\"FR\",\"userAgent\":{\"source\":\"Mozilla\\u002F5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit\\u002F537.36 (KHTML, like Gecko) Chrome\\u002F124.0 Safari\\u002F537.36\",\"browser\":{\"name\":\"Chrome\",\"version\":\"124.0\"},\"system\":\"Mac OS X 10.15\",\"platform\":\"Apple Mac\",\"isMobileBrowser\":false,\"isAndroid\":false,\"isCourseraMobileApp\":false,\"isMobile\":false,\"isIOS\":false,\"isMobilePhoneBrowser\":false,\"isPrerender\":false,\"isRobot\":false,\"isOculusQuest\":false},\"userData\":{\"id\":null,\"authenti",
-      "stars": 1.0,
-      "likes": 0
+      "text": "The course is a good sequel in the “… Discrete Optimization” series. With just about any programming language, the true understanding of how the program is run by the computer helps tuning the program, minimizing the execution time. The same is especially true in optimization, as instead of the “classical” imperative programs we have “models” that are digested by some “solver”, which actually does all the number crunching. Different solvers (and the same solver with different configuration) can behave drastically different while running the same model. So this course finally removes the veil and uncovers the things inside these solvers, that were considered as black boxes in the previous two courses. The course is likely to motivate you to experiment with different solvers for the same models, and, maybe, even implementing your own solver.",
+      "stars": 5.0,
+      "likes": 5
     },
     "model": "simple",
     "reviews_total": 9,
@@ -892,7 +892,7 @@
     "spread_weighted": 1.83,
     "reviews": 19,
     "top_review": {
-      "text": "This course presented repeated some of the material from previous courses, had limited challenging material and no programming.  It was much too easy for anyone who had already completed the first two courses and it should not have been a standalone course but rather could easily have been part of another course.",
+      "text": "This course presented repeated some of the material from previous courses, had limited challenging material and no programming. It was much too easy for anyone who had already completed the first two courses and it should not have been a standalone course but rather could easily have been part of another course.",
       "stars": 1.0,
       "likes": 29
     },
@@ -1177,7 +1177,7 @@
     "spread_weighted": 1.34,
     "reviews": 20,
     "top_review": {
-      "text": "After spending a lot of time on this specialisation, you will receive a certificate upon completion which says \"SOME ONLINE COURSES MAY DRAW ON MATERIAL FROM COURSES TAUGHT ON-CAMPUS BUT THEY ARE NOT EQUIVALENT TO ON-CAMPUS COURSES. THIS STATEMENT DOES NOT AFFIRM THAT THIS PARTICIPANT WAS ENROLLED AS A STUDENT AT STANFORD UNIVERSITY IN ANY WAY. IT DOES NOT CONFER A STANFORD UNIVERSITY GRADE, COURSE CREDIT OR DEGREE, AND IT DOES NOT VERIFY THE IDENTITY OF THE PARTICIPANT.\" Essentially, your completion certificate is a worthless paper regardless of your efforts. I think if the instructor wants t",
+      "text": "After spending a lot of time on this specialisation, you will receive a certificate upon completion which says \"SOME ONLINE COURSES MAY DRAW ON MATERIAL FROM COURSES TAUGHT ON-CAMPUS BUT THEY ARE NOT EQUIVALENT TO ON-CAMPUS COURSES. THIS STATEMENT DOES NOT AFFIRM THAT THIS PARTICIPANT WAS ENROLLED AS A STUDENT AT STANFORD UNIVERSITY IN ANY WAY. IT DOES NOT CONFER A STANFORD UNIVERSITY GRADE, COURSE CREDIT OR DEGREE, AND IT DOES NOT VERIFY THE IDENTITY OF THE PARTICIPANT.\" Essentially, your completion certificate is a worthless paper regardless of your efforts. I think if the instructor wants to issue an online certificate, just say \"Online course\" and that is enough. I really felt being let down after all my efforts to listen and finish all homeworks.",
       "stars": 1.0,
       "likes": 139
     },
