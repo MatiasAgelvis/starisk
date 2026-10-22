@@ -39,6 +39,16 @@ _OG_TITLE = (
 )
 _TITLE_TAG = re.compile(r"<title[^>]*>([^<]+)</title>")
 
+# Coursera embeds its own rating data in a serialised Apollo cache. Verified on
+# all 8 live snapshots, including pages whose JSON-LD omits `ratingValue`:
+#   "ratingCountsByStar":{"fiveStarRatingCount":255087,...,"oneStarRatingCount":1641}
+#   "ratings":{"averageFiveStarRating":4.784...}
+# This is the *population* — every rating Coursera ever received — not the ~20
+# reviews we read.
+_RATING_COUNTS = re.compile(r'"ratingCountsByStar":\{[^}]*\}')
+_AVERAGE = re.compile(r'"averageFiveStarRating":([\d.]+)')
+_STAR_KEYS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
+
 _DATE_FORMATS = (
     "%b %d, %Y",
     "%B %d, %Y",
@@ -63,6 +73,35 @@ def _find_type(node, types: tuple[str, ...]):
             if found:
                 return found
     return None
+
+
+def extract_population(html: str) -> dict:
+    """Coursera's full star distribution and true average, from the page data.
+
+    Returns `counts` keyed by star value (1-5) and `total`. Empty when the page
+    does not carry the blob (the reviews list still does on older markup).
+    """
+    result = {"average": None, "counts": None, "total": None}
+
+    counts_match = _RATING_COUNTS.search(html)
+    if counts_match:
+        counts = {}
+        for name, value in re.findall(
+            r'"(one|two|three|four|five)StarRatingCount":(\d+)', counts_match.group(0)
+        ):
+            counts[_STAR_KEYS[name]] = int(value)
+        if counts:
+            result["counts"] = dict(sorted(counts.items()))
+            result["total"] = sum(counts.values())
+
+    average_match = _AVERAGE.search(html)
+    if average_match:
+        try:
+            result["average"] = float(average_match.group(1))
+        except ValueError:
+            pass
+
+    return result
 
 
 def extract_aggregate(html: str) -> dict:
@@ -98,6 +137,14 @@ def extract_aggregate(html: str) -> dict:
         match = _OLD_RATING.search(html)
         if match:
             result["rating"] = float(match.group(1))
+
+    # The embedded population is more complete than the JSON-LD aggregate.
+    population = extract_population(html)
+    if result["rating"] is None:
+        result["rating"] = population["average"]
+    if result["ratings_total"] is None:
+        result["ratings_total"] = population["total"]
+    result["counts"] = population["counts"]
 
     return result
 
