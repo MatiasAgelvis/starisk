@@ -76,9 +76,11 @@ mise run pipeline:crawl -- --force     # ignore freshness, refetch everything
 
 Sources are normalised (`learn/x`, `/learn/x/`, a full URL and a bare slug are
 one course), fresh records are skipped without a request, and work is ordered
-stalest-first so `--limit` always makes progress. If Coursera rate-limits a run
-(403/429), it **stops** instead of retrying — the next run resumes at the same
-course.
+stalest-first so `--limit` always makes progress. Each course is **two**
+requests — the reviews page and the landing page (instructors, categories) — and
+both are cached, so `--offline` re-parses without touching the network. If
+Coursera rate-limits a run (403/429), it **stops** instead of retrying — the next
+run resumes at the same course.
 
 ### Deploying
 
