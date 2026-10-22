@@ -23,8 +23,8 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .adapter import extract_coursera_score, extract_details, extract_reviews
-from .engine import SIMPLE, course_score
+from .adapter import extract_aggregate, extract_details, extract_reviews
+from .engine import SIMPLE, course_score, peer_spread
 from .fetch import fetch_page
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
@@ -72,8 +72,10 @@ def score_page(html: str) -> dict | None:
         return None
 
     details = extract_details(html)
-    coursera = extract_coursera_score(html)
-    return {
+    aggregate = extract_aggregate(html)
+    coursera = aggregate["rating"] if aggregate["rating"] is not None else float("nan")
+
+    record = {
         "title": details["title"],
         "provider": details["provider"],
         "description": details["description"],
@@ -82,10 +84,23 @@ def score_page(html: str) -> dict | None:
         "starisk": round(
             course_score({"reviews": reviews, "coursera": coursera}, SIMPLE), 1
         ),
+        "spread": round(peer_spread(reviews, SIMPLE), 2),
         "reviews": len(reviews),
         "top_review": _top_review(reviews),
         "model": "simple",
     }
+
+    # Present on most course pages, missing on some. Omit rather than emit null.
+    for field, value in (
+        ("reviews_total", aggregate["reviews_total"]),
+        ("ratings_total", aggregate["ratings_total"]),
+        ("level", details["level"]),
+        ("enrollment", details["enrollment"]),
+    ):
+        if value is not None:
+            record[field] = value
+
+    return record
 
 
 def crawl(
