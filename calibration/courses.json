@@ -6,7 +6,8 @@
     "date": "June 2021",
     "credential_id": "KYMJQRU3Y4VS",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "convolutional-neural-networks-tensorflow"
   },
   {
     "title": "Getting started with TensorFlow 2",
@@ -24,7 +25,8 @@
     "date": "May 2021",
     "credential_id": "4C95MRF4BQ8R",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "foundations-big-data-analysis-sql"
   },
   {
     "title": "Custom Models, Layers, and Loss Functions with TensorFlow",
@@ -33,7 +35,8 @@
     "date": "May 2021",
     "credential_id": "SCEQC455GUTD",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "custom-models-layers-loss-functions-with-tensorflow"
   },
   {
     "title": "Introduction to TensorFlow for Artificial Intelligence, Machine Learning, and Deep Learning",
@@ -78,7 +81,8 @@
     "date": "March 2021",
     "credential_id": "EGN77JR9JQ2P",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "convolutional-neural-networks"
   },
   {
     "title": "Investment Management with Python and Machine Learning Specialization",
@@ -96,7 +100,8 @@
     "date": "March 2021",
     "credential_id": "5R2S75XJMG4V",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "machine-learning-asset-management-alternative-data"
   },
   {
     "title": "Reinforcement Learning Specialization",
@@ -114,7 +119,8 @@
     "date": "March 2021",
     "credential_id": "GAYRJPYVH5FM",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "complete-reinforcement-learning-system"
   },
   {
     "title": "Python and Machine Learning for Asset Management",
@@ -132,7 +138,8 @@
     "date": "February 2021",
     "credential_id": "X85D8ZK6G3LK",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "prediction-control-function-approximation"
   },
   {
     "title": "Structuring Machine Learning Projects",
@@ -141,7 +148,8 @@
     "date": "February 2021",
     "credential_id": "G6SUK39F3G5L",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "machine-learning-projects"
   },
   {
     "title": "Sample-based Learning Methods",
@@ -150,7 +158,8 @@
     "date": "January 2021",
     "credential_id": "FAEDCXFJ6LUX",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "sample-based-learning-methods"
   },
   {
     "title": "Advanced Portfolio Construction and Analysis with Python",
@@ -159,7 +168,8 @@
     "date": "January 2021",
     "credential_id": "C35H6K5VMTJ7",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "advanced-portfolio-construction-python"
   },
   {
     "title": "Improving Deep Neural Networks: Hyperparameter Tuning, Regularization and Optimization",
@@ -177,7 +187,8 @@
     "date": "December 2020",
     "credential_id": "9GLNSVMU8WD6",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "fundamentals-of-reinforcement-learning"
   },
   {
     "title": "Neural Networks and Deep Learning",
@@ -186,7 +197,8 @@
     "date": "December 2020",
     "credential_id": "E52UYTJ7NCXU",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "neural-networks-deep-learning"
   },
   {
     "title": "Introduction to Enumerative Combinatorics",
@@ -204,7 +216,8 @@
     "date": "November 2020",
     "credential_id": "7E5S77M8H9TY",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "introduction-portfolio-construction-python"
   },
   {
     "title": "Version Control with Git",
@@ -213,7 +226,8 @@
     "date": "October 2020",
     "credential_id": "HT5CZLXFWEG5",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "version-control-with-git"
   },
   {
     "title": "Dog Emotion and Cognition",
@@ -222,7 +236,8 @@
     "date": "October 2020",
     "credential_id": "DV6S93VD95ZY",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "dog-emotion-and-cognition"
   },
   {
     "title": "Development of Secure Embedded Systems Specialization",
@@ -240,7 +255,8 @@
     "date": "October 2020",
     "credential_id": "92E92SH7BLFC",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "autonomous-runway-detection"
   },
   {
     "title": "Development of Real-Time Systems",
@@ -249,7 +265,8 @@
     "date": "September 2020",
     "credential_id": "KXMZ4ZAK3RPW",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "real-time-systems"
   },
   {
     "title": "Web Connectivity and Security in Embedded Systems",
@@ -294,7 +311,8 @@
     "date": "May 2020",
     "credential_id": "CD7JDM99F65Y",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "solving-algorithms-discrete-optimization"
   },
   {
     "title": "Accelerated Computer Science Fundamentals Specialization",
@@ -357,7 +375,8 @@
     "date": "March 2020",
     "credential_id": "MSZMWBF9AW2L",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "advanced-modeling"
   },
   {
     "title": "Linux Tools for Developers",
@@ -366,7 +385,8 @@
     "date": "March 2020",
     "credential_id": "6RH7P36EWYB4",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "linux-tools-for-developers"
   },
   {
     "title": "Linux for Developers",
@@ -375,7 +395,8 @@
     "date": "March 2020",
     "credential_id": "VVPS9LTM5YYC",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "linux-for-developers"
   },
   {
     "title": "Object-Oriented Data Structures in C++",
@@ -393,7 +414,8 @@
     "date": "March 2020",
     "credential_id": "SK9PR734D4Q2",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "open-source-software-development-methods"
   },
   {
     "title": "Open Source Software Development, Linux and Git Specialization",
@@ -411,7 +433,8 @@
     "date": "March 2020",
     "credential_id": "U6MF4E4G9DSS",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "git-distributed-development"
   },
   {
     "title": "Basic Modeling for Discrete Optimization",
@@ -420,7 +443,8 @@
     "date": "February 2020",
     "credential_id": "UH4LD6T7WFV4",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "basic-modeling"
   },
   {
     "title": "Financial Markets (with Honors)",
@@ -438,7 +462,8 @@
     "date": "February 2020",
     "credential_id": "94A4K2D5LX3Y",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "python-statistics-financial-analysis"
   },
   {
     "title": "Programming Languages, Part C",
@@ -447,7 +472,8 @@
     "date": "January 2020",
     "credential_id": "YPLQMUGB7F4F",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "programming-languages-part-c"
   },
   {
     "title": "Programming Languages, Part B",
@@ -456,7 +482,8 @@
     "date": "December 2019",
     "credential_id": "2DMA5A498DMG",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "programming-languages-part-b"
   },
   {
     "title": "Algorithms Specialization",
@@ -483,7 +510,8 @@
     "date": "November 2019",
     "credential_id": "J38GV286BU5A",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "programming-languages"
   },
   {
     "title": "Shortest Paths Revisited, NP-Complete Problems and What To Do About Them",
@@ -501,7 +529,8 @@
     "date": "October 2019",
     "credential_id": "XWQ2W9XUCAKA",
     "type": "course",
-    "label": null
+    "label": null,
+    "slug": "algorithms-divide-conquer"
   },
   {
     "title": "Graph Search, Shortest Paths, and Data Structures",
