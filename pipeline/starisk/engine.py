@@ -17,6 +17,8 @@ the original model, reproduced here on purpose.
 
 from __future__ import annotations
 
+import math
+
 # The original tuning, kept verbatim so the faithful model stays reproducible.
 DEFAULTS = {
     "peer_power": 2,
@@ -58,6 +60,46 @@ def peer_score(reviews: list[dict], options: dict | None = None) -> float:
         weighted += review["stars"] * weight
         total_weight += weight
     return 0.0 if total_weight == 0 else weighted / total_weight
+
+
+def review_spread(reviews: list[dict]) -> float:
+    """Plain standard deviation of the stars: do learners disagree with each other?
+
+    Unweighted on purpose. Weighting by likes measures *endorsement*, and when one
+    review dominates it drags the weighted mean onto itself — so the weighted
+    spread collapses and a bitterly contested course looks unanimous. That
+    collapse is real information (`peer_spread`), but it is not the dispersion we
+    want for "contested".
+    """
+    if len(reviews) < 2:
+        return 0.0
+
+    values = [review["stars"] for review in reviews]
+    mean = sum(values) / len(values)
+    variance = sum((value - mean) ** 2 for value in values) / len(values)
+    return math.sqrt(variance)
+
+
+def peer_spread(reviews: list[dict], options: dict | None = None) -> float:
+    """Like-weighted standard deviation of the stars, in stars.
+
+    The score says where the weight sits; this says how split the *endorsed*
+    reviews are. Beware: it shrinks when one review dominates, because the mean
+    moves to it. Read it next to `review_spread`.
+    """
+    opts = options or DEFAULTS
+    if not reviews:
+        return 0.0
+
+    mean = peer_score(reviews, opts)
+    total = 0.0
+    weighted = 0.0
+    for review in reviews:
+        weight = review_weight(review, opts)
+        weighted += weight * (review["stars"] - mean) ** 2
+        total += weight
+
+    return 0.0 if total == 0 else math.sqrt(weighted / total)
 
 
 def course_score(course: dict, options: dict | None = None) -> float:
