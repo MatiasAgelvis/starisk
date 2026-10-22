@@ -123,17 +123,30 @@ calibration against my labels, not aesthetics.**
 ```json
 {
   "learn/machine-learning": {
-    "type": "learn",
-    "slug": "machine-learning",
-    "title": "Machine Learning",
+    "slug": "learn/machine-learning",
+    "title": "Supervised Machine Learning: Regression and Classification",
+    "provider": "DeepLearning.AI",
     "coursera": 4.9,
-    "starisk": 4.5,
-    "reviews": 25,
+    "starisk": 3.1,
+    "spread": 1.63,
+    "spread_weighted": 1.75,
+    "reviews": 19,
+    "reviews_total": 6214,
+    "ratings_total": 32982,
+    "rating_counts": { "1": 122, "2": 56, "3": 226, "4": 2391, "5": 30187 },
     "model": "simple",
     "scrapedAt": "2026-10-20T03:00:00Z"
   }
 }
 ```
+
+- `reviews` — cards we actually read (one page, ~20).
+- `reviews_total` / `ratings_total` — the population, so the sampling is explicit.
+- `rating_counts` — Coursera's full star distribution, from the embedded page data.
+- `spread` — unweighted std-dev of the sampled stars (contention).
+- `spread_weighted` — the same with like weights; it *collapses* when one review
+  dominates, which is informative but not a contention measure.
+- Optional: `level`, `enrollment`, `low_sample`, `source: "jsonld"`, `error`.
 
 ## 9. Repo layout (target)
 

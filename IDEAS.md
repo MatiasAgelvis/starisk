@@ -89,11 +89,20 @@ phenomenon that started all of this.
 **Sketch:** `weighted_variance = Σ w·(stars − score)² / Σ w`, reported as a
 standard deviation in stars. Then a quadrant label derived from two thresholds.
 
-**Caveats**
+**Caveats (measured, not guessed)**
 
 - Noisy at 20 reviews. Label it as a vibe, not a statistic.
-- Uses the *same* weights as the score, so a single dominant review inflates
-  both. Worth reporting the unweighted std-dev alongside it as a sanity check.
+- **The weighted spread is a trap.** Weighting by likes drags the mean onto the
+  dominant review, so the weighted std-dev *shrinks* when one review owns the
+  score (measured: 1.63 → 0.44 sd after giving a 1★ review 100 likes). A bitterly
+  contested course would look unanimous. Use the **unweighted** `spread` as the
+  contention axis; keep `spread_weighted` only as a curiosity.
+- **We now have the population, not just the sample.** Every course page carries
+  `ratingCountsByStar` (all ratings ever) and the true average. Financial Markets:
+  32,334 ratings, of which **1.2%** are 1–2★ — while the 20 reviews we read
+  scatter with a 1.84 sd. That gap *is* the product's thesis, quantified: the
+  upvoted minority is ~1% of the population. Worth plotting sample against
+  population before drawing quadrants.
 
 ### I3 — Grievance vs. quality split — **parked**
 
