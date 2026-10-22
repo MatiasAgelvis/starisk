@@ -228,31 +228,46 @@ def write_atomic(path: Path, data: dict) -> None:
             os.unlink(temporary)
 
 
-def parse_args(argv: list[str]) -> tuple[float, list[str] | None]:
-    delay = DEFAULT_DELAY
-    sources: list[str] | None = None
+def parse_args(argv: list[str]) -> dict:
+    options = {
+        "delay": DEFAULT_DELAY,
+        "max_age": float(DEFAULT_MAX_AGE_DAYS),
+        "limit": None,
+        "sources": None,
+    }
     index = 0
     while index < len(argv):
-        if argv[index] == "--delay":
-            delay = float(argv[index + 1])
+        arg = argv[index]
+        if arg == "--delay":
+            options["delay"] = float(argv[index + 1])
             index += 2
-        else:
-            sources = sources or []
-            sources.append(argv[index])
+        elif arg == "--max-age":
+            options["max_age"] = float(argv[index + 1])
+            index += 2
+        elif arg == "--limit":
+            options["limit"] = int(argv[index + 1])
+            index += 2
+        elif arg == "--force":
+            options["max_age"] = 0.0
             index += 1
-    return delay, sources
+        else:
+            options["sources"] = options["sources"] or []
+            options["sources"].append(arg)
+            index += 1
+    return options
 
 
 def main(argv: list[str]) -> int:
-    delay, cli_sources = parse_args(argv)
+    options = parse_args(argv)
 
-    if cli_sources:
-        sources = cli_sources
+    if options["sources"]:
+        sources = options["sources"]
     elif SOURCES_PATH.exists():
         sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
     else:
         sources = []
 
+    sources = unique_sources(sources)
     if not sources:
         print(f"no sources. add course slugs to {SOURCES_PATH}")
         return 1
@@ -263,11 +278,36 @@ def main(argv: list[str]) -> int:
         else {}
     )
 
-    scores = crawl(sources, existing=existing, delay=delay)
+    moment = datetime.now(timezone.utc)
+    skipped = (
+        sum(1 for key in sources if is_fresh(existing.get(key), moment, options["max_age"]))
+        if options["max_age"]
+        else 0
+    )
+    planned = len(sources) - skipped
+    if options["limit"] is not None:
+        planned = min(planned, options["limit"])
+
+    scores = crawl(
+        sources,
+        existing=existing,
+        delay=options["delay"],
+        now=moment,
+        max_age_days=options["max_age"],
+        limit=options["limit"],
+    )
     write_atomic(SCORES_PATH, scores)
 
     scored = sum(1 for record in scores.values() if "starisk" in record)
-    print(f"crawled {len(sources)} | records: {len(scores)} | scored: {scored}")
+    print(
+        f"listed {len(sources)} | skipped fresh {skipped} | fetched {planned} "
+        f"| records {len(scores)} | scored {scored}"
+    )
+    if any(str(record.get("error", "")).startswith("rate limited") for record in scores.values()):
+        print(
+            "stopped early: the host rate-limited us. Re-run later — it resumes at the "
+            "stalest course, so nothing is repeated."
+        )
     print(f"wrote {SCORES_PATH}")
     return 0
 
