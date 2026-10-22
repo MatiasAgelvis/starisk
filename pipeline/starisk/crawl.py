@@ -65,6 +65,41 @@ def reviews_url(source: str) -> str:
     return f"https://www.coursera.org/{normalize_source(source)}/reviews"
 
 
+def unique_sources(sources: list[str]) -> list[str]:
+    """Normalise and dedupe: a full URL, a bare slug and `/learn/x` are one course."""
+    return list(dict.fromkeys(normalize_source(source) for source in sources))
+
+
+def is_fresh(record: dict | None, now: datetime, max_age_days: float) -> bool:
+    """Was this record scraped recently enough to skip? Failed records never count."""
+    if not record or "starisk" not in record:
+        return False
+    raw = record.get("scrapedAt")
+    if not raw:
+        return False
+    try:
+        when = datetime.fromisoformat(raw)
+    except ValueError:
+        return False
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=timezone.utc)
+    return (now - when) < timedelta(days=max_age_days)
+
+
+def order_by_staleness(keys: list[str], scores: dict) -> list[str]:
+    """Never-scraped first, then oldest first.
+
+    Ordering matters once `--limit` is in play: a partial run should always make
+    progress instead of re-fetching the head of the list every time.
+    """
+
+    def rank(key: str):
+        raw = (scores.get(key) or {}).get("scrapedAt")
+        return (0, "") if not raw else (1, raw)
+
+    return sorted(keys, key=rank)
+
+
 def _top_review(reviews: list[dict]) -> dict | None:
     """The most-upvoted *critical* review (<=3 stars), else the most upvoted."""
     if not reviews:
@@ -131,17 +166,33 @@ def crawl(
     delay: float = 0.0,
     now: datetime | None = None,
     sleep=time.sleep,
+    max_age_days: float | None = None,
+    limit: int | None = None,
 ) -> dict:
     """Fetch, score and merge. Returns the updated scores dict."""
     scores = dict(existing or {})
-    stamp = (now or datetime.now(timezone.utc)).isoformat()
+    moment = now or datetime.now(timezone.utc)
+    stamp = moment.isoformat()
 
-    for source in sources:
-        key = normalize_source(source)
+    work = order_by_staleness(unique_sources(sources), scores)
+    if limit is not None:
+        work = work[:limit]
+
+    for key in work:
+        if max_age_days is not None and is_fresh(scores.get(key), moment, max_age_days):
+            continue
+
         url = reviews_url(key)
 
         try:
             html = fetch(url)
+        except RateLimited as error:
+            # Stop the run. The next one starts with this course, because it is
+            # the stalest one left.
+            record = scores.get(key) or {}
+            record["error"] = f"rate limited: {error}"
+            scores[key] = record
+            break
         except Exception as error:  # noqa: BLE001 - one bad course must not stop the crawl
             record = scores.get(key) or {}
             record["error"] = f"fetch: {error}"
