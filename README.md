@@ -88,6 +88,14 @@ The site is static files in `web/dist`. Any static host works; the settings are
 root `web`, build `npm run build`, output `dist` (`build.sh` only adds the data
 copy, which is already committed, so hosts can skip it).
 
+- **Vercel:** import the repo as-is — `vercel.json` runs install and build inside
+  `web/` and serves `web/dist`, so no project settings are needed. Set `SITE_URL`
+  in the project's environment to the deployment origin.
+- **Cloudflare Pages:** root `web`, build `npm run build`, output `dist`.
+- **GitHub Pages:** a *project* site serves from `/starisk/`, so absolute links
+  (`/learn/...`, `/logos/...`) would break. Use a custom domain, or set `base`
+  and route internal links through `import.meta.env.BASE_URL` first.
+
 - `SITE_URL=https://your.domain` sets the canonical/Open Graph origin
   (default: `https://starisk.pages.dev`).
 - `/data/scores.json` is published as a file — the whole dataset, CORS `*`.
