@@ -25,6 +25,7 @@ their space at ~40+. See I5, which is also the corpus the calibration needs.
 | I5 | My 84 courses as the corpus + `/transcript` | accepted | a weekend | slug mapping |
 | I6 | Publish the dataset | accepted | hours | I5 |
 | I7 | SQLite as the pipeline store | parked (long-term) | — | dataset growth |
+| I11 | Request queue: Turso + local drain | accepted (gated) | a weekend | a second requestor |
 | I8 | Embeddable SVG badges | accepted | hours | — |
 | I9 | Compare two courses | accepted | hours | — |
 | I10 | Rot index | accepted (later) | — | score history |
@@ -56,8 +57,9 @@ const m = location.pathname.match(/^\/(learn|specializations)\/([^/]+)/);
   `web/src/data/scores.json`, so it is *not* fetchable. `build.sh` must also copy
   it to `web/public/data/scores.json` (and the page can then be generated from
   the same file).
-- CORS: `Access-Control-Allow-Origin: *` for `/data/*` — a `_headers` file on
-  Cloudflare Pages.
+- CORS: **already solved on both hosts.** GitHub Pages and Cloudflare Pages
+  both send `access-control-allow-origin: *` (verified with `curl -I`), so no
+  `_headers` file is needed. The remaining blocker is Coursera's CSP.
 - **A 5-minute CSP spike.** If Coursera's `connect-src` blocks a cross-origin
   fetch from a bookmarklet, this idea is dead on arrival. Test before building.
 
@@ -172,6 +174,43 @@ leaking into the site build, the seam is gone and the static property with it.
 
 **Payoff when it's worth it:** score history becomes per-crawl rows instead of
 git archaeology, and "courses that moved most" becomes one query.
+
+### I11 — The request queue: Turso + local drain — **accepted, gated**
+
+A visitor asks for a course that isn't indexed. The row is a **job**; the local
+crawler drains it on its next run. Nothing scrapes from a server, ever.
+
+**Why:** it's the only version of "live lookup" that survives D6 — a Worker (or
+the browser) enqueues, the laptop crawls. A request is also the one piece of
+state a static site provably cannot hold.
+
+**Shape**
+
+```
+requests(slug, requested_at, status, crawled_at)
+status: queued → crawled | failed | rejected
+```
+
+The crawler drains N rows per run with the throttle it already has, then flips
+the status. The site can render a `/requests` page from the same table.
+
+**Gates before building any of it**
+
+1. **GitHub Issues already is this.** A prefilled
+ `github.com/<repo>/issues/new?title=...&body=...` link is a queue, a
+ notification system, and a public log — with no PII and no infra. Ship that
+ first; it costs one `<a>`.
+2. **A public write needs a Worker in front.** A token held in the browser can't
+ be rate-limited or validated, so: URL-shape check (`^/(learn|specializations)/`),
+ dedupe by slug, per-IP cap. Otherwise the queue is someone else's spam cannon.
+3. **Email notification is the expensive part — legally, not technically.** In
+ the EU, collecting an address means a legal basis, a privacy notice, a deletion
+ path, and a processor (Resend/Postmark) plus another secret. A public
+ `/requests` page saying "queued 3 days ago" needs none of that. **Skip email
+ until someone asks for it.**
+
+**Trigger:** a second person requesting a course. Not before. Until then the
+queue is a table with one row in it, which is I7's problem, not this one.
 
 ---
 

@@ -1,59 +1,92 @@
-[![Stellaid logo](media/Stellaid_Logo+Name.png)](http://matiasagelvis.com/stellaid)
+# Starisk
 
-[![CodeFactor][codefactor-image]][codefactor-link] [![codecov][codecov-image]][codecov-link]
+**The true signal, under the rating.**
 
-[codefactor-link]: https://www.codefactor.io/repository/github/matiasagelvis/stellaid
-[codefactor-image]: https://www.codefactor.io/repository/github/matiasagelvis/stellaid/badge
+Coursera's ratings cluster between 4.5 and 4.9 stars. Almost nothing is bad, so
+the headline number barely distinguishes a course worth a month of your life from
+one that isn't. But the reviews underneath disagree with it: the reviews other
+learners actually upvoted are often critical, and those upvotes are a signal the
+star average throws away.
 
-[codecov-image]: https://codecov.io/gh/MatiasAgelvis/stellaid/branch/master/graph/badge.svg?token=G55XJU0L2Y
-[codecov-link]: https://codecov.io/gh/MatiasAgelvis/stellaid
+Starisk reads a course's most helpful reviews, weights each one by its upvotes,
+and puts the result next to Coursera's number.
 
-[![Get the Stellaid for Chrome](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/mPGKYBIR2uCP0ApchDXE.png)](https://chrome.google.com/webstore/detail/coursera-advisor/ijngbiifjeekcehmaigplbokedchligo?hl=en)
+| Course | Coursera | Starisk |
+|---|---:|---:|
+| Financial Markets | 4.8 | 2.5 |
+| Neural Networks and Deep Learning | 4.9 | 2.9 |
+| Learning How to Learn | 4.8 | 3.6 |
 
+## What it is
 
-Stellaid is a no nonsense Chrome extension that uses the reviews of other students to give a more accurate rating to the course, to save you time and money.
+- **A score.** `weight = 1 + likes`, `score = Σ(stars · weight) / Σ(weight)` —
+  every reviewer is one voice, every upvote is one more voice.
+- **The dissent.** Each course page shows the most-upvoted *critical* review, in
+  full. Usually that's the honest paragraph buried under five hundred 5★ ones.
+- **A leaderboard** of courses, and a lookup box for a course link.
+- **Not** a browser extension, not a product with accounts, not a claim about
+  objective quality.
 
-If you have been browsing Coursera maybe you have thought `WOW! All courses have between 4.5 and 4.9 stars`, and they really do, but not all courses are that great, that's where Stellaid comes in, with a single click you will know if the course is worth your time and effort, just check the new rating in parentheses with the ![Stellaid logo](media/verified_16.png) to the right of the Coursera original score.
+## What the score actually measures
 
-You can use it anywhere where you see ⭐ star ratings ⭐ in Coursera,
-![Stellaid How to use in Search](media/Search.png)
+**What the most-endorsed reviews say — not "true quality."** Read this as *how
+contested a course is*, not as a verdict on the teaching. Upvoted reviews are
+sometimes platform grievances (paywall, lost access, certificates) rather than
+judgments about the course, and one review with 600 likes can move a score by
+more than a point. This is a documented weakness, not a hidden one.
 
+The site says this out loud on every page, because a score that pretends to be
+neutral is the thing this project exists to argue against.
 
-## Toolchain
+## The pipeline
 
-Development toolchains are pinned with [mise](https://mise.jdx.dev/):
+```
+  [ pipeline/ — Python ]                  [ web/ — Astro ]
+  fetch → parse → score   ──scores.json──▶  static site, zero JS by default
+  (run locally, on demand)    (the seam)    (deploy anywhere static)
+```
 
-1. [Install mise](https://mise.jdx.dev/getting-started.html)
-1. run `mise trust` once, then `mise install` to install the pinned Node.js and Python versions
-1. run `mise run install` to install the extension dependencies
+The crawler runs on a residential IP, on demand — no server, no cron, no
+database. It reads Coursera's server-rendered review cards (`data-e2e` hooks,
+`aria-label`s) with fallbacks to the page's JSON-LD, and writes one JSON file.
+Everything the site shows comes from that file.
 
-Run `mise tasks` to list the available tasks (`build`, `watch`, `lint`, `test`, `test:unit`, `test:e2e`, `engine:test`, `pipeline:test`).
+## Working on it
 
-## Build locally
+[mise](https://mise.jdx.dev/) pins the toolchains and coordinates the tasks:
 
-1. Checkout the copied repository to your local machine eg. with `git clone https://github.com/my-username/my-awesome-extension/`
-1. run `npm install` (or `mise run install`) to install all required dependencies
-1. run `npm run build` (or `mise run build`)
+```sh
+mise trust && mise install    # node 24, python 3.13
+mise run setup                # install web dependencies
+mise run pipeline:test        # python unit tests (stdlib only)
+mise run web:dev              # astro dev server
+mise run check                # tests + a full site build
+```
 
-The build step will create the `distribution` folder, this folder will contain the generated extension.
+Without mise, it's still plain: `python -m unittest discover -s pipeline/tests`
+(inside `pipeline/`), `npm ci --prefix web`, and `./build.sh`.
 
-## Run the extension
+### Layout
 
-Using [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) is recommened for automatic reloading and running in a dedicated browser instance. Alternatively you can load the extension manually (see below).
+```
+pipeline/      Python — crawler, scoring engine, calibration
+  stellaid/    engine, adapter, fetch, crawl, rank, calibration
+  data/        sources.json (what to crawl), scores.json (the seam)
+  tests/       unittest, zero installs
+web/           Astro + Svelte islands + Tailwind + daisyUI
+calibration/   my own 74 credentials, for measuring the model
+samples/       scratch space for live HTML snapshots (gitignored)
+SPEC.md        the why: mission, non-goals, decision log
+IDEAS.md       the registry of larger ideas, with reasoning
+```
 
-1. run `npm run watch` to watch for file changes and build continuously
-1. run `npm install --global web-ext` (only only for the first time)
-1. in another terminal, run `web-ext run` for Firefox or `web-ext run -t chromium`
-1. Check that the extension is loaded by opening the extension options ([in Firefox](media/extension_options_firefox.png) or [in Chrome](media/extension_options_chrome.png)).
+## History
 
-### Manually
+This started as a 2021 Manifest v2 browser extension that never found a user and
+could not be migrated to v3. The extension is archived at the tag
+`legacy-mv2-extension` — `git show legacy-mv2-extension:source/content.js` — and
+the thesis is the same one it had back then.
 
-You can also [load the extension manually in Chrome](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#google-chrome-opera-vivaldi) or [Firefox](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#mozilla-firefox).
+## License
 
-## Acknowledgments
-
-[Fregante's Browser Extension Template](https://github.com/fregante/browser-extension-template)
-
-## Support Development
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N56KOTY)
+Apache 2.0. See [LICENSE.txt](LICENSE.txt).

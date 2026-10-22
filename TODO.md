@@ -7,9 +7,10 @@ Bigger threads (the bookmarklet, polarization, the corpus, the dataset) live in
 for the small, near-term stuff.
 
 ## Next
-- **I1 — bookmarklet.** First: the 5-minute CSP spike. Then copy `scores.json` to
-  `web/public/data/` (it is only imported at build time today, so it isn't
-  fetchable) and add a `_headers` file for CORS.
+- **I1 — bookmarklet.** First: the 5-minute CSP spike (CORS is already fine —
+  both GH Pages and CF Pages send `Access-Control-Allow-Origin: *`). Then copy
+  `scores.json` to `web/public/data/`: it is only imported at build time today, so
+  it isn't fetchable.
 - **I2 — polarization.** Add the weighted standard deviation to the crawl output,
   then the quadrant view.
 - **I5 spike.** Do Coursera credential pages expose the course slug? Decides how
@@ -42,6 +43,9 @@ for the small, near-term stuff.
 - **Classify reviews** (quality vs policy vs praise) — **parked**, see `IDEAS.md` I3.
   Too much complication for now; it is the honest escape hatch if the premise gets
   challenged, and needs validation on ~50 hand-labeled reviews before any trust.
-- **Live lookup** for non-indexed courses (Cloudflare Worker — not Vercel functions / Deno).
-- **"Request this course"** — start with a GitHub issue link; Turso only if it becomes real.
+- **Live lookup** is a contradiction — a Worker can't scrape (datacenter IP, D6).
+  Enqueue instead: `IDEAS.md` I11.
+- **"Request this course"** — a GitHub issue link first (the issue *is* a queue and a
+  notification, with no PII). Turso only if it becomes real; design sketch in
+  `IDEAS.md` I11.
 - **Calibration** against the 74 labeled courses in `calibration/courses.json`.

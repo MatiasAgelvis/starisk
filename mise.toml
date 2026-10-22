@@ -1,38 +1,18 @@
+# Starisk — dev coordinator
+#
+# Two toolchains, one repo: Python in `pipeline/` (the back), Node in `web/`
+# (the front), joined by `pipeline/data/scores.json`.
+#
+# mise is for humans. It is NOT a build dependency: `build.sh` stays the deploy
+# entry point, so CI and the static host need only node + python, never mise.
+
 [tools]
 node = "24"
 python = "3.13"
 
-[tasks.install]
-description = "Install extension dependencies"
-run = "npm install"
-
-[tasks.build]
-description = "Build the extension into distribution/"
-run = "npm run build"
-
-[tasks.watch]
-description = "Rebuild the extension on file changes"
-run = "npm run watch"
-
-[tasks.lint]
-description = "Lint JavaScript and CSS"
-run = "npm run lint"
-
-[tasks.test]
-description = "Run unit and end-to-end tests"
-run = "npm test"
-
-[tasks."test:unit"]
-description = "Run unit tests"
-run = "npm run test:unit"
-
-[tasks."test:e2e"]
-description = "Run end-to-end tests (requires a prior build)"
-run = "npm run test:e2e"
-
-[tasks."engine:test"]
-description = "Run the JavaScript engine tests with Node's test runner"
-run = "node --test engine/*.test.js"
+[tasks.setup]
+description = "Install the front-end dependencies"
+run = "npm ci --prefix web"
 
 [tasks."pipeline:test"]
 description = "Run the Python pipeline tests"
@@ -49,18 +29,13 @@ description = "Score local review snapshots in samples/live"
 dir = "pipeline"
 run = "python score.py ../samples/live/*.html"
 
-[tasks."web:install"]
-description = "Install web dependencies"
-dir = "web"
-run = "npm install"
-
 [tasks."web:dev"]
 description = "Run the Astro dev server (localhost:4321)"
 dir = "web"
 run = "npm run dev"
 
 [tasks."web:build"]
-description = "Build the static site using the current data copy"
+description = "Build the site from the current data copy"
 dir = "web"
 run = "npm run build"
 
@@ -69,5 +44,5 @@ description = "Copy fresh scores from the pipeline, then build the site"
 run = "./build.sh"
 
 [tasks.check]
-description = "Run pipeline tests and build the site"
+description = "Run the pipeline tests and build the site"
 depends = ["pipeline:test", "site:build"]

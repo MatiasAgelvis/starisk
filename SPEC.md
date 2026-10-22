@@ -65,7 +65,9 @@ Front and back are **separate**, joined by one file: `scores.json`.
   write to a DB without *some* server-side trust anchor, so when this becomes
   real the options are: a GitHub-issue / mailto link (v1, zero infra), a
   **scoped Turso token used from the browser** (later), or a small serverless
-  function. That is the one genuinely tricky later decision; don't solve it now.
+  function. Seen from the crawler's side it is simply **a queue**: a row is a
+  job, and the local pipeline drains it. That is the one genuinely tricky later
+  decision; don't solve it now. (Design sketch: `IDEAS.md` I11.)
 
 ## 6. Decisions (the log)
 
@@ -80,7 +82,7 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D7 | `scores.json` is **the seam** | Keeps pipeline and site decoupled in code even though they ship together. |
 | D8 | Reads from **static JSON**; writes (user data) to a **DB later** (Turso) | Keep user writes off the read path. |
 | D9 | **Fail-safe crawl** | Atomic write; never overwrite good data with a broken parse; flag `stale`; alert when N parses in a row yield 0 reviews (adapter is stale). |
-| D10 | Port the scoring **faithfully**; the 16 JS tests are the port spec | Don't silently change behavior. Keep the original model for reference; `SIMPLE` (`1 + likes`) as the default candidate. |
+| D10 | Port the scoring **faithfully**; the 16 JS tests (tag `legacy-mv2-extension`) are the port spec | Don't silently change behavior. Keep the original model for reference; `SIMPLE` (`1 + likes`) as the default candidate. |
 | D11 | Simplify the model where it doesn't earn its keep | Drop the inert time term; keep one real knob. Decide final model by *calibration*, not taste. |
 | D12 | Parse Coursera's **semantic hooks** (`data-e2e`, `data-testid`, `aria-label`) + **JSON-LD fallback** | Verified on 8 live snapshots: server-rendered review cards carry **stars, likes and dates**; JSON-LD carries stars/dates but **no likes**. No DOM library needed; a repair is a selector change. |
 | D16 | **DOM cards first, JSON-LD fallback** | Likes exist only in the review cards; some pages publish reviews only as JSON-LD. The fallback keeps them usable, at the cost of no likes (every weight collapses to 1). |
@@ -88,6 +90,7 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D18 | **One request per course** (first reviews page only) | The page is sorted "Most Helpful"; the model weights by likes, so the first page *is* the signal. Paging adds N× requests for data the model downweights anyway. |
 | D13 | Calibrate against my own labeled courses (Spearman) | ~74 credentials parsed locally (`calibration/courses.json`); my gut ranking is the ground truth. |
 | D14 | Deployment is **static-only**; no always-on server | Homelab detour cost 5h and still isn't up. Static is cheaper, more durable, and has no uptime/security/DDNS burden. The pipeline runs locally on demand. |
+| D19 | **Root has no build system.** Node lives only in `web/`, Python only in `pipeline/`; mise coordinates tasks, `build.sh` is the deploy entry point | One lockfile, one toolchain per side, no root `package.json` to rot. mise is a convenience for humans, so a CI runner or static host needs only node + python. The 2021 extension toolchain (Parcel, jest, puppeteer, `xo`, 454 MB of `node_modules`) was archived at tag `legacy-mv2-extension` and deleted. |
 | D15 | Write path **deferred** until there are real users | A static site can't write to a DB without a trust anchor; don't build an API for a feature nobody has used yet. Start with a mailto/GitHub-issue link if needed. |
 
 ## 7. The scoring model
@@ -172,9 +175,9 @@ stellaid/
 - **Phase 3 — The site.** Astro: static leaderboard (build-time data) + lookup
   island (Svelte) + daisyUI presentation.
 - **Phase 4 — Deploy.** Static host (Cloudflare Pages or GitHub Pages).
-- **Phase 5 — Later.** "Request a course" (Turso-from-browser with a scoped
-  token, or a serverless function — **no always-on server**), score history /
-  trends, live lookup (Cloudflare Worker, not Vercel/Deno).
+- **Phase 5 — Later.** "Request a course": a GitHub issue link first; a Turso
+  request queue (browser with a scoped token, or through a small Cloudflare
+  Worker) once someone other than me asks. Score history / trends.
 - **Phase 6 — Optional.** Python notebooks over the history (the data asset).
 
 ## 11. Open questions
@@ -183,6 +186,9 @@ stellaid/
 - Static host: Cloudflare Pages vs GitHub Pages.
 - Write path (deferred): none vs Turso-from-browser (scoped token) vs a small
   serverless function.
+- **Live lookup: a Worker cannot scrape.** Its datacenter IP is exactly what D6
+  avoids. If wanted, a Worker enqueues the slug and the local crawler picks it up
+  on its next run — queued lookup, not live lookup.
 - Professional Certificates / specializations: score their constituent courses
   and aggregate? (Landing pages expose `data-e2e="sdp-course-list-link"`.)
 - Where course **slugs** come from (my certificates are credential URLs, not
