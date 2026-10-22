@@ -1,3 +1,21 @@
 [
-  "learn/machine-learning"
+  "learn/machine-learning",
+  "learn/convolutional-neural-networks-tensorflow",
+  "learn/foundations-big-data-analysis-sql",
+  "learn/custom-models-layers-loss-functions-with-tensorflow",
+  "learn/convolutional-neural-networks",
+  "learn/prediction-control-function-approximation",
+  "learn/sample-based-learning-methods",
+  "learn/fundamentals-of-reinforcement-learning",
+  "learn/neural-networks-deep-learning",
+  "learn/version-control-with-git",
+  "learn/dog-emotion-and-cognition",
+  "learn/solving-algorithms-discrete-optimization",
+  "learn/linux-tools-for-developers",
+  "learn/linux-for-developers",
+  "learn/open-source-software-development-methods",
+  "learn/git-distributed-development",
+  "learn/python-statistics-financial-analysis",
+  "learn/programming-languages-part-c",
+  "learn/programming-languages-part-b"
 ]
