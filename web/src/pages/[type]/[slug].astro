@@ -86,15 +86,6 @@ function verdictText() {
         <Stars value={record.starisk} size={16} />
         <div class="stat-desc">{verdictText()}</div>
       </div>
-      <div class="stat">
-        <div class="stat-title">Reviews read</div>
-        <div class="stat-value text-2xl">{record.reviews}</div>
-        <div class="stat-desc">
-          {record.reviews_total
-            ? `most helpful · of ${record.reviews_total.toLocaleString('en-GB')} written`
-            : 'the most helpful ones'}
-        </div>
-      </div>
     </div>
 
     {
@@ -103,7 +94,8 @@ function verdictText() {
           <span>
             <strong>Small sample.</strong> Only {record.reviews} reviews were readable
             {record.source === 'jsonld' ? ' and they carry no upvotes' : ''}, so this score
-            is a hint, not a verdict.
+            is a hint, not a verdict. Every other course page reads about 20 of the
+            most-helpful reviews.
           </span>
         </div>
       )

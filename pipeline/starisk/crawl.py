@@ -48,7 +48,7 @@ DEFAULT_DELAY = 1.5
 DEFAULT_MAX_AGE_DAYS = 30
 
 # Below this, a score is a coin flip dressed as a number. The site says so.
-LOW_SAMPLE = 8
+LOW_SAMPLE = 15
 
 _SOURCE_PATTERN = re.compile(r"coursera\.org/([^/?#]+)/([^/?#]+)")
 
@@ -199,6 +199,9 @@ def crawl(
         if offline:
             html = load_page(key, cache_dir)
             if html is None:
+                # Never let an offline gap touch a good record.
+                if "starisk" in (scores.get(key) or {}):
+                    continue
                 record = scores.get(key) or {}
                 record["error"] = "offline: no cached page"
                 scores[key] = record
@@ -227,7 +230,10 @@ def crawl(
             record["error"] = "no reviews parsed (markup changed?)"
             scores[key] = record
         else:
-            scores[key] = {**result, "slug": key, "scrapedAt": stamp}
+            # Re-parsing a cached page is not a fresh scrape: keep the old stamp.
+            previous = scores.get(key) or {}
+            stamped = previous.get("scrapedAt", stamp) if offline else stamp
+            scores[key] = {**result, "slug": key, "scrapedAt": stamped}
 
         if delay:
             sleep(delay)
@@ -327,8 +333,9 @@ def main(argv: list[str]) -> int:
     write_atomic(SCORES_PATH, scores)
 
     scored = sum(1 for record in scores.values() if "starisk" in record)
+    verb = "reparsed" if options["offline"] else "fetched"
     print(
-        f"listed {len(sources)} | skipped fresh {skipped} | fetched {planned} "
+        f"listed {len(sources)} | skipped fresh {skipped} | {verb} {planned} "
         f"| records {len(scores)} | scored {scored}"
     )
     if any(str(record.get("error", "")).startswith("rate limited") for record in scores.values()):

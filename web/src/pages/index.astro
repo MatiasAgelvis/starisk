@@ -63,10 +63,11 @@ const lookup = Object.fromEntries(
     <h2 class="font-display text-2xl font-bold">Method, honestly</h2>
     <div class="mt-4 space-y-4 text-base-content/80">
       <p>
-        We read the reviews learners voted <strong>most helpful</strong>, and weight each one by its
-        votes: a review with 80 upvotes counts far more than one with 2. Unvoted reviews are not
-        skipped out of laziness — by this model they carry no evidence that other students endorsed
-        them.
+        We read the reviews learners voted <strong>most helpful</strong> — about 20 per course —
+        and weight each one by its votes: a review with 80 upvotes counts far more than one with 2.
+        Unvoted reviews are not skipped out of laziness — by this model they carry no evidence that
+        other students endorsed them. If a course had fewer than 15 readable reviews, its page says
+        so instead of pretending.
       </p>
       <p>
         Coursera publishes the full rating distribution for every course, so each page shows the

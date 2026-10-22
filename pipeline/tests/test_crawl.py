@@ -275,6 +275,32 @@ class CacheTest(unittest.TestCase):
         self.assertEqual(calls, [])
         self.assertEqual(scores["learn/a"]["starisk"], 1.5)
 
+    def test_offline_keeps_the_original_stamp(self):
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+            existing = {"learn/a": {"starisk": 9.9, "scrapedAt": "2026-01-01T00:00:00+00:00"}}
+
+            scores = crawl(
+                ["learn/a"], existing=existing, now=STAMP, offline=True, cache_dir=directory
+            )
+
+        # Re-parsed, but not re-scraped: the date must survive.
+        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertEqual(scores["learn/a"]["scrapedAt"], "2026-01-01T00:00:00+00:00")
+
+    def test_offline_missing_cache_leaves_a_good_record_alone(self):
+        with TemporaryDirectory() as tmp:
+            existing = {"learn/a": {"starisk": 3.3, "scrapedAt": "2026-01-01T00:00:00+00:00"}}
+
+            scores = crawl(
+                ["learn/a"], existing=existing, now=STAMP, offline=True, cache_dir=Path(tmp)
+            )
+
+        self.assertEqual(scores["learn/a"]["starisk"], 3.3)
+        self.assertNotIn("error", scores["learn/a"])
+
     def test_offline_without_a_cached_page_records_an_error(self):
         with TemporaryDirectory() as tmp:
             scores = crawl(["learn/a"], now=STAMP, offline=True, cache_dir=Path(tmp))
