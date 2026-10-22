@@ -1,5 +1,5 @@
 ---
-import { STAR_PATH, STAR_SLOTS, clampValue, starPercent } from '../lib/stars.js';
+import { STAR_SLOTS, clampValue, starPercent } from '../lib/stars.js';
 
 interface Props {
   value: number | null;
@@ -18,43 +18,23 @@ const width = size * 5 + 2 * 4; // 5 stars + four 2px gaps
   aria-label={`${clamped.toFixed(1)} out of 5 stars`}
 >
   <span class="relative inline-block" style={`width:${width}px;height:${size}px`}>
-    <span class="absolute inset-0 flex gap-0.5 text-base-content/25">
+    <span class="absolute inset-0 flex gap-0.5 text-base-content/25" style={`font-size:${size}px`}>
       {
         STAR_SLOTS.map(() => (
-          <svg
-            width={size}
-            height={size}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="shrink-0"
-          >
-            <path d={STAR_PATH} />
+          <svg class="star-glyph star-glyph--outline">
+            <use href="#star" />
           </svg>
         ))
       }
     </span>
     <span
       class="absolute inset-0 flex gap-0.5 overflow-hidden text-warning"
-      style={`width:${percent}%`}
+      style={`width:${percent}%;font-size:${size}px`}
     >
       {
         STAR_SLOTS.map(() => (
-          <svg
-            width={size}
-            height={size}
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="shrink-0"
-          >
-            <path d={STAR_PATH} />
+          <svg class="star-glyph star-glyph--filled">
+            <use href="#star" />
           </svg>
         ))
       }

@@ -10,3 +10,29 @@
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
 }
+
+/* Star glyphs reference one shared <symbol> (see Base.astro). Styling them by
+   class keeps each glyph to a few bytes: inline presentation attributes cost
+   ~190 bytes each, and a leaderboard row renders twenty of them. */
+.star-glyph {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.star-glyph--outline,
+.star-glyph--filled {
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.star-glyph--outline {
+  fill: none;
+  stroke: currentColor;
+}
+
+.star-glyph--filled {
+  fill: currentColor;
+  stroke: currentColor;
+}

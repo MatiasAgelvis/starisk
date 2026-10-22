@@ -16,6 +16,20 @@ export function getStaticPaths() {
 const { record, key } = Astro.props;
 const gap = record.coursera == null ? null : record.stellaid - record.coursera;
 const top = record.top_review;
+const title = record.title ?? key;
+
+const description =
+  record.coursera == null
+    ? `${title}: the most-upvoted learner reviews put it at ${record.stellaid.toFixed(1)} out of 5.`
+    : `${title}: Coursera rates it ${record.coursera.toFixed(1)}, the most-upvoted reviews say ${record.stellaid.toFixed(1)}.`;
+
+const readOn = record.scrapedAt
+  ? new Date(record.scrapedAt).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    })
+  : null;
 
 function signalText() {
   if (gap == null) return 'No headline rating to compare';
@@ -25,7 +39,7 @@ function signalText() {
 }
 ---
 
-<Base title={`${record.title ?? key} — Starisk`}>
+<Base title={`${record.title ?? key} — Starisk`} description={description}>
   <article class="mx-auto max-w-3xl">
     <a href="/" class="link link-hover text-sm text-base-content/60">← all courses</a>
 
@@ -103,6 +117,15 @@ function signalText() {
         Starisk reads the first page of reviews — the ones Coursera surfaces as most helpful —
         and weights them by their upvotes. It measures what the most-endorsed reviews say, not
         “true quality.”
+      </p>
+      <p class="mt-2">
+        {readOn ? `Reviews read on ${readOn}.` : null}
+        <a
+          class="link link-hover"
+          href={`https://www.coursera.org/${key}/reviews`}
+          target="_blank"
+          rel="noopener noreferrer">Read them on Coursera ↗</a
+        >
       </p>
     </section>
   </article>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Starisk">
+  <rect width="32" height="32" rx="7" fill="#111827" />
+  <g stroke="#fbbf24" stroke-width="3.2" stroke-linecap="round">
+    <path d="M16 7.5v17" />
+    <path d="M8.6 11.7l14.8 8.6" />
+    <path d="M23.4 11.7l-14.8 8.6" />
+  </g>
+</svg>

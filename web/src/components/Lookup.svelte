@@ -1,5 +1,6 @@
 <script>
   import Stars from './Stars.svelte';
+  import { requestHref } from '../lib/config.js';
 
   let { scores = {} } = $props();
 
@@ -22,6 +23,7 @@
 
   function search() {
     const key = normalize(query);
+    if (!key) return;
     result = { key, record: scores[key] ?? null };
   }
 </script>
@@ -68,11 +70,19 @@
           <div class="stat-desc">{gapLabel(result.record)}</div>
         </div>
       </div>
+      <a class="link link-hover mt-3 inline-block text-sm" href={`/${result.record.slug}`}>
+        Full breakdown, including the top critical review →
+      </a>
     {:else}
-      <div class="alert alert-warning mt-6">
+      <div class="alert alert-warning mt-6 text-left">
         <span>
-          <span class="font-mono">{result.key}</span> isn’t indexed yet. Add it to the crawl
-          list and re-run.
+          <span class="font-semibold">Not indexed yet.</span>
+          Starisk has only read a small set of courses so far.
+          {#if requestHref(result.key)}
+            <a class="link" href={requestHref(result.key)}>Ask for this one</a>.
+          {:else}
+            This one isn't among them yet.
+          {/if}
         </span>
       </div>
     {/if}

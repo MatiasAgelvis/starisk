@@ -8,6 +8,21 @@ const rows = Object.entries(scores)
   .filter(([, record]) => typeof record.stellaid === 'number')
   .map(([slug, record]) => ({ slug, ...record }))
   .sort((a, b) => a.stellaid - b.stellaid);
+
+// The lookup island only needs the numbers. Passing the whole records would ship
+// every description and review body to the browser with the homepage.
+const lookup = Object.fromEntries(
+  Object.entries(scores).map(([key, record]) => [
+    key,
+    {
+      title: record.title,
+      slug: record.slug,
+      coursera: record.coursera,
+      stellaid: record.stellaid,
+      reviews: record.reviews,
+    },
+  ]),
+);
 ---
 
 <Base title="Starisk — what learners actually say">
@@ -23,7 +38,7 @@ const rows = Object.entries(scores)
       Every rating deserves an asterisk.
     </p>
     <div class="mt-8">
-      <Lookup client:load scores={scores} />
+      <Lookup client:load scores={lookup} />
     </div>
   </section>
 
