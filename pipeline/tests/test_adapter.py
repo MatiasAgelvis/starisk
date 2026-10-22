@@ -1,7 +1,14 @@
+import math
 import unittest
 from pathlib import Path
 
-from starisk.adapter import extract_coursera_score, extract_details, extract_reviews, extract_title
+from starisk.adapter import (
+    extract_aggregate,
+    extract_coursera_score,
+    extract_details,
+    extract_reviews,
+    extract_title,
+)
 
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 
@@ -67,6 +74,80 @@ class AdapterTest(unittest.TestCase):
         self.assertEqual(reviews[0]["likes"], 0)
         self.assertEqual(reviews[1]["stars"], 2.0)
         self.assertGreater(reviews[0]["age_days"], 19000)
+
+
+class AggregateTest(unittest.TestCase):
+    def test_rating_and_population(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Product","aggregateRating":'
+            '{"ratingValue":"4.8","ratingCount":"32,331","reviewCount":"7108"}}'
+            "</script>"
+        )
+        aggregate = extract_aggregate(html)
+
+        self.assertEqual(aggregate["rating"], 4.8)
+        self.assertEqual(aggregate["ratings_total"], 32331)
+        self.assertEqual(aggregate["reviews_total"], 7108)
+
+    def test_missing_aggregate_is_nan(self):
+        aggregate = extract_aggregate("<html></html>")
+
+        self.assertIsNone(aggregate["rating"])
+        self.assertIsNone(aggregate["reviews_total"])
+        self.assertTrue(math.isnan(extract_coursera_score("<html></html>")))
+
+    def test_review_count_without_rating_count(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Product","aggregateRating":'
+            '{"ratingValue":"4.9","reviewCount":"6214"}}'
+            "</script>"
+        )
+        aggregate = extract_aggregate(html)
+
+        self.assertEqual(aggregate["reviews_total"], 6214)
+        self.assertIsNone(aggregate["ratings_total"])
+
+
+class ProviderFallbackTest(unittest.TestCase):
+    def test_falls_back_to_provider_when_brand_is_absent(self):
+        # IBM course pages use `provider`, not `brand`; missing this blanks the logo.
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Django for Everybody",'
+            '"provider":{"@type":"Organization","name":"IBM"}}'
+            "</script>"
+        )
+        self.assertEqual(extract_details(html)["provider"], "IBM")
+
+    def test_brand_wins_over_provider(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Product","name":"X",'
+            '"brand":{"name":"Brand Co"},"provider":{"name":"Other"}}'
+            "</script>"
+        )
+        self.assertEqual(extract_details(html)["provider"], "Brand Co")
+
+    def test_level_and_enrollment_are_optional(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X","educationalLevel":"Intermediate",'
+            '"totalHistoricalEnrollment":364000}'
+            "</script>"
+        )
+        details = extract_details(html)
+
+        self.assertEqual(details["level"], "Intermediate")
+        self.assertEqual(details["enrollment"], 364000)
+
+    def test_absent_metadata_is_none(self):
+        html = '<script type="application/ld+json">{"@type":"Course","name":"X"}</script>'
+        details = extract_details(html)
+
+        self.assertIsNone(details["level"])
+        self.assertIsNone(details["enrollment"])
 
 
 if __name__ == "__main__":
