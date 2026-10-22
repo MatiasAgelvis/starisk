@@ -88,7 +88,7 @@
   <div class="join">
     {#each VERDICTS as option (option.id)}
       <button
-        class="btn btn-sm join-item {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
+        class="btn btn-sm join-item whitespace-nowrap {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
         aria-pressed={verdict === option.id}
         onclick={() => (verdict = option.id)}
       >
@@ -185,7 +185,7 @@
               ></span>
             </div>
           </td>
-          <td><span class="badge {style.badge}">{style.label}</span></td>
+          <td><span class="badge whitespace-nowrap {style.badge}">{style.label}</span></td>
         </tr>
       {/each}
     </tbody>
