@@ -1,7 +1,9 @@
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
+from starisk.cache import load_page, path_for, store_page
 from starisk.crawl import (
     crawl,
     is_fresh,
@@ -235,6 +237,49 @@ class ArgsTest(unittest.TestCase):
 
     def test_force_means_everything_is_stale(self):
         self.assertEqual(parse_args(["--force"])["max_age"], 0.0)
+
+
+class CacheTest(unittest.TestCase):
+    def test_roundtrip(self):
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", "<html>hello</html>", directory)
+
+            self.assertEqual(load_page("learn/a", directory), "<html>hello</html>")
+            self.assertTrue(path_for("learn/a", directory).name.startswith("learn__a"))
+
+    def test_missing_page_is_none(self):
+        with TemporaryDirectory() as tmp:
+            self.assertIsNone(load_page("learn/gone", Path(tmp)))
+
+    def test_crawl_stores_what_it_fetches(self):
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        with TemporaryDirectory() as tmp:
+            crawl(["learn/a"], fetch=lambda _: html, now=STAMP, cache_dir=Path(tmp))
+            self.assertEqual(load_page("learn/a", Path(tmp)), html)
+
+    def test_offline_crawl_makes_no_requests(self):
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return html
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, offline=True, cache_dir=directory)
+
+        self.assertEqual(calls, [])
+        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+
+    def test_offline_without_a_cached_page_records_an_error(self):
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], now=STAMP, offline=True, cache_dir=Path(tmp))
+
+        self.assertIn("offline", scores["learn/a"]["error"])
 
 
 if __name__ == "__main__":

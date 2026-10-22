@@ -5,6 +5,7 @@
     python3 -m starisk.crawl --force             # ignore freshness, refetch all
     python3 -m starisk.crawl --max-age 7         # refetch anything older than 7 days
     python3 -m starisk.crawl --limit 10          # budget: at most 10 fetches
+    python3 -m starisk.crawl --offline           # re-score from cached pages, no requests
     python3 -m starisk.crawl --delay 3           # politer
     python3 -m starisk.crawl learn/machine-learning   # one-off source
 
@@ -16,6 +17,8 @@ Design notes:
   `--max-age` are skipped without a request. So re-running is cheap.
 - Ordered by staleness (never-scraped first, then oldest), so `--limit` makes
   progress across runs instead of re-doing the top of the list.
+- Every fetched page is cached (gzipped), so an adapter fix can be re-scored with
+  `--offline` instead of re-fetching the list.
 - Atomic write: the file is replaced only once fully written.
 """
 
@@ -31,6 +34,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from .adapter import REVIEW_CARD, extract_aggregate, extract_details, extract_reviews
+from .cache import CACHE_DIR, load_page, store_page
 from .engine import SIMPLE, course_score, peer_spread, review_spread
 from .fetch import RateLimited, fetch_page
 
@@ -174,6 +178,8 @@ def crawl(
     sleep=time.sleep,
     max_age_days: float | None = None,
     limit: int | None = None,
+    offline: bool = False,
+    cache_dir: Path = CACHE_DIR,
 ) -> dict:
     """Fetch, score and merge. Returns the updated scores dict."""
     scores = dict(existing or {})
@@ -190,20 +196,29 @@ def crawl(
 
         url = reviews_url(key)
 
-        try:
-            html = fetch(url)
-        except RateLimited as error:
-            # Stop the run. The next one starts with this course, because it is
-            # the stalest one left.
-            record = scores.get(key) or {}
-            record["error"] = f"rate limited: {error}"
-            scores[key] = record
-            break
-        except Exception as error:  # noqa: BLE001 - one bad course must not stop the crawl
-            record = scores.get(key) or {}
-            record["error"] = f"fetch: {error}"
-            scores[key] = record
-            continue
+        if offline:
+            html = load_page(key, cache_dir)
+            if html is None:
+                record = scores.get(key) or {}
+                record["error"] = "offline: no cached page"
+                scores[key] = record
+                continue
+        else:
+            try:
+                html = fetch(url)
+            except RateLimited as error:
+                # Stop the run. The next one starts with this course, because it is
+                # the stalest one left.
+                record = scores.get(key) or {}
+                record["error"] = f"rate limited: {error}"
+                scores[key] = record
+                break
+            except Exception as error:  # noqa: BLE001 - one bad course must not stop the crawl
+                record = scores.get(key) or {}
+                record["error"] = f"fetch: {error}"
+                scores[key] = record
+                continue
+            store_page(key, html, cache_dir)
 
         result = score_page(html)
         if result is None:
@@ -239,6 +254,7 @@ def parse_args(argv: list[str]) -> dict:
         "delay": DEFAULT_DELAY,
         "max_age": float(DEFAULT_MAX_AGE_DAYS),
         "limit": None,
+        "offline": False,
         "sources": None,
     }
     index = 0
@@ -255,6 +271,9 @@ def parse_args(argv: list[str]) -> dict:
             index += 2
         elif arg == "--force":
             options["max_age"] = 0.0
+            index += 1
+        elif arg == "--offline":
+            options["offline"] = True
             index += 1
         else:
             options["sources"] = options["sources"] or []
@@ -285,9 +304,11 @@ def main(argv: list[str]) -> int:
     )
 
     moment = datetime.now(timezone.utc)
+    # Offline means "re-parse what we already have": freshness is irrelevant.
+    max_age = 0.0 if options["offline"] else options["max_age"]
     skipped = (
-        sum(1 for key in sources if is_fresh(existing.get(key), moment, options["max_age"]))
-        if options["max_age"]
+        sum(1 for key in sources if is_fresh(existing.get(key), moment, max_age))
+        if max_age
         else 0
     )
     planned = len(sources) - skipped
@@ -299,8 +320,9 @@ def main(argv: list[str]) -> int:
         existing=existing,
         delay=options["delay"],
         now=moment,
-        max_age_days=options["max_age"],
+        max_age_days=max_age,
         limit=options["limit"],
+        offline=options["offline"],
     )
     write_atomic(SCORES_PATH, scores)
 
