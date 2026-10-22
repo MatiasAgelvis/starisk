@@ -1,13 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
-import ScoreTable from '../components/ScoreTable.astro';
+import ScoreTable from '../components/ScoreTable.svelte';
 import Lookup from '../components/Lookup.svelte';
 import scores from '../data/scores.json';
 
 const rows = Object.entries(scores)
   .filter(([, record]) => typeof record.starisk === 'number')
-  .map(([slug, record]) => ({ slug, ...record }))
-  .sort((a, b) => a.starisk - b.starisk);
+  .map(([slug, record]) => ({
+    slug,
+    title: record.title,
+    provider: record.provider,
+    image: record.image,
+    coursera: record.coursera,
+    starisk: record.starisk,
+    spread: record.spread ?? null,
+  }));
 
 // The lookup island only needs the numbers. Passing the whole records would ship
 // every description and review body to the browser with the homepage.
@@ -45,9 +52,10 @@ const lookup = Object.fromEntries(
 
   <section class="mt-8">
     <h2 class="font-display mb-4 text-2xl font-bold">How contested is each course?</h2>
-    <ScoreTable rows={rows} />
+    <ScoreTable client:load rows={rows} />
     <p class="mt-3 text-sm text-base-content/60">
-      A large negative gap means the written reviews are harsher than the headline rating.
+      A large negative gap means the written reviews are harsher than the headline rating. Sort by
+      any column; spread is how split the reviews are (0 = unanimous).
     </p>
   </section>
 
