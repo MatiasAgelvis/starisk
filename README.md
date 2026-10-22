@@ -75,6 +75,8 @@ copy, which is already committed, so hosts can skip it).
 - `SITE_URL=https://your.domain` sets the canonical/Open Graph origin
   (default: `https://starisk.pages.dev`).
 - `/data/scores.json` is published as a file — the whole dataset, CORS `*`.
+- Provider logos are committed in `web/public/logos/`, so no download runs at
+  build time. `mise run pipeline:logos` fetches any that are missing.
 - `web/public/_headers` sets caching for Cloudflare Pages (ignored elsewhere).
 
 ### Layout
@@ -85,6 +87,7 @@ pipeline/      Python — crawler, scoring engine, calibration
   data/        sources.json (what to crawl), scores.json (the seam)
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
+  public/logos/  provider logos, downloaded once by the pipeline
 calibration/   my own 74 credentials, for measuring the model
 samples/       scratch space for live HTML snapshots (gitignored)
 SPEC.md        the why: mission, non-goals, decision log

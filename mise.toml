@@ -20,9 +20,17 @@ dir = "pipeline"
 run = "python -m unittest discover -s tests"
 
 [tasks."pipeline:crawl"]
-description = "Crawl the courses listed in pipeline/data/sources.json"
+description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
 dir = "pipeline"
-run = "python -m starisk.crawl"
+run = """
+python -m starisk.crawl
+python -m starisk.logos
+"""
+
+[tasks."pipeline:logos"]
+description = "Download provider logos that scores.json references"
+dir = "pipeline"
+run = "python -m starisk.logos"
 
 [tasks."pipeline:score"]
 description = "Score local review snapshots in samples/live"

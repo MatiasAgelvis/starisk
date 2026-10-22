@@ -37,3 +37,20 @@ def fetch_page(url: str, timeout: float = 25, retries: int = 2, backoff: float =
                 time.sleep(backoff * (attempt + 1))
 
     raise RuntimeError(f"failed to fetch {url}: {last_error}")
+
+
+def fetch_bytes(url: str, timeout: float = 25, retries: int = 2, backoff: float = 2.0) -> bytes:
+    """Fetch a URL and return the raw body (images)."""
+    last_error: Exception | None = None
+
+    for attempt in range(retries + 1):
+        request = urllib.request.Request(url, headers={**HEADERS, "Accept": "image/*,*/*;q=0.8"})
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return response.read()
+        except (urllib.error.URLError, TimeoutError) as error:
+            last_error = error
+            if attempt < retries:
+                time.sleep(backoff * (attempt + 1))
+
+    raise RuntimeError(f"failed to fetch {url}: {last_error}")
