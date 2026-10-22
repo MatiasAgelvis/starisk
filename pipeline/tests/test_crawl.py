@@ -26,6 +26,16 @@ class ScorePageTest(unittest.TestCase):
     def test_returns_none_when_there_are_no_reviews(self):
         self.assertIsNone(score_page("<html><body>nothing</body></html>"))
 
+    def test_records_the_population_and_the_spread(self):
+        result = score_page(GOOD_FIXTURE.read_text(encoding="utf-8"))
+
+        self.assertEqual(result["reviews_total"], 6214)
+        self.assertNotIn("ratings_total", result)  # the fixture has no ratingCount
+        self.assertIsInstance(result["spread"], float)
+        self.assertGreaterEqual(result["spread"], 0.0)
+        self.assertNotIn("level", result)
+        self.assertNotIn("enrollment", result)
+
 
 class CrawlTest(unittest.TestCase):
     def setUp(self):
