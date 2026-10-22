@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import { STAR_PATH } from '../lib/stars.js';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Starisk',
+  description = 'What learners actually say about Coursera courses, weighted by the votes their reviews received.',
+} = Astro.props;
+
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#111827" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Starisk" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <!-- One star path for the whole page; every <Stars> references it. Repeating
+         the path per glyph costs ~1 MB of HTML on a full leaderboard. -->
+    <svg width="0" height="0" aria-hidden="true" focusable="false" class="absolute">
+      <symbol id="star" viewBox="0 0 24 24">
+        <path d={STAR_PATH} />
+      </symbol>
+    </svg>
+
+    <div class="navbar bg-base-200">
+      <div class="navbar-start">
+        <a href="/" class="btn btn-ghost text-xl font-display">
+          <img src="/favicon.svg" alt="" class="h-5 w-5" />
+          Starisk
+        </a>
+      </div>
+      <div class="navbar-end">
+        <a href="/#method" class="btn btn-ghost">Method</a>
+      </div>
+    </div>
+
+    <main class="container mx-auto max-w-5xl px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="footer footer-center p-6 text-sm text-base-content/60">
+      <p>Ratings computed from Coursera reviews. Not affiliated with Coursera.</p>
+    </footer>
+  </body>
+</html>

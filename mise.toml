@@ -1,0 +1,56 @@
+# Starisk — dev coordinator
+#
+# Two toolchains, one repo: Python in `pipeline/` (the back), Node in `web/`
+# (the front), joined by `pipeline/data/scores.json`.
+#
+# mise is for humans. It is NOT a build dependency: `build.sh` stays the deploy
+# entry point, so CI and the static host need only node + python, never mise.
+
+[tools]
+node = "24"
+python = "3.13"
+
+[tasks.setup]
+description = "Install the front-end dependencies"
+run = "npm ci --prefix web"
+
+[tasks."pipeline:test"]
+description = "Run the Python pipeline tests"
+dir = "pipeline"
+run = "python -m unittest discover -s tests"
+
+[tasks."pipeline:crawl"]
+description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
+dir = "pipeline"
+run = """
+python -m starisk.crawl
+python -m starisk.logos
+"""
+
+[tasks."pipeline:logos"]
+description = "Download provider logos that scores.json references"
+dir = "pipeline"
+run = "python -m starisk.logos"
+
+[tasks."pipeline:score"]
+description = "Score local review snapshots in samples/live"
+dir = "pipeline"
+run = "python score.py ../samples/live/*.html"
+
+[tasks."web:dev"]
+description = "Run the Astro dev server (localhost:4321)"
+dir = "web"
+run = "npm run dev"
+
+[tasks."web:build"]
+description = "Build the site from the current data copy"
+dir = "web"
+run = "npm run build"
+
+[tasks."site:build"]
+description = "Copy fresh scores from the pipeline, then build the site"
+run = "./build.sh"
+
+[tasks.check]
+description = "Run the pipeline tests and build the site"
+depends = ["pipeline:test", "site:build"]

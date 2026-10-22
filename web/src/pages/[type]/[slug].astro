@@ -1,0 +1,192 @@
+---
+import Base from '../../layouts/Base.astro';
+import Stars from '../../components/Stars.astro';
+import Logo from '../../components/Logo.astro';
+import scores from '../../data/scores.json';
+
+export function getStaticPaths() {
+  return Object.entries(scores)
+    .filter(([, record]) => typeof record.starisk === 'number')
+    .map(([key, record]) => {
+      const [type, slug] = key.split('/');
+      return { params: { type, slug }, props: { record, key } };
+    });
+}
+
+const { record, key } = Astro.props;
+const inflation = record.coursera == null ? null : record.coursera - record.starisk;
+const top = record.top_review;
+const title = record.title ?? key;
+
+const description =
+  record.coursera == null
+    ? `${title}: the most-upvoted learner reviews put it at ${record.starisk.toFixed(1)} out of 5.`
+    : `${title}: Coursera rates it ${record.coursera.toFixed(1)}, the most-upvoted reviews say ${record.starisk.toFixed(1)}.`;
+
+const readOn = record.scrapedAt
+  ? new Date(record.scrapedAt).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    })
+  : null;
+
+const instructors = record.instructors ?? [];
+const categories = record.categories ?? [];
+
+// Coursera publishes its whole rating distribution in the page data. That is the
+// population — every rating ever — and it is more honest than any sample we read.
+const counts = record.rating_counts ?? null;
+const ratingsTotal =
+  record.ratings_total ?? (counts ? Object.values(counts).reduce((a, b) => a + b, 0) : null);
+const lowShare =
+  counts && ratingsTotal
+    ? (((counts['1'] ?? 0) + (counts['2'] ?? 0)) / ratingsTotal) * 100
+    : null;
+
+function verdictText() {
+  if (inflation == null) return 'No headline rating to compare';
+  if (inflation >= 1.5) return 'Inflated';
+  if (inflation >= 0.5) return 'Padded';
+  return 'Holds up';
+}
+---
+
+<Base title={`${record.title ?? key} — Starisk`} description={description}>
+  <article class="mx-auto max-w-3xl">
+    <a href="/" class="link link-hover text-sm text-base-content/60">← all courses</a>
+
+    <header class="mt-4 flex items-start gap-4">
+      <Logo src={record.image} class="mt-1 h-12 w-20" />
+      <div>
+        <h1 class="font-display text-3xl font-bold tracking-tight">
+          {record.title ?? key}
+        </h1>
+        <p class="mt-1 text-sm text-base-content/60">
+          {record.provider ?? 'Unknown provider'} ·{' '}
+          <a
+            class="link link-hover"
+            href={`https://www.coursera.org/${key}`}
+            target="_blank"
+            rel="noopener noreferrer">View on Coursera ↗</a
+          >
+        </p>
+        {
+          instructors.length > 0 && (
+            <p class="mt-1 text-sm text-base-content/60">
+              Taught by {instructors.join(', ')}
+            </p>
+          )
+        }
+        {
+          categories.length > 0 && (
+            <p class="mt-2 flex flex-wrap gap-1">
+              {categories.map((category) => (
+                <span class="badge badge-ghost badge-sm">{category}</span>
+              ))}
+            </p>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
+      <div class="stat">
+        <div class="stat-title">Coursera</div>
+        <div class="stat-value text-2xl">
+          {record.coursera == null ? '—' : record.coursera.toFixed(1)}
+        </div>
+        {record.coursera == null ? null : <Stars value={record.coursera} size={16} />}
+        <div class="stat-desc">headline rating</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Starisk</div>
+        <div class="stat-value text-2xl">{record.starisk.toFixed(1)}</div>
+        <Stars value={record.starisk} size={16} />
+        <div class="stat-desc">{verdictText()}</div>
+      </div>
+    </div>
+
+    {
+      record.low_sample && (
+        <div class="alert alert-warning mt-6 text-sm">
+          <span>
+            <strong>Small sample.</strong> Only {record.reviews} reviews were readable
+            {record.source === 'jsonld' ? ' and they carry no upvotes' : ''}, so this score
+            is a hint, not a verdict. Every other course page reads about 20 of the
+            most-helpful reviews.
+          </span>
+        </div>
+      )
+    }
+
+    {
+      record.description && (
+        <section class="mt-8">
+          <h2 class="font-display text-xl font-bold">About the course</h2>
+          <p class="mt-2 whitespace-pre-line text-base-content/80">
+            {record.description}
+          </p>
+        </section>
+      )
+    }
+
+    {
+      top && top.text && (
+        <section class="mt-8">
+          <h2 class="font-display text-xl font-bold">The dissent</h2>
+          <p class="mt-1 text-sm text-base-content/60">
+            The most-upvoted critical review ({top.likes} votes, {top.stars.toFixed(1)}★).
+          </p>
+          <blockquote class="mt-4 rounded-box bg-base-200 p-5">
+            <p class="text-base-content/90">“{top.text}”</p>
+            <footer class="mt-3 flex items-center gap-2 text-sm text-base-content/60">
+              <Stars value={top.stars} />
+              <span>{top.stars.toFixed(1)} / 5</span>
+            </footer>
+          </blockquote>
+          <p class="mt-2 text-sm text-base-content/60">
+            {top.text.endsWith('…') ? 'Excerpt. ' : ''}
+            <a
+              class="link link-hover"
+              href={`https://www.coursera.org/${key}/reviews`}
+              target="_blank"
+              rel="noopener noreferrer">Read the full review on Coursera ↗</a
+            >
+          </p>
+        </section>
+      )
+    }
+
+    {
+      lowShare != null && record.coursera != null && (
+        <p class="mt-4 text-sm text-base-content/70">
+          Coursera's {record.coursera.toFixed(1)} comes from{' '}
+          <strong>{ratingsTotal.toLocaleString('en-GB')} ratings</strong>. Of those,{' '}
+          <strong>{lowShare.toFixed(1)}%</strong> are 1–2★.
+        </p>
+      )
+    }
+
+    <section class="mt-10 text-sm text-base-content/60">
+      <p>
+        Starisk reads the reviews learners voted most helpful, and a vote is the whole weight: a
+        review with 80 upvotes counts far more than one with 2. Unvoted reviews are not ignored out
+        of laziness — by this model they carry no evidence that other students endorsed them.
+      </p>
+      <p class="mt-2">
+        That measures <strong>what the most-endorsed reviews say</strong>, not “true quality.” The
+        rating distribution above is the whole population, so you can see the sample next to it.
+      </p>
+      <p class="mt-2">
+        {readOn ? `Reviews read on ${readOn}.` : null}
+        <a
+          class="link link-hover"
+          href={`https://www.coursera.org/${key}/reviews`}
+          target="_blank"
+          rel="noopener noreferrer">Read them on Coursera ↗</a
+        >
+      </p>
+    </section>
+  </article>
+</Base>

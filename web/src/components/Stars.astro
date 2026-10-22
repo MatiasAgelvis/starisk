@@ -1,0 +1,43 @@
+---
+import { STAR_SLOTS, clampValue, starPercent } from '../lib/stars.js';
+
+interface Props {
+  value: number | null;
+  size?: number;
+}
+
+const { value, size = 14 } = Astro.props;
+const clamped = clampValue(value);
+const percent = starPercent(value);
+const width = size * 5 + 2 * 4; // 5 stars + four 2px gaps
+---
+
+<span
+  class="inline-flex items-center"
+  role="img"
+  aria-label={`${clamped.toFixed(1)} out of 5 stars`}
+>
+  <span class="relative inline-block" style={`width:${width}px;height:${size}px`}>
+    <span class="absolute inset-0 flex gap-0.5 text-base-content/25" style={`font-size:${size}px`}>
+      {
+        STAR_SLOTS.map(() => (
+          <svg class="star-glyph star-glyph--outline">
+            <use href="#star" />
+          </svg>
+        ))
+      }
+    </span>
+    <span
+      class="absolute inset-0 flex gap-0.5 overflow-hidden text-warning"
+      style={`width:${percent}%;font-size:${size}px`}
+    >
+      {
+        STAR_SLOTS.map(() => (
+          <svg class="star-glyph star-glyph--filled">
+            <use href="#star" />
+          </svg>
+        ))
+      }
+    </span>
+  </span>
+</span>

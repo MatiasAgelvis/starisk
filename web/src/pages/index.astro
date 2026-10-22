@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import ScoreTable from '../components/ScoreTable.svelte';
+import Lookup from '../components/Lookup.svelte';
+import scores from '../data/scores.json';
+
+const rows = Object.entries(scores)
+  .filter(([, record]) => typeof record.starisk === 'number')
+  .map(([slug, record]) => ({
+    slug,
+    title: record.title,
+    provider: record.provider,
+    image: record.image,
+    coursera: record.coursera,
+    starisk: record.starisk,
+  }));
+
+// The lookup island only needs the numbers. Passing the whole records would ship
+// every description and review body to the browser with the homepage.
+const lookup = Object.fromEntries(
+  Object.entries(scores).map(([key, record]) => [
+    key,
+    {
+      title: record.title,
+      slug: record.slug,
+      coursera: record.coursera,
+      starisk: record.starisk,
+      reviews: record.reviews,
+      reviews_total: record.reviews_total,
+    },
+  ]),
+);
+---
+
+<Base title="Starisk — what learners actually say">
+  <section class="py-10 text-center">
+    <h1 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
+      Coursera says 4.9.<br />The reviews say something else.
+    </h1>
+    <p class="mx-auto mt-4 max-w-2xl text-base-content/70">
+      Starisk reads the written reviews — and the votes other learners gave them — then
+      shows what the most-endorsed reviews actually say.
+    </p>
+    <p class="mt-2 text-sm italic text-base-content/50">
+      Every rating deserves an asterisk.
+    </p>
+    <div class="mt-8">
+      <Lookup client:load scores={lookup} />
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="font-display mb-4 text-2xl font-bold">Where the headline rating is inflated</h2>
+    <ScoreTable client:load rows={rows} />
+    <p class="mt-3 text-sm text-base-content/60">
+      Inflation is Coursera's rating minus Starisk's: how many stars the headline sits above what
+      the most-upvoted reviews say. <strong>Inflated</strong> ≥ 1.5, <strong>padded</strong> ≥ 0.5,
+      otherwise it <strong>holds up</strong>. Sort by any column.
+    </p>
+  </section>
+
+  <section id="method" class="mt-16">
+    <h2 class="font-display text-2xl font-bold">Method, honestly</h2>
+    <div class="mt-4 space-y-4 text-base-content/80">
+      <p>
+        We read the reviews learners voted <strong>most helpful</strong> — about 20 per course —
+        and weight each one by its votes: a review with 80 upvotes counts far more than one with 2.
+        Unvoted reviews are not skipped out of laziness — by this model they carry no evidence that
+        other students endorsed them. If a course had fewer than 15 readable reviews, its page says
+        so instead of pretending.
+      </p>
+      <p>
+        Coursera publishes the full rating distribution for every course, so each page shows the
+        sample next to the whole population — including what share of all ratings are 1–2★. That is
+        the comparison worth making: a small upvoted minority, against tens of thousands of
+        five-star ratings.
+      </p>
+      <p>
+        It measures <strong>what the most-endorsed reviews say</strong>, not “true quality.” Upvoted
+        reviews often carry a grievance — about access, pricing or certificates — rather than a
+        judgment of the teaching. The disagreement is the point, not the final word.
+      </p>
+      <p>
+        Sample: {rows.length} courses. Scores recomputed from saved review pages; not
+        affiliated with Coursera.
+      </p>
+    </div>
+  </section>
+</Base>
