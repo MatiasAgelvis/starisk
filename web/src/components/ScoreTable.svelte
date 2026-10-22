@@ -41,7 +41,6 @@
     { key: 'coursera', label: 'Coursera', align: 'text-right', numeric: true },
     { key: 'starisk', label: 'Starisk', align: 'text-right', numeric: true },
     { key: 'gap', label: 'Gap', align: 'text-right', numeric: true },
-    { key: 'spread', label: 'Spread', align: 'text-right', numeric: true },
     { key: 'signal', label: 'Signal', align: 'text-left', numeric: false },
   ];
 
@@ -177,7 +176,6 @@
             </div>
           </td>
           <td class="text-right">{gap == null ? '—' : gap.toFixed(1)}</td>
-          <td class="text-right">{row.spread == null ? '—' : row.spread.toFixed(1)}</td>
           <td><span class="badge {badge}">{signalOf(row)}</span></td>
         </tr>
       {/each}

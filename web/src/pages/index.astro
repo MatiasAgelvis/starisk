@@ -13,7 +13,6 @@ const rows = Object.entries(scores)
     image: record.image,
     coursera: record.coursera,
     starisk: record.starisk,
-    spread: record.spread ?? null,
   }));
 
 // The lookup island only needs the numbers. Passing the whole records would ship
@@ -55,7 +54,7 @@ const lookup = Object.fromEntries(
     <ScoreTable client:load rows={rows} />
     <p class="mt-3 text-sm text-base-content/60">
       A large negative gap means the written reviews are harsher than the headline rating. Sort by
-      any column; spread is how split the reviews are (0 = unanimous).
+      any column.
     </p>
   </section>
 
