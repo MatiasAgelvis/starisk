@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from stellaid.crawl import crawl, normalize_source, reviews_url, score_page
+from starisk.crawl import crawl, normalize_source, reviews_url, score_page
 
 GOOD_FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 STAMP = datetime(2026, 1, 1, tzinfo=timezone.utc)
@@ -17,7 +17,7 @@ class ScorePageTest(unittest.TestCase):
         self.assertEqual(result["model"], "simple")
         self.assertEqual(result["title"], "Sample Course")
         self.assertEqual(result["provider"], "Test University")
-        self.assertEqual(result["stellaid"], 1.5)
+        self.assertEqual(result["starisk"], 1.5)
         self.assertAlmostEqual(result["coursera"], 4.9)
         self.assertEqual(result["top_review"]["likes"], 80)
         self.assertEqual(result["top_review"]["stars"], 1.0)
@@ -69,14 +69,14 @@ class CrawlTest(unittest.TestCase):
             sleep=lambda _: None,
         )
 
-        self.assertIn("stellaid", scores["learn/good"])
+        self.assertIn("starisk", scores["learn/good"])
         self.assertEqual(scores["learn/good"]["scrapedAt"], STAMP.isoformat())
         self.assertIn("error", scores["learn/broken"])
         self.assertIn("error", scores["learn/empty"])
 
     def test_failed_parse_does_not_overwrite_a_good_record(self):
         existing = {
-            "learn/good": {"stellaid": 4.2, "reviews": 10, "scrapedAt": "old"}
+            "learn/good": {"starisk": 4.2, "reviews": 10, "scrapedAt": "old"}
         }
 
         scores = crawl(
@@ -87,7 +87,7 @@ class CrawlTest(unittest.TestCase):
             sleep=lambda _: None,
         )
 
-        self.assertEqual(scores["learn/good"]["stellaid"], 4.2)
+        self.assertEqual(scores["learn/good"]["starisk"], 4.2)
         self.assertEqual(scores["learn/good"]["scrapedAt"], "old")
         self.assertIn("error", scores["learn/good"])
 

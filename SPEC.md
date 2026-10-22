@@ -126,7 +126,7 @@ calibration against my labels, not aesthetics.**
     "slug": "machine-learning",
     "title": "Machine Learning",
     "coursera": 4.9,
-    "stellaid": 4.5,
+    "starisk": 4.5,
     "reviews": 25,
     "model": "simple",
     "scrapedAt": "2026-10-20T03:00:00Z"
@@ -137,11 +137,11 @@ calibration against my labels, not aesthetics.**
 ## 9. Repo layout (target)
 
 ```
-stellaid/
+starisk/
   SPEC.md                     # this file
   pipeline/                   # Python — the back
     pyproject.toml
-    stellaid/
+    starisk/
       __init__.py
       engine.py               # scoring (ported; DEFAULTS + SIMPLE)
       adapter.py              # HTML → reviews (2022 regex; BS4 in Phase 2)

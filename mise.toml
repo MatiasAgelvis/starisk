@@ -22,7 +22,7 @@ run = "python -m unittest discover -s tests"
 [tasks."pipeline:crawl"]
 description = "Crawl the courses listed in pipeline/data/sources.json"
 dir = "pipeline"
-run = "python -m stellaid.crawl"
+run = "python -m starisk.crawl"
 
 [tasks."pipeline:score"]
 description = "Score local review snapshots in samples/live"

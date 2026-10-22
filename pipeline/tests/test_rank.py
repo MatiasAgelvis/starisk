@@ -1,6 +1,6 @@
 import unittest
 
-from stellaid.rank import average_ranks, spearman
+from starisk.rank import average_ranks, spearman
 
 
 class RankTest(unittest.TestCase):

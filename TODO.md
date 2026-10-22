@@ -32,7 +32,6 @@ for the small, near-term stuff.
 - Find where to add the copy '5 stars... would not reccomend'
 
 ## Pipeline
-- **Rename internals** `stellaid` → `starisk` (JSON field and Python package). No user impact.
 - Optional pagination (`?page=N`) if we ever want more than the first reviews page.
 - Alert when a crawl produces several `error` records in a row (markup changed).
 - Score history over time — git commits of `scores.json` already form a timeline.

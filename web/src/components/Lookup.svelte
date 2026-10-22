@@ -15,7 +15,7 @@
 
   function gapLabel(record) {
     if (record.coursera == null) return 'no headline rating';
-    const gap = record.stellaid - record.coursera;
+    const gap = record.starisk - record.coursera;
     if (gap <= -1.5) return 'contested';
     if (gap <= -0.5) return 'softened';
     return 'agrees with Coursera';
@@ -65,8 +65,8 @@
         </div>
         <div class="stat">
           <div class="stat-title">Starisk</div>
-          <div class="stat-value text-2xl">{result.record.stellaid.toFixed(1)}</div>
-          <Stars value={result.record.stellaid} size={16} />
+          <div class="stat-value text-2xl">{result.record.starisk.toFixed(1)}</div>
+          <Stars value={result.record.starisk} size={16} />
           <div class="stat-desc">{gapLabel(result.record)}</div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import scores from '../../data/scores.json';
 
 export function getStaticPaths() {
   return Object.entries(scores)
-    .filter(([, record]) => typeof record.stellaid === 'number')
+    .filter(([, record]) => typeof record.starisk === 'number')
     .map(([key, record]) => {
       const [type, slug] = key.split('/');
       return { params: { type, slug }, props: { record, key } };
@@ -14,14 +14,14 @@ export function getStaticPaths() {
 }
 
 const { record, key } = Astro.props;
-const gap = record.coursera == null ? null : record.stellaid - record.coursera;
+const gap = record.coursera == null ? null : record.starisk - record.coursera;
 const top = record.top_review;
 const title = record.title ?? key;
 
 const description =
   record.coursera == null
-    ? `${title}: the most-upvoted learner reviews put it at ${record.stellaid.toFixed(1)} out of 5.`
-    : `${title}: Coursera rates it ${record.coursera.toFixed(1)}, the most-upvoted reviews say ${record.stellaid.toFixed(1)}.`;
+    ? `${title}: the most-upvoted learner reviews put it at ${record.starisk.toFixed(1)} out of 5.`
+    : `${title}: Coursera rates it ${record.coursera.toFixed(1)}, the most-upvoted reviews say ${record.starisk.toFixed(1)}.`;
 
 const readOn = record.scrapedAt
   ? new Date(record.scrapedAt).toLocaleDateString('en-GB', {
@@ -72,8 +72,8 @@ function signalText() {
       </div>
       <div class="stat">
         <div class="stat-title">Starisk</div>
-        <div class="stat-value text-2xl">{record.stellaid.toFixed(1)}</div>
-        <Stars value={record.stellaid} size={16} />
+        <div class="stat-value text-2xl">{record.starisk.toFixed(1)}</div>
+        <Stars value={record.starisk} size={16} />
         <div class="stat-desc">{signalText()}</div>
       </div>
       <div class="stat">

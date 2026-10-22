@@ -1,9 +1,9 @@
 """Crawl Coursera courses and write `data/scores.json`.
 
     cd pipeline
-    python3 -m stellaid.crawl                  # uses data/sources.json
-    python3 -m stellaid.crawl --delay 2        # slower, politer
-    python3 -m stellaid.crawl learn/machine-learning   # one-off source
+    python3 -m starisk.crawl                  # uses data/sources.json
+    python3 -m starisk.crawl --delay 2        # slower, politer
+    python3 -m starisk.crawl learn/machine-learning   # one-off source
 
 Design notes:
 - One request per course (the first page is sorted "Most Helpful", which is the
@@ -79,7 +79,7 @@ def score_page(html: str) -> dict | None:
         "description": details["description"],
         "image": details["image"],
         "coursera": None if coursera != coursera else round(coursera, 1),  # NaN -> None
-        "stellaid": round(
+        "starisk": round(
             course_score({"reviews": reviews, "coursera": coursera}, SIMPLE), 1
         ),
         "reviews": len(reviews),
@@ -179,7 +179,7 @@ def main(argv: list[str]) -> int:
     scores = crawl(sources, existing=existing, delay=delay)
     write_atomic(SCORES_PATH, scores)
 
-    scored = sum(1 for record in scores.values() if "stellaid" in record)
+    scored = sum(1 for record in scores.values() if "starisk" in record)
     print(f"crawled {len(sources)} | records: {len(scores)} | scored: {scored}")
     print(f"wrote {SCORES_PATH}")
     return 0

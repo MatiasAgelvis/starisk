@@ -81,7 +81,7 @@ copy, which is already committed, so hosts can skip it).
 
 ```
 pipeline/      Python — crawler, scoring engine, calibration
-  stellaid/    engine, adapter, fetch, crawl, rank, calibration
+  starisk/     engine, adapter, fetch, crawl, rank, calibration
   data/        sources.json (what to crawl), scores.json (the seam)
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI

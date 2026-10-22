@@ -1,4 +1,4 @@
-"""Stellaid scoring engine.
+"""Starisk scoring engine.
 
 A faithful Python port of the original 2021 JavaScript math. The behavior is
 deliberately identical to `engine/engine.js` (the old extension), so the ported

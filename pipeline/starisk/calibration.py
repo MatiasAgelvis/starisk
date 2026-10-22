@@ -94,9 +94,9 @@ def correlate(courses: list[dict], scores: dict):
 
 
 def main(argv: list[str]) -> int:
-    """python -m stellaid.calibration <Certificates.md> [out.json]"""
+    """python -m starisk.calibration <Certificates.md> [out.json]"""
     if len(argv) < 2:
-        print("usage: python -m stellaid.calibration <Certificates.md> [out.json]")
+        print("usage: python -m starisk.calibration <Certificates.md> [out.json]")
         return 1
 
     source = Path(argv[1])

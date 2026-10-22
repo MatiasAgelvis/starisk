@@ -10,8 +10,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from stellaid.adapter import extract_coursera_score, extract_reviews
-from stellaid.engine import DEFAULTS, SIMPLE, course_score
+from starisk.adapter import extract_coursera_score, extract_reviews
+from starisk.engine import DEFAULTS, SIMPLE, course_score
 
 
 def fmt(value: float) -> str:

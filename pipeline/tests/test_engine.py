@@ -1,6 +1,6 @@
 import unittest
 
-from stellaid.engine import DEFAULTS, SIMPLE, course_score, peer_score, review_weight
+from starisk.engine import DEFAULTS, SIMPLE, course_score, peer_score, review_weight
 
 
 class EngineTest(unittest.TestCase):

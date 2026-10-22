@@ -8,7 +8,7 @@ interface Row {
   provider?: string | null;
   image?: string | null;
   coursera: number | null;
-  stellaid: number;
+  starisk: number;
 }
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 const { rows } = Astro.props;
 
 function gap(row: Row): number | null {
-  return row.coursera == null ? null : row.stellaid - row.coursera;
+  return row.coursera == null ? null : row.starisk - row.coursera;
 }
 
 function signal(row: Row) {
@@ -76,8 +76,8 @@ function signal(row: Row) {
               </td>
               <td class="text-right">
                 <div class="flex items-center justify-end gap-2">
-                  <span class="font-bold">{row.stellaid.toFixed(1)}</span>
-                  <Stars value={row.stellaid} />
+                  <span class="font-bold">{row.starisk.toFixed(1)}</span>
+                  <Stars value={row.starisk} />
                 </div>
               </td>
               <td class="text-right">{value == null ? '—' : value.toFixed(1)}</td>

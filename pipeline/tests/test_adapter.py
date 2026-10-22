@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from stellaid.adapter import extract_coursera_score, extract_details, extract_reviews, extract_title
+from starisk.adapter import extract_coursera_score, extract_details, extract_reviews, extract_title
 
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 
