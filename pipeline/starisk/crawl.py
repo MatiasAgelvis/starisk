@@ -323,6 +323,14 @@ def crawl(
         else:
             if landing:
                 result.update(extract_landing(landing))
+                # The landing page is the description page: title, provider,
+                # image and level live there. The reviews page sometimes carries
+                # the site's boilerplate instead (seen on every specialization),
+                # so the landing wins whenever it has something to say.
+                details = extract_details(landing)
+                for field in ("title", "provider", "image", "description", "level", "enrollment"):
+                    if details.get(field):
+                        result[field] = details[field]
             # Re-parsing a cached page is not a fresh scrape: keep the old stamp.
             previous = scores.get(key) or {}
             stamped = previous.get("scrapedAt", stamp) if offline else stamp
