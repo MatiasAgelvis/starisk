@@ -115,6 +115,12 @@ second column, a second story). Revisit the moment the premise gets challenged
 in public, or if calibration comes out weak. It's the honest escape hatch, not
 the next feature.
 
+**Concrete use case that appeared later:** 5 of the first 34 courses had no
+critical review *with text* — every 1–3★ review was a bare rating — so the page
+had to fall back to a 5★ review (`kind: consensus`). Some of those 5★ reviews
+contain real criticism after a "but". Finding that sentence inside praise is
+exactly what this idea would buy, and it is now measured rather than imagined.
+
 ---
 
 ## C. The corpus and the story
