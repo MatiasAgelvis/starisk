@@ -103,9 +103,22 @@ The site is static files in `web/dist`. Any static host works; the settings are
 root `web`, build `npm run build`, output `dist` (`build.sh` only adds the data
 copy, which is already committed, so hosts can skip it).
 
-- **Vercel:** import the repo as-is — `vercel.json` runs install and build inside
-  `web/` and serves `web/dist`, so no project settings are needed. Set `SITE_URL`
-  in the project's environment to the deployment origin.
+- **Vercel:** two setups work, but the **dashboard must match the config file**
+  you are relying on — Vercel's Project Settings override `vercel.json`:
+
+  | Root Directory | config read | dashboard fields |
+  |---|---|---|
+  | repo root | `/vercel.json` (install `npm ci --prefix web`, output `web/dist`) | all empty |
+  | `web` | `web/vercel.json` (install `npm ci`, output `dist`) | all empty |
+
+  The failing signature `npm ci can only install with an existing
+  package-lock.json` with the command `npm ci --prefix web` means the build ran
+  **inside `web/`** (Root Directory = `web`) while the dashboard still carried a
+  `--prefix web` Install Command, so npm looked for `web/web/package-lock.json`.
+  Clear **Install Command**, **Build Command** and **Output Directory**, then
+  redeploy. There is no repo change that can outvote a dashboard command.
+
+  Set `SITE_URL` in the project's environment to the deployment origin.
 - **Cloudflare Pages:** root `web`, build `npm run build`, output `dist`.
 - **GitHub Pages:** a *project* site serves from `/starisk/`, so absolute links
   (`/learn/...`, `/logos/...`) would break. Use a custom domain, or set `base`
