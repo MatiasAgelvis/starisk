@@ -5,6 +5,7 @@ from tempfile import TemporaryDirectory
 
 from starisk.cache import load_page, path_for, store_page
 from starisk.crawl import (
+    _top_review,
     crawl,
     excerpt,
     is_fresh,
@@ -47,6 +48,7 @@ class ScorePageTest(unittest.TestCase):
         self.assertIsInstance(result["spread"], float)
         self.assertGreaterEqual(result["spread"], 0.0)
         self.assertIsInstance(result["spread_weighted"], float)
+        self.assertEqual(sum(result["review_counts"].values()), result["reviews"])
         self.assertNotIn("level", result)
         self.assertNotIn("enrollment", result)
 
@@ -373,6 +375,28 @@ class ExcerptTest(unittest.TestCase):
     def test_empty(self):
         self.assertEqual(excerpt(""), "")
         self.assertEqual(excerpt(None), "")
+
+
+class TopReviewTest(unittest.TestCase):
+    @staticmethod
+    def review(stars, likes=0, text=None):
+        return {"stars": stars, "likes": likes, "text": text, "age_days": 1}
+
+    def test_critical_with_text_wins(self):
+        top = _top_review([self.review(5.0, 50, "great"), self.review(2.0, 5, "meh")])
+
+        self.assertEqual(top["kind"], "dissent")
+        self.assertEqual(top["text"], "meh")
+
+    def test_rating_only_criticals_fall_back_to_consensus(self):
+        # Every 1-3 star review is a bare rating, so there is no dissent to quote.
+        top = _top_review([self.review(5.0, 8, "great"), self.review(1.0, 9, None)])
+
+        self.assertEqual(top["kind"], "consensus")
+        self.assertEqual(top["stars"], 5.0)
+
+    def test_nothing_with_text_is_none(self):
+        self.assertIsNone(_top_review([self.review(1.0, 3, None)]))
 
 
 if __name__ == "__main__":

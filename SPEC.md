@@ -144,6 +144,7 @@ calibration against my labels, not aesthetics.**
 - `reviews` — cards we actually read (one page, ~20).
 - `reviews_total` / `ratings_total` — the population, so the sampling is explicit.
 - `rating_counts` — Coursera's full star distribution, from the embedded page data.
+- `review_counts` — the same for the ~20 sampled reviews only.
 - `spread` — unweighted std-dev of the sampled stars (contention).
 - `spread_weighted` — the same with like weights; it *collapses* when one review
   dominates, which is informative but not a contention measure.

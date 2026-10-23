@@ -9,7 +9,14 @@
     "spread": 1.63,
     "spread_weighted": 1.74,
     "reviews": 19,
+    "review_counts": {
+      "1.0": 4,
+      "2.0": 2,
+      "3.0": 4,
+      "5.0": 9
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I have completed this course in full and as a result, I am highly satisfued with how Professor Andrew Ng explains the materials. Thank you for this! However, I cannot understand, why after completing the course a part of studying materials are not accessible, even though I paid a sufficient price for the course. These unaccessible materials include Python programs which were used as a practice. Frankly, I find it unfair, since this practice would be extremely important to revise the materials while improving my skills in Machine Learning in the future. Moreover, a part of the montly fee was paid also for the practice materials. I may agree that these Python programs can be private, however,there should be ways to overcome this issue. Without the possibility to revise the code it will be much harder to create our own applications and programs.",
       "stars": 1.0,
       "likes": 80
@@ -47,7 +54,14 @@
     "spread": 1.75,
     "spread_weighted": 1.79,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 5,
+      "2.0": 1,
+      "4.0": 1,
+      "5.0": 13
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "this course states tons of info that is obvious. I mean tons. at one point the instructor says if there is a class review before a test it would be a good idea to attend. At another point her colleague says you can get a lot of intellectual stimulation by having smart peers to talk to. They also say your brain will work better if you exercise and get a good night's sleep. Are you serious? This is your advice? Could this be any more obvious? The course is filled with obvious statements like this making it much longer than it needs to be. Seriously, it could be cut in half if not by two thirds. They also tell you the names of different chemicals in your brain. How this helps you learn better I don't know. There are a few good pieces of advice here and there. It's a shame you have to listen to so many lectures to hear them. They could have cut out the obvious stuff and got to the point much quicker.",
       "stars": 1.0,
       "likes": 206
@@ -83,7 +97,14 @@
     "spread": 1.59,
     "spread_weighted": 1.54,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 3,
+      "2.0": 3,
+      "3.0": 3,
+      "5.0": 11
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I am a bit dissapointed for the fact that this forces people to code in Java. Need to provide flexibility for someone coming from C/C++/Python who are well versed and can code in those. It becomes more of programming hurdle than logic implementation.",
       "stars": 2.0,
       "likes": 247
@@ -118,7 +139,14 @@
     "spread": 1.72,
     "spread_weighted": 1.43,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 4,
+      "2.0": 4,
+      "3.0": 1,
+      "5.0": 11
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I enjoyed the lectures and a few practice quiz. But I don't think the structure of assignments presented here is the correct way to assess learning. The assignments or exercises should be interspersed between lectures and the problems should be more interactive (pushing the student to think). Moreover, the amount of pre-written code was immense and therefore didn't really make me think a lot on my own. This structure of assignment forces the student to focus on matching the expected output instead of really understanding the concept. I am pretty sure most students did not really grasp the concepts at an intellectual level but still passed with decent grades. This is exactly the problem with schools today and I hope that Coursera is working towards rectifying that.",
       "stars": 3.0,
       "likes": 287
@@ -155,7 +183,14 @@
     "spread": 0.96,
     "spread_weighted": 0.75,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 17
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I found this course to be helpful. But this is very basic. A direction on how to pursue the understanding further would have helped. Also, the fee for the content and was not that worth.",
       "stars": 3.0,
       "likes": 39
@@ -189,7 +224,14 @@
     "spread": 1.84,
     "spread_weighted": 1.85,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 7,
+      "2.0": 1,
+      "3.0": 2,
+      "5.0": 10
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This course is virtually worthless. I couldn't follow the lectures, and I have a PhD and have been a tenured professor for almost two decades. The online course is based on snippets taken from face-to-face lectures and breakout sessions, and the result is utter incoherence. The instructor frequently refers to concepts that have not yet been encountered in the online version of the course; makes extensive use of mathematical notations and formulas whose variables are never properly explained; and generally does a poor job of explaining the material. This online version of the Yale course was obviously slapped together with very little thought and production value; it's one of those unsuccessful attempts to bring in revenue on the cheap, creating an online version out of existing face-to-face material, rather than building a real online course from scratch. This was wasted money and time. This attempt to capitalize on the Yale brand is pathetic.",
       "stars": 1.0,
       "likes": 663
@@ -224,7 +266,15 @@
     "spread": 1.78,
     "spread_weighted": 1.37,
     "reviews": 19,
+    "review_counts": {
+      "1.0": 6,
+      "2.0": 1,
+      "3.0": 2,
+      "4.0": 1,
+      "5.0": 9
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This course significantly lacks depth. The topic is covered at a very high-level and represents only a lightweight introduction. You will not gain any insights into the challenges that someone might face using CNNs on Tensorflow in a real-world scenario.",
       "stars": 1.0,
       "likes": 75
@@ -259,7 +309,12 @@
     "spread": 0.22,
     "spread_weighted": 0.23,
     "reviews": 20,
+    "review_counts": {
+      "4.0": 1,
+      "5.0": 19
+    },
     "top_review": {
+      "kind": "consensus",
       "text": "If you are an \"absolute\" novice with no knowledge about RDBMS and Big Data systems and all help from YouTube videos and other online resources have been of little to no help then you must take this course. It teaches you the very fundamentals of database design and builds your knowledge from ground up. It takes you from \"What is DBMS\" to a much higher level in a very short span. And Glynn is perhaps the best teacher you've ever met in your life! Give this course a try and you'll be happy and better off for having done so. Good luck and \"THANK YOU GLYNN!\".",
       "stars": 5.0,
       "likes": 8
@@ -294,7 +349,13 @@
     "spread": 0.77,
     "spread_weighted": 1.31,
     "reviews": 20,
+    "review_counts": {
+      "2.0": 1,
+      "3.0": 1,
+      "5.0": 18
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "The course is basically a presentation of semi-digested Keras tutorials, sometimes outdated. No depth and no real-world experience were communicated. The notebooks are mediocre, lazy and minimalistic, here-they-work-here-they-don't. You will not use them for your portfolio. I wouldn't call this course \"advanced\", it's rather a shallow overview of advanced techniques.",
       "stars": 2.0,
       "likes": 20
@@ -330,7 +391,15 @@
     "spread": 1.31,
     "spread_weighted": 1.16,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 2,
+      "2.0": 1,
+      "3.0": 7,
+      "4.0": 2,
+      "5.0": 8
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This is most frustrating course in all of your courses so far. The instructions were completely misguiding the candidates from YOLO implementation onwards. All along you presented the course very well. But when come to most important topics, we had to focus on syntactical errors. But we are supposed to spend time on understanding the algorithms at this level. Dont know why this 180 degrees turn taken by you. If you intentionally designed this course then fine. Otherwise, you should seriously think about rework on the instructions. Few links to hints were taking to some pages in github with just folders.",
       "stars": 3.0,
       "likes": 53
@@ -367,7 +436,15 @@
     "spread": 1.18,
     "spread_weighted": 1.35,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "2.0": 1,
+      "3.0": 3,
+      "4.0": 2,
+      "5.0": 13
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "Good content, but there was a highly unpleasant surprise in the programming assignments, namely this: \"Retakes: You can attempt this assignment 5 times every 4 months.\" First of all, this is a highly unusual and therefore unexpected requirement on Coursera. Also, considering how buggy graders are and that some assignments require submitting results separately from the notebook, this is a really high risk of having to wait 4 months for another chance.",
       "stars": 3.0,
       "likes": 3
@@ -403,7 +480,15 @@
     "spread": 1.15,
     "spread_weighted": 1.26,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "2.0": 1,
+      "3.0": 3,
+      "4.0": 4,
+      "5.0": 11
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I spend 1 hour learning the material and coding the assignment while 8 hours trying to debug it so that the grader will not complain. The grader sometimes insists on a particular order of the coding which does not really matter in the real world. Also, grader inconsistently gives 0 marks to a particular part of the problem while give a full mark on other part using the same function. (Like numpy.max) However, the forum is quite helpful and the staff is generally responsive.",
       "stars": 2.0,
       "likes": 7
@@ -439,7 +524,14 @@
     "spread": 1.47,
     "spread_weighted": 1.55,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 4,
+      "3.0": 6,
+      "4.0": 3,
+      "5.0": 7
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I found the explanations of theory of RL to replicate what was written in the book. Without examples the videos were no value add.",
       "stars": 1.0,
       "likes": 50
@@ -475,7 +567,14 @@
     "spread": 1.12,
     "spread_weighted": 1.82,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "2.0": 1,
+      "3.0": 1,
+      "5.0": 17
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This course it wasn't challenging for me and if you already have experience using GIT I don't recommend you to take it. I finished the whole course in one hour or so. If you are experienced on GIT you can just go directly to the assignments and take them, they are quite easy. They say that \"Developers and members of IT (Information Technology) are the primary audience\", they should clarify that this course is for beginners.",
       "stars": 1.0,
       "likes": 22
@@ -509,7 +608,14 @@
     "spread": 1.55,
     "spread_weighted": 1.28,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 10,
+      "2.0": 2,
+      "3.0": 4,
+      "5.0": 4
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This course is not very informative, and it seems as though it is more of an advertisement to the lecturer's project then a real academic course",
       "stars": 1.0,
       "likes": 24
@@ -543,7 +649,13 @@
     "spread": 1.32,
     "spread_weighted": 0.89,
     "reviews": 8,
+    "review_counts": {
+      "1.0": 1,
+      "4.0": 1,
+      "5.0": 6
+    },
     "top_review": {
+      "kind": "consensus",
       "text": "The course is a good sequel in the “… Discrete Optimization” series. With just about any programming language, the true understanding of how the program is run by the computer helps tuning the program, minimizing the execution time. The same is especially true in optimization, as instead of the “classical” imperative programs we have “models” that are digested by some “solver”, which actually does all the number crunching. Different solvers (and the same solver with different configuration) can behave drastically different while running the same model. So this course finally removes the veil and uncovers the things inside these solvers, that were considered as black boxes in the previous two courses. The course is likely to motivate you to experiment with different solvers for the same models, and, maybe, even implementing your own solver.",
       "stars": 5.0,
       "likes": 5
@@ -580,7 +692,13 @@
     "spread": 1.25,
     "spread_weighted": 1.36,
     "reviews": 20,
+    "review_counts": {
+      "2.0": 4,
+      "3.0": 2,
+      "5.0": 14
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This course should have brought more commands rather than managing packages( as many few people care about building the rpm packages and this kind of stuff). Well for those who want to learn linux or even debian this course is not sufficient .Even after spending 3 weeks I have to take some other course to learn the command tools.",
       "stars": 2.0,
       "likes": 4
@@ -614,7 +732,13 @@
     "spread": 1.95,
     "spread_weighted": 1.73,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 9,
+      "3.0": 1,
+      "5.0": 10
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I would say though that the course lecturer is clearly an expert in the field and that the material could be re-purposed with only some effort in order to make it beginner friendly (if they ever wanted to) . In the meantime - if you are a beginner, try somewhere else.",
       "stars": 1.0,
       "likes": 24
@@ -648,7 +772,14 @@
     "spread": 1.49,
     "spread_weighted": 1.55,
     "reviews": 19,
+    "review_counts": {
+      "1.0": 2,
+      "2.0": 3,
+      "4.0": 2,
+      "5.0": 12
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "Very Introductory. Maybe can even been summarised by one 20 mins video instead of 3 week's course.",
       "stars": 2.0,
       "likes": 13
@@ -682,7 +813,13 @@
     "spread": 0.77,
     "spread_weighted": 0.94,
     "reviews": 20,
+    "review_counts": {
+      "2.0": 1,
+      "3.0": 1,
+      "5.0": 18
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "Cons: 1. For a beginner who didn't use any source control tool, I don't feel this is a good course to learn since there are very less practical examples. I feel the author assume you know or at least used other revision control tool. You would feel still don't know how to use it even though can pass all the quiz",
       "stars": 2.0,
       "likes": 3
@@ -716,7 +853,15 @@
     "spread": 1.8,
     "spread_weighted": 1.81,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 6,
+      "2.0": 1,
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 11
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "Please rename this course \"Python and applied statistics\". The professor spends sooooo much time talking about the statistics concepts and spends soooo little time applying the knowledge to financial analysis. It is not about \"Statistics for Financial Analysis\". Replace the data he uses for demonstration with GPA of every student and it becomes \"Statistics for Being HKUST President\" or \"Statistics for Anything\". I feel I am taking an introduction course to statistics and financial analysis is just an excuse the teacher use to show us the content he teaches is somewhat useful.",
       "stars": 1.0,
       "likes": 91
@@ -751,7 +896,12 @@
     "spread": 0.22,
     "spread_weighted": 0.19,
     "reviews": 20,
+    "review_counts": {
+      "4.0": 1,
+      "5.0": 19
+    },
     "top_review": {
+      "kind": "consensus",
       "text": "Specifically about C part - I really liked the functional languages (especially I am into lisp-like syntax, very intrigued about other similar functional languages (clojure)) but this course gives a very nice contrast between functional and oop styles as well as deeper understanding of the oop approach to program decomposition for a person that has to write code on a daily basis, but has no software engineering training.",
       "stars": 5.0,
       "likes": 8
@@ -785,7 +935,12 @@
     "spread": 0.44,
     "spread_weighted": 0.4,
     "reviews": 20,
+    "review_counts": {
+      "3.0": 1,
+      "5.0": 19
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "unfortunately all the solutions for the homework are online.",
       "stars": 3.0,
       "likes": 1
@@ -819,7 +974,14 @@
     "spread": 1.0,
     "spread_weighted": 1.11,
     "reviews": 20,
+    "review_counts": {
+      "2.0": 1,
+      "3.0": 5,
+      "4.0": 1,
+      "5.0": 13
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "The first two courses have raised the expectations to a very high level. The last two courses don't meet them at all. Difficulty with modules working (basically lack thereof) makes it difficult to really learn something here.",
       "stars": 2.0,
       "likes": 6
@@ -855,7 +1017,14 @@
     "spread": 0.95,
     "spread_weighted": 1.01,
     "reviews": 20,
+    "review_counts": {
+      "2.0": 1,
+      "3.0": 10,
+      "4.0": 3,
+      "5.0": 6
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "I really liked the new videos (\"Meeting with...\") and the idea of using all the information learned through the other courses to tackle a project. However, this course seems to not be fully thought-through. I didn't love the re-inclusion of videos I had already seen in the past (which were sometimes only tangentially-related to that week's topic). The programming assignments were either way too easy (#1 and #3) or way too difficult/involved/long (#2). The pacing of this course was way off as well, I don't think it should be broken into 6 weeks. I finished the entire thing in about 1 week.",
       "stars": 2.0,
       "likes": 8
@@ -891,7 +1060,15 @@
     "spread": 1.59,
     "spread_weighted": 1.83,
     "reviews": 19,
+    "review_counts": {
+      "1.0": 3,
+      "2.0": 3,
+      "3.0": 1,
+      "4.0": 2,
+      "5.0": 10
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This course presented repeated some of the material from previous courses, had limited challenging material and no programming. It was much too easy for anyone who had already completed the first two courses and it should not have been a standalone course but rather could easily have been part of another course.",
       "stars": 1.0,
       "likes": 29
@@ -928,7 +1105,13 @@
     "spread": 1.01,
     "spread_weighted": 1.04,
     "reviews": 20,
+    "review_counts": {
+      "2.0": 1,
+      "3.0": 5,
+      "5.0": 14
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "Another great course from edhec business school on portfolio construction. The reason why i am giving 3 is because forum quality and support is below acceptable. What is the point for Claudia to encourage this conversations? We come here to learn practical skills and sometimes need help and support, which does not exist. Great course otherwise.",
       "stars": 3.0,
       "likes": 7
@@ -964,7 +1147,13 @@
     "spread": 0.64,
     "spread_weighted": 0.69,
     "reviews": 20,
+    "review_counts": {
+      "3.0": 2,
+      "4.0": 2,
+      "5.0": 16
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "Really enjoyed the course. The lectures were interesting and well produced. The labs were fun. It was enjoyable to program along with the instructor. The main negative that took away from the course was week 4 being much harder than the first 3 weeks. I t felt like the difficulty level increased a great deal and it was hard to keep up. I also think this course is above beginner level. You need to have decent programming skills, you need some finance background, and it helps to have an understanding in stats and linear algebra as well.",
       "stars": 3.0,
       "likes": 5
@@ -1000,7 +1189,13 @@
     "spread": 1.87,
     "spread_weighted": 1.91,
     "reviews": 8,
+    "review_counts": {
+      "1.0": 3,
+      "4.0": 1,
+      "5.0": 4
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "This course is not maintained by any responible person from the university. Some material needed to complete the course is simply missing. Questions in the forum do not get answered. I do not recommend to attend this course!",
       "stars": 1.0,
       "likes": 2
@@ -1036,7 +1231,15 @@
     "spread": 1.51,
     "spread_weighted": 1.62,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 3,
+      "2.0": 1,
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 14
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "The content is really very rich but the problem is that it is not consistent in terms of quizzes with assignments and videos.",
       "stars": 3.0,
       "likes": 1
@@ -1070,7 +1273,11 @@
     "spread": 0.0,
     "spread_weighted": 0.0,
     "reviews": 19,
+    "review_counts": {
+      "5.0": 19
+    },
     "top_review": {
+      "kind": "consensus",
       "text": "Great course for those who would like to divert from procedural and object-oriented programming and challenge themselves. The course promotes developing holistic thinking in discrete optimization, as solving most assignments to full grade usually requires developing some really good “global constraints” (these beasts have already appeared in the “Basic Modeling for Discrete Optimization” course). Although the fable based learning approach may frustrate some academic snobs, I guess it is generally fun and does not hinder the essence of the course. Highly recommended.",
       "stars": 5.0,
       "likes": 0
@@ -1106,7 +1313,12 @@
     "spread": 0.36,
     "spread_weighted": 0.36,
     "reviews": 19,
+    "review_counts": {
+      "4.0": 3,
+      "5.0": 16
+    },
     "top_review": {
+      "kind": "consensus",
       "text": "I'm happy to rate this course 5 stars. It's challenging, and designed learner-friendly: The abstract concept of constraint optimization is framed by a story that provides real-world context, helping memorization when taking in the problem. The workshops are exhaustive, and the assignments are staggered to lead the learner towards trying again, increasing the score with increasing difficulty. MiniZinc is a good learning platform, regardless of whether or not you'll be actually using it. Out of the 20 or so data science courses I've taken on Coursera over the years, this one ranks top.",
       "stars": 5.0,
       "likes": 3
@@ -1142,7 +1354,14 @@
     "spread": 1.24,
     "spread_weighted": 1.09,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 2,
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 16
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "Dangerous combination of dry presentation of abstract concepts, and demonstration rather than explanation. The class left me with lots of open questions, most beginning with \"why\", many followed by \"would you\", and may not be well suited for an online environment without teacher interaction.",
       "stars": 3.0,
       "likes": 5
@@ -1176,7 +1395,14 @@
     "spread": 1.65,
     "spread_weighted": 1.34,
     "reviews": 20,
+    "review_counts": {
+      "1.0": 10,
+      "2.0": 3,
+      "3.0": 2,
+      "5.0": 5
+    },
     "top_review": {
+      "kind": "dissent",
       "text": "After spending a lot of time on this specialisation, you will receive a certificate upon completion which says \"SOME ONLINE COURSES MAY DRAW ON MATERIAL FROM COURSES TAUGHT ON-CAMPUS BUT THEY ARE NOT EQUIVALENT TO ON-CAMPUS COURSES. THIS STATEMENT DOES NOT AFFIRM THAT THIS PARTICIPANT WAS ENROLLED AS A STUDENT AT STANFORD UNIVERSITY IN ANY WAY. IT DOES NOT CONFER A STANFORD UNIVERSITY GRADE, COURSE CREDIT OR DEGREE, AND IT DOES NOT VERIFY THE IDENTITY OF THE PARTICIPANT.\" Essentially, your completion certificate is a worthless paper regardless of your efforts. I think if the instructor wants to issue an online certificate, just say \"Online course\" and that is enough. I really felt being let down after all my efforts to listen and finish all homeworks.",
       "stars": 1.0,
       "likes": 139

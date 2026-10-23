@@ -30,6 +30,7 @@ import re
 import sys
 import tempfile
 import time
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -144,15 +145,27 @@ def excerpt(text: str, limit: int = TOP_REVIEW_LIMIT) -> str:
 
 
 def _top_review(reviews: list[dict]) -> dict | None:
-    """The most-upvoted *critical* review with a body, else the most upvoted."""
+    """The most-upvoted critical review with a body, else the most-upvoted one.
+
+    `kind` matters: when every critical review on the page is rating-only, the
+    fallback is *praise*, and presenting that as the dissent is a lie. Five of
+    the first 34 courses hit this.
+    """
     if not reviews:
         return None
+
     with_text = [review for review in reviews if (review.get("text") or "").strip()]
-    critical = [review for review in with_text if review["stars"] <= 3] or with_text
-    if not critical:
+    critical = [review for review in with_text if review["stars"] <= 3]
+
+    if critical:
+        top, kind = max(critical, key=lambda review: review["likes"]), "dissent"
+    elif with_text:
+        top, kind = max(with_text, key=lambda review: review["likes"]), "consensus"
+    else:
         return None
-    top = max(critical, key=lambda review: review["likes"])
+
     return {
+        "kind": kind,
         "text": excerpt(top["text"]) or None,
         "stars": top["stars"],
         "likes": top["likes"],
@@ -181,6 +194,11 @@ def score_page(html: str) -> dict | None:
         "spread": round(review_spread(reviews), 2),
         "spread_weighted": round(peer_spread(reviews, SIMPLE), 2),
         "reviews": len(reviews),
+        # The sample's own rating distribution, so a page can say "3 of 20 rated
+        # it 3★ or lower, but none of them wrote a comment" instead of guessing.
+        "review_counts": {
+            str(star): count for star, count in sorted(Counter(r["stars"] for r in reviews).items())
+        },
         "top_review": _top_review(reviews),
         "model": "simple",
     }

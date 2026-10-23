@@ -34,6 +34,13 @@ const readOn = record.scrapedAt
 const instructors = record.instructors ?? [];
 const categories = record.categories ?? [];
 
+// What the ~20 reviews we read actually rated it — not the population.
+const sampleCounts = record.review_counts ?? {};
+const sampleTotal = Object.values(sampleCounts).reduce((a: number, b: number) => a + b, 0);
+const sampleCritical = Object.entries(sampleCounts)
+  .filter(([star]) => Number(star) <= 3)
+  .reduce((total, [, count]) => total + (count as number), 0);
+
 // Coursera publishes its whole rating distribution in the page data. That is the
 // population — every rating ever — and it is more honest than any sample we read.
 const counts = record.rating_counts ?? null;
@@ -49,6 +56,10 @@ function verdictText() {
   if (inflation >= 1.5) return 'Inflated';
   if (inflation >= 0.5) return 'Padded';
   return 'Holds up';
+}
+
+function votes(count: number) {
+  return count === 0 ? 'no upvotes' : `${count} ${count === 1 ? 'vote' : 'votes'}`;
 }
 ---
 
@@ -134,9 +145,15 @@ function verdictText() {
     {
       top && top.text && (
         <section class="mt-8">
-          <h2 class="font-display text-xl font-bold">The dissent</h2>
+          <h2 class="font-display text-xl font-bold">
+            {top.kind === 'consensus' ? 'The consensus' : 'The dissent'}
+          </h2>
           <p class="mt-1 text-sm text-base-content/60">
-            The most-upvoted critical review ({top.likes} votes, {top.stars.toFixed(1)}★).
+            {top.kind === 'consensus'
+              ? sampleCritical > 0
+                ? `${sampleCritical} of the ${sampleTotal} reviews we read rated it 3★ or lower, but none of them wrote a comment. This is the most-upvoted review (${votes(top.likes)}).`
+                : `Every one of the ${sampleTotal} reviews we read gave it 4★ or more. This is the most-upvoted one (${votes(top.likes)}).`
+              : `The most-upvoted critical review (${votes(top.likes)}, ${top.stars.toFixed(1)}★).`}
           </p>
           <blockquote class="mt-4 rounded-box bg-base-200 p-5">
             <p class="text-base-content/90">“{top.text}”</p>
