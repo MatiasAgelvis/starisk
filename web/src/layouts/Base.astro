@@ -42,6 +42,20 @@ const isTeachers = path.startsWith('/instructors');
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
+
+    <!-- Counter.dev: cookieless, ~1 KB, no personal data. Only in production so
+         `astro dev` doesn't pollute the stats. See the privacy note in the footer. -->
+    {
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          defer
+          src="https://cdn.counter.dev/script.js"
+          data-id="0de1bf3d-1d12-4011-bf4d-485bfe73d701"
+          data-utcoffset="2"
+        />
+      )
+    }
   </head>
   <body>
     <!-- One star path for the whole page; every <Stars> references it. Repeating
@@ -84,6 +98,7 @@ const isTeachers = path.startsWith('/instructors');
 
     <footer class="footer footer-center p-6 text-sm text-base-content/60">
       <p>Ratings computed from Coursera reviews. Not affiliated with Coursera.</p>
+      <p class="text-xs text-base-content/40">Cookie-free visit counts.</p>
     </footer>
   </body>
 </html>
