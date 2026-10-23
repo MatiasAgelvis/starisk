@@ -82,6 +82,16 @@ both are cached, so `--offline` re-parses without touching the network. If
 Coursera rate-limits a run (403/429), it **stops** instead of retrying — the next
 run resumes at the same course.
 
+### Calibration
+
+```sh
+mise run pipeline:calibration                 # Spearman between my labels and the model
+python -m starisk.calibration --label         # rate the mapped courses, one by one
+```
+
+The label prompt is **blind**: it never shows the model's score, because seeing it
+would anchor the answer and turn calibration into confirmation.
+
 ### Deploying
 
 The site is static files in `web/dist`. Any static host works; the settings are

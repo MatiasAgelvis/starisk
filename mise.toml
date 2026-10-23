@@ -32,6 +32,11 @@ description = "Download provider logos that scores.json references"
 dir = "pipeline"
 run = "python -m starisk.logos"
 
+[tasks."pipeline:calibration"]
+description = "Compare my labels with the model (Spearman); --label to add labels"
+dir = "pipeline"
+run = "python -m starisk.calibration"
+
 [tasks."pipeline:score"]
 description = "Score local review snapshots in samples/live"
 dir = "pipeline"
