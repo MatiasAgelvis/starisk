@@ -269,6 +269,40 @@ class ArgsTest(unittest.TestCase):
             self.assertEqual(scores["learn/a"]["categories"], ["Data Science"])
             self.assertTrue(path_for("learn/a.landing", directory).exists())
 
+    def test_the_landing_page_supplies_the_real_metadata(self):
+        # Some specialization review pages ship the site's boilerplate as their
+        # title and nothing else. The landing page knows the course; it must win.
+        reviews = (
+            '<meta property="og:title" '
+            'content="Coursera | Online Courses From Top Universities. Join for Free"/>'
+            'data-e2e="review-table-card"'
+            '<div aria-label="Rated 4.0 out of 5 stars"></div>'
+            '<div aria-label="This was helpful (3)"></div>'
+            "Nov 14, 2022"
+            '<div data-testid="cml-viewer"><p>'
+            "A review body long enough for the adapter to treat it as the text."
+            "</p></div>"
+        )
+        landing = (
+            '<meta property="og:title" content="Medical Billing and Coding Fundamentals"/>'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Medical Billing and Coding Fundamentals",'
+            '"brand":{"name":"MedCerts"},"image":"https://example.com/x.png"}'
+            "</script>"
+        )
+
+        def fetch(url):
+            return landing if url.endswith("/learn/a") else reviews
+
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
+
+        record = scores["learn/a"]
+        self.assertEqual(record["title"], "Medical Billing and Coding Fundamentals")
+        self.assertEqual(record["provider"], "MedCerts")
+        self.assertEqual(record["image"], "https://example.com/x.png")
+        self.assertEqual(record["reviews"], 1)
+
     def test_a_failed_landing_page_does_not_fail_the_course(self):
         reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
 
