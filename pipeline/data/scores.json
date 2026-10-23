@@ -32,10 +32,54 @@
       "5": 30190
     },
     "instructors": [
-      "Andrew Ng",
-      "Aarti Bagul",
-      "Geoff Ladwig",
-      "Eddy Shyu"
+      {
+        "name": "Andrew Ng",
+        "slug": "andrewng",
+        "url": "https://www.coursera.org/instructor/andrewng",
+        "page": "andrewng",
+        "id": "1244",
+        "role": "Instructor",
+        "department": "Founder, DeepLearning.AI & Co-founder, Coursera",
+        "learners": 10040895,
+        "courses_taught": 53,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2a/6192a04f1311e7ba12057425631cbc/AndrewNg-Headshot.jpg"
+      },
+      {
+        "name": "Aarti Bagul",
+        "slug": "~77736236",
+        "url": "https://www.coursera.org/instructor/~77736236",
+        "page": "aarti-bagul",
+        "id": "77736236",
+        "role": "Curriculum Engineer",
+        "department": null,
+        "learners": 1312880,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b1/46e02a12f3418486d986cc1d30727d/aarti_bagul_profile_pic.jpg"
+      },
+      {
+        "name": "Geoff Ladwig",
+        "slug": "geoff-ladwig",
+        "url": "https://www.coursera.org/instructor/geoff-ladwig",
+        "page": "geoff-ladwig",
+        "id": "68361648",
+        "role": "Curriculum Engineer",
+        "department": "DeepLearning.AI",
+        "learners": 1312880,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/43/bc63bb19704d71844c37595d29e234/20220524_223511509_iOS.jpg"
+      },
+      {
+        "name": "Eddy Shyu",
+        "slug": "~170597538",
+        "url": "https://www.coursera.org/instructor/~170597538",
+        "page": "eddy-shyu",
+        "id": "170597538",
+        "role": "Instructor",
+        "department": null,
+        "learners": 1604309,
+        "courses_taught": 17,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8c/0a5a2ce2a44f959b8d3d3573d70613/eddy-profile-photo.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -77,8 +121,30 @@
       "5": 80320
     },
     "instructors": [
-      "Dr. Barbara Oakley",
-      "Dr. Terrence Sejnowski"
+      {
+        "name": "Dr. Barbara Oakley",
+        "slug": "barboakley",
+        "url": "https://www.coursera.org/instructor/barboakley",
+        "page": "barboakley",
+        "id": "1909875",
+        "role": "Professor of Engineering",
+        "department": "Industrial & Systems Engineering, Oakland University",
+        "learners": 5445216,
+        "courses_taught": 23,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/06/4d39ac7625459f968b6387ec88b8da/Barbara-Oakley-about-1-.jpg"
+      },
+      {
+        "name": "Dr. Terrence Sejnowski",
+        "slug": "terry",
+        "url": "https://www.coursera.org/instructor/terry",
+        "page": "terry",
+        "id": "5718916",
+        "role": "Francis Crick Professor at the Salk Institute for Biological Studies",
+        "department": "Computational Neurobiology Laboratory",
+        "learners": 5394866,
+        "courses_taught": 19,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b6/075a309e3411e39977e16acffacc70/Sejnowski-head-HHMI.jpg"
+      }
     ],
     "categories": [
       "Personal Development",
@@ -120,8 +186,30 @@
       "5": 10816
     },
     "instructors": [
-      "Kevin Wayne",
-      "Robert Sedgewick"
+      {
+        "name": "Kevin Wayne",
+        "slug": "~246867",
+        "url": "https://www.coursera.org/instructor/~246867",
+        "page": "kevin-wayne",
+        "id": "246867",
+        "role": "Phillip Y. Goldman '86 University Lecturer",
+        "department": "Computer Science",
+        "learners": 2041349,
+        "courses_taught": 5,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/cd/336e8cbec84c51aa62a7b2e96c138f/kevin-wayne.jpg"
+      },
+      {
+        "name": "Robert Sedgewick",
+        "slug": "~250165",
+        "url": "https://www.coursera.org/instructor/~250165",
+        "page": "robert-sedgewick",
+        "id": "250165",
+        "role": "William O. Baker *39 Professor in Computer Science, Emeritus",
+        "department": "Computer Science",
+        "learners": 2093160,
+        "courses_taught": 7,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b3/9bba1f743fd8650b0c19b9079563f2/Robert-Sedgewick.png"
+      }
     ],
     "categories": [
       "Computer Science"
@@ -162,9 +250,42 @@
       "5": 111092
     },
     "instructors": [
-      "Andrew Ng",
-      "Kian Katanforoosh",
-      "Younes Bensouda Mourri"
+      {
+        "name": "Andrew Ng",
+        "slug": "andrewng",
+        "url": "https://www.coursera.org/instructor/andrewng",
+        "page": "andrewng",
+        "id": "1244",
+        "role": "Instructor",
+        "department": "Founder, DeepLearning.AI & Co-founder, Coursera",
+        "learners": 10040895,
+        "courses_taught": 53,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2a/6192a04f1311e7ba12057425631cbc/AndrewNg-Headshot.jpg"
+      },
+      {
+        "name": "Kian Katanforoosh",
+        "slug": "kian-katanforoosh",
+        "url": "https://www.coursera.org/instructor/kian-katanforoosh",
+        "page": "kian-katanforoosh",
+        "id": "24382163",
+        "role": "Senior Curriculum Developer",
+        "department": "Founder, Workera",
+        "learners": 1746711,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/da/0f3120cee911e7aa754345b53081fb/Kian-Katan-copy.jpg"
+      },
+      {
+        "name": "Younes Bensouda Mourri",
+        "slug": "younes",
+        "url": "https://www.coursera.org/instructor/younes",
+        "page": "younes",
+        "id": "20612763",
+        "role": "Curriculum developer",
+        "department": "Computer Science",
+        "learners": 1751505,
+        "courses_taught": 23,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b1/30a8207be611e7ac8279c987513482/Younes.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -206,7 +327,18 @@
       "5": 43794
     },
     "instructors": [
-      "Andrew Ng"
+      {
+        "name": "Andrew Ng",
+        "slug": "andrewng",
+        "url": "https://www.coursera.org/instructor/andrewng",
+        "page": "andrewng",
+        "id": "1244",
+        "role": "Instructor",
+        "department": "Founder, DeepLearning.AI & Co-founder, Coursera",
+        "learners": 10040895,
+        "courses_taught": 53,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2a/6192a04f1311e7ba12057425631cbc/AndrewNg-Headshot.jpg"
+      }
     ],
     "categories": [
       "Business"
@@ -247,7 +379,18 @@
       "5": 27661
     },
     "instructors": [
-      "Robert Shiller"
+      {
+        "name": "Robert Shiller",
+        "slug": "bobshiller",
+        "url": "https://www.coursera.org/instructor/bobshiller",
+        "page": "bobshiller",
+        "id": "3543921",
+        "role": "Sterling Professor of Economics at Yale University",
+        "department": "Economics",
+        "learners": 2697388,
+        "courses_taught": 9,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/4b/691bcea2a68f28e2010eb8cb8f263a/econ252_robert_shiller_pic.jpg"
+      }
     ],
     "categories": [
       "Business",
@@ -290,7 +433,18 @@
       "5": 6530
     },
     "instructors": [
-      "Laurence Moroney"
+      {
+        "name": "Laurence Moroney",
+        "slug": "lmoroney",
+        "url": "https://www.coursera.org/instructor/lmoroney",
+        "page": "lmoroney",
+        "id": "10261328",
+        "role": "Instructor",
+        "department": null,
+        "learners": 614453,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ca/3e85203c6111e993caa9aa102f7a26/lm.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -330,7 +484,18 @@
       "5": 890
     },
     "instructors": [
-      "Glynn Durham"
+      {
+        "name": "Glynn Durham",
+        "slug": "~2490499",
+        "url": "https://www.coursera.org/instructor/~2490499",
+        "page": "glynn-durham",
+        "id": "2490499",
+        "role": "Senior Instructor",
+        "department": "Cloudera",
+        "learners": 55861,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c9/55390936e44e08a209ebdff5bfc502/Glynn4Coursera.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -371,8 +536,30 @@
       "5": 984
     },
     "instructors": [
-      "Laurence Moroney",
-      "Eddy Shyu"
+      {
+        "name": "Laurence Moroney",
+        "slug": "lmoroney",
+        "url": "https://www.coursera.org/instructor/lmoroney",
+        "page": "lmoroney",
+        "id": "10261328",
+        "role": "Instructor",
+        "department": null,
+        "learners": 614453,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ca/3e85203c6111e993caa9aa102f7a26/lm.jpg"
+      },
+      {
+        "name": "Eddy Shyu",
+        "slug": "~170597538",
+        "url": "https://www.coursera.org/instructor/~170597538",
+        "page": "eddy-shyu",
+        "id": "170597538",
+        "role": "Instructor",
+        "department": null,
+        "learners": 1604309,
+        "courses_taught": 17,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8c/0a5a2ce2a44f959b8d3d3573d70613/eddy-profile-photo.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -415,9 +602,42 @@
       "5": 37433
     },
     "instructors": [
-      "Andrew Ng",
-      "Kian Katanforoosh",
-      "Younes Bensouda Mourri"
+      {
+        "name": "Andrew Ng",
+        "slug": "andrewng",
+        "url": "https://www.coursera.org/instructor/andrewng",
+        "page": "andrewng",
+        "id": "1244",
+        "role": "Instructor",
+        "department": "Founder, DeepLearning.AI & Co-founder, Coursera",
+        "learners": 10040895,
+        "courses_taught": 53,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2a/6192a04f1311e7ba12057425631cbc/AndrewNg-Headshot.jpg"
+      },
+      {
+        "name": "Kian Katanforoosh",
+        "slug": "kian-katanforoosh",
+        "url": "https://www.coursera.org/instructor/kian-katanforoosh",
+        "page": "kian-katanforoosh",
+        "id": "24382163",
+        "role": "Senior Curriculum Developer",
+        "department": "Founder, Workera",
+        "learners": 1746711,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/da/0f3120cee911e7aa754345b53081fb/Kian-Katan-copy.jpg"
+      },
+      {
+        "name": "Younes Bensouda Mourri",
+        "slug": "younes",
+        "url": "https://www.coursera.org/instructor/younes",
+        "page": "younes",
+        "id": "20612763",
+        "role": "Curriculum developer",
+        "department": "Computer Science",
+        "learners": 1751505,
+        "courses_taught": 23,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b1/30a8207be611e7ac8279c987513482/Younes.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -460,8 +680,30 @@
       "5": 721
     },
     "instructors": [
-      "Martha White",
-      "Adam White"
+      {
+        "name": "Martha White",
+        "slug": "martha-white",
+        "url": "https://www.coursera.org/instructor/martha-white",
+        "page": "martha-white",
+        "id": "38191444",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/d8/72ac1d568145d4be06d372882cd6d7/_1050387.jpg"
+      },
+      {
+        "name": "Adam White",
+        "slug": "adam-white",
+        "url": "https://www.coursera.org/instructor/adam-white",
+        "page": "adam-white",
+        "id": "38179970",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/49/34dcb4288746529b062fda6492e40f/_1050363.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -504,8 +746,30 @@
       "5": 1037
     },
     "instructors": [
-      "Martha White",
-      "Adam White"
+      {
+        "name": "Martha White",
+        "slug": "martha-white",
+        "url": "https://www.coursera.org/instructor/martha-white",
+        "page": "martha-white",
+        "id": "38191444",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/d8/72ac1d568145d4be06d372882cd6d7/_1050387.jpg"
+      },
+      {
+        "name": "Adam White",
+        "slug": "adam-white",
+        "url": "https://www.coursera.org/instructor/adam-white",
+        "page": "adam-white",
+        "id": "38179970",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/49/34dcb4288746529b062fda6492e40f/_1050363.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -547,8 +811,30 @@
       "5": 2380
     },
     "instructors": [
-      "Martha White",
-      "Adam White"
+      {
+        "name": "Martha White",
+        "slug": "martha-white",
+        "url": "https://www.coursera.org/instructor/martha-white",
+        "page": "martha-white",
+        "id": "38191444",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/d8/72ac1d568145d4be06d372882cd6d7/_1050387.jpg"
+      },
+      {
+        "name": "Adam White",
+        "slug": "adam-white",
+        "url": "https://www.coursera.org/instructor/adam-white",
+        "page": "adam-white",
+        "id": "38179970",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/49/34dcb4288746529b062fda6492e40f/_1050363.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -590,7 +876,18 @@
       "5": 2359
     },
     "instructors": [
-      "Steve Byrnes"
+      {
+        "name": "Steve Byrnes",
+        "slug": "stevebyrnes",
+        "url": "https://www.coursera.org/instructor/stevebyrnes",
+        "page": "stevebyrnes",
+        "id": "27850940",
+        "role": "Instructional Designer",
+        "department": null,
+        "learners": 136178,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f2/3cd3c0f0bc11e784135324980fa21f/sbpicture.jpg"
+      }
     ],
     "categories": [
       "Computer Science"
@@ -631,7 +928,18 @@
       "5": 3697
     },
     "instructors": [
-      "Brian Hare"
+      {
+        "name": "Brian Hare",
+        "slug": "brianhare",
+        "url": "https://www.coursera.org/instructor/brianhare",
+        "page": "brianhare",
+        "id": "7490839",
+        "role": "Associate Professor",
+        "department": "Evolutionary Anthropology",
+        "learners": 223007,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/76/316670f41f11e4a91045643cf7ffec/brian-hare-pic.png"
+      }
     ],
     "categories": [
       "Health"
@@ -672,8 +980,30 @@
     },
     "low_sample": true,
     "instructors": [
-      "Prof. Jimmy Ho Man Lee",
-      "Prof. Peter J Stuckey"
+      {
+        "name": "Prof. Jimmy Ho Man Lee",
+        "slug": "jlee",
+        "url": "https://www.coursera.org/instructor/jlee",
+        "page": "jlee",
+        "id": "15600502",
+        "role": "Professor",
+        "department": "Department of Computer Science and Engineering",
+        "learners": 46490,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/6a/3d7810222011e69a12e12f0aafa3c1/jlee2_1_.jpg"
+      },
+      {
+        "name": "Prof. Peter J Stuckey",
+        "slug": "peter-stuckey",
+        "url": "https://www.coursera.org/instructor/peter-stuckey",
+        "page": "peter-stuckey",
+        "id": "189807274",
+        "role": "Adjunct Professor",
+        "department": null,
+        "learners": 42760,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/cf/8e2b2c1cb64c3dbae105cc269721bf/ps-thumbnail_3P0A7638-square.jpg"
+      }
     ],
     "categories": [
       "Computer Science",
@@ -714,7 +1044,18 @@
       "5": 531
     },
     "instructors": [
-      "Kara Pritchard"
+      {
+        "name": "Kara Pritchard",
+        "slug": "~219741545",
+        "url": "https://www.coursera.org/instructor/~219741545",
+        "page": "kara-pritchard",
+        "id": "219741545",
+        "role": "Vice President of Global Skills",
+        "department": "Linux Foundation Education",
+        "learners": 87245,
+        "courses_taught": 4,
+        "photo": null
+      }
     ],
     "categories": [
       "Computer Science"
@@ -754,7 +1095,18 @@
       "5": 967
     },
     "instructors": [
-      "Kara Pritchard"
+      {
+        "name": "Kara Pritchard",
+        "slug": "~219741545",
+        "url": "https://www.coursera.org/instructor/~219741545",
+        "page": "kara-pritchard",
+        "id": "219741545",
+        "role": "Vice President of Global Skills",
+        "department": "Linux Foundation Education",
+        "learners": 87245,
+        "courses_taught": 4,
+        "photo": null
+      }
     ],
     "categories": [
       "Computer Science"
@@ -795,7 +1147,18 @@
       "5": 1124
     },
     "instructors": [
-      "Kara Pritchard"
+      {
+        "name": "Kara Pritchard",
+        "slug": "~219741545",
+        "url": "https://www.coursera.org/instructor/~219741545",
+        "page": "kara-pritchard",
+        "id": "219741545",
+        "role": "Vice President of Global Skills",
+        "department": "Linux Foundation Education",
+        "learners": 87245,
+        "courses_taught": 4,
+        "photo": null
+      }
     ],
     "categories": [
       "Computer Science"
@@ -835,7 +1198,18 @@
       "5": 436
     },
     "instructors": [
-      "Kara Pritchard"
+      {
+        "name": "Kara Pritchard",
+        "slug": "~219741545",
+        "url": "https://www.coursera.org/instructor/~219741545",
+        "page": "kara-pritchard",
+        "id": "219741545",
+        "role": "Vice President of Global Skills",
+        "department": "Linux Foundation Education",
+        "learners": 87245,
+        "courses_taught": 4,
+        "photo": null
+      }
     ],
     "categories": [
       "Computer Science"
@@ -877,7 +1251,18 @@
       "5": 2743
     },
     "instructors": [
-      "Xuhu Wan"
+      {
+        "name": "Xuhu Wan",
+        "slug": "xuhuwan",
+        "url": "https://www.coursera.org/instructor/xuhuwan",
+        "page": "xuhuwan",
+        "id": "4094944",
+        "role": "Associate Professor",
+        "department": "Department of Information Systems, Business Statistics and Operations Management",
+        "learners": 275372,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/01/cc51d0e19e11e88b8757a5c4133ec7/portrait_xuhuwan.jpg"
+      }
     ],
     "categories": [
       "Business",
@@ -917,7 +1302,18 @@
       "5": 437
     },
     "instructors": [
-      "Dan  Grossman"
+      {
+        "name": "Dan Grossman",
+        "slug": "~873260",
+        "url": "https://www.coursera.org/instructor/~873260",
+        "page": "dan-grossman",
+        "id": "873260",
+        "role": "Professor",
+        "department": "Computer Science & Engineering",
+        "learners": 250904,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/cb/97bfa8552a725c14856bbecca8bc49/grossman2013.jpg"
+      }
     ],
     "categories": [
       "Computer Science"
@@ -956,7 +1352,18 @@
       "5": 741
     },
     "instructors": [
-      "Dan  Grossman"
+      {
+        "name": "Dan Grossman",
+        "slug": "~873260",
+        "url": "https://www.coursera.org/instructor/~873260",
+        "page": "dan-grossman",
+        "id": "873260",
+        "role": "Professor",
+        "department": "Computer Science & Engineering",
+        "learners": 250904,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/cb/97bfa8552a725c14856bbecca8bc49/grossman2013.jpg"
+      }
     ],
     "categories": [
       "Computer Science"
@@ -997,8 +1404,30 @@
       "5": 145
     },
     "instructors": [
-      "Gideon OZIK",
-      "Sean McOwen"
+      {
+        "name": "Gideon OZIK",
+        "slug": "~44544089",
+        "url": "https://www.coursera.org/instructor/~44544089",
+        "page": "gideon-ozik",
+        "id": "44544089",
+        "role": "Founder and managing partner of MKT MediaStats",
+        "department": "Data science and financial economics",
+        "learners": 16801,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c2/8193581a244641862e809737035078/gideon_ozik_0---Copy.jpg"
+      },
+      {
+        "name": "Sean McOwen",
+        "slug": "~15866139",
+        "url": "https://www.coursera.org/instructor/~15866139",
+        "page": "sean-mcowen",
+        "id": "15866139",
+        "role": "Quantitative Analyst",
+        "department": "Finance",
+        "learners": 16801,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/6c/8aa04bbd2d42d7a650f0746365eeaa/V3_IMG_4852_V2JPG.jpg"
+      }
     ],
     "categories": [
       "Business",
@@ -1040,8 +1469,30 @@
       "5": 511
     },
     "instructors": [
-      "Martha White",
-      "Adam White"
+      {
+        "name": "Martha White",
+        "slug": "martha-white",
+        "url": "https://www.coursera.org/instructor/martha-white",
+        "page": "martha-white",
+        "id": "38191444",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/d8/72ac1d568145d4be06d372882cd6d7/_1050387.jpg"
+      },
+      {
+        "name": "Adam White",
+        "slug": "adam-white",
+        "url": "https://www.coursera.org/instructor/adam-white",
+        "page": "adam-white",
+        "id": "38179970",
+        "role": "Assistant Professor",
+        "department": "Computing Science",
+        "learners": 118741,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/49/34dcb4288746529b062fda6492e40f/_1050363.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -1084,9 +1535,42 @@
       "5": 41614
     },
     "instructors": [
-      "Andrew Ng",
-      "Younes Bensouda Mourri",
-      "Kian Katanforoosh"
+      {
+        "name": "Andrew Ng",
+        "slug": "andrewng",
+        "url": "https://www.coursera.org/instructor/andrewng",
+        "page": "andrewng",
+        "id": "1244",
+        "role": "Instructor",
+        "department": "Founder, DeepLearning.AI & Co-founder, Coursera",
+        "learners": 10040895,
+        "courses_taught": 53,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2a/6192a04f1311e7ba12057425631cbc/AndrewNg-Headshot.jpg"
+      },
+      {
+        "name": "Younes Bensouda Mourri",
+        "slug": "younes",
+        "url": "https://www.coursera.org/instructor/younes",
+        "page": "younes",
+        "id": "20612763",
+        "role": "Curriculum developer",
+        "department": "Computer Science",
+        "learners": 1751505,
+        "courses_taught": 23,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b1/30a8207be611e7ac8279c987513482/Younes.jpg"
+      },
+      {
+        "name": "Kian Katanforoosh",
+        "slug": "kian-katanforoosh",
+        "url": "https://www.coursera.org/instructor/kian-katanforoosh",
+        "page": "kian-katanforoosh",
+        "id": "24382163",
+        "role": "Senior Curriculum Developer",
+        "department": "Founder, Workera",
+        "learners": 1746711,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/da/0f3120cee911e7aa754345b53081fb/Kian-Katan-copy.jpg"
+      }
     ],
     "categories": [
       "Data Science",
@@ -1127,8 +1611,30 @@
       "5": 423
     },
     "instructors": [
-      "Claudia Carrone",
-      "Vijay Vaidyanathan, PhD"
+      {
+        "name": "Claudia Carrone",
+        "slug": "ccarrone",
+        "url": "https://www.coursera.org/instructor/ccarrone",
+        "page": "ccarrone",
+        "id": "2188004",
+        "role": "Digital Learning Consultant / Instructional designer",
+        "department": "Pedagogical Innovation Department",
+        "learners": 33644,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8f/b037b750314c76a8f351ba28e6957e/CARRONE_PhF.jpg"
+      },
+      {
+        "name": "Vijay Vaidyanathan, PhD",
+        "slug": "~41993148",
+        "url": "https://www.coursera.org/instructor/~41993148",
+        "page": "vijay-vaidyanathan",
+        "id": "41993148",
+        "role": "Optimal Asset Management Inc.",
+        "department": "CEO",
+        "learners": 88416,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/e1/73a0d864d547bdaa39b005a3138f7e/Vijay.jpg"
+      }
     ],
     "categories": [
       "Business",
@@ -1169,8 +1675,30 @@
       "5": 1267
     },
     "instructors": [
-      "Vijay Vaidyanathan, PhD",
-      "Martellini"
+      {
+        "name": "Vijay Vaidyanathan, PhD",
+        "slug": "~41993148",
+        "url": "https://www.coursera.org/instructor/~41993148",
+        "page": "vijay-vaidyanathan",
+        "id": "41993148",
+        "role": "Optimal Asset Management Inc.",
+        "department": "CEO",
+        "learners": 88416,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/e1/73a0d864d547bdaa39b005a3138f7e/Vijay.jpg"
+      },
+      {
+        "name": "Martellini",
+        "slug": "~727976",
+        "url": "https://www.coursera.org/instructor/~727976",
+        "page": "martellini",
+        "id": "727976",
+        "role": null,
+        "department": null,
+        "learners": 83288,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a4/cf9e7d3f0b42409585708900cc9abe/lionel_martellini.jpg"
+      }
     ],
     "categories": [
       "Business",
@@ -1212,8 +1740,30 @@
     },
     "low_sample": true,
     "instructors": [
-      "Farhoud Hosseinpour",
-      "Juha Plosila"
+      {
+        "name": "Farhoud Hosseinpour",
+        "slug": "farhoud-hosseinpour",
+        "url": "https://www.coursera.org/instructor/farhoud-hosseinpour",
+        "page": "farhoud-hosseinpour",
+        "id": "19066159",
+        "role": "Doctoral Researcher",
+        "department": "Information Technology",
+        "learners": 91481,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/72/ace9d0856311e6b9ffe5f006fe37b5/IMG_20160923_180909.jpg"
+      },
+      {
+        "name": "Juha Plosila",
+        "slug": "juhaplosila",
+        "url": "https://www.coursera.org/instructor/juhaplosila",
+        "page": "juhaplosila",
+        "id": "14463300",
+        "role": "Associate Professor",
+        "department": "Information Technology",
+        "learners": 24148,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a4/98f690952711e68bfcd581d0eac489/2b8ab99.jpg"
+      }
     ],
     "categories": [
       "Computer Science"
@@ -1255,7 +1805,18 @@
       "5": 368
     },
     "instructors": [
-      "Farhoud Hosseinpour"
+      {
+        "name": "Farhoud Hosseinpour",
+        "slug": "farhoud-hosseinpour",
+        "url": "https://www.coursera.org/instructor/farhoud-hosseinpour",
+        "page": "farhoud-hosseinpour",
+        "id": "19066159",
+        "role": "Doctoral Researcher",
+        "department": "Information Technology",
+        "learners": 91481,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/72/ace9d0856311e6b9ffe5f006fe37b5/IMG_20160923_180909.jpg"
+      }
     ],
     "categories": [
       "Computer Science"
@@ -1293,8 +1854,30 @@
       "5": 133
     },
     "instructors": [
-      "Prof. Jimmy Ho Man Lee",
-      "Prof. Peter J Stuckey"
+      {
+        "name": "Prof. Jimmy Ho Man Lee",
+        "slug": "jlee",
+        "url": "https://www.coursera.org/instructor/jlee",
+        "page": "jlee",
+        "id": "15600502",
+        "role": "Professor",
+        "department": "Department of Computer Science and Engineering",
+        "learners": 46490,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/6a/3d7810222011e69a12e12f0aafa3c1/jlee2_1_.jpg"
+      },
+      {
+        "name": "Prof. Peter J Stuckey",
+        "slug": "peter-stuckey",
+        "url": "https://www.coursera.org/instructor/peter-stuckey",
+        "page": "peter-stuckey",
+        "id": "189807274",
+        "role": "Adjunct Professor",
+        "department": null,
+        "learners": 42760,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/cf/8e2b2c1cb64c3dbae105cc269721bf/ps-thumbnail_3P0A7638-square.jpg"
+      }
     ],
     "categories": [
       "Computer Science",
@@ -1334,8 +1917,30 @@
       "5": 396
     },
     "instructors": [
-      "Prof. Jimmy Ho Man Lee",
-      "Prof. Peter J Stuckey"
+      {
+        "name": "Prof. Jimmy Ho Man Lee",
+        "slug": "jlee",
+        "url": "https://www.coursera.org/instructor/jlee",
+        "page": "jlee",
+        "id": "15600502",
+        "role": "Professor",
+        "department": "Department of Computer Science and Engineering",
+        "learners": 46490,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/6a/3d7810222011e69a12e12f0aafa3c1/jlee2_1_.jpg"
+      },
+      {
+        "name": "Prof. Peter J Stuckey",
+        "slug": "peter-stuckey",
+        "url": "https://www.coursera.org/instructor/peter-stuckey",
+        "page": "peter-stuckey",
+        "id": "189807274",
+        "role": "Adjunct Professor",
+        "department": null,
+        "learners": 42760,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/cf/8e2b2c1cb64c3dbae105cc269721bf/ps-thumbnail_3P0A7638-square.jpg"
+      }
     ],
     "categories": [
       "Computer Science",
@@ -1377,7 +1982,18 @@
       "5": 1784
     },
     "instructors": [
-      "Dan  Grossman"
+      {
+        "name": "Dan Grossman",
+        "slug": "~873260",
+        "url": "https://www.coursera.org/instructor/~873260",
+        "page": "dan-grossman",
+        "id": "873260",
+        "role": "Professor",
+        "department": "Computer Science & Engineering",
+        "learners": 250904,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/cb/97bfa8552a725c14856bbecca8bc49/grossman2013.jpg"
+      }
     ],
     "categories": [
       "Computer Science"
@@ -1418,7 +2034,18 @@
       "5": 4421
     },
     "instructors": [
-      "Tim Roughgarden"
+      {
+        "name": "Tim Roughgarden",
+        "slug": "~768",
+        "url": "https://www.coursera.org/instructor/~768",
+        "page": "tim-roughgarden",
+        "id": "768",
+        "role": "Professor",
+        "department": "Computer Science",
+        "learners": 386649,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/39/5f06ad710dbaa7be59c8272d8902bd/landing_roughgarden.png"
+      }
     ],
     "categories": [
       "Computer Science",
