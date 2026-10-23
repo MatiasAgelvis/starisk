@@ -24,6 +24,7 @@ import sys
 import time
 from pathlib import Path
 
+from .adapter import LANGUAGE_SUFFIX as _LANGUAGE_SUFFIX
 from .crawl import SCORES_PATH, SOURCES_PATH, normalize_source, write_atomic
 from .fetch import fetch_page
 
@@ -43,7 +44,6 @@ STOPWORDS = frozenset(
 )
 
 # Coursera duplicates most courses per language under the same slug.
-_LANGUAGE_SUFFIX = re.compile(r"-(ar|de|es|fr|id|it|ja|ko|nl|pl|pt|ru|th|tr|vi|zhcn|zhtw)$")
 
 # Decorations Coursera adds to a certificate but not to the course page.
 _DECORATIONS = re.compile(

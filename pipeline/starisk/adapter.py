@@ -72,7 +72,19 @@ _INSTRUCTOR_LINK = re.compile(
 )
 _INSTRUCTOR_RECORD = re.compile(r'"DescriptionPage_Instructor:(\d+)":\{')
 _TITLE = re.compile(r"^(?:prof\.?|dr\.?|mr\.?|ms\.?|mrs\.?)\s+", re.IGNORECASE)
-_CREDENTIAL = re.compile(r",?\s+(?:ph\.?\s?d\.?|m\.?d\.?)$", re.IGNORECASE)
+_CREDENTIAL = re.compile(r",?\s+(?:ph\.?\s?d\.?|m\.?\s?d\.?)$", re.IGNORECASE)
+
+# Coursera duplicates most courses per language under the same slug
+# (`ai-for-everyone-fr`). They are the same course, so one is enough.
+LANGUAGE_SUFFIX = re.compile(
+    r"-(ar|de|es|fr|id|it|ja|ko|nl|pl|pt|ru|th|tr|vi|zhcn|zhtw)$"
+)
+
+# Pages that list courses rather than teach one: a specialization lists its
+# constituent courses, an instructor profile lists everything they teach. Both
+# hooks are Coursera's own test hooks.
+SPECIALIZATION_COURSE = 'data-e2e="sdp-course-list-link"'
+INSTRUCTOR_COURSE = 'data-e2e="course-card"'
 
 _DATE_FORMATS = (
     "%b %d, %Y",
@@ -603,3 +615,37 @@ def _reviews_from_jsonld(html: str) -> list[dict]:
 def extract_reviews(html: str) -> list[dict]:
     """Prefer DOM cards (they carry likes); fall back to JSON-LD reviews."""
     return _reviews_from_cards(html) or _reviews_from_jsonld(html)
+
+
+def _course_slugs(html: str, marker: str) -> list[str]:
+    """Course slugs from the links around `marker`.
+
+    The marker sits on the anchor itself on a specialization page, and on a
+    descendant `<div>` on an instructor page, so walk back to the enclosing `<a>`
+    and read the href it carries.
+    """
+    slugs = []
+    for match in re.finditer(re.escape(marker), html):
+        start = html.rfind("<a ", 0, match.start())
+        if start < 0:
+            continue
+        href = re.search(r'href="([^"]+)"', html[start : match.start()])
+        if not href:
+            continue
+        target = unescape(href.group(1))
+        course = re.match(r"/learn/([^/?#]+)", target)
+        if not course or LANGUAGE_SUFFIX.search(course.group(1)):
+            continue
+        if course.group(1) not in slugs:
+            slugs.append(course.group(1))
+    return slugs
+
+
+def extract_specialization_courses(html: str) -> list[str]:
+    """The constituent courses of a specialization page."""
+    return _course_slugs(html, SPECIALIZATION_COURSE)
+
+
+def extract_instructor_courses(html: str) -> list[str]:
+    """Every course an instructor profile links to, language variants dropped."""
+    return _course_slugs(html, INSTRUCTOR_COURSE)

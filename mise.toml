@@ -27,6 +27,11 @@ python -m starisk.crawl
 python -m starisk.logos
 """
 
+[tasks."pipeline:expand"]
+description = "Grow sources.json from specializations and instructor profiles"
+dir = "pipeline"
+run = "python -m starisk.expand"
+
 [tasks."pipeline:logos"]
 description = "Download provider logos that scores.json references"
 dir = "pipeline"

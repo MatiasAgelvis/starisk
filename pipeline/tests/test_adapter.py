@@ -7,8 +7,10 @@ from starisk.adapter import (
     extract_coursera_score,
     extract_details,
     extract_landing,
+    extract_instructor_courses,
     extract_population,
     extract_reviews,
+    extract_specialization_courses,
     extract_title,
 )
 
@@ -320,6 +322,43 @@ class LandingTest(unittest.TestCase):
         self.assertEqual(
             extract_landing("<html></html>"), {"instructors": [], "categories": []}
         )
+
+
+class CourseListTest(unittest.TestCase):
+    def test_specialization_lists_its_courses(self):
+        html = (
+            '<a href="/learn/neural-networks-deep-learning?specialization=deep-learning" '
+            'aria-label="Course 1: Neural Networks" data-e2e="sdp-course-list-link">1</a>'
+            '<a href="/learn/deep-neural-network?specialization=deep-learning" '
+            'data-e2e="sdp-course-list-link">2</a>'
+        )
+        self.assertEqual(
+            extract_specialization_courses(html),
+            ["neural-networks-deep-learning", "deep-neural-network"],
+        )
+
+    def test_instructor_profile_lists_their_courses(self):
+        # The hook sits on a div inside the anchor, not on the anchor itself.
+        html = (
+            '<a href="/learn/ai-for-everyone" class="x">'
+            '<div data-e2e="course-card">card</div></a>'
+            '<a href="/learn/ai-for-everyone-fr" class="x">'
+            '<div data-e2e="course-card">card</div></a>'
+        )
+        self.assertEqual(extract_instructor_courses(html), ["ai-for-everyone"])
+
+    def test_language_variants_and_duplicates_are_dropped(self):
+        html = (
+            '<a href="/learn/course-a-fr" data-e2e="sdp-course-list-link">x</a>'
+            '<a href="/learn/course-a" data-e2e="sdp-course-list-link">x</a>'
+            '<a href="/learn/course-a" data-e2e="sdp-course-list-link">x</a>'
+            '<a href="/specializations/not-a-course" data-e2e="sdp-course-list-link">x</a>'
+        )
+        self.assertEqual(extract_specialization_courses(html), ["course-a"])
+
+    def test_nothing(self):
+        self.assertEqual(extract_specialization_courses("<html></html>"), [])
+        self.assertEqual(extract_instructor_courses("<html></html>"), [])
 
 
 class ScriptTextTest(unittest.TestCase):
