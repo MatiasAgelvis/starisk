@@ -5,9 +5,9 @@
     "description": "In the first course of the Machine Learning Specialization, you will:\n• Build machine learning models in Python using popular machine learning libraries NumPy and scikit-learn.\n• Build and train supervised machine learning models for prediction and binary classification tasks, including linear regression and logistic regression\n\nThe Machine Learning Specialization is a foundational online program created in collaboration between DeepLearning.AI and Stanford Online. In this beginner-friendly program, you will learn the fundamentals of machine learning and how to use these techniques to build real-world AI applications. \n\nThis Specialization is taught by Andrew Ng, an AI visionary who has led critical research at Stanford University and groundbreaking work at Google Brain, Baidu, and Landing.AI to advance the AI field.\n\nThis 3-course Specialization is an updated and expanded version of Andrew’s pioneering Machine Learning course, rated 4.9 out of 5 and taken by over 4.8 million learners since it launched in 2012. \n\nIt provides a broad introduction to modern machine learning, including supervised learning (multiple linear regression, logistic regression, neural networks, and decision trees), unsupervised learning (clustering, dimensionality reduction, recommender systems), and some of the best practices used in Silicon Valley for artificial intelligence and machine learning innovation (evaluating and tuning models, taking a data-centric approach to improving performance, and more.)\n\nBy the end of this Specialization, you will have mastered key concepts and gained the practical know-how to quickly and powerfully apply machine learning to challenging real-world problems. If you’re looking to break into AI or build a career in machine learning, the new Machine Learning Specialization is the best place to start.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
     "coursera": 4.9,
-    "starisk": 3.1,
+    "starisk": 3.3,
     "spread": 1.63,
-    "spread_weighted": 1.74,
+    "spread_weighted": 1.68,
     "reviews": 19,
     "review_counts": {
       "1.0": 4,
@@ -21,7 +21,7 @@
       "stars": 1.0,
       "likes": 80
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 6214,
     "ratings_total": 32985,
     "rating_counts": {
@@ -50,9 +50,9 @@
     "description": "This course gives you easy access to the invaluable learning techniques used by experts in art, music, literature, math, science, sports, and many other disciplines. We’ll learn about how the brain uses two very different learning modes and how it encapsulates (“chunks”) information. We’ll also cover illusions of learning, memory techniques, dealing with procrastination, and best practices shown by research to be most effective in helping you master tough subjects.  \n\nUsing these approaches, no matter what your skill levels in topics you would like to master, you can change your thinking and change your life. If you’re already an expert, this peep under the mental hood will give you ideas for turbocharging successful learning, including counter-intuitive test-taking tips and insights that will help you make the best use of your time on homework and problem sets. If you’re struggling, you’ll see a structured treasure trove of practical techniques that walk you through what you need to do to get on track. If you’ve ever wanted to become better at anything, this course will help serve as your guide.\n\nThis course can be taken independent of, concurrent with, or prior to, its companion course, Mindshift. (Learning How to Learn is more learning-focused, and Mindshift is more career-focused.)  A related course by the same instructors is Uncommon Sense Teaching.\n\nTo join the fully translated Portuguese version of the course, visit: https://www.coursera.org/learn/aprender\nTo join the fully translated Spanish version of the course, visit: https://www.coursera.org/learn/aprendiendo-a-aprender\nTo join the fully translated Chinese version of the course, visit: https://www.coursera.org/learn/ruhe-xuexi\nTo join the fully translated French version of the course, visit : http://www.coursera.org/learn/apprendre-comment-apprendre",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/55/2e9a93e5384e289f25a0b487f6b4c5/white--04.png",
     "coursera": 4.8,
-    "starisk": 3.6,
+    "starisk": 3.7,
     "spread": 1.75,
-    "spread_weighted": 1.79,
+    "spread_weighted": 1.77,
     "reviews": 20,
     "review_counts": {
       "1.0": 5,
@@ -66,7 +66,7 @@
       "stars": 1.0,
       "likes": 206
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 25300,
     "ratings_total": 93311,
     "rating_counts": {
@@ -93,9 +93,9 @@
     "description": "This course covers the essential information that every serious programmer needs to know about algorithms and data structures, with emphasis on applications and scientific performance analysis of Java implementations. Part I covers elementary data structures, sorting, and searching algorithms. Part II focuses on graph- and string-processing algorithms.\n\nAll the features of this course are available for free. People who are interested in digging deeper into the content may wish to obtain the textbook Algorithms, Fourth Edition (upon which the course is based) or visit the website algs4.cs.princeton.edu for a wealth of additional material.\n\nThis course does not offer a certificate upon completion.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-university-assets.s3.amazonaws.com/94/cc9200e336d38ce029873b13cbe93b/logo-princeton-front.png",
     "coursera": 4.9,
-    "starisk": 3.3,
+    "starisk": 3.5,
     "spread": 1.59,
-    "spread_weighted": 1.54,
+    "spread_weighted": 1.59,
     "reviews": 20,
     "review_counts": {
       "1.0": 3,
@@ -109,7 +109,7 @@
       "stars": 2.0,
       "likes": 247
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 2436,
     "ratings_total": 12152,
     "rating_counts": {
@@ -135,9 +135,9 @@
     "description": "In the first course of the Deep Learning Specialization, you will study the foundational concept of neural networks and deep learning. \n\nBy the end, you will be familiar with the significant technological trends driving the rise of deep learning; build, train, and apply fully connected deep neural networks; implement efficient (vectorized) neural networks; identify key parameters in a neural network’s architecture; and apply deep learning to your own applications.\n\nThe Deep Learning Specialization is our foundational program that will help you understand the capabilities, challenges, and consequences of deep learning and prepare you to participate in the development of leading-edge AI technology. It provides a pathway for you to gain the knowledge and skills to apply machine learning to your work, level up your technical career, and take the definitive step in the world of AI.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
     "coursera": 4.9,
-    "starisk": 2.9,
+    "starisk": 3.2,
     "spread": 1.72,
-    "spread_weighted": 1.43,
+    "spread_weighted": 1.64,
     "reviews": 20,
     "review_counts": {
       "1.0": 4,
@@ -151,7 +151,7 @@
       "stars": 3.0,
       "likes": 287
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 23933,
     "ratings_total": 123839,
     "rating_counts": {
@@ -179,9 +179,9 @@
     "description": "AI is not only for engineers. If you want your organization to become better at using AI, this is the course to tell everyone--especially your non-technical colleagues--to take. \n\nIn this course, you will learn:\n\n- The meaning behind common AI terminology, including neural networks, machine learning, deep learning, and data science\n- What AI realistically can--and cannot--do\n- How to spot opportunities to apply AI to problems in your own organization\n- What it feels like to build machine learning and data science projects\n- How to work with an AI team and build an AI strategy in your company\n- How to navigate ethical and societal discussions surrounding AI\n\nThough this course is largely non-technical, engineers can also take this course to learn the business aspects of AI.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
     "coursera": 4.8,
-    "starisk": 4.8,
+    "starisk": 4.7,
     "spread": 0.96,
-    "spread_weighted": 0.75,
+    "spread_weighted": 0.86,
     "reviews": 20,
     "review_counts": {
       "1.0": 1,
@@ -195,7 +195,7 @@
       "stars": 3.0,
       "likes": 39
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 13177,
     "ratings_total": 53509,
     "rating_counts": {
@@ -220,9 +220,9 @@
     "description": "An overview of the ideas, methods, and institutions that permit human society to manage risks and foster enterprise.  Emphasis on financially-savvy leadership skills. Description of practices today and analysis of prospects for the future. Introduction to risk management and behavioral finance principles to understand the real-world functioning of securities, insurance, and banking industries.  The ultimate goal of this course is using such industries effectively and towards a better society.",
     "image": "https://coursera-university-assets.s3.amazonaws.com/b4/339da416653830d015f5a179f864e1/square_logo_large.png",
     "coursera": 4.8,
-    "starisk": 2.5,
+    "starisk": 3.0,
     "spread": 1.84,
-    "spread_weighted": 1.85,
+    "spread_weighted": 1.89,
     "reviews": 20,
     "review_counts": {
       "1.0": 7,
@@ -236,7 +236,7 @@
       "stars": 1.0,
       "likes": 663
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 7108,
     "ratings_total": 32334,
     "rating_counts": {
@@ -262,9 +262,9 @@
     "description": "If you are a software developer who wants to build scalable AI-powered algorithms, you need to understand how to use the tools to build them. This course is part of the DeepLearning.AI TensorFlow Developer Specialization and will teach you best practices for using TensorFlow, a popular open-source framework for machine learning.\n\nIn Course 2 of the DeepLearning.AI TensorFlow Developer Specialization, you will learn advanced techniques to improve the computer vision model you built in Course 1. You will explore how to work with real-world images in different shapes and sizes, visualize the journey of an image through convolutions to understand how a computer “sees” information, plot loss and accuracy, and explore strategies to prevent overfitting, including augmentation and dropout. Finally, Course 2 will introduce you to transfer learning and how learned features can be extracted from models. \n\nThe Machine Learning course and Deep Learning Specialization from Andrew Ng teach the most important and foundational principles of Machine Learning and Deep Learning. This new deeplearning.ai TensorFlow Specialization teaches you how to use TensorFlow to implement those principles so that you can start building and applying scalable models to real-world problems. To develop a deeper understanding of how neural networks work, we recommend that you take the Deep Learning Specialization.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
     "coursera": 4.7,
-    "starisk": 1.8,
+    "starisk": 2.5,
     "spread": 1.78,
-    "spread_weighted": 1.37,
+    "spread_weighted": 1.72,
     "reviews": 19,
     "review_counts": {
       "1.0": 6,
@@ -279,7 +279,7 @@
       "stars": 1.0,
       "likes": 75
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 1270,
     "ratings_total": 8226,
     "rating_counts": {
@@ -319,7 +319,7 @@
       "stars": 5.0,
       "likes": 8
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 275,
     "ratings_total": 1103,
     "rating_counts": {
@@ -345,9 +345,9 @@
     "description": "In this course, you will:\n\n• Compare Functional and Sequential APIs, discover new models you can build with the Functional API, and build a model that produces multiple outputs including a Siamese network.\n• Build custom loss functions (including the contrastive loss function used in a Siamese network) in order to measure how well a model is doing and help your neural network learn from training data. \n• Build off of existing standard layers to create custom layers for your models, customize a network layer with a lambda layer, understand the differences between them, learn what makes up a custom layer, and explore activation functions. \n• Build off of existing models to add custom functionality, learn how to define your own custom class instead of using the Functional or Sequential APIs, build models that can be inherited from the TensorFlow Model class, and build a residual network (ResNet) through defining a custom model class. \n\n\nThe DeepLearning.AI TensorFlow: Advanced Techniques Specialization introduces the features of TensorFlow that provide learners with more control over their model architecture and tools that help them create and train advanced ML models.  \n\nThis Specialization is for early and mid-career software and machine learning engineers with a foundational understanding of TensorFlow who are looking to expand their knowledge and skill set by learning advanced TensorFlow features to build powerful models.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
     "coursera": 4.9,
-    "starisk": 4.1,
+    "starisk": 4.5,
     "spread": 0.77,
-    "spread_weighted": 1.31,
+    "spread_weighted": 1.05,
     "reviews": 20,
     "review_counts": {
       "2.0": 1,
@@ -360,7 +360,7 @@
       "stars": 2.0,
       "likes": 20
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 228,
     "ratings_total": 1111,
     "rating_counts": {
@@ -387,9 +387,9 @@
     "description": "In the fourth course of the Deep Learning Specialization, you will understand how computer vision has evolved and become familiar with its exciting applications such as autonomous driving, face recognition, reading radiology images, and more.\n\nBy the end, you will be able to build a convolutional neural network, including recent variations such as residual networks; apply convolutional networks to visual detection and recognition tasks; and use neural style transfer to generate art and apply these algorithms to a variety of image, video, and other 2D or 3D data. \n\nThe Deep Learning Specialization is our foundational program that will help you understand the capabilities, challenges, and consequences of deep learning and prepare you to participate in the development of leading-edge AI technology. It provides a pathway for you to gain the knowledge and skills to apply machine learning to your work, level up your technical career, and take the definitive step in the world of AI.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
     "coursera": 4.9,
-    "starisk": 3.9,
+    "starisk": 3.8,
     "spread": 1.31,
-    "spread_weighted": 1.16,
+    "spread_weighted": 1.24,
     "reviews": 20,
     "review_counts": {
       "1.0": 2,
@@ -404,7 +404,7 @@
       "stars": 3.0,
       "likes": 53
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 5652,
     "ratings_total": 42614,
     "rating_counts": {
@@ -432,9 +432,9 @@
     "description": "In this course, you will learn how to solve problems with large, high-dimensional, and potentially infinite state spaces. You will see that estimating value functions can be cast as a supervised learning problem---function approximation---allowing you to build agents that carefully balance generalization and discrimination in order to maximize reward. We will begin this journey by investigating how our policy evaluation or prediction methods like Monte Carlo and TD can be extended to the function approximation setting. You will learn about feature construction techniques for RL, and representation learning via neural networks and backprop. We conclude this course with a deep-dive into policy gradient methods; a way to learn policies directly without learning a value function. In this course you will solve two continuous-state control tasks and investigate the benefits of policy gradient methods in a continuous-action environment. \n\nPrerequisites: This course strongly builds on the fundamentals of Courses 1 and 2, and learners should have completed these before starting this course.  Learners should also be comfortable with probabilities & expectations, basic linear algebra, basic calculus, Python 3.0 (at least 1 year), and  implementing algorithms from pseudocode.\n\nBy the end of this course, you will be able to: \n\n-Understand how to use supervised learning approaches to approximate value functions\n-Understand objectives for prediction (value estimation) under function approximation\n-Implement TD with function approximation (state aggregation), on an environment with an infinite state space (continuous state space)\n-Understand fixed basis and neural network approaches to feature construction \n-Implement TD with neural network function approximation in a continuous state environment\n-Understand new difficulties in exploration when moving to function approximation\n-Contrast discounted problem formulations for control versus an average reward problem formulation\n-Implement expected Sarsa and Q-learning with function approximation on a continuous state control task\n-Understand objectives for directly estimating policies (policy gradient objectives)\n-Implement a policy gradient method (called Actor-Critic) on a discrete state environment",
     "image": "http://coursera-university-assets.s3.amazonaws.com/e3/1a43c174de4cd1b136a54aa9c41a54/280759_Coursera_Profile_Image_360x360.png",
     "coursera": 4.8,
-    "starisk": 3.8,
+    "starisk": 4.0,
     "spread": 1.18,
-    "spread_weighted": 1.35,
+    "spread_weighted": 1.29,
     "reviews": 20,
     "review_counts": {
       "1.0": 1,
@@ -449,7 +449,7 @@
       "stars": 3.0,
       "likes": 3
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 149,
     "ratings_total": 853,
     "rating_counts": {
@@ -476,9 +476,9 @@
     "description": "In this course, you will learn about several algorithms that can learn near optimal policies based on trial and error interaction with the environment---learning from the agent’s own experience. Learning from actual experience is striking because it requires no prior knowledge of the environment’s dynamics, yet can still attain optimal behavior. We will cover intuitively simple but powerful Monte Carlo methods, and temporal difference learning methods including Q-learning. We will wrap up this course investigating how we can get the best of both worlds: algorithms that can combine model-based planning (similar to dynamic programming) and temporal difference updates to radically accelerate learning.\n\nBy the end of this course you will be able to:\n \n- Understand Temporal-Difference learning and Monte Carlo as two strategies for estimating value functions from sampled experience\n- Understand the importance of exploration, when using sampled experience rather than dynamic programming sweeps within a model\n- Understand the connections between Monte Carlo and Dynamic Programming and TD. \n- Implement and apply the TD algorithm, for estimating value functions\n- Implement and apply Expected Sarsa and Q-learning (two TD methods for control) \n- Understand the difference between on-policy and off-policy control\n- Understand planning with simulated experience (as opposed to classic planning strategies)\n- Implement a model-based approach to RL, called Dyna, which uses simulated experience \n- Conduct an empirical study to see the improvements in sample efficiency when using Dyna",
     "image": "http://coursera-university-assets.s3.amazonaws.com/e3/1a43c174de4cd1b136a54aa9c41a54/280759_Coursera_Profile_Image_360x360.png",
     "coursera": 4.8,
-    "starisk": 3.7,
+    "starisk": 3.9,
     "spread": 1.15,
-    "spread_weighted": 1.26,
+    "spread_weighted": 1.23,
     "reviews": 20,
     "review_counts": {
       "1.0": 1,
@@ -493,7 +493,7 @@
       "stars": 2.0,
       "likes": 7
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 246,
     "ratings_total": 1260,
     "rating_counts": {
@@ -520,9 +520,9 @@
     "description": "Reinforcement Learning is a subfield of Machine Learning, but is also a general purpose formalism for automated decision-making and AI. This course introduces you to statistical learning techniques where an agent explicitly takes actions and interacts with the world. Understanding the importance and challenges of learning agents that make decisions is of vital importance today, with more and more companies interested in interactive agents and intelligent decision-making. \n\nThis course introduces you to the fundamentals of Reinforcement Learning. When you finish this course, you will:\n- Formalize problems as Markov Decision Processes \n- Understand basic exploration methods and the exploration/exploitation tradeoff\n- Understand value functions, as a general-purpose tool for optimal decision-making\n- Know how to implement dynamic programming as an efficient solution approach to an industrial control problem\n\nThis course teaches you the key concepts of Reinforcement Learning, underlying classic and modern algorithms in RL. After completing this course, you will be able to start using RL for real problems, where you have or can specify the MDP. \n\nThis is the first course of the Reinforcement Learning Specialization.",
     "image": "http://coursera-university-assets.s3.amazonaws.com/e3/1a43c174de4cd1b136a54aa9c41a54/280759_Coursera_Profile_Image_360x360.png",
     "coursera": 4.8,
-    "starisk": 2.7,
+    "starisk": 3.1,
     "spread": 1.47,
-    "spread_weighted": 1.55,
+    "spread_weighted": 1.54,
     "reviews": 20,
     "review_counts": {
       "1.0": 4,
@@ -536,7 +536,7 @@
       "stars": 1.0,
       "likes": 50
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 696,
     "ratings_total": 2912,
     "rating_counts": {
@@ -563,9 +563,9 @@
     "description": "The Version Control with Git course provides  you with a solid, hands-on foundation for understanding the Git version control system.  Git is open source software originally created by Linus Torvalds. Git manages team files for large and small projects. This allows the team to continuously improve its product. It is used by most major technology companies, and is assumed knowledge for many modern programming and IT jobs.  It is a core component of DevOps, continuous delivery pipelines and cloud-native computing. You could also use Git to manage the many continuously improving revisions of that book that you are writing. \n\nIn this course, you will not learn everything there is to know about Git, but you will build a strong conceptual understanding of the technology, and afterward will be able to confidently dig deeper on any topic that interests you. This course assumes no previous knowledge of Git, but if you do have experience with it, you may find this course to be both useful and challenging. This is especially true if you currently \"know just enough Git to be dangerous\". \n\nThere are two paths in this course. Both rely heavily on hands-on labs. One path assumes that you have experience using a command line interface, and the other path uses the Sourcetree graphical client. If you are not experienced with a command line, we highly suggest that you go through the Sourcetree path. Eventually, you might want to go through both paths, so that you can decide which tool to use for specific tasks. Besides, repetition is good for learning :)\n\nYou can watch the videos and take the quizzes from your phone if you want, but the hands-on labs require you to have a Windows or Mac computer. If you use the command line path through the course, you can also use Linux. \n\nThis course uses Bitbucket (bitbucket.org) as the hosted provider for remote Git repositories. Bitbucket is free for teams of up to 5 people, including private repositories. However, most of the knowledge that you gain in this course applies to Git itself, and you can apply this knowledge to other hosted Git providers (such as GitHub). \n\nThis course tries to be as concise as possible. It will probably take you about 5-10 hours to go through one of the two paths, but your mileage may vary.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/b2/50c6038962461ab571d51b4c7cbfc1/Atlassian-logo-brand-RGB.png",
     "coursera": 4.7,
-    "starisk": 3.6,
+    "starisk": 4.2,
     "spread": 1.12,
-    "spread_weighted": 1.82,
+    "spread_weighted": 1.46,
     "reviews": 20,
     "review_counts": {
       "1.0": 1,
@@ -579,7 +579,7 @@
       "stars": 1.0,
       "likes": 22
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 844,
     "ratings_total": 2996,
     "rating_counts": {
@@ -604,9 +604,9 @@
     "description": "Dog Emotion and Cognition will introduce you to the exciting new study of dog psychology, what the latest discoveries tell us about how dogs think and feel about us, and how we can use this new knowledge to further strengthen our relationship with our best friends.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-university-assets.s3.amazonaws.com/67/20d9fca42bddac2034668d7b589cad/dukewidelogo_vert.png",
     "coursera": 4.7,
-    "starisk": 1.7,
+    "starisk": 2.0,
     "spread": 1.55,
-    "spread_weighted": 1.28,
+    "spread_weighted": 1.44,
     "reviews": 20,
     "review_counts": {
       "1.0": 10,
@@ -620,7 +620,7 @@
       "stars": 1.0,
       "likes": 24
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 1410,
     "ratings_total": 4731,
     "rating_counts": {
@@ -645,9 +645,9 @@
     "description": "Discrete Optimization aims to make good decisions when we have many possibilities to choose from. Its applications are ubiquitous throughout our society. Its applications range from solving Sudoku puzzles to arranging seating in a wedding banquet.  The same technology can schedule planes and their crews, coordinate the production of steel, and organize the transportation of iron ore from the mines to the ports. Good decisions on the use of scarce or expensive resources such as staffing and material resources also allow corporations to improve their profit by millions of dollars.  Similar problems also underpin much of our daily lives and are part of determining daily delivery routes for packages, making school timetables, and delivering power to our homes. Despite their fundamental importance, these problems are a nightmare to solve using traditional undergraduate computer science methods.\n\nThis course is intended for students who have completed Advanced Modelling for Discrete Optimization.  In this course, you will extend your understanding of how to solve challenging discrete optimization problems by learning more about the solving technologies that are used to solve them, and how a high-level model (written in MiniZinc) is transformed into a form that is executable by these underlying solvers. By better understanding the actual solving technology, you will both improve your modeling capabilities, and be able to choose the most appropriate solving technology to use.\n\nWatch the course promotional video here: https://www.youtube.com/watch?v=-EiRsK-Rm08",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-university-assets.s3.amazonaws.com/0c/16e990fb0da5ffc103b5f84fed80d6/culogo_s2.png",
     "coursera": 4.8,
-    "starisk": 4.8,
+    "starisk": 4.6,
     "spread": 1.32,
-    "spread_weighted": 0.89,
+    "spread_weighted": 1.11,
     "reviews": 8,
     "review_counts": {
       "1.0": 1,
@@ -660,7 +660,7 @@
       "stars": 5.0,
       "likes": 5
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 9,
     "ratings_total": 44,
     "rating_counts": {
@@ -688,9 +688,9 @@
     "description": "Course 3 is a continuation of the previous course, and will focus on teaching you how to work with tools you need to do your everyday work. The course begins by introducing you to numerous essential command line tools that are used daily. Then, it focuses on bash scripting - you will learn how to construct scripts and how to do very complicated tasks in an automated way. The course looks at files and filesystems and focuses on compiling programs in Linux, using gcc and other compilers, and using libraries of different types. It also takes a look at how Java works in Linux, and explains why there is no reason to worry about having easy-to-use Java programs in Linux. Course 3 ends by covering building packages out of software in Linux.",
     "image": "http://coursera-university-assets.s3.amazonaws.com/26/0f3680c5af11e8a01533ad3fa8755b/Linux-Foundation.png",
     "coursera": 4.6,
-    "starisk": 3.5,
+    "starisk": 3.9,
     "spread": 1.25,
-    "spread_weighted": 1.36,
+    "spread_weighted": 1.35,
     "reviews": 20,
     "review_counts": {
       "2.0": 4,
@@ -703,7 +703,7 @@
       "stars": 2.0,
       "likes": 4
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 131,
     "ratings_total": 736,
     "rating_counts": {
@@ -728,9 +728,9 @@
     "description": "In course 1 we talked about open source software and the motivation and methods of using it. In course 2, we will introduce you to Linux systems, and help you feel comfortable working at the command line:\n\nWhat Linux is\nLinux history\nHow to separate the kernel from the entire operating system\nMaking contributions to the kernel\nGraphical system, and how it works\nWorking at the command line\nFilesystem layout, partitions\nMonitoring utilities\n\nYou will learn what it’s like to work on Linux system, and get a good understanding of the essential skills you need when you work on a daily basis with Linux systems.",
     "image": "http://coursera-university-assets.s3.amazonaws.com/26/0f3680c5af11e8a01533ad3fa8755b/Linux-Foundation.png",
     "coursera": 4.5,
-    "starisk": 2.1,
+    "starisk": 2.6,
     "spread": 1.95,
-    "spread_weighted": 1.73,
+    "spread_weighted": 1.9,
     "reviews": 20,
     "review_counts": {
       "1.0": 9,
@@ -743,7 +743,7 @@
       "stars": 1.0,
       "likes": 24
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 270,
     "ratings_total": 1394,
     "rating_counts": {
@@ -768,9 +768,9 @@
     "description": "In this course, we will define what open source software is, we will go over the history of open source software and what benefits it has provided to the world’s technology infrastructure over the decades. The course aims to teach you how to work in open source projects productively and gain a lot of benefits from it, and really understand what the advantages are. You will learn about collaboration best practices, and how to encourage diversity in open source projects. We will discuss the different licensing models that are available, as this will help you decide what the best license is for your project. We will talk about methods that are commonly used, such as Continuous Integration, and use of GitHub and other hosting providers as a central meeting place for open source projects, and we will provide some examples of successful open source projects.",
     "image": "http://coursera-university-assets.s3.amazonaws.com/26/0f3680c5af11e8a01533ad3fa8755b/Linux-Foundation.png",
     "coursera": 4.6,
-    "starisk": 3.6,
+    "starisk": 3.8,
     "spread": 1.49,
-    "spread_weighted": 1.55,
+    "spread_weighted": 1.53,
     "reviews": 19,
     "review_counts": {
       "1.0": 2,
@@ -784,7 +784,7 @@
       "stars": 2.0,
       "likes": 13
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 320,
     "ratings_total": 1543,
     "rating_counts": {
@@ -809,9 +809,9 @@
     "description": "Course 4 focuses on using git for open source software distributed development. Git is a revision control system which arose out of the Linux kernel development community. Git was designed to help developers spread across the globe working on complicated projects coordinate their work in a rational way and keep track of everything they were doing. Overtime, Git has grown to be used by millions of projects today. This course gives you the opportunity to learn how to use git efficiently and make contributions in a relatively short amount of time. It will cover:\n\nHow to install git\nHow to initialize a repository\nHow to make changes in a repository\nHow to make changes in repositories available to others\nHow to acquire changes made by other individuals\nHow to find errors in your work and go back to earlier states of yoru projects\nHow to make commits, diffs, merges, rebases.\n\nThe course will help you get the skills to have a good understanding on how to use git. You will have a good knowledge about git workflows, identifying problems in your workflows, and finding solutions to solve these problems.",
     "image": "http://coursera-university-assets.s3.amazonaws.com/26/0f3680c5af11e8a01533ad3fa8755b/Linux-Foundation.png",
     "coursera": 4.6,
-    "starisk": 4.6,
+    "starisk": 4.7,
     "spread": 0.77,
-    "spread_weighted": 0.94,
+    "spread_weighted": 0.85,
     "reviews": 20,
     "review_counts": {
       "2.0": 1,
@@ -824,7 +824,7 @@
       "stars": 2.0,
       "likes": 3
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 120,
     "ratings_total": 599,
     "rating_counts": {
@@ -849,9 +849,9 @@
     "description": "Course Overview: https://youtu.be/JgFV5qzAYno\n\nPython is now becoming the number 1 programming language for data science. Due to python’s simplicity and high readability, it is gaining its importance in the financial industry.  The course combines both python coding and statistical concepts and applies into analyzing financial data, such as stock data.\n\nBy the end of the course, you can achieve the following using python:\n\n- Import, pre-process, save and visualize financial data into pandas Dataframe\n\n- Manipulate the existing financial data by generating new variables using multiple columns\n\n- Recall and apply the important statistical concepts (random variable, frequency, distribution, population and sample, confidence interval, linear regression, etc. ) into financial contexts\n\n- Build a trading model using multiple linear regression model \n\n- Evaluate the performance of the trading model using different investment indicators\n\nJupyter Notebook environment is configured in the course platform for practicing python coding without installing any client applications.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-university-assets.s3.amazonaws.com/5b/4ba3ffda597d5f7d4630beefc58672/ust_logo_160x60.png",
     "coursera": 4.4,
-    "starisk": 2.4,
+    "starisk": 3.1,
     "spread": 1.8,
-    "spread_weighted": 1.81,
+    "spread_weighted": 1.88,
     "reviews": 20,
     "review_counts": {
       "1.0": 6,
@@ -866,7 +866,7 @@
       "stars": 1.0,
       "likes": 91
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 1053,
     "ratings_total": 4627,
     "rating_counts": {
@@ -894,7 +894,7 @@
     "coursera": 4.9,
     "starisk": 5.0,
     "spread": 0.22,
-    "spread_weighted": 0.19,
+    "spread_weighted": 0.2,
     "reviews": 20,
     "review_counts": {
       "4.0": 1,
@@ -906,7 +906,7 @@
       "stars": 5.0,
       "likes": 8
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 99,
     "ratings_total": 463,
     "rating_counts": {
@@ -933,7 +933,7 @@
     "coursera": 4.9,
     "starisk": 4.9,
     "spread": 0.44,
-    "spread_weighted": 0.4,
+    "spread_weighted": 0.42,
     "reviews": 20,
     "review_counts": {
       "3.0": 1,
@@ -945,7 +945,7 @@
       "stars": 3.0,
       "likes": 1
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 175,
     "ratings_total": 789,
     "rating_counts": {
@@ -972,7 +972,7 @@
     "coursera": 4.4,
     "starisk": 4.2,
     "spread": 1.0,
-    "spread_weighted": 1.11,
+    "spread_weighted": 1.06,
     "reviews": 20,
     "review_counts": {
       "2.0": 1,
@@ -986,7 +986,7 @@
       "stars": 2.0,
       "likes": 6
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 62,
     "ratings_total": 239,
     "rating_counts": {
@@ -1015,7 +1015,7 @@
     "coursera": 4.7,
     "starisk": 3.7,
     "spread": 0.95,
-    "spread_weighted": 1.01,
+    "spread_weighted": 0.98,
     "reviews": 20,
     "review_counts": {
       "2.0": 1,
@@ -1029,7 +1029,7 @@
       "stars": 2.0,
       "likes": 8
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 131,
     "ratings_total": 654,
     "rating_counts": {
@@ -1056,9 +1056,9 @@
     "description": "In the third course of the Deep Learning Specialization, you will learn how to build a successful machine learning project and get to practice decision-making as a machine learning project leader. \n\nBy the end, you will be able to diagnose errors in a machine learning system; prioritize strategies for reducing errors; understand complex ML settings, such as mismatched training/test sets, and comparing to and/or surpassing human-level performance; and apply end-to-end learning, transfer learning, and multi-task learning.\n\nThis is also a standalone course for learners who have basic machine learning knowledge. This course draws on Andrew Ng’s experience building and shipping many deep learning products. If you aspire to become a technical leader who can set the direction for an AI team, this course provides the \"industry experience\" that you might otherwise get only after years of ML work experience.\n \nThe Deep Learning Specialization is our foundational program that will help you understand the capabilities, challenges, and consequences of deep learning and prepare you to participate in the development of leading-edge AI technology. It provides a pathway for you to gain the knowledge and skills to apply machine learning to your work, level up your technical career, and take the definitive step in the world of AI.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
     "coursera": 4.8,
-    "starisk": 3.3,
+    "starisk": 3.5,
     "spread": 1.59,
-    "spread_weighted": 1.83,
+    "spread_weighted": 1.73,
     "reviews": 19,
     "review_counts": {
       "1.0": 3,
@@ -1073,7 +1073,7 @@
       "stars": 1.0,
       "likes": 29
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 5750,
     "ratings_total": 50175,
     "rating_counts": {
@@ -1101,9 +1101,9 @@
     "description": "The practice of investment management has been transformed in recent years by computational methods. Instead of merely explaining the science, we help you build on that foundation in a practical manner, with an emphasis on the hands-on implementation of those ideas in the Python programming language. In this course, we cover the estimation, of risk and return parameters for meaningful portfolio decisions, and also introduce a variety of state-of-the-art portfolio construction techniques that have proven popular in investment management and portfolio construction due to their enhanced robustness.\n\nAs we cover the theory and math in lecture videos, we'll also implement the concepts in Python, and you'll be able to code along with us so that you have a deep and practical understanding of how those methods work. By the time you are done, not only will you have a foundational understanding of modern computational methods in investment management, you'll have practical mastery in the implementation of those methods. If you follow along and implement all the lab exercises, you will complete the course with a powerful toolkit that you will be able to use to perform your own analysis and build your own implementations and perhaps even use your newly acquired knowledge to improve on current methods.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/ee/934e2899714074ba015fe34d788bfe/EDHEC_Logo_horizontal_RVB.png",
     "coursera": 4.7,
-    "starisk": 3.8,
+    "starisk": 4.1,
     "spread": 1.01,
-    "spread_weighted": 1.04,
+    "spread_weighted": 1.07,
     "reviews": 20,
     "review_counts": {
       "2.0": 1,
@@ -1116,7 +1116,7 @@
       "stars": 3.0,
       "likes": 7
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 134,
     "ratings_total": 515,
     "rating_counts": {
@@ -1145,7 +1145,7 @@
     "coursera": 4.8,
     "starisk": 4.6,
     "spread": 0.64,
-    "spread_weighted": 0.69,
+    "spread_weighted": 0.67,
     "reviews": 20,
     "review_counts": {
       "3.0": 2,
@@ -1158,7 +1158,7 @@
       "stars": 3.0,
       "likes": 5
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 397,
     "ratings_total": 1477,
     "rating_counts": {
@@ -1185,7 +1185,7 @@
     "description": "Finally! You will learn how to motivate engineering decisions and how to choose implementations to make a system actually running! \n\nThis capstone project course ties together the knowledge from three previous courses in IoT through embedded systems: Development of Real-Time Systems, Web Connectivity & Security and Embedded Hardware and Operating Systems. \nYou will develop a larger system using the learning outcomes from these courses, and the students will evaluate the developed system in a real-world programming environment. \nThis course is a true engineering task in which the learners must not only implement the algorithm code, but also handle the interfaces between many different actors and hardware platforms. \n\nYou will also learn to evaluate the efficiency and the correctness of their system, as well as real-world parameters such as energy consumption and cost.\nGet ready! This one will change how you view proposals and projects! \nIdeate. Innovate. Iterate with 28Digital,",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/c2/99754b5a4e49eaa3122b9964a1b0f8/Logo_landscape.png",
     "coursera": 4.6,
-    "starisk": 2.7,
+    "starisk": 3.1,
     "spread": 1.87,
     "spread_weighted": 1.91,
     "reviews": 8,
@@ -1200,7 +1200,7 @@
       "stars": 1.0,
       "likes": 2
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 8,
     "ratings_total": 69,
     "rating_counts": {
@@ -1227,9 +1227,9 @@
     "description": "This course is all about practical programming and problem-solving!\nAfter completing this course, you will have the knowledge to plan and set up a real-time system both on paper and in practice.\n\nThe course centres around the problem of achieving timing correctness in embedded systems, which means guaranteeing that the system reacts within the real-time requirements.\nExamples of such systems include airbags, emergency brakes, avionics, and also multimedia systems like video playback and QoS in web servers.\n\nThe course teaches how to plan real-time systems, in theory, using established mathematical proofs and how to implement them in practice by using the most common scheduling methods.\nWe also learn how to program the system in the C language using the FreeRTOS real-time kernel.\nFinally, we have a look at the future of real-time systems, namely multi-core real-time systems!\n\nThis course focuses on the learn-by-doing approach with many examples and real-world programming assignments.\nWe have 5 modules, each with a gentle, graded quiz at the end and one peer-reviewed programming assignment.\nIn case you have no experience with C programming, please check out a practical course like:\nhttps://www.coursera.org/learn/arduino-platform\n\nThe course is actually quite fun!\n-Simon Holmbacka / Åbo Akademi University\n\nIdeate. Innovate. Iterate with  28Digital",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/c2/99754b5a4e49eaa3122b9964a1b0f8/Logo_landscape.png",
     "coursera": 4.6,
-    "starisk": 3.9,
+    "starisk": 4.0,
     "spread": 1.51,
-    "spread_weighted": 1.62,
+    "spread_weighted": 1.57,
     "reviews": 20,
     "review_counts": {
       "1.0": 3,
@@ -1244,7 +1244,7 @@
       "stars": 3.0,
       "likes": 1
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 118,
     "ratings_total": 542,
     "rating_counts": {
@@ -1282,7 +1282,7 @@
       "stars": 5.0,
       "likes": 0
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 26,
     "ratings_total": 143,
     "rating_counts": {
@@ -1311,7 +1311,7 @@
     "coursera": 4.8,
     "starisk": 4.8,
     "spread": 0.36,
-    "spread_weighted": 0.36,
+    "spread_weighted": 0.37,
     "reviews": 19,
     "review_counts": {
       "4.0": 3,
@@ -1323,7 +1323,7 @@
       "stars": 5.0,
       "likes": 3
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 108,
     "ratings_total": 460,
     "rating_counts": {
@@ -1350,9 +1350,9 @@
     "description": "This course is an introduction to the basic concepts of programming languages, with a strong emphasis on functional programming. The course uses the languages ML, Racket, and Ruby as vehicles for teaching the concepts, but the real intent is to teach enough about how any language “fits together” to make you more effective programming in any language -- and in learning new ones.\n\nThis course is neither particularly theoretical nor just about programming specifics -- it will give you a framework for understanding how to use language constructs effectively and how to design correct and elegant programs. By using different languages, you will learn to think more deeply than in terms of the particular syntax of one language. The emphasis on functional programming is essential for learning how to write robust, reusable, composable, and elegant programs. Indeed, many of the most important ideas in modern languages have their roots in functional programming. Get ready to learn a fresh and beautiful way to look at software and how to have fun building it.\n\nThe course assumes some prior experience with programming, as described in more detail in the first module.\n\nThe course is divided into three Coursera courses: Part A, Part B, and Part C.  As explained in more detail in the first module of Part A, the overall course is a substantial amount of challenging material, so the three-part format provides two intermediate milestones and opportunities for a pause before continuing.  The three parts are designed to be completed in order and set up to motivate you to continue through to the end of Part C.  The three parts are not quite equal in length: Part A is almost as substantial as Part B and Part C combined.\n\nWeek 1 of Part A has a more detailed list of topics for all three parts of the course, but it is expected that most course participants will not (yet!) know what all these topics mean.",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/2d478596614f9689fd770bd39a5e5f/uw-coursera-org-logo.png",
     "coursera": 4.9,
-    "starisk": 4.6,
+    "starisk": 4.5,
     "spread": 1.24,
-    "spread_weighted": 1.09,
+    "spread_weighted": 1.19,
     "reviews": 20,
     "review_counts": {
       "1.0": 2,
@@ -1366,7 +1366,7 @@
       "stars": 3.0,
       "likes": 5
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 557,
     "ratings_total": 1916,
     "rating_counts": {
@@ -1391,9 +1391,9 @@
     "description": "The primary topics in this part of the specialization are: asymptotic (\"Big-oh\") notation, sorting and searching, divide and conquer (master method, integer and matrix multiplication, closest pair), and randomized algorithms (QuickSort, contraction algorithm for min cuts).",
     "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/59/a46dd76be04ce8b5577ce63747275a/160x60-stanford-online-logo.png",
     "coursera": 4.8,
-    "starisk": 1.8,
+    "starisk": 2.1,
     "spread": 1.65,
-    "spread_weighted": 1.34,
+    "spread_weighted": 1.54,
     "reviews": 20,
     "review_counts": {
       "1.0": 10,
@@ -1407,7 +1407,7 @@
       "stars": 1.0,
       "likes": 139
     },
-    "model": "simple",
+    "model": "sqrt-likes",
     "reviews_total": 1022,
     "ratings_total": 5342,
     "rating_counts": {

@@ -102,9 +102,19 @@ crowd upvoted counts for more.
 
 - **Faithful (original 2021):** `weight = (2 + likes)² · ageDays^0.3`,
   `score = 0.8·peer + 0.2·coursera`.
-- **Simplified (candidate default):** `weight = 1 + likes`,
+- **Simplified:** `weight = 1 + likes`,
   `score = Σ(stars·weight) / Σ(weight)`.
   *"Everyone is one voice; every upvote is one more voice."*
+- **Calibrated (2026-10, the default):** `weight = √(1 + likes)`, same sum.
+  Upvotes still matter — 80 likes counts about 5× a review with 2 — but one
+  review can no longer own a course.
+
+**Why sqrt:** on 29 courses I rated myself, Spearman against my gut was
+**0.62** for `1 + likes`, **0.57** for the 2021 model, and **0.68–0.70** for
+anything that compresses likes (sqrt, log, cap-at-10, or even ignoring votes).
+Bootstrap: sqrt beats linear in 79% of resamples with overlapping CIs —
+*suggestive, not proven*. The decision rests on the failure mode it removes
+(one 663-like review owning a score), not on the point estimate.
 
 On the sample fixture (`review.html`): Coursera **4.0** → original **1.9** /
 simple **1.7**. The most-liked review is a 1★ takedown (`This is helpful (102)`).

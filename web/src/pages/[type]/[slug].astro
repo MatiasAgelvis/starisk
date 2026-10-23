@@ -187,9 +187,10 @@ function votes(count: number) {
 
     <section class="mt-10 text-sm text-base-content/60">
       <p>
-        Starisk reads the reviews learners voted most helpful, and a vote is the whole weight: a
-        review with 80 upvotes counts far more than one with 2. Unvoted reviews are not ignored out
-        of laziness — by this model they carry no evidence that other students endorsed them.
+        Starisk reads the reviews learners voted most helpful, and weights each by the square root of
+        its votes: a review with 80 upvotes counts about five times one with 2. Unvoted reviews are
+        not skipped out of laziness — by this model they carry no evidence that other students
+        endorsed them.
       </p>
       <p class="mt-2">
         That measures <strong>what the most-endorsed reviews say</strong>, not “true quality.” The

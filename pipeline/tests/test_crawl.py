@@ -28,10 +28,10 @@ class ScorePageTest(unittest.TestCase):
 
         self.assertIsNotNone(result)
         self.assertEqual(result["reviews"], 3)
-        self.assertEqual(result["model"], "simple")
+        self.assertEqual(result["model"], "sqrt-likes")
         self.assertEqual(result["title"], "Sample Course")
         self.assertEqual(result["provider"], "Test University")
-        self.assertEqual(result["starisk"], 1.5)
+        self.assertEqual(result["starisk"], 2.2)
         self.assertAlmostEqual(result["coursera"], 4.9)
         self.assertEqual(result["top_review"]["likes"], 80)
         self.assertEqual(result["top_review"]["stars"], 1.0)
@@ -278,7 +278,7 @@ class ArgsTest(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
 
-        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertNotIn("instructors", scores["learn/a"])
 
 
@@ -316,7 +316,7 @@ class CacheTest(unittest.TestCase):
             scores = crawl(["learn/a"], fetch=fetch, now=STAMP, offline=True, cache_dir=directory)
 
         self.assertEqual(calls, [])
-        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertEqual(scores["learn/a"]["starisk"], 2.2)
 
     def test_offline_keeps_the_original_stamp(self):
         html = GOOD_FIXTURE.read_text(encoding="utf-8")
@@ -330,7 +330,7 @@ class CacheTest(unittest.TestCase):
             )
 
         # Re-parsed, but not re-scraped: the date must survive.
-        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertEqual(scores["learn/a"]["scrapedAt"], "2026-01-01T00:00:00+00:00")
 
     def test_offline_missing_cache_leaves_a_good_record_alone(self):

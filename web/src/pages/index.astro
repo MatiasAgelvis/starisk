@@ -64,10 +64,10 @@ const lookup = Object.fromEntries(
     <div class="mt-4 space-y-4 text-base-content/80">
       <p>
         We read the reviews learners voted <strong>most helpful</strong> — about 20 per course —
-        and weight each one by its votes: a review with 80 upvotes counts far more than one with 2.
-        Unvoted reviews are not skipped out of laziness — by this model they carry no evidence that
-        other students endorsed them. If a course had fewer than 15 readable reviews, its page says
-        so instead of pretending.
+        and weight each one by the square root of its votes: a review with 80 upvotes counts about
+        five times one with 2. Enough to matter, not enough to decide alone. Without that
+        compression a single review with 663 likes would outvote everything else on the page, and
+        on the 29 courses I labelled myself that fit was measurably worse.
       </p>
       <p>
         Coursera publishes the full rating distribution for every course, so each page shows the
@@ -78,7 +78,8 @@ const lookup = Object.fromEntries(
       <p>
         It measures <strong>what the most-endorsed reviews say</strong>, not “true quality.” Upvoted
         reviews often carry a grievance — about access, pricing or certificates — rather than a
-        judgment of the teaching. The disagreement is the point, not the final word.
+        judgment of the teaching. The disagreement is the point, not the final word. If a course had
+        fewer than 15 readable reviews, its page says so instead of pretending.
       </p>
       <p>
         Sample: {rows.length} courses. Scores recomputed from saved review pages; not

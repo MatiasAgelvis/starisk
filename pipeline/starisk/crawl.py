@@ -42,7 +42,7 @@ from .adapter import (
     extract_reviews,
 )
 from .cache import CACHE_DIR, load_page, store_page
-from .engine import SIMPLE, course_score, peer_spread, review_spread
+from .engine import CALIBRATED, course_score, peer_spread, review_spread
 from .fetch import RateLimited, fetch_page
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
@@ -189,10 +189,10 @@ def score_page(html: str) -> dict | None:
         "image": details["image"],
         "coursera": None if coursera != coursera else round(coursera, 1),  # NaN -> None
         "starisk": round(
-            course_score({"reviews": reviews, "coursera": coursera}, SIMPLE), 1
+            course_score({"reviews": reviews, "coursera": coursera}, CALIBRATED), 1
         ),
         "spread": round(review_spread(reviews), 2),
-        "spread_weighted": round(peer_spread(reviews, SIMPLE), 2),
+        "spread_weighted": round(peer_spread(reviews, CALIBRATED), 2),
         "reviews": len(reviews),
         # The sample's own rating distribution, so a page can say "3 of 20 rated
         # it 3★ or lower, but none of them wrote a comment" instead of guessing.
@@ -200,7 +200,7 @@ def score_page(html: str) -> dict | None:
             str(star): count for star, count in sorted(Counter(r["stars"] for r in reviews).items())
         },
         "top_review": _top_review(reviews),
-        "model": "simple",
+        "model": "sqrt-likes",
     }
 
     # Present on most course pages, missing on some. Omit rather than emit null.
