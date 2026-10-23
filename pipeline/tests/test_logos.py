@@ -20,6 +20,9 @@ class ProviderSlugTest(unittest.TestCase):
         self.assertEqual(provider_slug(""), "provider")
         self.assertEqual(provider_slug("!!!"), "provider")
 
+    def test_a_wild_name_cannot_become_a_900_char_filename(self):
+        self.assertLessEqual(len(provider_slug("type-person-name-andrew-ng " * 40)), 64)
+
 
 class SniffTest(unittest.TestCase):
     def test_known_formats(self):
@@ -88,6 +91,24 @@ class LocalizeTest(unittest.TestCase):
 
             self.assertEqual(scores["learn/a"]["image"], "https://cdn/y.png")
             self.assertEqual(list(Path(tmp).iterdir()), [])
+
+    def test_a_serialized_provider_is_not_a_filename(self):
+        # An old crawl stored the JSON-LD person blob as the provider; the logo
+        # file must fall back to a hash instead of Errno 63.
+        scores = {
+            "learn/a": {
+                "provider": "[{'@type': 'Person', 'name': 'Andrew Ng'}]",
+                "image": "https://cdn/x.png",
+            }
+        }
+        with TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            localize_images(scores, fetch=lambda _: PNG, out_dir=out, log=lambda *_: None)
+
+            found = list(out.iterdir())
+            self.assertEqual(len(found), 1)
+            self.assertLessEqual(len(found[0].name), 64)
+            self.assertTrue(scores["learn/a"]["image"].startswith("/logos/"))
 
     def test_local_and_missing_images_are_left_alone(self):
         scores = {

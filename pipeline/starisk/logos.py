@@ -28,6 +28,7 @@ from .fetch import fetch_bytes
 
 LOGO_DIR = Path(__file__).resolve().parents[2] / "web" / "public" / "logos"
 IMAGE_PREFIX = "/logos/"
+MAX_STEM = 64
 
 # Extensions we are willing to store. Alpha matters: several provider marks are
 # white-on-transparent, which is why JPEG is not a safe blanket choice.
@@ -43,7 +44,22 @@ def provider_slug(name: str) -> str:
     """'DeepLearning.AI' -> 'deeplearning-ai'. Stable, filesystem-safe."""
     folded = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii")
     slug = re.sub(r"[^a-z0-9]+", "-", folded.lower()).strip("-")
-    return slug or "provider"
+    # Filesystem limit is 255 bytes per component; a wrong provider name must not
+    # become a 900-character filename (Errno 63).
+    return slug[:MAX_STEM].strip("-") or "provider"
+
+
+def _stem(record: dict) -> str:
+    """Filename stem for a record's logo: its provider, or a URL hash.
+
+    An older crawl could store a serialized JSON-LD person as `provider`; that is
+    not a name, so it must never reach the filename. Those get the hash fallback.
+    """
+    provider = str(record.get("provider") or "").strip()
+    image = str(record.get("image") or "")
+    if provider and "@type" not in provider and not provider.startswith(("[", "{")):
+        return provider_slug(provider)
+    return hashlib.sha1(image.encode()).hexdigest()[:10]
 
 
 def sniff_extension(body: bytes) -> str | None:
@@ -89,9 +105,7 @@ def localize_images(
         image = record.get("image")
         if not _is_remote(image):
             continue
-        provider = (record.get("provider") or "").strip()
-        stem = provider_slug(provider) if provider else hashlib.sha1(image.encode()).hexdigest()[:10]
-        wanted.setdefault(stem, image)
+        wanted.setdefault(_stem(record), image)
 
     resolved: dict[str, str] = {}
     for stem, url in wanted.items():
@@ -118,8 +132,7 @@ def localize_images(
     for record in scores.values():
         if not _is_remote(record.get("image")):
             continue
-        provider = (record.get("provider") or "").strip()
-        stem = provider_slug(provider) if provider else hashlib.sha1(record["image"].encode()).hexdigest()[:10]
+        stem = _stem(record)
         if stem in resolved:
             record["image"] = resolved[stem]
 
