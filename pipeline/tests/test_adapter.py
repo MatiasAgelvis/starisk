@@ -15,6 +15,10 @@ from starisk.adapter import (
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 
 
+def names(html: str) -> list[str]:
+    return [record["name"] for record in extract_landing(html)["instructors"]]
+
+
 class AdapterTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -203,7 +207,7 @@ class LandingTest(unittest.TestCase):
             '"instructor":{"@type":"Person","name":"Andrew Ng"}}'
             "</script>"
         )
-        self.assertEqual(extract_landing(html)["instructors"], ["Andrew Ng"])
+        self.assertEqual(names(html), ["Andrew Ng"])
 
     def test_multiple_instructors(self):
         html = (
@@ -212,14 +216,14 @@ class LandingTest(unittest.TestCase):
             '"instructor":[{"name":"Ada"},{"name":"Grace"}]}'
             "</script>"
         )
-        self.assertEqual(extract_landing(html)["instructors"], ["Ada", "Grace"])
+        self.assertEqual(names(html), ["Ada", "Grace"])
 
     def test_instructors_from_the_data_blob_when_jsonld_is_silent(self):
         html = (
             '"instructors":[{"__ref":"DescriptionPage_Instructor:1244"}]'
             '"DescriptionPage_Instructor:1244":{"__typename":"X","name":"Andrew Ng"}'
         )
-        self.assertEqual(extract_landing(html)["instructors"], ["Andrew Ng"])
+        self.assertEqual(names(html), ["Andrew Ng"])
 
     def test_blob_uses_full_name(self):
         # The real page uses `fullName`, plus fields that come before it.
@@ -229,7 +233,80 @@ class LandingTest(unittest.TestCase):
             '"coursesTaught":53,"department":"Founder","fullName":"Andrew Ng",'
             '"isTopInstructor":true}'
         )
-        self.assertEqual(extract_landing(html)["instructors"], ["Andrew Ng"])
+        self.assertEqual(names(html), ["Andrew Ng"])
+
+    def test_the_page_data_gives_the_whole_teaching_team(self):
+        # The hero links only the first instructor; the blob has all of them,
+        # with an id, a profile picture and the job title.
+        html = (
+            '"instructors":[{"__ref":"DescriptionPage_Instructor:1"},'
+            '{"__ref":"DescriptionPage_Instructor:2"}]'
+            '"DescriptionPage_Instructor:1":{"id":"1","fullName":"Andrew Ng",'
+            '"shortName":"andrewng","title":"Instructor",'
+            '"department":"DeepLearning.AI","learnersReached":10040895,'
+            '"coursesTaught":53,"photo":"https://example.com/ng.jpg"},'
+            '"DescriptionPage_Instructor:2":{"id":"2","fullName":"Aarti Bagul",'
+            '"shortName":"","title":"Curriculum Engineer","department":"",'
+            '"learnersReached":1312880,"coursesTaught":6,"photo":null}'
+        )
+        team = extract_landing(html)["instructors"]
+
+        self.assertEqual([person["name"] for person in team], ["Andrew Ng", "Aarti Bagul"])
+        self.assertEqual(team[0]["slug"], "andrewng")
+        self.assertEqual(team[0]["page"], "andrewng")
+        self.assertEqual(team[0]["courses_taught"], 53)
+        self.assertEqual(team[0]["role"], "Instructor")
+        # No vanity slug: the numeric ref is still a real profile, but a readable
+        # URL is better than `/instructors/~2`.
+        self.assertEqual(team[1]["slug"], "~2")
+        self.assertEqual(team[1]["url"], "https://www.coursera.org/instructor/~2")
+        self.assertEqual(team[1]["page"], "aarti-bagul")
+
+    def test_profile_link_gives_the_instructor_an_identity(self):
+        html = (
+            '<a href="/instructor/andrewng" class="x"><span class="y">Andrew Ng</span></a>'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X","instructor":{"name":"Andrew Ng"}}'
+            "</script>"
+        )
+        self.assertEqual(
+            extract_landing(html)["instructors"],
+            [
+                {
+                    "name": "Andrew Ng",
+                    "slug": "andrewng",
+                    "url": "https://www.coursera.org/instructor/andrewng",
+                    "page": "andrewng",
+                    "id": None,
+                    "role": None,
+                    "department": None,
+                    "learners": None,
+                    "courses_taught": None,
+                    "photo": None,
+                }
+            ],
+        )
+
+    def test_anonymous_profile_slug_falls_back_to_the_name(self):
+        html = '<a href="/instructor/~219741545"><span>Kara Pritchard</span></a>'
+        self.assertEqual(extract_landing(html)["instructors"][0]["page"], "kara-pritchard")
+
+    def test_instructor_names_are_normalised(self):
+        html = '<a href="/instructor/~873260"><span>Dan  Grossman</span></a>'
+        record = extract_landing(html)["instructors"][0]
+        self.assertEqual(record["name"], "Dan Grossman")
+        self.assertEqual(record["page"], "dan-grossman")
+
+    def test_a_teacher_without_a_profile_is_kept(self):
+        html = (
+            '<a href="/instructor/andrewng"><span>Andrew Ng</span></a>'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"instructor":[{"name":"Andrew Ng"},{"name":"Ada"}]}'
+            "</script>"
+        )
+        self.assertEqual(names(html), ["Andrew Ng", "Ada"])
+        self.assertIsNone(extract_landing(html)["instructors"][1]["slug"])
 
     def test_categories_from_domains(self):
         html = (

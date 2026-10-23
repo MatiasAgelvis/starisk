@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ScoreTable from '../components/ScoreTable.svelte';
 import Lookup from '../components/Lookup.svelte';
+import { buildInstructors, teacherIndex } from '../lib/instructors.js';
 import scores from '../data/scores.json';
 
 const rows = Object.entries(scores)
@@ -30,6 +31,9 @@ const lookup = Object.fromEntries(
     },
   ]),
 );
+
+// Coursera profile slug -> our page, so pasting either URL works.
+const teachers = teacherIndex(buildInstructors(scores));
 ---
 
 <Base title="Starisk — what learners actually say">
@@ -45,7 +49,7 @@ const lookup = Object.fromEntries(
       Every rating deserves an asterisk.
     </p>
     <div class="mt-8">
-      <Lookup client:load scores={lookup} />
+      <Lookup client:load scores={lookup} teachers={teachers} />
     </div>
   </section>
 

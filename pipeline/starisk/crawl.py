@@ -40,6 +40,7 @@ from .adapter import (
     extract_details,
     extract_landing,
     extract_reviews,
+    identity_key,
 )
 from .cache import CACHE_DIR, load_page, store_page
 from .engine import CALIBRATED, course_score, peer_spread, review_spread
@@ -319,6 +320,31 @@ def crawl(
         if delay:
             sleep(delay)
 
+    return resolve_instructors(scores)
+
+
+def resolve_instructors(scores: dict) -> dict:
+    """Give a name-only instructor the identity of the same person elsewhere.
+
+    Coursera links only some of a course's instructors, so the same teacher can
+    arrive once with a profile and once without. Taking the known identity keeps
+    one person on one page instead of splitting them in two.
+    """
+    known = {}
+    for record in scores.values():
+        for instructor in record.get("instructors") or []:
+            if instructor.get("slug"):
+                known.setdefault(identity_key(instructor["name"]), instructor)
+
+    for record in scores.values():
+        for instructor in record.get("instructors") or []:
+            if instructor.get("slug"):
+                continue
+            match = known.get(identity_key(instructor["name"]))
+            if match:
+                instructor["slug"] = match["slug"]
+                instructor["url"] = match["url"]
+                instructor["page"] = match["page"]
     return scores
 
 

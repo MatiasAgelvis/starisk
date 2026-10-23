@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Stars from '../../components/Stars.astro';
 import Logo from '../../components/Logo.astro';
+import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import scores from '../../data/scores.json';
 
 export function getStaticPaths() {
@@ -53,9 +54,7 @@ const lowShare =
 
 function verdictText() {
   if (inflation == null) return 'No headline rating to compare';
-  if (inflation >= 1.5) return 'Inflated';
-  if (inflation >= 0.5) return 'Padded';
-  return 'Holds up';
+  return VERDICT[verdictOf(record.coursera, record.starisk)].label;
 }
 
 function votes(count: number) {
@@ -85,7 +84,15 @@ function votes(count: number) {
         {
           instructors.length > 0 && (
             <p class="mt-1 text-sm text-base-content/60">
-              Taught by {instructors.join(', ')}
+              Taught by{' '}
+              {instructors.map((person, index) => (
+                <>
+                  {index > 0 ? ', ' : ''}
+                  <a class="link link-hover" href={`/instructors/${person.page}`}>
+                    {person.name}
+                  </a>
+                </>
+              ))}
             </p>
           )
         }

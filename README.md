@@ -13,17 +13,20 @@ and puts the result next to Coursera's number.
 
 | Course | Coursera | Starisk |
 |---|---:|---:|
-| Financial Markets | 4.8 | 2.5 |
-| Neural Networks and Deep Learning | 4.9 | 2.9 |
-| Learning How to Learn | 4.8 | 3.6 |
+| Financial Markets | 4.8 | 3.0 |
+| Neural Networks and Deep Learning | 4.9 | 3.2 |
+| Learning How to Learn | 4.8 | 3.7 |
 
 ## What it is
 
-- **A score.** `weight = 1 + likes`, `score = Σ(stars · weight) / Σ(weight)` —
-  every reviewer is one voice, every upvote is one more voice.
+- **A score.** `weight = √(1 + likes)`, `score = Σ(stars · weight) / Σ(weight)` —
+  every reviewer is one voice, every upvote is worth more but not without limit.
 - **The dissent.** Each course page shows the most-upvoted *critical* review, in
   full. Usually that's the honest paragraph buried under five hundred 5★ ones.
-- **A leaderboard** of courses, and a lookup box for a course link.
+- **A leaderboard** of courses, and a lookup box that accepts a course *or* a
+  teacher URL.
+- **A teacher directory.** Who teaches what, and whether the catalogue holds up —
+  the same measurement re-cut by instructor, with the range across their courses.
 - **Not** a browser extension, not a product with accounts, not a claim about
   objective quality.
 
@@ -77,10 +80,12 @@ mise run pipeline:crawl -- --force     # ignore freshness, refetch everything
 Sources are normalised (`learn/x`, `/learn/x/`, a full URL and a bare slug are
 one course), fresh records are skipped without a request, and work is ordered
 stalest-first so `--limit` always makes progress. Each course is **two**
-requests — the reviews page and the landing page (instructors, categories) — and
-both are cached, so `--offline` re-parses without touching the network. If
-Coursera rate-limits a run (403/429), it **stops** instead of retrying — the next
-run resumes at the same course.
+requests — the reviews page and the landing page (the whole teaching team,
+categories) — and both are cached, so `--offline` re-parses without touching the
+network. The landing page's data blob carries every instructor, not just the ones
+the hero links, so teachers cost no extra request. If Coursera rate-limits a run
+(403/429), it **stops** instead of retrying — the next run resumes at the same
+course.
 
 ### Calibration
 
@@ -122,6 +127,7 @@ pipeline/      Python — crawler, scoring engine, calibration
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
   public/logos/  provider logos, downloaded once by the pipeline
+  src/pages/instructors/  the teacher directory (a derived view, not a crawl unit)
 calibration/   my own 74 credentials, for measuring the model
 samples/       scratch space for live HTML snapshots (gitignored)
 SPEC.md        the why: mission, non-goals, decision log

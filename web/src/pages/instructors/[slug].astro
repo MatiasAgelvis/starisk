@@ -1,0 +1,170 @@
+---
+import Base from '../../layouts/Base.astro';
+import Avatar from '../../components/Avatar.astro';
+import Logo from '../../components/Logo.astro';
+import Stars from '../../components/Stars.astro';
+import { buildInstructors } from '../../lib/instructors.js';
+import { verdictOf, VERDICT } from '../../lib/verdict.js';
+import scores from '../../data/scores.json';
+
+export function getStaticPaths() {
+  return buildInstructors(scores).map((person) => ({
+    params: { slug: person.page },
+    props: { person },
+  }));
+}
+
+const { person } = Astro.props;
+const name = person.name ?? person.page;
+const single = person.courses.length === 1;
+const role = [person.role, person.department].filter(Boolean).join(' · ');
+
+// Co-teachers are gathered from the courses, not from the person's own record:
+// the same pair can appear on a whole series.
+const coTeachers = [
+  ...new Map(
+    person.courses
+      .flatMap((course) => course.co)
+      .filter((other) => other.page !== person.page)
+      .map((other) => [other.page, other]),
+  ).values(),
+];
+
+const description = single
+  ? `${name}: their one indexed course sits at ${person.average.toFixed(1)} out of 5.`
+  : `${name}: ${person.courses.length} courses scored, from ${person.low.toFixed(1)} to ${person.high.toFixed(1)} out of 5.`;
+---
+
+<Base title={`${name} — Starisk`} description={description}>
+  <article class="mx-auto max-w-3xl">
+    <a href="/instructors" class="link link-hover text-sm text-base-content/60">← all teachers</a>
+
+    <header class="mt-4 flex items-start gap-4">
+      <Avatar src={person.photo} name={name} class="h-16 w-16 text-lg" />
+      <div class="min-w-0">
+        <h1 class="font-display text-3xl font-bold tracking-tight">{name}</h1>
+        {role && <p class="mt-1 text-sm text-base-content/60">{role}</p>}
+        {
+          person.url && (
+            <p class="mt-1 text-sm text-base-content/60">
+              <a
+                class="link link-hover"
+                href={person.url}
+                target="_blank"
+                rel="noopener noreferrer">Profile on Coursera ↗</a
+              >
+            </p>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
+      <div class="stat">
+        <div class="stat-title">{single ? 'Course score' : 'Catalogue average'}</div>
+        <div class="stat-value text-2xl">{person.average.toFixed(1)}</div>
+        <Stars value={person.average} size={16} />
+        <div class="stat-desc">
+          {single ? 'one course scored' : `across ${person.courses.length} courses`}
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Range</div>
+        <div class="stat-value text-2xl">
+          {single ? person.low.toFixed(1) : `${person.low.toFixed(1)}–${person.high.toFixed(1)}`}
+        </div>
+        <div class="stat-desc">
+          {single ? 'no spread yet' : 'worst course to best course'}
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Reviews read</div>
+        <div class="stat-value text-2xl">{person.reviews}</div>
+        <div class="stat-desc">across those courses</div>
+      </div>
+    </div>
+
+    <section class="mt-8">
+      <h2 class="font-display text-xl font-bold">
+        {single ? 'The course' : 'The courses'}
+      </h2>
+      <ul class="mt-4 divide-y divide-base-300/60">
+        {
+          person.courses.map((course) => {
+            const verdict = VERDICT[verdictOf(course.coursera, course.starisk)];
+            return (
+              <li class="flex items-start gap-4 py-4">
+                <Logo src={course.image} class="mt-0.5 h-10 w-16" />
+                <div class="min-w-0 flex-1">
+                  <a class="link link-hover font-medium" href={`/${course.key}`}>
+                    {course.title}
+                  </a>
+                  <div class="text-xs text-base-content/50">{course.provider ?? 'Unknown provider'}</div>
+                  {course.co.length > 0 && (
+                    <div class="mt-1 text-xs text-base-content/60">
+                      with{' '}
+                      {course.co.map((other, index) => (
+                        <>
+                          {index > 0 ? ', ' : ''}
+                          <a class="link link-hover" href={`/instructors/${other.page}`}>
+                            {other.name}
+                          </a>
+                        </>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div class="shrink-0 whitespace-nowrap text-right">
+                  <div class="font-bold">{course.starisk.toFixed(1)}</div>
+                  <div class="text-xs text-base-content/50">
+                    Coursera {course.coursera == null ? '—' : course.coursera.toFixed(1)}
+                  </div>
+                  <span class={`badge badge-sm mt-1 whitespace-nowrap ${verdict.badge}`}>
+                    {verdict.label}
+                  </span>
+                </div>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    {
+      coTeachers.length > 0 && (
+        <section class="mt-6">
+          <h2 class="font-display text-xl font-bold">Teaches with</h2>
+          <p class="mt-3 flex flex-wrap gap-2">
+            {coTeachers.map((other) => (
+              <a class="btn btn-sm btn-ghost" href={`/instructors/${other.page}`}>
+                {other.name}
+              </a>
+            ))}
+          </p>
+        </section>
+      )
+    }
+
+    <section class="mt-10 space-y-3 text-sm text-base-content/60">
+      {
+        person.courses_taught && person.courses_taught > person.courses.length ? (
+          <p>
+            Coursera credits {name} with <strong>{person.courses_taught}</strong> courses; Starisk
+            has scored <strong>{person.courses.length}</strong> of them so far.
+          </p>
+        ) : null
+      }
+      <p>
+        {single
+          ? 'One course is not a pattern. This page will get more useful when the index grows.'
+          : `The average weights each course by the reviews we read, so a course with four readable reviews does not pull as hard as one with twenty. It is still a small sample: ${person.reviews} reviews in total.`}
+      </p>
+      <p>
+        A course taught by several people counts for everyone on it. The score is the same one
+        the <a class="link link-hover" href={`/${person.courses[0].key}`}>course page</a> shows —
+        what the most-upvoted reviews say — not a verdict on the teaching.
+        <a class="link link-hover" href="/method">The method.</a>
+      </p>
+    </section>
+  </article>
+</Base>

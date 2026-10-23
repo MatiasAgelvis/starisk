@@ -12,6 +12,7 @@ from starisk.crawl import (
     normalize_source,
     order_by_staleness,
     parse_args,
+    resolve_instructors,
     reviews_url,
     score_page,
     unique_sources,
@@ -263,7 +264,7 @@ class ArgsTest(unittest.TestCase):
             directory = Path(tmp)
             scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=directory)
 
-            self.assertEqual(scores["learn/a"]["instructors"], ["Andrew Ng"])
+            self.assertEqual(scores["learn/a"]["instructors"][0]["name"], "Andrew Ng")
             self.assertEqual(scores["learn/a"]["categories"], ["Data Science"])
             self.assertTrue(path_for("learn/a.landing", directory).exists())
 
@@ -280,6 +281,49 @@ class ArgsTest(unittest.TestCase):
 
         self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertNotIn("instructors", scores["learn/a"])
+
+
+class InstructorIdentityTest(unittest.TestCase):
+    def test_a_name_only_instructor_adopts_the_known_profile(self):
+        scores = {
+            "learn/a": {
+                "instructors": [
+                    {"name": "Prof. Peter J Stuckey", "slug": "peter-stuckey",
+                     "url": "https://www.coursera.org/instructor/peter-stuckey",
+                     "page": "peter-stuckey"}
+                ]
+            },
+            "learn/b": {
+                "instructors": [
+                    {"name": "Prof. Peter J Stuckey", "slug": None,
+                     "url": None, "page": "peter-j-stuckey"}
+                ]
+            },
+        }
+
+        resolve_instructors(scores)
+        self.assertEqual(scores["learn/b"]["instructors"][0]["page"], "peter-stuckey")
+        self.assertEqual(
+            scores["learn/b"]["instructors"][0]["slug"], "peter-stuckey"
+        )
+
+    def test_two_different_people_keep_their_own_pages(self):
+        scores = {
+            "learn/a": {
+                "instructors": [
+                    {"name": "Martha White", "slug": "martha-white",
+                     "url": "u", "page": "martha-white"}
+                ]
+            },
+            "learn/b": {
+                "instructors": [
+                    {"name": "Adam White", "slug": None, "url": None, "page": "adam-white"}
+                ]
+            },
+        }
+
+        resolve_instructors(scores)
+        self.assertEqual(scores["learn/b"]["instructors"][0]["page"], "adam-white")
 
 
 class CacheTest(unittest.TestCase):

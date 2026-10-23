@@ -1,5 +1,6 @@
 <script>
   import Stars from './Stars.svelte';
+  import { verdictOf, VERDICT } from '../lib/verdict.js';
 
   let { rows = [] } = $props();
 
@@ -20,20 +21,9 @@
     return row.coursera == null ? null : row.coursera - row.starisk;
   }
 
-  function verdictOf(row) {
-    const inflation = inflationOf(row);
-    if (inflation == null) return 'unknown';
-    if (inflation >= 1.5) return 'inflated';
-    if (inflation >= 0.5) return 'padded';
-    return 'holds-up';
+  function verdictKey(row) {
+    return verdictOf(row.coursera, row.starisk);
   }
-
-  const VERDICT_STYLE = {
-    inflated: { label: 'Inflated', badge: 'badge-error', bar: 'bg-error' },
-    padded: { label: 'Padded', badge: 'badge-warning', bar: 'bg-warning' },
-    'holds-up': { label: 'Holds up', badge: 'badge-success', bar: 'bg-success' },
-    unknown: { label: 'No rating', badge: 'badge-ghost', bar: 'bg-base-300' },
-  };
 
   const COLUMNS = [
     { key: 'title', label: 'Course', align: 'text-left', width: 'w-[56%] sm:w-[50%]' },
@@ -76,7 +66,7 @@
   const visible = $derived.by(() => {
     const needle = query.trim().toLowerCase();
     const filtered = rows.filter((row) => {
-      if (verdict !== 'all' && verdictOf(row) !== verdict) return false;
+      if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
       if (!needle) return true;
       return `${row.title ?? ''} ${row.provider ?? ''} ${row.slug}`.toLowerCase().includes(needle);
     });
@@ -135,7 +125,7 @@
     <tbody>
       {#each visible as row (row.slug)}
         {@const inflation = inflationOf(row)}
-        {@const style = VERDICT_STYLE[verdictOf(row)]}
+        {@const style = VERDICT[verdictKey(row)]}
         <tr>
           <td>
             <div class="flex items-center gap-3">

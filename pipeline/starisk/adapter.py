@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from datetime import datetime, timezone
 from html import unescape
 
@@ -62,6 +63,17 @@ _DOMAINS = re.compile(
 )
 _INSTRUCTOR_REF = re.compile(r'"instructors":\[([^\]]*)\]')
 
+# Each instructor is linked to their own profile, but only the first few of the
+# teaching team get a link — the rest render as plain text. The page data blob
+# holds the *whole* roster, with a stable numeric id, a vanity slug when Coursera
+# assigned one, and the profile fields.
+_INSTRUCTOR_LINK = re.compile(
+    r'href="/instructor/([^"#?]+)"[^>]*>\s*<span[^>]*>([^<]+)</span>'
+)
+_INSTRUCTOR_RECORD = re.compile(r'"DescriptionPage_Instructor:(\d+)":\{')
+_TITLE = re.compile(r"^(?:prof\.?|dr\.?|mr\.?|ms\.?|mrs\.?)\s+", re.IGNORECASE)
+_CREDENTIAL = re.compile(r",?\s+(?:ph\.?\s?d\.?|m\.?d\.?)$", re.IGNORECASE)
+
 _DATE_FORMATS = (
     "%b %d, %Y",
     "%B %d, %Y",
@@ -88,15 +100,164 @@ def _find_type(node, types: tuple[str, ...]):
     return None
 
 
-def extract_landing(html: str) -> dict:
-    """Instructors and subjects from a course landing page.
+def identity_key(name: str) -> str:
+    """A name reduced to its matching form: titles and credentials dropped.
 
-    The reviews page does not carry either; `/learn/<slug>` is server-rendered and
-    does. Names come from the JSON-LD (which also has bios and photos for later),
-    falling back to the page's own data blob; subjects come from `domains`.
+    Names are not identities — people collide, and the same person is spelled
+    "Prof. Peter J Stuckey" on one page and "Peter Stuckey" on another. This key
+    matches the two so one person keeps one page; it also names the page of
+    someone whose Coursera slug is only a numeric ref.
     """
-    result = {"instructors": [], "categories": []}
+    cleaned = _CREDENTIAL.sub("", name)
+    cleaned = _TITLE.sub("", cleaned)
+    ascii_name = (
+        unicodedata.normalize("NFKD", cleaned).encode("ascii", "ignore").decode("ascii")
+    )
+    return re.sub(r"[^a-z0-9]+", "-", ascii_name.lower()).strip("-")
 
+
+def _page_slug(coursera_slug: str | None, name: str) -> str:
+    """Our URL segment for an instructor.
+
+    Coursera's slug is the identity, but several are anonymous numeric refs
+    (`~219741545`), so those fall back to the person's name. A readable URL also
+    survives Coursera assigning a vanity slug later.
+    """
+    if coursera_slug:
+        bare = coursera_slug.rsplit("/", 1)[-1]
+        if not bare.lstrip("~").isdigit():
+            return bare
+    return identity_key(name)
+
+
+def _instructor(name: str, slug: str | None) -> dict:
+    """A person we only know by name (no page data), in the same shape as a record."""
+    display = " ".join(name.split())
+    return {
+        "name": display,
+        "slug": slug,
+        "url": f"https://www.coursera.org/instructor/{slug}" if slug else None,
+        "page": _page_slug(slug, name),
+        "id": None,
+        "role": None,
+        "department": None,
+        "learners": None,
+        "courses_taught": None,
+        "photo": None,
+    }
+
+
+def _json_object_at(html: str, start: int) -> str | None:
+    """The JSON object beginning at `start`, by counting braces outside strings."""
+    depth = 0
+    in_string = False
+    escaped = False
+    for index in range(start, len(html)):
+        char = html[index]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+        elif char == '"':
+            in_string = True
+        elif char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return html[start : index + 1]
+    return None
+
+
+def _instructor_from_record(ident: str, data: dict) -> dict | None:
+    """One person from the page data blob.
+
+    Every instructor has a profile page: the vanity slug when Coursera assigned
+    one, the numeric ref otherwise (`/instructor/~219741545`). Both resolve; the
+    numeric form is what the landing page links to for people without a vanity
+    slug. Their own page gets a readable slug either way.
+    """
+    name = data.get("fullName") or data.get("name")
+    if not name:
+        return None
+
+    short = str(data.get("shortName") or "").strip()
+    slug = short or f"~{ident}"
+    return {
+        "name": " ".join(str(name).split()),
+        "slug": slug,
+        "url": f"https://www.coursera.org/instructor/{slug}",
+        "page": short or identity_key(str(name)),
+        "id": ident,
+        "role": (data.get("title") or "").strip() or None,
+        "department": (data.get("department") or "").strip() or None,
+        "learners": _as_int(data.get("learnersReached")),
+        "courses_taught": _as_int(data.get("coursesTaught")),
+        "photo": data.get("photo") or None,
+    }
+
+
+def _instructors_from_blob(html: str) -> list[dict]:
+    """The whole teaching team, in the page's own order."""
+    found = {}
+    for match in _INSTRUCTOR_RECORD.finditer(html):
+        body = _json_object_at(html, match.end() - 1)
+        if not body:
+            continue
+        try:
+            data = json.loads(body)
+        except json.JSONDecodeError:
+            continue
+        record = _instructor_from_record(match.group(1), data)
+        if record:
+            found[match.group(1)] = record
+
+    if not found:
+        return []
+
+    refs = _INSTRUCTOR_REF.search(html)
+    order = []
+    if refs:
+        order = list(
+            dict.fromkeys(
+                re.findall(r'"__ref":"DescriptionPage_Instructor:(\d+)"', refs.group(1))
+            )
+        )
+
+    # The course's own `instructors` array is the roster; the blob holds those
+    # records and nothing else (verified on every cached page). Trust it when it
+    # is there, so a person bled in from a related-course block cannot join the
+    # teaching team.
+    if order:
+        return [found[ident] for ident in order if ident in found]
+    return list(found.values())
+
+
+def _instructors_from_links(html: str) -> list[dict]:
+    """Fallback when the page data is missing: the linked instructors, plus any
+    co-instructor the page only names in its JSON-LD."""
+    records = []
+    seen = set()
+    for slug, name in _INSTRUCTOR_LINK.findall(html):
+        if slug in seen:
+            continue
+        seen.add(slug)
+        records.append(_instructor(unescape(name), slug))
+
+    if records:
+        known = {record["name"].casefold() for record in records}
+        records.extend(
+            _instructor(name, None)
+            for name in _names_from_jsonld(html)
+            if " ".join(name.split()).casefold() not in known
+        )
+    return records
+
+
+def _names_from_jsonld(html: str) -> list[str]:
     for block in _LD_JSON.findall(html):
         try:
             data = json.loads(block)
@@ -115,36 +276,31 @@ def extract_landing(html: str) -> dict:
             if name:
                 names.append(unescape(str(name)).strip())
         if names:
-            result["instructors"] = list(dict.fromkeys(names))
-            break
+            return list(dict.fromkeys(names))
         # Not every JSON-LD Course carries the instructor; keep looking (the
         # @graph block usually does).
+    return []
 
-    if not result["instructors"]:
-        # Resolve the blob's __ref handles. The person records use `fullName`.
-        for block in _INSTRUCTOR_REF.findall(html):
-            for identifier in re.findall(r'"__ref":"DescriptionPage_Instructor:(\d+)"', block):
-                anchor = re.search(
-                    r'"DescriptionPage_Instructor:%s":' % identifier, html
-                )
-                if not anchor:
-                    continue
-                window = html[anchor.end() : anchor.end() + 800]
-                match = re.search(r'"(?:fullName|name)":"([^"]+)"', window)
-                if match:
-                    result["instructors"].append(unescape(match.group(1)).strip())
-            if result["instructors"]:
-                break
-        result["instructors"] = list(dict.fromkeys(result["instructors"]))
+
+def extract_landing(html: str) -> dict:
+    """Instructors and subjects from a course landing page.
+
+    The reviews page does not carry either; `/learn/<slug>` is server-rendered and
+    does. The page data blob has the complete teaching team — including the
+    instructors the hero does not link — so it wins; the rendered links and then
+    the JSON-LD are the fallbacks. Subjects come from `domains`.
+    """
+    instructors = _instructors_from_blob(html) or _instructors_from_links(html)
+    if not instructors:
+        instructors = [_instructor(name, None) for name in _names_from_jsonld(html)]
 
     categories = []
     for domain, _subdomain in _DOMAINS.findall(html):
         name = unescape(domain).strip()
         if name and name not in categories:
             categories.append(name)
-    result["categories"] = categories
 
-    return result
+    return {"instructors": instructors, "categories": categories}
 
 
 def extract_population(html: str) -> dict:
