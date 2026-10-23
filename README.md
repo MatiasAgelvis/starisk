@@ -136,8 +136,12 @@ would anchor the answer and turn calibration into confirmation.
 ### Deploying
 
 The site is static files in `web/dist`. Any static host works; the settings are
-root `web`, build `npm run build`, output `dist` (`build.sh` only adds the data
-copy, which is already committed, so hosts can skip it).
+root `web`, build `npm run build`, output `dist`. `npm run build` and
+`npm run dev` first run `scripts/sync-data.mjs`, which copies
+`pipeline/data/scores.json` into `web/src/data/` — so a fresh clone and a deploy
+always reflect the last crawl, without anyone remembering to run `build.sh`.
+If the pipeline file is absent (a deploy that ships only `web/`), the committed
+copy is kept.
 
 - **Vercel:** two setups work, but the **dashboard must match the config file**
   you are relying on — Vercel's Project Settings override `vercel.json`:
