@@ -85,10 +85,10 @@
 </script>
 
 <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-  <div class="join">
+  <div class="flex flex-wrap gap-2">
     {#each VERDICTS as option (option.id)}
       <button
-        class="btn btn-sm join-item whitespace-nowrap {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
+        class="btn btn-sm whitespace-nowrap {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
         aria-pressed={verdict === option.id}
         onclick={() => (verdict = option.id)}
       >
@@ -110,7 +110,10 @@
   </div>
 </div>
 
-<div class="overflow-x-auto">
+<!-- No overflow container: the table is fixed-width with truncating cells, so
+     anything wider than the viewport would be a bug — and a nested scroller
+     swallows vertical drags on phones. -->
+<div>
   <table class="table table-zebra w-full table-fixed">
     <thead>
       <tr>
