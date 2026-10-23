@@ -2,7 +2,7 @@
   import Stars from './Stars.svelte';
   import { requestHref } from '../lib/config.js';
 
-  let { scores = {} } = $props();
+  let { scores = {}, teachers = {} } = $props();
 
   let query = $state('');
   let result = $state(null);
@@ -22,9 +22,21 @@
   }
 
   function search() {
-    const key = normalize(query);
-    if (!key) return;
-    result = { key, record: scores[key] ?? null };
+    const raw = query.trim();
+    if (!raw) return;
+
+    // A teacher profile is a different kind of thing, not a course slug. Match
+    // it first so `/instructor/x` never falls through to a course lookup.
+    const teacher = raw.match(/coursera\.org\/instructor\/([^/?#]+)/) ??
+      raw.match(/^\/?instructor\/([^/?#]+)/);
+    if (teacher) {
+      const slug = decodeURIComponent(teacher[1]);
+      result = { kind: 'teacher', slug, person: teachers[slug] ?? null };
+      return;
+    }
+
+    const key = normalize(raw);
+    result = { kind: 'course', key, record: scores[key] ?? null };
   }
 </script>
 
@@ -39,14 +51,30 @@
     <input
       class="input join-item w-full"
       bind:value={query}
-      placeholder="Paste a Coursera course URL"
-      aria-label="Coursera course URL"
+      placeholder="Paste a Coursera course or teacher URL"
+      aria-label="Coursera course or teacher URL"
     />
     <button class="btn join-item" type="submit">Score it</button>
   </form>
 
   {#if result}
-    {#if result.record}
+    {#if result.kind === 'teacher'}
+      {#if result.person}
+        <div class="mt-6 rounded-box border border-base-300 p-5 text-left">
+          <p class="font-display text-lg font-semibold">{result.person.name}</p>
+          <a class="link link-hover mt-1 inline-block text-sm" href={`/instructors/${result.person.page}`}>
+            Their courses, and how they hold up →
+          </a>
+        </div>
+      {:else}
+        <div class="alert alert-warning mt-6 text-left">
+          <span>
+            <span class="font-semibold">Teacher not indexed yet.</span>
+            Starisk only knows the teachers on the courses it has read.
+          </span>
+        </div>
+      {/if}
+    {:else if result.record}
       <h3 class="font-display mt-6 text-left text-lg font-semibold">
         <a class="link link-hover" href={`/${result.record.slug}`}>
           {result.record.title ?? result.key}

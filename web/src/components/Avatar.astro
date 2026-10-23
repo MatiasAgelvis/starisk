@@ -1,0 +1,33 @@
+---
+// A profile photo with initials behind it. The photo is remote and lazy, exactly
+// like course and provider images: only the rows a visitor actually reaches
+// fetch anything, and a broken URL removes itself instead of showing a torn icon.
+import { initials } from '../lib/instructors.js';
+
+interface Props {
+  src?: string | null;
+  name: string;
+  class?: string;
+}
+
+const { src, name, class: className = 'h-10 w-10 text-xs' } = Astro.props;
+---
+<span
+  class={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-base-300 font-semibold text-base-content/70 ${className}`}
+  aria-hidden="true"
+>
+  {initials(name)}
+  {
+    src && (
+      <img
+        src={src}
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+        referrerpolicy="no-referrer"
+        onerror="this.remove()"
+      />
+    )
+  }
+</span>
