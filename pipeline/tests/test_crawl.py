@@ -472,11 +472,13 @@ class CacheTest(unittest.TestCase):
         self.assertEqual(scores["learn/a"]["starisk"], 3.3)
         self.assertNotIn("error", scores["learn/a"])
 
-    def test_offline_without_a_cached_page_records_an_error(self):
+    def test_offline_without_a_cached_page_writes_nothing(self):
+        # Reparsing cannot invent data. A queued source that was never fetched is
+        # not an error about the course, so it must not land in scores.json.
         with TemporaryDirectory() as tmp:
             scores = crawl(["learn/a"], now=STAMP, offline=True, cache_dir=Path(tmp))
 
-        self.assertIn("offline", scores["learn/a"]["error"])
+        self.assertEqual(scores, {})
 
 
 class ExcerptTest(unittest.TestCase):

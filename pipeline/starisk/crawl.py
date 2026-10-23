@@ -281,12 +281,9 @@ def crawl(
             html = load_page(key, cache_dir)
             landing = load_page(f"{key}.landing", cache_dir)
             if html is None:
-                # Never let an offline gap touch a good record.
-                if "starisk" in (scores.get(key) or {}):
-                    continue
-                record = scores.get(key) or {}
-                record["error"] = "offline: no cached page"
-                scores[key] = record
+                # Offline is a re-parse mode, not a crawl. A page we never fetched
+                # says nothing about the course, so leave the record alone instead
+                # of writing an error stub for every queued source.
                 continue
         else:
             try:
