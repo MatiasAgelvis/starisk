@@ -12,6 +12,8 @@ const rows = Object.entries(scores)
     title: record.title,
     provider: record.provider,
     image: record.image,
+    categories: record.categories ?? [],
+    low: record.low_sample === true,
     coursera: record.coursera,
     starisk: record.starisk,
   }));
@@ -55,11 +57,11 @@ const teachers = teacherIndex(buildInstructors(scores));
 
   <section class="mt-8">
     <h2 class="font-display mb-4 text-2xl font-bold">Where the headline rating is inflated</h2>
-    <ScoreTable client:load rows={rows} />
+    <ScoreTable client:visible rows={rows} />
     <p class="mt-3 text-sm text-base-content/60">
-      Inflation is Coursera's rating minus Starisk's: how many stars the headline sits above what
-      the most-upvoted reviews say. <strong>Inflated</strong> ≥ 1.5, <strong>padded</strong> ≥ 0.5,
-      otherwise it <strong>holds up</strong>. Sort by any column.
+      Sorted by inflation: Coursera's rating minus Starisk's — how many stars the headline sits
+      above what the most-upvoted reviews say. <strong>Inflated</strong> ≥ 1.5,
+      <strong>padded</strong> ≥ 0.5, otherwise it <strong>holds up</strong>. Sort by any column.
     </p>
   </section>
 
@@ -86,8 +88,8 @@ const teachers = teacherIndex(buildInstructors(scores));
         fewer than 15 readable reviews, its page says so instead of pretending.
       </p>
       <p>
-        Sample: {rows.length} courses. Scores recomputed from saved review pages; not
-        affiliated with Coursera.
+        Sample: {rows.length} courses and {Object.keys(teachers).length} teachers.
+        Scores recomputed from saved review pages; not affiliated with Coursera.
       </p>
       <p class="pt-2">
         <a class="link link-hover font-semibold" href="/method">

@@ -2,11 +2,13 @@
   import Stars from './Stars.svelte';
   import { initials } from '../lib/instructors.js';
 
-  let { rows = [] } = $props();
+  let { rows = [], pageSize = 25 } = $props();
 
   let query = $state('');
   let sortKey = $state('courses');
   let sortDir = $state('desc');
+  let multiOnly = $state(false);
+  let page = $state(1);
 
   // Default order is "most courses first" — a directory, not a podium. The
   // average is sortable because a visitor will want it, and pretending otherwise
@@ -37,11 +39,24 @@
   function sortBy(key) {
     if (sortKey === key) {
       sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-      return;
+    } else {
+      sortKey = key;
+      sortDir = key === 'name' ? 'asc' : 'desc';
     }
-    sortKey = key;
-    sortDir = key === 'name' ? 'asc' : 'desc';
+    page = 1;
   }
+
+  function search(event) {
+    query = event.currentTarget.value;
+    page = 1;
+  }
+
+  function toggleMulti() {
+    multiOnly = !multiOnly;
+    page = 1;
+  }
+
+  const multiCount = $derived(rows.filter((row) => row.courses >= 2).length);
 
   function ariaSort(key) {
     if (sortKey !== key) return 'none';
@@ -51,6 +66,7 @@
   const visible = $derived.by(() => {
     const needle = query.trim().toLowerCase();
     const filtered = rows.filter((row) => {
+      if (multiOnly && row.courses < 2) return false;
       if (!needle) return true;
       return `${row.name ?? ''} ${row.role ?? ''} ${row.department ?? ''} ${row.page}`
         .toLowerCase()
@@ -58,22 +74,35 @@
     });
     return [...filtered].sort(compare);
   });
+
+  const pageCount = $derived(Math.max(1, Math.ceil(visible.length / pageSize)));
+  const current = $derived(Math.min(page, pageCount));
+  const shown = $derived(visible.slice((current - 1) * pageSize, current * pageSize));
+  const first = $derived(visible.length === 0 ? 0 : (current - 1) * pageSize + 1);
+  const last = $derived(Math.min(current * pageSize, visible.length));
 </script>
 
 <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-  <p class="text-xs text-base-content/60">
-    Sorted by how many courses Starisk has scored. Sort by any column.
-  </p>
+  <div class="flex flex-wrap items-center gap-2">
+    <button
+      class="btn btn-sm whitespace-nowrap {multiOnly ? 'btn-neutral' : 'btn-ghost'}"
+      aria-pressed={multiOnly}
+      onclick={toggleMulti}
+    >
+      Two or more courses{#if multiCount} <span class="opacity-50">{multiCount}</span>{/if}
+    </button>
+    <span class="text-xs text-base-content/60">
+      The rest teach exactly one course in the index.
+    </span>
+  </div>
   <div class="flex items-center gap-3">
     <input
       class="input input-sm w-full sm:w-64"
-      bind:value={query}
+      value={query}
+      oninput={search}
       placeholder="Filter by name or department…"
       aria-label="Filter teachers"
     />
-    <span class="whitespace-nowrap text-xs text-base-content/60">
-      {visible.length} of {rows.length}
-    </span>
   </div>
 </div>
 
@@ -100,7 +129,7 @@
       </tr>
     </thead>
     <tbody>
-      {#each visible as row (row.page)}
+      {#each shown as row (row.page)}
         <tr>
           <td>
             <div class="flex items-center gap-3">
@@ -151,5 +180,30 @@
 
   {#if visible.length === 0}
     <p class="py-8 text-center text-sm text-base-content/60">No teacher matches that filter.</p>
+  {:else}
+    <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+      <p class="text-xs text-base-content/60" aria-live="polite">
+        Showing {first}–{last} of {visible.length}{multiOnly ? ` (${rows.length} total)` : ''}
+      </p>
+      {#if pageCount > 1}
+        <div class="join">
+          <button
+            class="btn btn-sm join-item"
+            disabled={current === 1}
+            onclick={() => (page = current - 1)}
+            aria-label="Previous page">‹ Prev</button
+          >
+          <span class="btn btn-sm join-item btn-disabled" aria-current="page">
+            Page {current} / {pageCount}
+          </span>
+          <button
+            class="btn btn-sm join-item"
+            disabled={current === pageCount}
+            onclick={() => (page = current + 1)}
+            aria-label="Next page">Next ›</button
+          >
+        </div>
+      {/if}
+    </div>
   {/if}
 </div>
