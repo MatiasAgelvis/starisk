@@ -2053,5 +2053,604 @@
     ],
     "slug": "learn/algorithms-divide-conquer",
     "scrapedAt": "2026-10-22T14:58:13.412219+00:00"
+  },
+  "learn/a-tanulas-tanulasa": {
+    "title": "A tanulás tanulása: Hatékony mentális eszközök, melyek segítenek megbirkózni a nehéz tantárgyakkal (Learning How to Learn)",
+    "provider": "Deep Teaching Solutions",
+    "description": "A kurzus olyan, rendkívül hasznos tanulási módszereket mutat be, amelyeket a művészetek, a zene, az irodalom, a matematika, a természettudományok, a sport és más szakterületek művelői használnak. A kurzus során bemutatjuk, hogyan használ az agy a tanuláshoz két nagyon különböző állapotot, és hogyan tudja tömbösíteni az információt. Szó lesz továbbá kompetencia-illúziókról, memóriatechnikákról, a halogatás kezeléséről, és a legjobb gyakorlatokról, amelyek kutatások alapján a leghatékonyabb segítséget nyújtják nehéz tárgyak tanulásában. \n\nEzek a módszerek a tanulandó területen való jártasságtól függetlenül képesek megváltoztatni a gondolkodásunkat, ezen keresztül pedig az életünket is. Ha valaki máris szakértő, az agy rejtelmeibe való betekintés akkor is hasznos lesz a következőkben: új lendületet kaphat a tanulásban elért sikereihez, olyan vizsgatippeket ismerhet meg, amelyekre nem is gondolt volna, és olyan meglátásokra tehet szert, amelyek segítenek optimalizálni a házi feladattal és a feladatmegoldással töltött időt. Ha valakinek nehezére esik a tanulás, itt a praktikák olyan áttekinthető tárházára bukkan, amelynek segítségével fel tudja venni a fonalat. Ha valaha is arra vágytunk, hogy valamiben fejlődni tudjunk, akkor ez a kurzus szolgálhat számunkra útmutatóként. \n\nA tanulás tanulása: Hatékony mentális eszközök, amelyek segítenek megbirkózni a nehéz tantárgyakkal című Coursera kurzus Barbara Oakley és Terrence Sejnowsky Learning How to Learn (LHTL) kurzusának magyar változata, mely a Szegedi Tudományegyetem munkatársai közreműködésével valósult meg.\n\nA kurzus felvehető az angol nyelvű Mindshift („Szemléletváltás”) elnevezésű, kapcsolódó kurzustól függetlenül, azzal párhuzamosan, vagy akár előtte. (A tanulás tanulása fókuszában inkább a tanulás áll, a Mindshift fókuszában pedig inkább a karrierépítés.)\n\nA kurzus teljes, portugál nyelvű verziója az alábbi linken érhető el: https://www.coursera.org/learn/aprender\nA kurzus teljes, spanyol nyelvű verziója az alábbi linken érhető el: https://www.coursera.org/learn/aprendiendo-a-aprender\nA kurzus teljes, kínai nyelvű verziója az alábbi linken érhető el: https://www.coursera.org/learn/ruhe-xuexi",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/55/2e9a93e5384e289f25a0b487f6b4c5/white--04.png",
+    "coursera": 4.9,
+    "starisk": 4.9,
+    "spread": 0.48,
+    "spread_weighted": 0.47,
+    "reviews": 20,
+    "review_counts": {
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "Ich habe diesen Kurs besucht, da er von meiner Universität empfohlen wurde. Das meiste von Inhalt hatte ich leider schon gehört/geahnt/angewendet, was neu war, waren die naturwissenschaftlichen Hintergründe. Zu empfehlen ist der Kurs für diejenigen, die wirklich keine Ahnung haben, wie sie lernen sollten.",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 87,
+    "ratings_total": 469,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 2,
+      "4": 24,
+      "5": 441
+    },
+    "instructors": [
+      {
+        "name": "Dr. Terrence Sejnowski",
+        "slug": "terry",
+        "url": "https://www.coursera.org/instructor/terry",
+        "page": "terry",
+        "id": "5718916",
+        "role": "Francis Crick Professor at the Salk Institute for Biological Studies",
+        "department": "Computational Neurobiology Laboratory",
+        "learners": 5395377,
+        "courses_taught": 19,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b6/075a309e3411e39977e16acffacc70/Sejnowski-head-HHMI.jpg"
+      },
+      {
+        "name": "Kocsis Lilla",
+        "slug": "~44803886",
+        "url": "https://www.coursera.org/instructor/~44803886",
+        "page": "kocsis-lilla",
+        "id": "44803886",
+        "role": null,
+        "department": null,
+        "learners": 17991,
+        "courses_taught": 10,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/97/2ff7685be441d89ea182b3b5bc04b4/arckep.jpg"
+      },
+      {
+        "name": "Szakál Péter",
+        "slug": "szakal-peter",
+        "url": "https://www.coursera.org/instructor/szakal-peter",
+        "page": "szakal-peter",
+        "id": "44803897",
+        "role": "director",
+        "department": "Directorate for Academic Affairs",
+        "learners": 17875,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/7c/f78e591bbc4518a5638f459a555dd0/szp.jpg"
+      },
+      {
+        "name": "Dr. Barbara Oakley",
+        "slug": "barboakley",
+        "url": "https://www.coursera.org/instructor/barboakley",
+        "page": "barboakley",
+        "id": "1909875",
+        "role": "Professor of Engineering",
+        "department": "Industrial & Systems Engineering, Oakland University",
+        "learners": 5445735,
+        "courses_taught": 23,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/06/4d39ac7625459f968b6387ec88b8da/Barbara-Oakley-about-1-.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development"
+    ],
+    "slug": "learn/a-tanulas-tanulasa",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
+  },
+  "learn/advanced-computer-vision-with-tensorflow": {
+    "title": "Advanced Computer Vision with TensorFlow",
+    "provider": "DeepLearning.AI",
+    "description": "In this course, you will:\n\na) Explore image classification, image segmentation, object localization, and object detection. Apply transfer learning to object localization and detection.\nb) Apply object detection models such as regional-CNN and ResNet-50, customize existing models, and build your own models to detect, localize, and label your own rubber duck images.\nc) Implement image segmentation using variations of the fully convolutional network (FCN) including U-Net and d) Mask-RCNN to identify and detect numbers, pets, zombies, and more.\nd) Identify which parts of an image are being used by your model to make its predictions using class activation maps and saliency maps and apply these ML interpretation methods to inspect and improve the design of a famous network, AlexNet.\n\n\nThe DeepLearning.AI TensorFlow: Advanced Techniques Specialization introduces the features of TensorFlow that provide learners with more control over their model architecture and tools that help them create and train advanced ML models.  \n\nThis Specialization is for early and mid-career software and machine learning engineers with a foundational understanding of TensorFlow who are looking to expand their knowledge and skill set by learning advanced TensorFlow features to build powerful models.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.7,
+    "starisk": 4.6,
+    "spread": 0.71,
+    "spread_weighted": 0.79,
+    "reviews": 20,
+    "review_counts": {
+      "3.0": 3,
+      "5.0": 17
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "The concepts and the teaching is ok. The labs are basically a follow the code, with no great code challenge",
+      "stars": 3.0,
+      "likes": 6
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 82,
+    "ratings_total": 536,
+    "rating_counts": {
+      "1": 7,
+      "2": 1,
+      "3": 22,
+      "4": 71,
+      "5": 435
+    },
+    "instructors": [
+      {
+        "name": "Laurence Moroney",
+        "slug": "lmoroney",
+        "url": "https://www.coursera.org/instructor/lmoroney",
+        "page": "lmoroney",
+        "id": "10261328",
+        "role": "Instructor",
+        "department": null,
+        "learners": 614548,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ca/3e85203c6111e993caa9aa102f7a26/lm.jpg"
+      },
+      {
+        "name": "Eddy Shyu",
+        "slug": "~170597538",
+        "url": "https://www.coursera.org/instructor/~170597538",
+        "page": "eddy-shyu",
+        "id": "170597538",
+        "role": "Instructor",
+        "department": null,
+        "learners": 1604717,
+        "courses_taught": 17,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8c/0a5a2ce2a44f959b8d3d3573d70613/eddy-profile-photo.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
+    "slug": "learn/advanced-computer-vision-with-tensorflow",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
+  },
+  "learn/advanced-deployment-scenarios-tensorflow": {
+    "title": "Advanced Deployment Scenarios with TensorFlow",
+    "provider": "DeepLearning.AI",
+    "description": "Bringing a machine learning model into the real world involves a lot more than just modeling. This Specialization will teach you how to navigate various deployment scenarios and use data more effectively to train your model.\n\nIn this final course, you’ll explore four different scenarios you’ll encounter when deploying models. You’ll be introduced to TensorFlow Serving, a technology that lets you do inference over the web. You’ll move on to TensorFlow Hub, a repository of models that you can use for transfer learning. Then you’ll use TensorBoard to evaluate and understand how your models work, as well as share your model metadata with others. Finally, you’ll explore federated learning and how you can retrain deployed models with user data while maintaining data privacy.\n\nThis Specialization builds upon our TensorFlow in Practice Specialization. If you are new to TensorFlow, we recommend that you take the TensorFlow in Practice Specialization first. To develop a deeper, foundational understanding of how neural networks work, we recommend that you take the Deep Learning Specialization.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.8,
+    "starisk": 4.4,
+    "spread": 1.12,
+    "spread_weighted": 1.2,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "2.0": 1,
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 16
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "In general course is quite useful, especially Weeks 1 and 2. However content for week 3 - tensorboard - seems artificial (especially logging confusion matrix in TensorBoard) and not related to deployment at all. And Week 4 has really great topic, however the content is very poor. The most useful are the links, for which I suppose one could just google.",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 66,
+    "ratings_total": 513,
+    "rating_counts": {
+      "1": 3,
+      "2": 4,
+      "3": 14,
+      "4": 66,
+      "5": 426
+    },
+    "instructors": [
+      {
+        "name": "Laurence Moroney",
+        "slug": "lmoroney",
+        "url": "https://www.coursera.org/instructor/lmoroney",
+        "page": "lmoroney",
+        "id": "10261328",
+        "role": "Instructor",
+        "department": null,
+        "learners": 614548,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ca/3e85203c6111e993caa9aa102f7a26/lm.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
+    "slug": "learn/advanced-deployment-scenarios-tensorflow",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
+  },
+  "learn/advanced-learning-algorithms": {
+    "title": "Advanced Learning Algorithms",
+    "provider": "DeepLearning.AI",
+    "description": "In the second course of the Machine Learning Specialization, you will:\n• Build and train a neural network with TensorFlow to perform multi-class classification\n• Apply best practices for machine learning development so that your models generalize to data and tasks in the real world\n• Build and use decision trees and tree ensemble methods, including random forests and boosted trees\n\nThe Machine Learning Specialization is a foundational online program created in collaboration between DeepLearning.AI and Stanford Online. In this beginner-friendly program, you will learn the fundamentals of machine learning and how to use these techniques to build real-world AI applications. \n\nThis Specialization is taught by Andrew Ng, an AI visionary who has led critical research at Stanford University and groundbreaking work at Google Brain, Baidu, and Landing.AI to advance the AI field.\n\nThis 3-course Specialization is an updated and expanded version of Andrew’s pioneering Machine Learning course, rated 4.9 out of 5 and taken by over 4.8 million learners since it launched in 2012. \n\nIt provides a broad introduction to modern machine learning, including supervised learning (multiple linear regression, logistic regression, neural networks, and decision trees), unsupervised learning (clustering, dimensionality reduction, recommender systems), and some of the best practices used in Silicon Valley for artificial intelligence and machine learning innovation (evaluating and tuning models, taking a data-centric approach to improving performance, and more.)\n\nBy the end of this Specialization, you will have mastered key theoretical concepts and gained the practical know-how to quickly and powerfully apply machine learning to challenging real-world problems. If you’re looking to break into AI or build a career in machine learning, the new Machine Learning Specialization is the best place to start.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.9,
+    "starisk": 3.9,
+    "spread": 1.26,
+    "spread_weighted": 1.22,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "2.0": 3,
+      "3.0": 2,
+      "4.0": 5,
+      "5.0": 9
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I was really hoping more detailes on xgboost and unfortunately the course level was very elementary",
+      "stars": 2.0,
+      "likes": 5
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 1316,
+    "ratings_total": 8803,
+    "rating_counts": {
+      "1": 23,
+      "2": 17,
+      "3": 51,
+      "4": 566,
+      "5": 8146
+    },
+    "instructors": [
+      {
+        "name": "Andrew Ng",
+        "slug": "andrewng",
+        "url": "https://www.coursera.org/instructor/andrewng",
+        "page": "andrewng",
+        "id": "1244",
+        "role": "Instructor",
+        "department": "Founder, DeepLearning.AI & Co-founder, Coursera",
+        "learners": 10043415,
+        "courses_taught": 53,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2a/6192a04f1311e7ba12057425631cbc/AndrewNg-Headshot.jpg"
+      },
+      {
+        "name": "Aarti Bagul",
+        "slug": "~77736236",
+        "url": "https://www.coursera.org/instructor/~77736236",
+        "page": "aarti-bagul",
+        "id": "77736236",
+        "role": "Curriculum Engineer",
+        "department": null,
+        "learners": 1313232,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b1/46e02a12f3418486d986cc1d30727d/aarti_bagul_profile_pic.jpg"
+      },
+      {
+        "name": "Geoff Ladwig",
+        "slug": "geoff-ladwig",
+        "url": "https://www.coursera.org/instructor/geoff-ladwig",
+        "page": "geoff-ladwig",
+        "id": "68361648",
+        "role": "Curriculum Engineer",
+        "department": "DeepLearning.AI",
+        "learners": 1313232,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/43/bc63bb19704d71844c37595d29e234/20220524_223511509_iOS.jpg"
+      },
+      {
+        "name": "Eddy Shyu",
+        "slug": "~170597538",
+        "url": "https://www.coursera.org/instructor/~170597538",
+        "page": "eddy-shyu",
+        "id": "170597538",
+        "role": "Instructor",
+        "department": null,
+        "learners": 1604717,
+        "courses_taught": 17,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8c/0a5a2ce2a44f959b8d3d3573d70613/eddy-profile-photo.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
+    "slug": "learn/advanced-learning-algorithms",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
+  },
+  "learn/ai-for-medical-diagnosis": {
+    "title": "AI for Medical Diagnosis",
+    "provider": "DeepLearning.AI",
+    "description": "AI is transforming the practice of medicine. It’s helping doctors diagnose patients more accurately, make predictions about patients’ future health, and recommend better treatments. As an AI practitioner, you have the opportunity to join in this transformation of modern medicine. If you're already familiar with some of the math and coding behind AI algorithms, and are eager to develop your skills further to tackle challenges in the healthcare industry, then this specialization is for you. No prior medical expertise is required! \n\nThis program will give you practical experience in applying cutting-edge machine learning techniques to concrete problems in modern medicine:\n\n- In Course 1, you will create convolutional neural network image classification and segmentation models to make diagnoses of lung and brain disorders. \n- In Course 2, you will build risk models and survival estimators for heart disease using statistical methods and a random forest predictor to determine patient prognosis. \n- In Course 3, you will build a treatment effect predictor, apply model interpretation techniques and use natural language processing to extract information from radiology reports.\n\nThese courses go beyond the foundations of deep learning to give you insight into the nuances of applying AI to medical use cases. As a learner, you will be set up for success in this program if you are already comfortable with some of the math and coding behind AI algorithms. You don't need to be an AI expert, but a working knowledge of deep neural networks, particularly convolutional networks, and proficiency in Python programming at an intermediate level will be essential. If you are relatively new to machine learning or neural networks, we recommend that you first take the Deep Learning Specialization, offered by deeplearning.ai and taught by Andrew Ng.\n\nThe demand for AI practitioners with the skills and knowledge to tackle the biggest issues in modern medicine is growing exponentially. Join us in this specialization and begin your journey toward building the future of healthcare.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.7,
+    "starisk": 3.5,
+    "spread": 1.47,
+    "spread_weighted": 1.58,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "2.0": 5,
+      "5.0": 14
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "IMO this is the weakest course offered by deeplearning.ai. It feels something more our of a medium blog than a full course that someone should pay money for. The good news is that you can sign up for a 7 day free trial and finish it before 7 days are over, so you're not out of any money, just your time. What do you learn? Some new metrics that are specific to medicine (specificity, sensitivity) and the concept of class imbalance (prevalence). The code assignments are designed by someone who understands the concepts well but is unable to teach some of them well (I'm being super critical here, coming from the viewpoint of someone who might spend $49 for a month on this). At the end, I'm unsure what you can say you learned and if you can really demonstrate any concepts in a job interview at a healthcare (adjacent) job. There was some demonstration of segmentation, but a lot of it is really left up to the learner to experiment and learn from. You could talk about these things in a job interview, but a technical round would quickly discover that your knowledge is surface and not really in depth. My 2 cents (stars?). …",
+      "stars": 2.0,
+      "likes": 52
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 431,
+    "ratings_total": 2078,
+    "rating_counts": {
+      "1": 22,
+      "2": 25,
+      "3": 77,
+      "4": 365,
+      "5": 1589
+    },
+    "instructors": [
+      {
+        "name": "Pranav Rajpurkar",
+        "slug": "pranav-rajpurkar",
+        "url": "https://www.coursera.org/instructor/pranav-rajpurkar",
+        "page": "pranav-rajpurkar",
+        "id": "12206922",
+        "role": "Instructor",
+        "department": "Harvard University",
+        "learners": 104224,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/58/002967363447dca8156b10bf7d0466/PranavRajpurkar.jpg"
+      },
+      {
+        "name": "Bora Uyumazturk",
+        "slug": "bora-uyumazturk",
+        "url": "https://www.coursera.org/instructor/bora-uyumazturk",
+        "page": "bora-uyumazturk",
+        "id": "48934094",
+        "role": "Curriculum Developer",
+        "department": "Machine Learning Engineer, Viaduct",
+        "learners": 104224,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/90/d739bd6e8b44a281f782ee5fc04eb7/bora_pic.jpg"
+      },
+      {
+        "name": "Amirhossein Kiani",
+        "slug": "amirhossein-kiani",
+        "url": "https://www.coursera.org/instructor/amirhossein-kiani",
+        "page": "amirhossein-kiani",
+        "id": "11909665",
+        "role": "Curriculum Engineer",
+        "department": "Product Manager, Google Health",
+        "learners": 100819,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ce/df72035f9c4ee59f5f2384e27af5d4/download.jpg"
+      },
+      {
+        "name": "Eddy Shyu",
+        "slug": "~170597538",
+        "url": "https://www.coursera.org/instructor/~170597538",
+        "page": "eddy-shyu",
+        "id": "170597538",
+        "role": "Instructor",
+        "department": null,
+        "learners": 1604717,
+        "courses_taught": 17,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8c/0a5a2ce2a44f959b8d3d3573d70613/eddy-profile-photo.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
+    "slug": "learn/ai-for-medical-diagnosis",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
+  },
+  "learn/ai-for-medical-prognosis": {
+    "title": "AI for Medical Prognosis",
+    "provider": "DeepLearning.AI",
+    "description": "AI is transforming the practice of medicine. It’s helping doctors diagnose patients more accurately, make predictions about patients’ future health, and recommend better treatments. This Specialization will give you practical experience in applying machine learning to concrete problems in medicine.\n\nMachine learning is a powerful tool for prognosis, a branch of medicine that specializes in predicting the future health of patients. In this second course, you’ll walk through multiple examples of prognostic tasks. You’ll then use decision trees to model non-linear relationships, which are commonly observed in medical data, and apply them to predicting mortality rates more accurately. Finally, you’ll learn how to handle missing data, a key real-world challenge. \n\nThese courses go beyond the foundations of deep learning to teach you the nuances in applying AI to medical use cases.  This course focuses on tree-based machine learning, so a foundation in deep learning is not required for this course.  However, a foundation in deep learning is highly recommended for course 1 and 3 of this specialization.  You can gain a foundation in deep learning by taking the Deep Learning Specialization offered by deeplearning.ai and taught by Andrew Ng.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.7,
+    "starisk": 4.2,
+    "spread": 0.9,
+    "spread_weighted": 1.0,
+    "reviews": 20,
+    "review_counts": {
+      "2.0": 1,
+      "3.0": 3,
+      "4.0": 5,
+      "5.0": 11
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "The videos were too short and seem to be missing some critical information that was included on the tests. The assignments, from a program structure perspective, were hard to follow. Lastly, I was a little disappointed on the lack of AI concepts included.",
+      "stars": 2.0,
+      "likes": 7
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 137,
+    "ratings_total": 801,
+    "rating_counts": {
+      "1": 6,
+      "2": 12,
+      "3": 25,
+      "4": 126,
+      "5": 632
+    },
+    "instructors": [
+      {
+        "name": "Pranav Rajpurkar",
+        "slug": "pranav-rajpurkar",
+        "url": "https://www.coursera.org/instructor/pranav-rajpurkar",
+        "page": "pranav-rajpurkar",
+        "id": "12206922",
+        "role": "Instructor",
+        "department": "Harvard University",
+        "learners": 104224,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/58/002967363447dca8156b10bf7d0466/PranavRajpurkar.jpg"
+      },
+      {
+        "name": "Bora Uyumazturk",
+        "slug": "bora-uyumazturk",
+        "url": "https://www.coursera.org/instructor/bora-uyumazturk",
+        "page": "bora-uyumazturk",
+        "id": "48934094",
+        "role": "Curriculum Developer",
+        "department": "Machine Learning Engineer, Viaduct",
+        "learners": 104224,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/90/d739bd6e8b44a281f782ee5fc04eb7/bora_pic.jpg"
+      },
+      {
+        "name": "Eddy Shyu",
+        "slug": "~170597538",
+        "url": "https://www.coursera.org/instructor/~170597538",
+        "page": "eddy-shyu",
+        "id": "170597538",
+        "role": "Instructor",
+        "department": null,
+        "learners": 1604717,
+        "courses_taught": 17,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8c/0a5a2ce2a44f959b8d3d3573d70613/eddy-profile-photo.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
+    "slug": "learn/ai-for-medical-prognosis",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
+  },
+  "learn/ai-for-medical-treatment": {
+    "title": "AI For Medical Treatment",
+    "provider": "DeepLearning.AI",
+    "description": "AI is transforming the practice of medicine. It’s helping doctors diagnose patients more accurately, make predictions about patients’ future health, and recommend better treatments. This Specialization will give you practical experience in applying machine learning to concrete problems in medicine.\n\nMedical treatment may impact patients differently based on their existing health conditions. In this third course, you’ll recommend treatments more suited to individual patients using data from randomized control trials. In the second week, you’ll apply machine learning interpretation methods to explain the decision-making of complex machine learning models. Finally, you’ll use natural language entity extraction and question-answering methods to automate the task of labeling medical datasets.\n\nThese courses go beyond the foundations of deep learning to teach you the nuances in applying AI to medical use cases. If you are new to deep learning or want to get a deeper foundation of how neural networks work, we recommend that you take the Deep Learning Specialization.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.7,
+    "starisk": 3.5,
+    "spread": 1.31,
+    "spread_weighted": 1.43,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 3,
+      "3.0": 4,
+      "4.0": 7,
+      "5.0": 6
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This is the worst course in all my experience on Coursera. The material has been prepared with evident hurry and superficiality but the more disgusting thing is the total absence of assistance and support. There are evident problems with the grader, reported by several users, and no one has been giving an answer since the course startup. If this is the quality of service provided by Coursera, there is non hope that I'll engage a new course in the future.",
+      "stars": 1.0,
+      "likes": 5
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 114,
+    "ratings_total": 548,
+    "rating_counts": {
+      "1": 9,
+      "2": 7,
+      "3": 23,
+      "4": 87,
+      "5": 422
+    },
+    "instructors": [
+      {
+        "name": "Pranav Rajpurkar",
+        "slug": "pranav-rajpurkar",
+        "url": "https://www.coursera.org/instructor/pranav-rajpurkar",
+        "page": "pranav-rajpurkar",
+        "id": "12206922",
+        "role": "Instructor",
+        "department": "Harvard University",
+        "learners": 104224,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/58/002967363447dca8156b10bf7d0466/PranavRajpurkar.jpg"
+      },
+      {
+        "name": "Bora Uyumazturk",
+        "slug": "bora-uyumazturk",
+        "url": "https://www.coursera.org/instructor/bora-uyumazturk",
+        "page": "bora-uyumazturk",
+        "id": "48934094",
+        "role": "Curriculum Developer",
+        "department": "Machine Learning Engineer, Viaduct",
+        "learners": 104224,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/90/d739bd6e8b44a281f782ee5fc04eb7/bora_pic.jpg"
+      },
+      {
+        "name": "Amirhossein Kiani",
+        "slug": "amirhossein-kiani",
+        "url": "https://www.coursera.org/instructor/amirhossein-kiani",
+        "page": "amirhossein-kiani",
+        "id": "11909665",
+        "role": "Curriculum Engineer",
+        "department": "Product Manager, Google Health",
+        "learners": 100819,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ce/df72035f9c4ee59f5f2384e27af5d4/download.jpg"
+      },
+      {
+        "name": "Eddy Shyu",
+        "slug": "~170597538",
+        "url": "https://www.coursera.org/instructor/~170597538",
+        "page": "eddy-shyu",
+        "id": "170597538",
+        "role": "Instructor",
+        "department": null,
+        "learners": 1604717,
+        "courses_taught": 17,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/8c/0a5a2ce2a44f959b8d3d3573d70613/eddy-profile-photo.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
+    "slug": "learn/ai-for-medical-treatment",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
+  },
+  "learn/ai-powered-software-and-system-design": {
+    "title": "AI-Powered Software and System Design",
+    "provider": "DeepLearning.AI",
+    "description": "This final course in the skill certificate focuses on applying AI to high-level software engineering tasks. You'll work with LLMs to design and implement sophisticated software systems, optimize code using established design patterns, and create efficient databases from scratch.\nBy the end of this course, you will be able to:\n\n- Use AI to suggest and implement software architectures based on natural language requirements\n- Build a configurable application that interacts with external APIs like DALL-E\n- Design and implement a complete database system for an e-commerce platform\n- Optimize database queries and analyze code for security risks with AI assistance\n- Refactor existing applications using Gang of Four design patterns, guided by AI insights\n\nThese advanced skills will enable you to tackle complex software engineering projects with greater efficiency and creativity. You'll learn to leverage the power of AI to make informed design decisions, implement robust systems, and optimize code at scale. \n\nThis course will prepare you to lead innovative software projects and adapt to the evolving landscape of AI-augmented software development.",
+    "image": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/http://coursera-university-assets.s3.amazonaws.com/fe/5aff8edc5d48129bc740214f6237d7/LogoFiles_DeepLearning_Coursera_160x60.png",
+    "coursera": 4.7,
+    "starisk": 4.5,
+    "spread": 1.2,
+    "spread_weighted": 1.31,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 2,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "At the very beginning the course gives some tips on how to work with LLMs and the rest of the course is just \"let's use LLM for abc\".",
+      "stars": 1.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 37,
+    "ratings_total": 194,
+    "rating_counts": {
+      "1": 4,
+      "2": 3,
+      "3": 5,
+      "4": 22,
+      "5": 160
+    },
+    "instructors": [
+      {
+        "name": "Laurence Moroney",
+        "slug": "lmoroney",
+        "url": "https://www.coursera.org/instructor/lmoroney",
+        "page": "lmoroney",
+        "id": "10261328",
+        "role": "Instructor",
+        "department": null,
+        "learners": 614548,
+        "courses_taught": 22,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ca/3e85203c6111e993caa9aa102f7a26/lm.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/ai-powered-software-and-system-design",
+    "scrapedAt": "2026-10-23T10:46:52.610475+00:00"
   }
 }
