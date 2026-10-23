@@ -1,0 +1,203 @@
+---
+import Base from '../layouts/Base.astro';
+import scores from '../data/scores.json';
+
+const records = Object.values(scores).filter(
+  (record) => typeof record.starisk === 'number' && typeof record.coursera === 'number',
+);
+const count = records.length;
+const meanCoursera = records.reduce((total, r) => total + r.coursera, 0) / count;
+const meanStarisk = records.reduce((total, r) => total + r.starisk, 0) / count;
+const lowest = Math.min(...records.map((r) => r.coursera));
+const highest = Math.max(...records.map((r) => r.coursera));
+const inflated = records.filter((r) => r.coursera - r.starisk >= 1.5).length;
+const heldUp = records.filter((r) => r.coursera - r.starisk < 0.5).length;
+
+const description =
+  'How Starisk builds its score: the reviews it reads, the weighting, and how well it agrees with a human ranking.';
+---
+
+<Base title="Method — Starisk" description={description}>
+  <article class="mx-auto max-w-3xl">
+    <a href="/" class="link link-hover text-sm text-base-content/60">← all courses</a>
+
+    <h1 class="font-display mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+      Why this exists, and how it works
+    </h1>
+    <p class="mt-3 text-base-content/70">
+      Starisk is a second opinion on Coursera ratings. This page is the whole method — the
+      reasoning, the arithmetic, the evidence, and what it cannot tell you.
+    </p>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">1. The ratings stopped ranking anything</h2>
+      <div class="mt-3 space-y-3 text-base-content/85">
+        <p>
+          Coursera's headline ratings cluster. Across the {count} courses here, the mean is{' '}
+          <strong>{meanCoursera.toFixed(2)}</strong> and they run from {lowest.toFixed(1)} to{' '}
+          {highest.toFixed(1)}. Two tenths of a star is not a difference in what you will get —
+          it is rounding.
+        </p>
+        <p>
+          A number only helps you choose if it separates things. When everything is 4.8, the
+          headline rating answers “is this a normal Coursera course?” rather than “is this one
+          worth a month of my evenings?”
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">2. The reviews still disagree</h2>
+      <div class="mt-3 space-y-3 text-base-content/85">
+        <p>
+          Written reviews are where the disagreement lives, and learners vote on them. An upvote
+          means “this is what I wish someone had told me.” That is the only quality signal
+          Coursera collects and then averages away.
+        </p>
+        <p>
+          So Starisk reads the reviews learners voted most helpful, and trusts the endorsed ones
+          more than the rest. That is the entire idea.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">3. The arithmetic</h2>
+      <div class="mt-3 space-y-3 text-base-content/85">
+        <p>For each course, from one page of reviews:</p>
+        <ol class="ml-5 list-decimal space-y-1">
+          <li>Read the reviews Coursera surfaces as <em>most helpful</em> (about 20).</li>
+          <li>Give each review the weight <code class="rounded bg-base-200 px-1">√(1 + upvotes)</code>.</li>
+          <li>
+            Score = <code class="rounded bg-base-200 px-1">Σ(stars × weight) / Σ(weight)</code>,
+            rounded to one decimal.
+          </li>
+        </ol>
+        <p>
+          A review with 2 upvotes weighs 1.7; one with 80 weighs 9; one with 663 weighs 25.8.
+          Votes still dominate a course's score — they just cannot own it.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">4. Why the square root</h2>
+      <div class="mt-3 space-y-3 text-base-content/85">
+        <p>
+          The first version used <code class="rounded bg-base-200 px-1">1 + upvotes</code>, so a
+          single review with 663 likes counted 663 times. On a course where one angry review
+          collects every vote, that review <em>is</em> the score — and since upvoted reviews are
+          often platform grievances rather than judgments of teaching, the number drifts away from
+          the course.
+        </p>
+        <p>
+          Compressing the votes fixes that without discarding them. Every alternative that
+          compresses — square root, logarithm, capping at ten votes, or ignoring votes entirely —
+          scored about the same against a human ranking. The unbounded version scored worse.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">5. Does it actually work?</h2>
+      <div class="mt-3 space-y-3 text-base-content/85">
+        <p>
+          The honest test is agreement with a human who took the courses. I labelled{' '}
+          <strong>29</strong> of my own Coursera courses from memory, 1–5, <em>without</em> seeing
+          what the model said, and compared rankings with Spearman's ρ.
+        </p>
+        <div class="overflow-hidden rounded-box border border-base-300">
+          <table class="table table-sm">
+            <thead>
+              <tr><th>ranking</th><th class="text-right">ρ vs my ranking</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Coursera's headline rating</td><td class="text-right">0.42</td></tr>
+              <tr><td>The 2021 model, <code>(2 + likes)²</code></td><td class="text-right">0.57</td></tr>
+              <tr><td><code>1 + likes</code> (the first version)</td><td class="text-right">0.62</td></tr>
+              <tr class="font-semibold"><td><code>√(1 + likes)</code> — what you see</td><td class="text-right">0.70</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Coursera's own rating agrees with my experience at 0.42. The review model agrees at
+          0.70. That is the case for the whole project, stated as a number.
+        </p>
+        <p class="rounded-box bg-base-200 p-4 text-sm">
+          <strong>The caveat, in full.</strong> n = 29, so ρ carries roughly ±0.15 of uncertainty.
+          A bootstrap gives the square-root model the edge in 79% of resamples, not 95%. And my
+          labels are memories of courses taken in 2020–21, not measurements. Treat this as
+          directional evidence plus a principled fix, not a proof.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">6. What it measures, and what it doesn't</h2>
+      <div class="mt-3 grid gap-4 sm:grid-cols-2">
+        <div class="rounded-box border border-base-300 p-4">
+          <h3 class="font-display font-bold text-success">It measures</h3>
+          <ul class="mt-2 ml-4 list-disc space-y-1 text-sm text-base-content/80">
+            <li>What the most-endorsed reviews say about the course.</li>
+            <li>How much the written reviews disagree with Coursera's rating.</li>
+            <li>How split learners are — sometimes visible as a large gap.</li>
+          </ul>
+        </div>
+        <div class="rounded-box border border-base-300 p-4">
+          <h3 class="font-display font-bold text-error">It does not measure</h3>
+          <ul class="mt-2 ml-4 list-disc space-y-1 text-sm text-base-content/80">
+            <li>True quality, or whether the course suits <em>you</em>.</li>
+            <li>Teaching quality specifically — many top reviews are about access, fees or
+              certificates.</li>
+            <li>The whole population: it reads ~20 reviews, then shows Coursera's full rating
+              distribution beside them.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mt-3 text-sm text-base-content/60">
+        Where fewer than 15 reviews were readable, the course page says so instead of pretending.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">7. How to read a score</h2>
+      <div class="mt-3 space-y-3 text-base-content/85">
+        <p>
+          Scores run from 1.0 to 5.0, like a star rating, but they mean something narrower: the
+          average of the stars given by the reviews other learners endorsed.
+        </p>
+        <ul class="ml-5 list-disc space-y-1">
+          <li><strong>4.5 and above</strong> — the endorsed reviews are as warm as Coursera's headline.</li>
+          <li><strong>3–4.5</strong> — the reviews are cooler, but not hostile.</li>
+          <li><strong>Below 3</strong> — the reviews that other learners upvoted are critical.</li>
+        </ul>
+        <p>
+          The gap is worth more than the score. <strong>Inflation</strong> = Coursera minus Starisk:
+          at or above 1.5 the headline is <em>inflated</em>, at or above 0.5 it is <em>padded</em>,
+          otherwise it <em>holds up</em>. Right now, {inflated} of {count} courses are inflated and{' '}
+          {heldUp} hold up, with means of {meanCoursera.toFixed(2)} and {meanStarisk.toFixed(2)}.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-2xl font-bold">8. Reproduce it</h2>
+      <div class="mt-3 space-y-3 text-base-content/85">
+        <p>
+          The crawler and the scorer are one small Python package with no dependencies. It reads
+          Coursera's server-rendered pages on demand, from a residential connection, and writes one
+          JSON file that this site is built from.
+        </p>
+        <ul class="ml-5 list-disc space-y-1 text-sm">
+          <li><code class="rounded bg-base-200 px-1">/data/scores.json</code> — the whole dataset, CORS-open.</li>
+          <li><code class="rounded bg-base-200 px-1">mise run pipeline:crawl</code> — refresh a course.</li>
+          <li><code class="rounded bg-base-200 px-1">mise run pipeline:calibration</code> — re-run the ranking test.</li>
+        </ul>
+        <p class="text-sm text-base-content/60">
+          Reviews are read on the date shown on each course page. Scores are recomputed from those
+          pages, not stored as editorial opinion. Starisk is not affiliated with Coursera.
+        </p>
+      </div>
+    </section>
+  </article>
+</Base>
