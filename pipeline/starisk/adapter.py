@@ -46,6 +46,17 @@ _OG_TITLE = (
 )
 _TITLE_TAG = re.compile(r"<title[^>]*>([^<]+)</title>")
 
+# Some reviews pages ship the site's boilerplate as their title. Storing it would
+# put "Coursera | Online Courses…" at the top of a course page, which is worse
+# than having no title at all — the landing page usually knows the real name.
+_GENERIC_TITLES = frozenset(
+    {
+        "coursera",
+        "coursera plus",
+        "coursera | online courses from top universities. join for free",
+    }
+)
+
 # Coursera embeds its own rating data in a serialised Apollo cache. Verified on
 # all 8 live snapshots, including pages whose JSON-LD omits `ratingValue`:
 #   "ratingCountsByStar":{"fiveStarRatingCount":255087,...,"oneStarRatingCount":1641}
@@ -407,6 +418,14 @@ def _as_int(value) -> int | None:
         return None
 
 
+def _clean_title(value) -> str | None:
+    """A usable page title, or None when it is Coursera's own boilerplate."""
+    title = " ".join(unescape(str(value)).split())
+    if not title or title.casefold() in _GENERIC_TITLES:
+        return None
+    return title
+
+
 def extract_title(html: str) -> str | None:
     """The course's display name: JSON-LD first, then og:title, then <title>."""
     for block in _LD_JSON.findall(html):
@@ -416,15 +435,19 @@ def extract_title(html: str) -> str | None:
             continue
         product = _find_type(data, ("Product", "Course"))
         if product and product.get("name"):
-            return unescape(str(product["name"])).strip()
+            title = _clean_title(product["name"])
+            if title:
+                return title
 
     for pattern in _OG_TITLE:
         match = pattern.search(html)
         if match and match.group(1).strip():
-            return unescape(match.group(1)).strip()
+            title = _clean_title(match.group(1))
+            if title:
+                return title
 
     match = _TITLE_TAG.search(html)
-    return unescape(match.group(1)).strip() if match else None
+    return _clean_title(match.group(1)) if match else None
 
 
 def extract_details(html: str) -> dict:
@@ -452,7 +475,7 @@ def extract_details(html: str) -> dict:
             continue
 
         if product.get("name"):
-            details["title"] = unescape(str(product["name"])).strip()
+            details["title"] = _clean_title(product["name"])
         if product.get("description"):
             details["description"] = unescape(str(product["description"])).strip()
 
