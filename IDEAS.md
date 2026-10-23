@@ -115,6 +115,12 @@ second column, a second story). Revisit the moment the premise gets challenged
 in public, or if calibration comes out weak. It's the honest escape hatch, not
 the next feature.
 
+**Concrete use case that appeared later:** 5 of the first 34 courses had no
+critical review *with text* — every 1–3★ review was a bare rating — so the page
+had to fall back to a 5★ review (`kind: consensus`). Some of those 5★ reviews
+contain real criticism after a "but". Finding that sentence inside praise is
+exactly what this idea would buy, and it is now measured rather than imagined.
+
 ---
 
 ## C. The corpus and the story
@@ -251,9 +257,11 @@ complain about the platform?" without exposing raw excerpts. This would add
 intelligence to the dataset while keeping the privacy constraint (excerpts only)
 intact.
 
-**Track course teachers.** Add instructor names and ratings to the dataset. This would
-allow analysis of whether certain educators consistently produce high-quality content
-across different platforms, and help users identify trusted voices in online education.
+**Track course teachers.** ✅ **Shipped** — `/instructors` lists every teacher in
+  the index with their catalogue average and range; `/instructors/<slug>` shows the
+  courses they teach. Built entirely from the landing-page blob, so it cost no new
+  requests (SPEC D22–D24). The next step here is the corpus, not the code: 17 of 30
+  teachers have exactly one course.
 
 ---
 

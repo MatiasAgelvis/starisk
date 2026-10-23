@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import InstructorTable from '../../components/InstructorTable.svelte';
+import { buildInstructors } from '../../lib/instructors.js';
+import scores from '../../data/scores.json';
+
+const instructors = buildInstructors(scores);
+
+// The island only needs the columns it draws; shipping each teacher's whole
+// catalogue would bloat the page for no benefit.
+const rows = instructors.map((person) => ({
+  page: person.page,
+  name: person.name,
+  role: person.role,
+  department: person.department,
+  photo: person.photo,
+  courses: person.courses.length,
+  average: person.average,
+  low: person.low,
+  high: person.high,
+  reviews: person.reviews,
+}));
+
+const multi = instructors.filter((person) => person.courses.length > 1).length;
+---
+
+<Base
+  title="Teachers — Starisk"
+  description="What else has a Coursera teacher made, and does it hold up? Every instructor in the index, with the range of their courses' scores."
+>
+  <article class="mx-auto max-w-4xl">
+    <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Teachers</h1>
+    <p class="mt-3 max-w-2xl text-base-content/70">
+      The course page answers “is this one worth it?”. This one answers the other question:
+      <strong>what else has this teacher made, and does it hold up?</strong>
+    </p>
+    <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+      The average weights each course by the reviews we actually read. A course taught by
+      two people counts for both — so a pair who always teach together will show the same
+      numbers, and that is the honest result, not a bug.
+    </p>
+
+    <div class="mt-8">
+      <InstructorTable client:load rows={rows} />
+    </div>
+
+    <section class="mt-10 space-y-3 text-sm text-base-content/60">
+      <p>
+        {instructors.length} teachers, {multi} of them with more than one course scored. The
+        rest teach exactly one course in the index so far — a teacher page with one course is
+        a course page with less on it, and it says so.
+      </p>
+      <p>
+        None of this is an instructor rating. It is the same measurement as everywhere else on
+        the site — what the most-upvoted reviews say — re-cut by who taught the course.
+        <a class="link link-hover" href="/method">The method, with the numbers.</a>
+      </p>
+    </section>
+  </article>
+</Base>

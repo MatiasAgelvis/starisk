@@ -38,6 +38,22 @@ SIMPLE = {
     "peer_weight": 1,
 }
 
+# The calibrated model (2026-10): same shape, likes compressed by sqrt.
+#
+# Why: on 29 hand-labelled courses, unbounded likes let one review own a score.
+# Tempering — sqrt, log, or capping likes at 10, or ignoring votes entirely —
+# all land at rho ~0.68-0.70 against my gut ranking, versus 0.62 for `1 + likes`
+# and 0.57 for the 2021 squared model. The differences are inside the noise
+# (bootstrap: sqrt wins 79% of resamples, CIs overlap), but the direction is
+# consistent and the failure mode it removes is real. A 663-like review should
+# not count 663 times; under sqrt it counts ~26 times. Upvotes still matter.
+CALIBRATED = {
+    "peer_power": 0.5,
+    "timedecay": 0,
+    "base_review_value": 1,
+    "peer_weight": 1,
+}
+
 
 def review_weight(review: dict, options: dict | None = None) -> float:
     """Weight of a single review: how much its star count should count."""

@@ -5,12 +5,14 @@ from tempfile import TemporaryDirectory
 
 from starisk.cache import load_page, path_for, store_page
 from starisk.crawl import (
+    _top_review,
     crawl,
     excerpt,
     is_fresh,
     normalize_source,
     order_by_staleness,
     parse_args,
+    resolve_instructors,
     reviews_url,
     score_page,
     unique_sources,
@@ -27,10 +29,10 @@ class ScorePageTest(unittest.TestCase):
 
         self.assertIsNotNone(result)
         self.assertEqual(result["reviews"], 3)
-        self.assertEqual(result["model"], "simple")
+        self.assertEqual(result["model"], "sqrt-likes")
         self.assertEqual(result["title"], "Sample Course")
         self.assertEqual(result["provider"], "Test University")
-        self.assertEqual(result["starisk"], 1.5)
+        self.assertEqual(result["starisk"], 2.2)
         self.assertAlmostEqual(result["coursera"], 4.9)
         self.assertEqual(result["top_review"]["likes"], 80)
         self.assertEqual(result["top_review"]["stars"], 1.0)
@@ -47,6 +49,7 @@ class ScorePageTest(unittest.TestCase):
         self.assertIsInstance(result["spread"], float)
         self.assertGreaterEqual(result["spread"], 0.0)
         self.assertIsInstance(result["spread_weighted"], float)
+        self.assertEqual(sum(result["review_counts"].values()), result["reviews"])
         self.assertNotIn("level", result)
         self.assertNotIn("enrollment", result)
 
@@ -261,7 +264,7 @@ class ArgsTest(unittest.TestCase):
             directory = Path(tmp)
             scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=directory)
 
-            self.assertEqual(scores["learn/a"]["instructors"], ["Andrew Ng"])
+            self.assertEqual(scores["learn/a"]["instructors"][0]["name"], "Andrew Ng")
             self.assertEqual(scores["learn/a"]["categories"], ["Data Science"])
             self.assertTrue(path_for("learn/a.landing", directory).exists())
 
@@ -276,8 +279,51 @@ class ArgsTest(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
 
-        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertNotIn("instructors", scores["learn/a"])
+
+
+class InstructorIdentityTest(unittest.TestCase):
+    def test_a_name_only_instructor_adopts_the_known_profile(self):
+        scores = {
+            "learn/a": {
+                "instructors": [
+                    {"name": "Prof. Peter J Stuckey", "slug": "peter-stuckey",
+                     "url": "https://www.coursera.org/instructor/peter-stuckey",
+                     "page": "peter-stuckey"}
+                ]
+            },
+            "learn/b": {
+                "instructors": [
+                    {"name": "Prof. Peter J Stuckey", "slug": None,
+                     "url": None, "page": "peter-j-stuckey"}
+                ]
+            },
+        }
+
+        resolve_instructors(scores)
+        self.assertEqual(scores["learn/b"]["instructors"][0]["page"], "peter-stuckey")
+        self.assertEqual(
+            scores["learn/b"]["instructors"][0]["slug"], "peter-stuckey"
+        )
+
+    def test_two_different_people_keep_their_own_pages(self):
+        scores = {
+            "learn/a": {
+                "instructors": [
+                    {"name": "Martha White", "slug": "martha-white",
+                     "url": "u", "page": "martha-white"}
+                ]
+            },
+            "learn/b": {
+                "instructors": [
+                    {"name": "Adam White", "slug": None, "url": None, "page": "adam-white"}
+                ]
+            },
+        }
+
+        resolve_instructors(scores)
+        self.assertEqual(scores["learn/b"]["instructors"][0]["page"], "adam-white")
 
 
 class CacheTest(unittest.TestCase):
@@ -314,7 +360,7 @@ class CacheTest(unittest.TestCase):
             scores = crawl(["learn/a"], fetch=fetch, now=STAMP, offline=True, cache_dir=directory)
 
         self.assertEqual(calls, [])
-        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertEqual(scores["learn/a"]["starisk"], 2.2)
 
     def test_offline_keeps_the_original_stamp(self):
         html = GOOD_FIXTURE.read_text(encoding="utf-8")
@@ -328,7 +374,7 @@ class CacheTest(unittest.TestCase):
             )
 
         # Re-parsed, but not re-scraped: the date must survive.
-        self.assertEqual(scores["learn/a"]["starisk"], 1.5)
+        self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertEqual(scores["learn/a"]["scrapedAt"], "2026-01-01T00:00:00+00:00")
 
     def test_offline_missing_cache_leaves_a_good_record_alone(self):
@@ -373,6 +419,28 @@ class ExcerptTest(unittest.TestCase):
     def test_empty(self):
         self.assertEqual(excerpt(""), "")
         self.assertEqual(excerpt(None), "")
+
+
+class TopReviewTest(unittest.TestCase):
+    @staticmethod
+    def review(stars, likes=0, text=None):
+        return {"stars": stars, "likes": likes, "text": text, "age_days": 1}
+
+    def test_critical_with_text_wins(self):
+        top = _top_review([self.review(5.0, 50, "great"), self.review(2.0, 5, "meh")])
+
+        self.assertEqual(top["kind"], "dissent")
+        self.assertEqual(top["text"], "meh")
+
+    def test_rating_only_criticals_fall_back_to_consensus(self):
+        # Every 1-3 star review is a bare rating, so there is no dissent to quote.
+        top = _top_review([self.review(5.0, 8, "great"), self.review(1.0, 9, None)])
+
+        self.assertEqual(top["kind"], "consensus")
+        self.assertEqual(top["stars"], 5.0)
+
+    def test_nothing_with_text_is_none(self):
+        self.assertIsNone(_top_review([self.review(1.0, 3, None)]))
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
     "date": "June 2021",
     "credential_id": "KYMJQRU3Y4VS",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "convolutional-neural-networks-tensorflow"
   },
   {
@@ -25,7 +25,7 @@
     "date": "May 2021",
     "credential_id": "4C95MRF4BQ8R",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "foundations-big-data-analysis-sql"
   },
   {
@@ -35,7 +35,7 @@
     "date": "May 2021",
     "credential_id": "SCEQC455GUTD",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "custom-models-layers-loss-functions-with-tensorflow"
   },
   {
@@ -81,7 +81,7 @@
     "date": "March 2021",
     "credential_id": "EGN77JR9JQ2P",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "convolutional-neural-networks"
   },
   {
@@ -100,7 +100,7 @@
     "date": "March 2021",
     "credential_id": "5R2S75XJMG4V",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "machine-learning-asset-management-alternative-data"
   },
   {
@@ -119,7 +119,7 @@
     "date": "March 2021",
     "credential_id": "GAYRJPYVH5FM",
     "type": "course",
-    "label": null,
+    "label": 2.0,
     "slug": "complete-reinforcement-learning-system"
   },
   {
@@ -138,7 +138,7 @@
     "date": "February 2021",
     "credential_id": "X85D8ZK6G3LK",
     "type": "course",
-    "label": null,
+    "label": 3,
     "slug": "prediction-control-function-approximation"
   },
   {
@@ -148,7 +148,7 @@
     "date": "February 2021",
     "credential_id": "G6SUK39F3G5L",
     "type": "course",
-    "label": null,
+    "label": 3.0,
     "slug": "machine-learning-projects"
   },
   {
@@ -158,7 +158,7 @@
     "date": "January 2021",
     "credential_id": "FAEDCXFJ6LUX",
     "type": "course",
-    "label": null,
+    "label": 3.0,
     "slug": "sample-based-learning-methods"
   },
   {
@@ -168,7 +168,7 @@
     "date": "January 2021",
     "credential_id": "C35H6K5VMTJ7",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "advanced-portfolio-construction-python"
   },
   {
@@ -187,7 +187,7 @@
     "date": "December 2020",
     "credential_id": "9GLNSVMU8WD6",
     "type": "course",
-    "label": null,
+    "label": 3.0,
     "slug": "fundamentals-of-reinforcement-learning"
   },
   {
@@ -197,7 +197,7 @@
     "date": "December 2020",
     "credential_id": "E52UYTJ7NCXU",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "neural-networks-deep-learning"
   },
   {
@@ -216,7 +216,7 @@
     "date": "November 2020",
     "credential_id": "7E5S77M8H9TY",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "introduction-portfolio-construction-python"
   },
   {
@@ -226,7 +226,7 @@
     "date": "October 2020",
     "credential_id": "HT5CZLXFWEG5",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "version-control-with-git"
   },
   {
@@ -236,7 +236,7 @@
     "date": "October 2020",
     "credential_id": "DV6S93VD95ZY",
     "type": "course",
-    "label": null,
+    "label": 3.0,
     "slug": "dog-emotion-and-cognition"
   },
   {
@@ -255,7 +255,7 @@
     "date": "October 2020",
     "credential_id": "92E92SH7BLFC",
     "type": "course",
-    "label": null,
+    "label": 1.0,
     "slug": "autonomous-runway-detection"
   },
   {
@@ -265,7 +265,7 @@
     "date": "September 2020",
     "credential_id": "KXMZ4ZAK3RPW",
     "type": "course",
-    "label": null,
+    "label": 1.0,
     "slug": "real-time-systems"
   },
   {
@@ -311,7 +311,7 @@
     "date": "May 2020",
     "credential_id": "CD7JDM99F65Y",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "solving-algorithms-discrete-optimization"
   },
   {
@@ -375,7 +375,7 @@
     "date": "March 2020",
     "credential_id": "MSZMWBF9AW2L",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "advanced-modeling"
   },
   {
@@ -385,7 +385,7 @@
     "date": "March 2020",
     "credential_id": "6RH7P36EWYB4",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "linux-tools-for-developers"
   },
   {
@@ -395,7 +395,7 @@
     "date": "March 2020",
     "credential_id": "VVPS9LTM5YYC",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "linux-for-developers"
   },
   {
@@ -414,7 +414,7 @@
     "date": "March 2020",
     "credential_id": "SK9PR734D4Q2",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "open-source-software-development-methods"
   },
   {
@@ -433,7 +433,7 @@
     "date": "March 2020",
     "credential_id": "U6MF4E4G9DSS",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "git-distributed-development"
   },
   {
@@ -443,7 +443,7 @@
     "date": "February 2020",
     "credential_id": "UH4LD6T7WFV4",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "basic-modeling"
   },
   {
@@ -462,7 +462,7 @@
     "date": "February 2020",
     "credential_id": "94A4K2D5LX3Y",
     "type": "course",
-    "label": null,
+    "label": 3.0,
     "slug": "python-statistics-financial-analysis"
   },
   {
@@ -472,7 +472,7 @@
     "date": "January 2020",
     "credential_id": "YPLQMUGB7F4F",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "programming-languages-part-c"
   },
   {
@@ -482,7 +482,7 @@
     "date": "December 2019",
     "credential_id": "2DMA5A498DMG",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "programming-languages-part-b"
   },
   {
@@ -510,7 +510,7 @@
     "date": "November 2019",
     "credential_id": "J38GV286BU5A",
     "type": "course",
-    "label": null,
+    "label": 5.0,
     "slug": "programming-languages"
   },
   {
@@ -529,7 +529,7 @@
     "date": "October 2019",
     "credential_id": "XWQ2W9XUCAKA",
     "type": "course",
-    "label": null,
+    "label": 4.0,
     "slug": "algorithms-divide-conquer"
   },
   {

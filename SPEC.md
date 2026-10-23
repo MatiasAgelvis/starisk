@@ -94,6 +94,9 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D20 | Provider logos are **self-hosted**: the pipeline downloads one file per provider into `web/public/logos/`, **no transcoding** | Hotlinking Coursera's image proxy leaks every visitor's IP to them, breaks all logos at once if the URL changes, and gives us no cache control. Measured: 4 unique logos for 6 courses, 33 KB total, ~160×60 PNGs shown at 56×32. Re-encoding buys nothing and would drag a non-stdlib encoder into a stdlib-only pipeline. Fail-safe: a logo that cannot be fetched keeps its remote URL. |
 | D21 | Crawls are **incremental and polite**: sources normalised and deduped, records younger than `--max-age` (30 days) skipped without a request, work ordered stalest-first, `--limit` as a per-run budget | A growing list must not mean re-fetching everything, and the residential IP is the asset the project depends on. 403/429 raises `RateLimited` and **stops the run** instead of retrying; the next run resumes at the stalest course, so nothing is repeated and nothing is skipped. 404 is never retried — a retired course stays retired. |
 | D15 | Write path **deferred** until there are real users | A static site can't write to a DB without a trust anchor; don't build an API for a feature nobody has used yet. Start with a mailto/GitHub-issue link if needed. |
+| D22 | **Instructors are a derived surface, not a crawl unit.** `/instructors` + `/instructors/<slug>`, built from the course records | The landing page's data blob already carries the complete teaching team for every course — name, id, `shortName`, role, department, photo, learners reached — so the whole surface costs **zero extra requests**. The hero links only the first instructor; the blob has everyone, which is why "unlinked" never meant "no profile". |
+| D23 | Instructor pages are keyed by **Coursera's id**, linked by its slug, and **URL'd by a readable slug** | The id is the only stable identity (names collide, slugs get assigned later). But 12 of 30 have no vanity slug, and `/instructors/~219741545` is a bad URL, so the page slug falls back to the name (`kara-pritchard`). The outbound link always goes to Coursera's profile. |
+| D24 | Instructor photos are **remote and `loading="lazy"`**, like course thumbnails — not self-hosted like provider logos | Deliberate exception to D20: there are 30 faces, they change, and only the rows a visitor scrolls to fetch anything. Logos were 4 files that must never flicker; photos are a directory you browse. Initials render behind each photo and take over if it 404s. |
 
 ## 7. The scoring model
 
@@ -102,9 +105,19 @@ crowd upvoted counts for more.
 
 - **Faithful (original 2021):** `weight = (2 + likes)² · ageDays^0.3`,
   `score = 0.8·peer + 0.2·coursera`.
-- **Simplified (candidate default):** `weight = 1 + likes`,
+- **Simplified:** `weight = 1 + likes`,
   `score = Σ(stars·weight) / Σ(weight)`.
   *"Everyone is one voice; every upvote is one more voice."*
+- **Calibrated (2026-10, the default):** `weight = √(1 + likes)`, same sum.
+  Upvotes still matter — 80 likes counts about 5× a review with 2 — but one
+  review can no longer own a course.
+
+**Why sqrt:** on 29 courses I rated myself, Spearman against my gut was
+**0.62** for `1 + likes`, **0.57** for the 2021 model, and **0.68–0.70** for
+anything that compresses likes (sqrt, log, cap-at-10, or even ignoring votes).
+Bootstrap: sqrt beats linear in 79% of resamples with overlapping CIs —
+*suggestive, not proven*. The decision rests on the failure mode it removes
+(one 663-like review owning a score), not on the point estimate.
 
 On the sample fixture (`review.html`): Coursera **4.0** → original **1.9** /
 simple **1.7**. The most-liked review is a 1★ takedown (`This is helpful (102)`).
@@ -143,7 +156,13 @@ calibration against my labels, not aesthetics.**
 
 - `reviews` — cards we actually read (one page, ~20).
 - `reviews_total` / `ratings_total` — the population, so the sampling is explicit.
+- `instructors` — the complete teaching team, one object per person. Identity is
+  Coursera's numeric id; `slug` is `shortName` when it exists, `~id` otherwise;
+  `page` is our human-readable URL segment (D23). `role`, `department`, `photo`,
+  `learners`, `courses_taught` are Coursera's own profile fields, carried for free
+  by the same blob (D22).
 - `rating_counts` — Coursera's full star distribution, from the embedded page data.
+- `review_counts` — the same for the ~20 sampled reviews only.
 - `spread` — unweighted std-dev of the sampled stars (contention).
 - `spread_weighted` — the same with like weights; it *collapses* when one review
   dominates, which is informative but not a contention measure.

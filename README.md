@@ -13,17 +13,20 @@ and puts the result next to Coursera's number.
 
 | Course | Coursera | Starisk |
 |---|---:|---:|
-| Financial Markets | 4.8 | 2.5 |
-| Neural Networks and Deep Learning | 4.9 | 2.9 |
-| Learning How to Learn | 4.8 | 3.6 |
+| Financial Markets | 4.8 | 3.0 |
+| Neural Networks and Deep Learning | 4.9 | 3.2 |
+| Learning How to Learn | 4.8 | 3.7 |
 
 ## What it is
 
-- **A score.** `weight = 1 + likes`, `score = Σ(stars · weight) / Σ(weight)` —
-  every reviewer is one voice, every upvote is one more voice.
+- **A score.** `weight = √(1 + likes)`, `score = Σ(stars · weight) / Σ(weight)` —
+  every reviewer is one voice, every upvote is worth more but not without limit.
 - **The dissent.** Each course page shows the most-upvoted *critical* review, in
   full. Usually that's the honest paragraph buried under five hundred 5★ ones.
-- **A leaderboard** of courses, and a lookup box for a course link.
+- **A leaderboard** of courses, and a lookup box that accepts a course *or* a
+  teacher URL.
+- **A teacher directory.** Who teaches what, and whether the catalogue holds up —
+  the same measurement re-cut by instructor, with the range across their courses.
 - **Not** a browser extension, not a product with accounts, not a claim about
   objective quality.
 
@@ -77,10 +80,22 @@ mise run pipeline:crawl -- --force     # ignore freshness, refetch everything
 Sources are normalised (`learn/x`, `/learn/x/`, a full URL and a bare slug are
 one course), fresh records are skipped without a request, and work is ordered
 stalest-first so `--limit` always makes progress. Each course is **two**
-requests — the reviews page and the landing page (instructors, categories) — and
-both are cached, so `--offline` re-parses without touching the network. If
-Coursera rate-limits a run (403/429), it **stops** instead of retrying — the next
-run resumes at the same course.
+requests — the reviews page and the landing page (the whole teaching team,
+categories) — and both are cached, so `--offline` re-parses without touching the
+network. The landing page's data blob carries every instructor, not just the ones
+the hero links, so teachers cost no extra request. If Coursera rate-limits a run
+(403/429), it **stops** instead of retrying — the next run resumes at the same
+course.
+
+### Calibration
+
+```sh
+mise run pipeline:calibration                 # Spearman between my labels and the model
+python -m starisk.calibration --label         # rate the mapped courses, one by one
+```
+
+The label prompt is **blind**: it never shows the model's score, because seeing it
+would anchor the answer and turn calibration into confirmation.
 
 ### Deploying
 
@@ -88,10 +103,22 @@ The site is static files in `web/dist`. Any static host works; the settings are
 root `web`, build `npm run build`, output `dist` (`build.sh` only adds the data
 copy, which is already committed, so hosts can skip it).
 
-- **Vercel:** set the project's **Root Directory to `web`** — `web/vercel.json`
-  builds and serves `dist` from there, and Vercel installs with the committed
-  lockfile. Do not add install/build commands in the dashboard: a root-level
-  `npm ci --prefix web` fails when the root directory is already `web`.
+- **Vercel:** two setups work, but the **dashboard must match the config file**
+  you are relying on — Vercel's Project Settings override `vercel.json`:
+
+  | Root Directory | config read | dashboard fields |
+  |---|---|---|
+  | repo root | `/vercel.json` (install `npm ci --prefix web`, output `web/dist`) | all empty |
+  | `web` | `web/vercel.json` (install `npm ci`, output `dist`) | all empty |
+
+  The failing signature `npm ci can only install with an existing
+  package-lock.json` with the command `npm ci --prefix web` means the build ran
+  **inside `web/`** (Root Directory = `web`) while the dashboard still carried a
+  `--prefix web` Install Command, so npm looked for `web/web/package-lock.json`.
+  Clear **Install Command**, **Build Command** and **Output Directory**, then
+  redeploy. There is no repo change that can outvote a dashboard command.
+
+  Set `SITE_URL` in the project's environment to the deployment origin.
 - **Cloudflare Pages:** root `web`, build `npm run build`, output `dist`.
 - **GitHub Pages:** a *project* site serves from `/starisk/`, so absolute links
   (`/learn/...`, `/logos/...`) would break. Use a custom domain, or set `base`
@@ -113,6 +140,7 @@ pipeline/      Python — crawler, scoring engine, calibration
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
   public/logos/  provider logos, downloaded once by the pipeline
+  src/pages/instructors/  the teacher directory (a derived view, not a crawl unit)
 calibration/   my own 74 credentials, for measuring the model
 samples/       scratch space for live HTML snapshots (gitignored)
 SPEC.md        the why: mission, non-goals, decision log
