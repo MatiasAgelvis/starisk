@@ -324,6 +324,26 @@ class LandingTest(unittest.TestCase):
         )
 
 
+class GenericTitleTest(unittest.TestCase):
+    def test_the_site_boilerplate_is_not_a_course_title(self):
+        html = '<meta property="og:title" content="Coursera | Online Courses From Top Universities. Join for Free"/>'
+        self.assertIsNone(extract_title(html))
+        self.assertIsNone(extract_details(html)["title"])
+
+    def test_it_falls_through_to_a_real_title(self):
+        html = (
+            '<meta property="og:title" content="Coursera Plus">'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Medical Billing"}'
+            "</script>"
+        )
+        self.assertEqual(extract_title(html), "Medical Billing")
+
+    def test_a_real_title_survives(self):
+        html = '<meta property="og:title" content="Real Course | Coursera"/>'
+        self.assertEqual(extract_title(html), "Real Course | Coursera")
+
+
 class CourseListTest(unittest.TestCase):
     def test_specialization_lists_its_courses(self):
         html = (
