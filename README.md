@@ -87,6 +87,26 @@ the hero links, so teachers cost no extra request. If Coursera rate-limits a run
 (403/429), it **stops** instead of retrying — the next run resumes at the same
 course.
 
+### Growing the list
+
+The list grows along edges that already exist, not by sampling the sitemap:
+
+```sh
+mise run pipeline:expand              # report both levers, writes nothing
+mise run pipeline:expand -- --write   # extend sources.json
+mise run pipeline:expand -- --instructors --limit 10
+```
+
+- **specializations** — my certificate specializations, resolved from Coursera's
+  sitemap and confirmed by `og:title`, then expanded into their constituent
+  courses (`data-e2e="sdp-course-list-link"`).
+- **instructors** — every teacher already in `scores.json`, read from their
+  Coursera profile (`data-e2e="course-card"`).
+
+Both cost one cached request per parent page. Language variants (`-fr`, `-de`, …)
+are dropped; a separately-created translation with its own slug is not (only one
+so far — the landing page carries `inLanguage` if it ever matters).
+
 ### Calibration
 
 ```sh

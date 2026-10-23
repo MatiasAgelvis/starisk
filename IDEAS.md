@@ -160,6 +160,14 @@ credential list and an empty `label` per entry, so the same crawl feeds
   constituent courses are the SPEC's open question; the `sdp-course-list-link`
   hook is the way in.
 
+**Measured (2026-10).** The specialization lever was smaller than expected: 6 of
+my 7 specializations resolved, and only **8** of their 25 constituent courses were
+new (the rest were already crawled). The lever that actually grew the corpus was
+the **teacher graph**: 30 instructor profiles linked **108** courses, **74** of
+them new. So the corpus doubled by following the people, not the umbrellas. Worth
+remembering when deciding what to crawl next: people cluster courses, parent
+products do not (Coursera recycles them constantly).
+
 ---
 
 ## D. The data asset
