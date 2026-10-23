@@ -29,6 +29,9 @@ for the small, near-term stuff.
 - **Model choice:** `SIMPLE` vs a size-aware shrinkage model — decide by calibration.
 - **Tame the amplification:** try `sqrt(likes)` or a like cap so one review can't own a score.
 - Search / filter / sort controls for the leaderboard.
+- **Teacher photos** are remote and lazy, like course thumbnails (SPEC D24). If
+  hotlinking becomes a privacy or breakage problem, localize them the way provider
+  logos are: one file per person, downloaded during the crawl.
 - Find where to add the copy '5 stars... would not reccomend'
 
 ## Pipeline
@@ -40,6 +43,9 @@ for the small, near-term stuff.
 - Professional Certificates / specializations: score their constituent courses and aggregate
   (landing pages expose `data-e2e="sdp-course-list-link"`).
 - Grow the crawl list from `sources.json`; later, from user requests.
+- **Teacher pages are only as good as the corpus.** 17 of 30 teachers have exactly one
+  course; the surface gets interesting at 3+ per person, which is a crawl problem, not a
+  code one.
 
 ## V2 / later
 - **Classify reviews** (quality vs policy vs praise) — **parked**, see `IDEAS.md` I3.

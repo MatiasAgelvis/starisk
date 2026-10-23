@@ -94,6 +94,9 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D20 | Provider logos are **self-hosted**: the pipeline downloads one file per provider into `web/public/logos/`, **no transcoding** | Hotlinking Coursera's image proxy leaks every visitor's IP to them, breaks all logos at once if the URL changes, and gives us no cache control. Measured: 4 unique logos for 6 courses, 33 KB total, ~160×60 PNGs shown at 56×32. Re-encoding buys nothing and would drag a non-stdlib encoder into a stdlib-only pipeline. Fail-safe: a logo that cannot be fetched keeps its remote URL. |
 | D21 | Crawls are **incremental and polite**: sources normalised and deduped, records younger than `--max-age` (30 days) skipped without a request, work ordered stalest-first, `--limit` as a per-run budget | A growing list must not mean re-fetching everything, and the residential IP is the asset the project depends on. 403/429 raises `RateLimited` and **stops the run** instead of retrying; the next run resumes at the stalest course, so nothing is repeated and nothing is skipped. 404 is never retried — a retired course stays retired. |
 | D15 | Write path **deferred** until there are real users | A static site can't write to a DB without a trust anchor; don't build an API for a feature nobody has used yet. Start with a mailto/GitHub-issue link if needed. |
+| D22 | **Instructors are a derived surface, not a crawl unit.** `/instructors` + `/instructors/<slug>`, built from the course records | The landing page's data blob already carries the complete teaching team for every course — name, id, `shortName`, role, department, photo, learners reached — so the whole surface costs **zero extra requests**. The hero links only the first instructor; the blob has everyone, which is why "unlinked" never meant "no profile". |
+| D23 | Instructor pages are keyed by **Coursera's id**, linked by its slug, and **URL'd by a readable slug** | The id is the only stable identity (names collide, slugs get assigned later). But 12 of 30 have no vanity slug, and `/instructors/~219741545` is a bad URL, so the page slug falls back to the name (`kara-pritchard`). The outbound link always goes to Coursera's profile. |
+| D24 | Instructor photos are **remote and `loading="lazy"`**, like course thumbnails — not self-hosted like provider logos | Deliberate exception to D20: there are 30 faces, they change, and only the rows a visitor scrolls to fetch anything. Logos were 4 files that must never flicker; photos are a directory you browse. Initials render behind each photo and take over if it 404s. |
 
 ## 7. The scoring model
 
@@ -153,6 +156,11 @@ calibration against my labels, not aesthetics.**
 
 - `reviews` — cards we actually read (one page, ~20).
 - `reviews_total` / `ratings_total` — the population, so the sampling is explicit.
+- `instructors` — the complete teaching team, one object per person. Identity is
+  Coursera's numeric id; `slug` is `shortName` when it exists, `~id` otherwise;
+  `page` is our human-readable URL segment (D23). `role`, `department`, `photo`,
+  `learners`, `courses_taught` are Coursera's own profile fields, carried for free
+  by the same blob (D22).
 - `rating_counts` — Coursera's full star distribution, from the embedded page data.
 - `review_counts` — the same for the ~20 sampled reviews only.
 - `spread` — unweighted std-dev of the sampled stars (contention).
