@@ -107,6 +107,22 @@ Both cost one cached request per parent page. Language variants (`-fr`, `-de`, â
 are dropped; a separately-created translation with its own slug is not (only one
 so far â€” the landing page carries `inLanguage` if it ever matters).
 
+To add specific courses by hand:
+
+```sh
+mise run pipeline:add -- https://www.coursera.org/learn/some-course
+mise run pipeline:add -- learn/one learn/two three
+mise run pipeline:add -- --from links.txt            # one per line, # comments
+mise run pipeline:add -- --from - < links.txt        # or stdin
+mise run pipeline:add -- --check learn/one learn/two # ask Coursera first
+mise run pipeline:add -- --dry-run ...               # show, don't write
+```
+
+It accepts a full URL (including `/reviews`), `/learn/x`, or a bare slug,
+dedupes against the list, and rejects anything that is not a course. Arguments and
+`--from` can be combined in one call. The added courses are scored by the next
+`pipeline:crawl`; nothing is fetched by `add` unless you pass `--check`.
+
 ### Calibration
 
 ```sh
