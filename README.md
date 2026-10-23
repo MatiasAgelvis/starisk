@@ -87,6 +87,42 @@ the hero links, so teachers cost no extra request. If Coursera rate-limits a run
 (403/429), it **stops** instead of retrying — the next run resumes at the same
 course.
 
+### Growing the list
+
+The list grows along edges that already exist, not by sampling the sitemap:
+
+```sh
+mise run pipeline:expand              # report both levers, writes nothing
+mise run pipeline:expand -- --write   # extend sources.json
+mise run pipeline:expand -- --instructors --limit 10
+```
+
+- **specializations** — my certificate specializations, resolved from Coursera's
+  sitemap and confirmed by `og:title`, then expanded into their constituent
+  courses (`data-e2e="sdp-course-list-link"`).
+- **instructors** — every teacher already in `scores.json`, read from their
+  Coursera profile (`data-e2e="course-card"`).
+
+Both cost one cached request per parent page. Language variants (`-fr`, `-de`, …)
+are dropped; a separately-created translation with its own slug is not (only one
+so far — the landing page carries `inLanguage` if it ever matters).
+
+To add specific courses by hand:
+
+```sh
+mise run pipeline:add -- https://www.coursera.org/learn/some-course
+mise run pipeline:add -- learn/one learn/two three
+mise run pipeline:add -- --from links.txt            # one per line, # comments
+mise run pipeline:add -- --from - < links.txt        # or stdin
+mise run pipeline:add -- --check learn/one learn/two # ask Coursera first
+mise run pipeline:add -- --dry-run ...               # show, don't write
+```
+
+It accepts a full URL (including `/reviews`), `/learn/x`, or a bare slug,
+dedupes against the list, and rejects anything that is not a course. Arguments and
+`--from` can be combined in one call. The added courses are scored by the next
+`pipeline:crawl`; nothing is fetched by `add` unless you pass `--check`.
+
 ### Calibration
 
 ```sh
@@ -100,8 +136,12 @@ would anchor the answer and turn calibration into confirmation.
 ### Deploying
 
 The site is static files in `web/dist`. Any static host works; the settings are
-root `web`, build `npm run build`, output `dist` (`build.sh` only adds the data
-copy, which is already committed, so hosts can skip it).
+root `web`, build `npm run build`, output `dist`. `npm run build` and
+`npm run dev` first run `scripts/sync-data.mjs`, which copies
+`pipeline/data/scores.json` into `web/src/data/` — so a fresh clone and a deploy
+always reflect the last crawl, without anyone remembering to run `build.sh`.
+If the pipeline file is absent (a deploy that ships only `web/`), the committed
+copy is kept.
 
 - **Vercel:** two setups work, but the **dashboard must match the config file**
   you are relying on — Vercel's Project Settings override `vercel.json`:

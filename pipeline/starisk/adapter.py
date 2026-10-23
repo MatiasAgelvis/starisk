@@ -46,6 +46,17 @@ _OG_TITLE = (
 )
 _TITLE_TAG = re.compile(r"<title[^>]*>([^<]+)</title>")
 
+# Some reviews pages ship the site's boilerplate as their title. Storing it would
+# put "Coursera | Online Courses…" at the top of a course page, which is worse
+# than having no title at all — the landing page usually knows the real name.
+_GENERIC_TITLES = frozenset(
+    {
+        "coursera",
+        "coursera plus",
+        "coursera | online courses from top universities. join for free",
+    }
+)
+
 # Coursera embeds its own rating data in a serialised Apollo cache. Verified on
 # all 8 live snapshots, including pages whose JSON-LD omits `ratingValue`:
 #   "ratingCountsByStar":{"fiveStarRatingCount":255087,...,"oneStarRatingCount":1641}
@@ -72,7 +83,19 @@ _INSTRUCTOR_LINK = re.compile(
 )
 _INSTRUCTOR_RECORD = re.compile(r'"DescriptionPage_Instructor:(\d+)":\{')
 _TITLE = re.compile(r"^(?:prof\.?|dr\.?|mr\.?|ms\.?|mrs\.?)\s+", re.IGNORECASE)
-_CREDENTIAL = re.compile(r",?\s+(?:ph\.?\s?d\.?|m\.?d\.?)$", re.IGNORECASE)
+_CREDENTIAL = re.compile(r",?\s+(?:ph\.?\s?d\.?|m\.?\s?d\.?)$", re.IGNORECASE)
+
+# Coursera duplicates most courses per language under the same slug
+# (`ai-for-everyone-fr`). They are the same course, so one is enough.
+LANGUAGE_SUFFIX = re.compile(
+    r"-(ar|de|es|fr|id|it|ja|ko|nl|pl|pt|ru|th|tr|vi|zhcn|zhtw)$"
+)
+
+# Pages that list courses rather than teach one: a specialization lists its
+# constituent courses, an instructor profile lists everything they teach. Both
+# hooks are Coursera's own test hooks.
+SPECIALIZATION_COURSE = 'data-e2e="sdp-course-list-link"'
+INSTRUCTOR_COURSE = 'data-e2e="course-card"'
 
 _DATE_FORMATS = (
     "%b %d, %Y",
@@ -395,6 +418,14 @@ def _as_int(value) -> int | None:
         return None
 
 
+def _clean_title(value) -> str | None:
+    """A usable page title, or None when it is Coursera's own boilerplate."""
+    title = " ".join(unescape(str(value)).split())
+    if not title or title.casefold() in _GENERIC_TITLES:
+        return None
+    return title
+
+
 def extract_title(html: str) -> str | None:
     """The course's display name: JSON-LD first, then og:title, then <title>."""
     for block in _LD_JSON.findall(html):
@@ -404,15 +435,36 @@ def extract_title(html: str) -> str | None:
             continue
         product = _find_type(data, ("Product", "Course"))
         if product and product.get("name"):
-            return unescape(str(product["name"])).strip()
+            title = _clean_title(product["name"])
+            if title:
+                return title
 
     for pattern in _OG_TITLE:
         match = pattern.search(html)
         if match and match.group(1).strip():
-            return unescape(match.group(1)).strip()
+            title = _clean_title(match.group(1))
+            if title:
+                return title
 
     match = _TITLE_TAG.search(html)
-    return unescape(match.group(1)).strip() if match else None
+    return _clean_title(match.group(1)) if match else None
+
+
+def _brand_name(candidate) -> str | None:
+    """A provider name from JSON-LD's messy brand/provider/publisher shapes.
+
+    `provider` is sometimes the *instructors* — a list of `Person`, or a single
+    `Person` — rather than the partner organisation. Neither is a brand: a person
+    is not a provider, and a list stringified into one produced values like
+    "[{'@type': 'Person', ...}]".
+    """
+    if isinstance(candidate, dict):
+        if candidate.get("@type") == "Person":
+            return None
+        candidate = candidate.get("name")
+    if isinstance(candidate, str) and candidate.strip():
+        return candidate.strip()
+    return None
 
 
 def extract_details(html: str) -> dict:
@@ -440,20 +492,18 @@ def extract_details(html: str) -> dict:
             continue
 
         if product.get("name"):
-            details["title"] = unescape(str(product["name"])).strip()
+            details["title"] = _clean_title(product["name"])
         if product.get("description"):
             details["description"] = unescape(str(product["description"])).strip()
 
         brand = None
         for key in ("brand", "provider", "publisher"):
-            candidate = product.get(key)
-            if isinstance(candidate, dict):
-                candidate = candidate.get("name")
-            if candidate:
-                brand = candidate
+            brand = _brand_name(product.get(key))
+            if brand:
                 break
         if brand:
-            details["provider"] = unescape(str(brand)).strip()
+            # `provider` can be a list of instructors; only a real name counts.
+            details["provider"] = unescape(brand).strip()
 
         level = product.get("educationalLevel")
         if level:
@@ -603,3 +653,37 @@ def _reviews_from_jsonld(html: str) -> list[dict]:
 def extract_reviews(html: str) -> list[dict]:
     """Prefer DOM cards (they carry likes); fall back to JSON-LD reviews."""
     return _reviews_from_cards(html) or _reviews_from_jsonld(html)
+
+
+def _course_slugs(html: str, marker: str) -> list[str]:
+    """Course slugs from the links around `marker`.
+
+    The marker sits on the anchor itself on a specialization page, and on a
+    descendant `<div>` on an instructor page, so walk back to the enclosing `<a>`
+    and read the href it carries.
+    """
+    slugs = []
+    for match in re.finditer(re.escape(marker), html):
+        start = html.rfind("<a ", 0, match.start())
+        if start < 0:
+            continue
+        href = re.search(r'href="([^"]+)"', html[start : match.start()])
+        if not href:
+            continue
+        target = unescape(href.group(1))
+        course = re.match(r"/learn/([^/?#]+)", target)
+        if not course or LANGUAGE_SUFFIX.search(course.group(1)):
+            continue
+        if course.group(1) not in slugs:
+            slugs.append(course.group(1))
+    return slugs
+
+
+def extract_specialization_courses(html: str) -> list[str]:
+    """The constituent courses of a specialization page."""
+    return _course_slugs(html, SPECIALIZATION_COURSE)
+
+
+def extract_instructor_courses(html: str) -> list[str]:
+    """Every course an instructor profile links to, language variants dropped."""
+    return _course_slugs(html, INSTRUCTOR_COURSE)

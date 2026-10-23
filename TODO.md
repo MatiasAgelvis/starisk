@@ -41,8 +41,10 @@ for the small, near-term stuff.
 
 ## Coverage
 - Professional Certificates / specializations: score their constituent courses and aggregate
-  (landing pages expose `data-e2e="sdp-course-list-link"`).
-- Grow the crawl list from `sources.json`; later, from user requests.
+  (landing pages expose `data-e2e="sdp-course-list-link"`). The **expansion** side is done
+  (D25); aggregate *scoring* of the umbrella is still open.
+- Grow the crawl list along the two existing edges (`mise run pipeline:expand`), not by
+  sampling the sitemap. 108 sources as of the instructor/specialization pass.
 - **Teacher pages are only as good as the corpus.** 17 of 30 teachers have exactly one
   course; the surface gets interesting at 3+ per person, which is a crawl problem, not a
   code one.

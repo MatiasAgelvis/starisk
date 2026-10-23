@@ -12,6 +12,7 @@ from starisk.crawl import (
     normalize_source,
     order_by_staleness,
     parse_args,
+    progress_line,
     resolve_instructors,
     reviews_url,
     score_page,
@@ -268,6 +269,40 @@ class ArgsTest(unittest.TestCase):
             self.assertEqual(scores["learn/a"]["categories"], ["Data Science"])
             self.assertTrue(path_for("learn/a.landing", directory).exists())
 
+    def test_the_landing_page_supplies_the_real_metadata(self):
+        # Some specialization review pages ship the site's boilerplate as their
+        # title and nothing else. The landing page knows the course; it must win.
+        reviews = (
+            '<meta property="og:title" '
+            'content="Coursera | Online Courses From Top Universities. Join for Free"/>'
+            'data-e2e="review-table-card"'
+            '<div aria-label="Rated 4.0 out of 5 stars"></div>'
+            '<div aria-label="This was helpful (3)"></div>'
+            "Nov 14, 2022"
+            '<div data-testid="cml-viewer"><p>'
+            "A review body long enough for the adapter to treat it as the text."
+            "</p></div>"
+        )
+        landing = (
+            '<meta property="og:title" content="Medical Billing and Coding Fundamentals"/>'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Medical Billing and Coding Fundamentals",'
+            '"brand":{"name":"MedCerts"},"image":"https://example.com/x.png"}'
+            "</script>"
+        )
+
+        def fetch(url):
+            return landing if url.endswith("/learn/a") else reviews
+
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
+
+        record = scores["learn/a"]
+        self.assertEqual(record["title"], "Medical Billing and Coding Fundamentals")
+        self.assertEqual(record["provider"], "MedCerts")
+        self.assertEqual(record["image"], "https://example.com/x.png")
+        self.assertEqual(record["reviews"], 1)
+
     def test_a_failed_landing_page_does_not_fail_the_course(self):
         reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
 
@@ -324,6 +359,55 @@ class InstructorIdentityTest(unittest.TestCase):
 
         resolve_instructors(scores)
         self.assertEqual(scores["learn/b"]["instructors"][0]["page"], "adam-white")
+
+
+class ProgressTest(unittest.TestCase):
+    def test_the_line_is_fixed_width(self):
+        line = progress_line(3, 10, "learn/some-course", 6.0)
+        self.assertIn("  3/10", line)
+        self.assertIn("learn/some-course", line)
+        self.assertEqual(line.count("#"), 7)  # round(22 * 3 / 10)
+        self.assertEqual(len(line), len(progress_line(1, 10, "learn/x", 6.0)))
+
+    def test_it_reports_once_per_course_with_a_real_total(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        calls = []
+
+        def fetch(url):
+            return reviews
+
+        with TemporaryDirectory() as tmp:
+            crawl(
+                ["learn/a", "learn/b"],
+                fetch=fetch,
+                now=STAMP,
+                cache_dir=Path(tmp),
+                progress=lambda done, total, key: calls.append((done, total, key)),
+            )
+
+        self.assertEqual([call[0] for call in calls], [1, 2])
+        self.assertEqual([call[1] for call in calls], [2, 2])
+        self.assertEqual({call[2] for call in calls}, {"learn/a", "learn/b"})
+
+    def test_fresh_records_are_not_counted_as_work(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        existing = {
+            "learn/a": {"starisk": 4.0, "scrapedAt": STAMP.isoformat()},
+        }
+        calls = []
+
+        with TemporaryDirectory() as tmp:
+            crawl(
+                ["learn/a", "learn/b"],
+                fetch=lambda url: reviews,
+                existing=existing,
+                now=STAMP,
+                max_age_days=30,
+                cache_dir=Path(tmp),
+                progress=lambda done, total, key: calls.append((done, total, key)),
+            )
+
+        self.assertEqual(calls, [(1, 1, "learn/b")])
 
 
 class CacheTest(unittest.TestCase):
@@ -388,11 +472,13 @@ class CacheTest(unittest.TestCase):
         self.assertEqual(scores["learn/a"]["starisk"], 3.3)
         self.assertNotIn("error", scores["learn/a"])
 
-    def test_offline_without_a_cached_page_records_an_error(self):
+    def test_offline_without_a_cached_page_writes_nothing(self):
+        # Reparsing cannot invent data. A queued source that was never fetched is
+        # not an error about the course, so it must not land in scores.json.
         with TemporaryDirectory() as tmp:
             scores = crawl(["learn/a"], now=STAMP, offline=True, cache_dir=Path(tmp))
 
-        self.assertIn("offline", scores["learn/a"]["error"])
+        self.assertEqual(scores, {})
 
 
 class ExcerptTest(unittest.TestCase):

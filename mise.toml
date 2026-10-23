@@ -27,6 +27,16 @@ python -m starisk.crawl
 python -m starisk.logos
 """
 
+[tasks."pipeline:add"]
+description = "Add a course by URL or slug to data/sources.json"
+dir = "pipeline"
+run = "python -m starisk.add"
+
+[tasks."pipeline:expand"]
+description = "Grow sources.json from specializations and instructor profiles"
+dir = "pipeline"
+run = "python -m starisk.expand"
+
 [tasks."pipeline:logos"]
 description = "Download provider logos that scores.json references"
 dir = "pipeline"

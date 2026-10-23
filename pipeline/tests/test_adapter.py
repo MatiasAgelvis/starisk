@@ -7,8 +7,10 @@ from starisk.adapter import (
     extract_coursera_score,
     extract_details,
     extract_landing,
+    extract_instructor_courses,
     extract_population,
     extract_reviews,
+    extract_specialization_courses,
     extract_title,
 )
 
@@ -320,6 +322,107 @@ class LandingTest(unittest.TestCase):
         self.assertEqual(
             extract_landing("<html></html>"), {"instructors": [], "categories": []}
         )
+
+
+class ProviderTest(unittest.TestCase):
+    def test_a_provider_list_is_not_a_provider(self):
+        # Some pages put the *instructors* under `provider`; that is not a brand.
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"provider":[{"@type":"Person","name":"Andrew Ng"},'
+            '{"@type":"Person","name":"Isa Fulford"}]}'
+            "</script>"
+        )
+        self.assertIsNone(extract_details(html)["provider"])
+
+    def test_a_single_person_is_not_a_provider(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"provider":{"@type":"Person","name":"Laurence Moroney"}}'
+            "</script>"
+        )
+        self.assertIsNone(extract_details(html)["provider"])
+
+    def test_brand_dict_and_string_both_work(self):
+        as_dict = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"brand":{"@type":"Organization","name":"DeepLearning.AI"}}'
+            "</script>"
+        )
+        as_string = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X","provider":"DeepLearning.AI"}'
+            "</script>"
+        )
+        as_org = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"provider":{"@type":"Organization","name":"DeepLearning.AI"}}'
+            "</script>"
+        )
+        self.assertEqual(extract_details(as_dict)["provider"], "DeepLearning.AI")
+        self.assertEqual(extract_details(as_string)["provider"], "DeepLearning.AI")
+        self.assertEqual(extract_details(as_org)["provider"], "DeepLearning.AI")
+
+
+class GenericTitleTest(unittest.TestCase):
+    def test_the_site_boilerplate_is_not_a_course_title(self):
+        html = '<meta property="og:title" content="Coursera | Online Courses From Top Universities. Join for Free"/>'
+        self.assertIsNone(extract_title(html))
+        self.assertIsNone(extract_details(html)["title"])
+
+    def test_it_falls_through_to_a_real_title(self):
+        html = (
+            '<meta property="og:title" content="Coursera Plus">'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Medical Billing"}'
+            "</script>"
+        )
+        self.assertEqual(extract_title(html), "Medical Billing")
+
+    def test_a_real_title_survives(self):
+        html = '<meta property="og:title" content="Real Course | Coursera"/>'
+        self.assertEqual(extract_title(html), "Real Course | Coursera")
+
+
+class CourseListTest(unittest.TestCase):
+    def test_specialization_lists_its_courses(self):
+        html = (
+            '<a href="/learn/neural-networks-deep-learning?specialization=deep-learning" '
+            'aria-label="Course 1: Neural Networks" data-e2e="sdp-course-list-link">1</a>'
+            '<a href="/learn/deep-neural-network?specialization=deep-learning" '
+            'data-e2e="sdp-course-list-link">2</a>'
+        )
+        self.assertEqual(
+            extract_specialization_courses(html),
+            ["neural-networks-deep-learning", "deep-neural-network"],
+        )
+
+    def test_instructor_profile_lists_their_courses(self):
+        # The hook sits on a div inside the anchor, not on the anchor itself.
+        html = (
+            '<a href="/learn/ai-for-everyone" class="x">'
+            '<div data-e2e="course-card">card</div></a>'
+            '<a href="/learn/ai-for-everyone-fr" class="x">'
+            '<div data-e2e="course-card">card</div></a>'
+        )
+        self.assertEqual(extract_instructor_courses(html), ["ai-for-everyone"])
+
+    def test_language_variants_and_duplicates_are_dropped(self):
+        html = (
+            '<a href="/learn/course-a-fr" data-e2e="sdp-course-list-link">x</a>'
+            '<a href="/learn/course-a" data-e2e="sdp-course-list-link">x</a>'
+            '<a href="/learn/course-a" data-e2e="sdp-course-list-link">x</a>'
+            '<a href="/specializations/not-a-course" data-e2e="sdp-course-list-link">x</a>'
+        )
+        self.assertEqual(extract_specialization_courses(html), ["course-a"])
+
+    def test_nothing(self):
+        self.assertEqual(extract_specialization_courses("<html></html>"), [])
+        self.assertEqual(extract_instructor_courses("<html></html>"), [])
 
 
 class ScriptTextTest(unittest.TestCase):
