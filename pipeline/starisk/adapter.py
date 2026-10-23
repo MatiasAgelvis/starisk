@@ -450,6 +450,23 @@ def extract_title(html: str) -> str | None:
     return _clean_title(match.group(1)) if match else None
 
 
+def _brand_name(candidate) -> str | None:
+    """A provider name from JSON-LD's messy brand/provider/publisher shapes.
+
+    `provider` is sometimes the *instructors* — a list of `Person`, or a single
+    `Person` — rather than the partner organisation. Neither is a brand: a person
+    is not a provider, and a list stringified into one produced values like
+    "[{'@type': 'Person', ...}]".
+    """
+    if isinstance(candidate, dict):
+        if candidate.get("@type") == "Person":
+            return None
+        candidate = candidate.get("name")
+    if isinstance(candidate, str) and candidate.strip():
+        return candidate.strip()
+    return None
+
+
 def extract_details(html: str) -> dict:
     """Course metadata from JSON-LD: title, description, provider, image URL.
 
@@ -481,14 +498,12 @@ def extract_details(html: str) -> dict:
 
         brand = None
         for key in ("brand", "provider", "publisher"):
-            candidate = product.get(key)
-            if isinstance(candidate, dict):
-                candidate = candidate.get("name")
-            if candidate:
-                brand = candidate
+            brand = _brand_name(product.get(key))
+            if brand:
                 break
         if brand:
-            details["provider"] = unescape(str(brand)).strip()
+            # `provider` can be a list of instructors; only a real name counts.
+            details["provider"] = unescape(brand).strip()
 
         level = product.get("educationalLevel")
         if level:
