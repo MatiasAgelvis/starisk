@@ -250,19 +250,30 @@ def crawl(
     limit: int | None = None,
     offline: bool = False,
     cache_dir: Path = CACHE_DIR,
+    progress=None,
 ) -> dict:
-    """Fetch, score and merge. Returns the updated scores dict."""
+    """Fetch, score and merge. Returns the updated scores dict.
+
+    `progress(done, total, key)` is called before each course, so a caller can
+    draw a counter or a bar. The library prints nothing on its own.
+    """
     scores = dict(existing or {})
     moment = now or datetime.now(timezone.utc)
     stamp = moment.isoformat()
 
     work = order_by_staleness(unique_sources(sources), scores)
+    # Drop fresh records before taking the budget, so `total` is the work actually
+    # about to happen rather than "the list". Staleness ordering already puts them
+    # last, so this does not change which courses a `--limit` run picks.
+    if max_age_days is not None:
+        work = [key for key in work if not is_fresh(scores.get(key), moment, max_age_days)]
     if limit is not None:
         work = work[:limit]
 
-    for key in work:
-        if max_age_days is not None and is_fresh(scores.get(key), moment, max_age_days):
-            continue
+    total = len(work)
+    for index, key in enumerate(work, start=1):
+        if progress:
+            progress(index, total, key)
 
         url = reviews_url(key)
 
@@ -395,6 +406,18 @@ def parse_args(argv: list[str]) -> dict:
     return options
 
 
+def progress_line(done: int, total: int, key: str, elapsed: float, width: int = 22) -> str:
+    """One line of crawl progress: bar, position, ETA and the course in flight.
+
+    Fixed-width on purpose: it is redrawn with `\r`, so every line must paint over
+    the previous one without leaving debris.
+    """
+    filled = round(width * done / total) if total else width
+    bar = "#" * filled + "-" * (width - filled)
+    remaining = (elapsed / done) * (total - done) if done else 0.0
+    return f"[{bar}] {done:>3}/{total}  {remaining:>5.0f}s left  {key[:44]:<44}"
+
+
 def main(argv: list[str]) -> int:
     options = parse_args(argv)
 
@@ -428,6 +451,20 @@ def main(argv: list[str]) -> int:
     if options["limit"] is not None:
         planned = min(planned, options["limit"])
 
+    state = {"drawn": False}
+    started = time.monotonic()
+    interactive = sys.stdout.isatty()
+
+    def report(done, total, key):
+        state["drawn"] = True
+        line = progress_line(done, total, key, time.monotonic() - started)
+        if interactive:
+            sys.stdout.write("\r" + line)
+            sys.stdout.flush()
+        else:
+            # Redirected to a file or a CI log: one line per course, no carriage returns.
+            print(line)
+
     scores = crawl(
         sources,
         existing=existing,
@@ -436,7 +473,10 @@ def main(argv: list[str]) -> int:
         max_age_days=max_age,
         limit=options["limit"],
         offline=options["offline"],
+        progress=report,
     )
+    if state["drawn"] and interactive:
+        sys.stdout.write("\n")
     write_atomic(SCORES_PATH, scores)
 
     scored = sum(1 for record in scores.values() if "starisk" in record)

@@ -12,6 +12,7 @@ from starisk.crawl import (
     normalize_source,
     order_by_staleness,
     parse_args,
+    progress_line,
     resolve_instructors,
     reviews_url,
     score_page,
@@ -324,6 +325,55 @@ class InstructorIdentityTest(unittest.TestCase):
 
         resolve_instructors(scores)
         self.assertEqual(scores["learn/b"]["instructors"][0]["page"], "adam-white")
+
+
+class ProgressTest(unittest.TestCase):
+    def test_the_line_is_fixed_width(self):
+        line = progress_line(3, 10, "learn/some-course", 6.0)
+        self.assertIn("  3/10", line)
+        self.assertIn("learn/some-course", line)
+        self.assertEqual(line.count("#"), 7)  # round(22 * 3 / 10)
+        self.assertEqual(len(line), len(progress_line(1, 10, "learn/x", 6.0)))
+
+    def test_it_reports_once_per_course_with_a_real_total(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        calls = []
+
+        def fetch(url):
+            return reviews
+
+        with TemporaryDirectory() as tmp:
+            crawl(
+                ["learn/a", "learn/b"],
+                fetch=fetch,
+                now=STAMP,
+                cache_dir=Path(tmp),
+                progress=lambda done, total, key: calls.append((done, total, key)),
+            )
+
+        self.assertEqual([call[0] for call in calls], [1, 2])
+        self.assertEqual([call[1] for call in calls], [2, 2])
+        self.assertEqual({call[2] for call in calls}, {"learn/a", "learn/b"})
+
+    def test_fresh_records_are_not_counted_as_work(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        existing = {
+            "learn/a": {"starisk": 4.0, "scrapedAt": STAMP.isoformat()},
+        }
+        calls = []
+
+        with TemporaryDirectory() as tmp:
+            crawl(
+                ["learn/a", "learn/b"],
+                fetch=lambda url: reviews,
+                existing=existing,
+                now=STAMP,
+                max_age_days=30,
+                cache_dir=Path(tmp),
+                progress=lambda done, total, key: calls.append((done, total, key)),
+            )
+
+        self.assertEqual(calls, [(1, 1, "learn/b")])
 
 
 class CacheTest(unittest.TestCase):
