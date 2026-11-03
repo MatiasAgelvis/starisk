@@ -15,10 +15,11 @@
   // average is sortable because a visitor will want it, and pretending otherwise
   // would just be a table that fights its reader.
   const COLUMNS = [
-    { key: 'name', label: 'Teacher', align: 'text-left', width: 'w-[62%] sm:w-[44%]' },
+    { key: 'name', label: 'Teacher', align: 'text-left', width: 'w-[60%] sm:w-[42%]' },
     { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-[14%] sm:w-[12%]' },
-    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[24%] sm:w-[16%]' },
-    { key: 'low', label: 'Range', align: 'text-right', width: 'w-[14%]', hide: true },
+    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[26%] sm:w-[16%]' },
+    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[8%]', hide: true },
+    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[8%]', hide: true },
     { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[14%]', hide: true },
   ];
 
@@ -161,8 +162,11 @@
               <span class="hidden md:inline-flex"><Stars value={row.average} /></span>
             </div>
           </td>
-          <td class="hidden whitespace-nowrap text-right font-mono text-sm sm:table-cell">
-            {row.low.toFixed(1)}–{row.high.toFixed(1)}
+          <td class="hidden text-right font-mono text-sm sm:table-cell">
+            {row.low.toFixed(1)}
+          </td>
+          <td class="hidden text-right font-mono text-sm sm:table-cell">
+            {row.high.toFixed(1)}
           </td>
           <td class="hidden text-right font-mono text-sm sm:table-cell">{row.reviews}</td>
         </tr>

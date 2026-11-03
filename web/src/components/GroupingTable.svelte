@@ -21,8 +21,9 @@
   const COLUMNS = [
     { key: 'title', label: 'Program', align: 'text-left', width: 'w-[54%] sm:w-[42%]' },
     { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-[16%] sm:w-[14%]' },
-    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[18%] sm:w-[14%]' },
-    { key: 'low', label: 'Range', align: 'text-right', width: 'w-[16%]', hide: true },
+    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[30%] sm:w-[14%]' },
+    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[8%]', hide: true },
+    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[8%]', hide: true },
     { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[14%]', hide: true },
   ];
 
@@ -181,8 +182,11 @@
               {/if}
             </div>
           </td>
-          <td class="hidden whitespace-nowrap text-right font-mono text-sm sm:table-cell">
-            {row.low == null ? '—' : `${row.low.toFixed(1)}–${row.high.toFixed(1)}`}
+          <td class="hidden text-right font-mono text-sm sm:table-cell">
+            {row.low == null ? '—' : row.low.toFixed(1)}
+          </td>
+          <td class="hidden text-right font-mono text-sm sm:table-cell">
+            {row.high == null ? '—' : row.high.toFixed(1)}
           </td>
           <td class="hidden text-right font-mono text-sm sm:table-cell">{row.reviews}</td>
         </tr>
