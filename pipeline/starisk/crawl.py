@@ -416,7 +416,7 @@ def resolve_instructors(scores: dict) -> dict:
     return scores
 
 
-def write_atomic(path: Path, data: dict) -> None:
+def write_atomic(path: Path, data: dict | list) -> None:
     """Write JSON in one atomic replace, so a crash cannot truncate the file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
