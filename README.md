@@ -27,6 +27,9 @@ and puts the result next to Coursera's number.
   teacher URL.
 - **A teacher directory.** Who teaches what, and whether the catalogue holds up —
   the same measurement re-cut by instructor, with the range across their courses.
+- **A program directory.** Specializations and Professional Certificates, with the
+  courses they contain and the average score of those courses. Complete sets are
+  shown by default.
 - **Not** a browser extension, not a product with accounts, not a claim about
   objective quality.
 
@@ -51,8 +54,9 @@ neutral is the thing this project exists to argue against.
 
 The crawler runs on a residential IP, on demand — no server, no cron, no
 database. It reads Coursera's server-rendered review cards (`data-e2e` hooks,
-`aria-label`s) with fallbacks to the page's JSON-LD, and writes one JSON file.
-Everything the site shows comes from that file.
+`aria-label`s) with fallbacks to the page's JSON-LD, and writes `scores.json`.
+A second, derived `groupings.json` records which courses belong to which
+specialization or Professional Certificate; the site reads both.
 
 ## Working on it
 
@@ -63,6 +67,8 @@ mise trust && mise install    # node 24, python 3.13
 mise run setup                # install web dependencies
 mise run pipeline:lint        # ruff
 mise run pipeline:test        # python unit tests (stdlib only)
+mise run pipeline:groupings   # rebuild the program index
+mise run pipeline:seed-programs  # fetch seeded program pages, then rebuild
 mise run web:dev              # astro dev server
 mise run check                # lint + tests + a full site build
 ```
@@ -108,6 +114,13 @@ Both cost one cached request per parent page. Language variants (`-fr`, `-de`, �
 are dropped; a separately-created translation with its own slug is not (only one
 so far — the landing page carries `inLanguage` if it ever matters).
 
+Professional Certificates are not in the calibration file, so they are seeded
+explicitly in `pipeline/data/programs.json`:
+
+```sh
+mise run pipeline:seed-programs   # fetch missing seeds, then rebuild groupings.json
+```
+
 To add specific courses by hand:
 
 ```sh
@@ -139,10 +152,10 @@ would anchor the answer and turn calibration into confirmation.
 The site is static files in `web/dist`. Any static host works; the settings are
 root `web`, build `npm run build`, output `dist`. `npm run build` and
 `npm run dev` first run `scripts/sync-data.mjs`, which copies
-`pipeline/data/scores.json` into `web/src/data/` — so a fresh clone and a deploy
-always reflect the last crawl, without anyone remembering to run `build.sh`.
-If the pipeline file is absent (a deploy that ships only `web/`), the committed
-copy is kept.
+`pipeline/data/scores.json` and `pipeline/data/groupings.json` into
+`web/src/data/` — so a fresh clone and a deploy always reflect the last crawl,
+without anyone remembering to run `build.sh`. If a pipeline file is absent (a
+deploy that ships only `web/`), the committed copy is kept.
 
 - **Vercel:** two setups work, but the **dashboard must match the config file**
   you are relying on — Vercel's Project Settings override `vercel.json`:
@@ -176,12 +189,14 @@ copy is kept.
 
 ```
 pipeline/      Python — crawler, scoring engine, calibration
-  starisk/     engine, adapter, fetch, crawl, rank, calibration
-  data/        sources.json (what to crawl), scores.json (the seam)
+  starisk/     engine, adapter, fetch, crawl, rank, calibration, groupings
+  data/        sources.json (what to crawl), scores.json (the seam),
+               groupings.json (derived program index), programs.json (program seeds)
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
   public/logos/  provider logos, downloaded once by the pipeline
   src/pages/instructors/  the teacher directory (a derived view, not a crawl unit)
+  src/pages/programs/     the program directory (derived from groupings.json)
 calibration/   my own 74 credentials, for measuring the model
 samples/       scratch space for live HTML snapshots (gitignored)
 SPEC.md        the why: mission, non-goals, decision log

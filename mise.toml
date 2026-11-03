@@ -31,6 +31,7 @@ dir = "pipeline"
 run = """
 python -m starisk.crawl
 python -m starisk.logos
+python -m starisk.groupings --write
 """
 
 [tasks."pipeline:add"]
@@ -47,6 +48,16 @@ run = "python -m starisk.expand"
 description = "Download provider logos that scores.json references"
 dir = "pipeline"
 run = "python -m starisk.logos"
+
+[tasks."pipeline:groupings"]
+description = "Rebuild data/groupings.json from cached program pages"
+dir = "pipeline"
+run = "python -m starisk.groupings --write"
+
+[tasks."pipeline:seed-programs"]
+description = "Fetch seeded program pages, then rebuild data/groupings.json"
+dir = "pipeline"
+run = "python -m starisk.groupings --fetch --write"
 
 [tasks."pipeline:calibration"]
 description = "Compare my labels with the model (Spearman); --label to add labels"
