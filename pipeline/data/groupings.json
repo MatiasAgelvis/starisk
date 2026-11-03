@@ -1,4 +1,25 @@
 {
+  "professional-certificates/ibm-data-science": {
+    "key": "professional-certificates/ibm-data-science",
+    "type": "professional-certificate",
+    "title": "IBM Data Science",
+    "url": "https://www.coursera.org/professional-certificates/ibm-data-science",
+    "courses": [
+      "learn/what-is-datascience",
+      "learn/open-source-tools-for-data-science",
+      "learn/data-science-methodology",
+      "learn/python-for-applied-data-science-ai",
+      "learn/python-project-for-data-science",
+      "learn/sql-data-science",
+      "learn/data-analysis-with-python",
+      "learn/python-for-data-visualization",
+      "learn/machine-learning-with-python",
+      "learn/applied-data-science-capstone",
+      "learn/generative-ai-elevate-your-data-science-career",
+      "learn/career-guide-and-interview-prep-for-data-science-pc"
+    ],
+    "provider": "IBM"
+  },
   "specializations/ai-agents-mode-context-protocol": {
     "key": "specializations/ai-agents-mode-context-protocol",
     "type": "specialization",

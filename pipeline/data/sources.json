@@ -584,5 +584,8 @@
   "learn/uxui-design-fundamentals-usability-and-visual-principles",
   "learn/vector-databases-and-retrieval-data-engineering",
   "learn/vector-search-with-nosql-databases-using-mongodb-and-cassandra",
-  "learn/what-is-datascience"
+  "learn/what-is-datascience",
+  "learn/open-source-tools-for-data-science",
+  "learn/data-science-methodology",
+  "learn/python-for-data-visualization"
 ]
