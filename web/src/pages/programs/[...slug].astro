@@ -1,0 +1,151 @@
+---
+import Base from '../../layouts/Base.astro';
+import Logo from '../../components/Logo.astro';
+import Stars from '../../components/Stars.astro';
+import { buildGroupings, typeLabel } from '../../lib/groupings.js';
+import { verdictOf, VERDICT } from '../../lib/verdict.js';
+import scores from '../../data/scores.json';
+import groupings from '../../data/groupings.json';
+
+export function getStaticPaths() {
+  return buildGroupings(groupings, scores).map((program) => ({
+    params: { slug: program.key },
+    props: { program },
+  }));
+}
+
+const { program } = Astro.props;
+const average = program.average;
+const type = typeLabel(program.type);
+const description =
+  average == null
+    ? `${program.title}: ${program.total} courses, none with written reviews yet.`
+    : `${program.title}: ${program.scored} courses averaged at ${average.toFixed(1)} out of 5.`;
+---
+
+<Base title={`${program.title} — Starisk`} description={description}>
+  <article class="mx-auto max-w-3xl">
+    <a href="/programs" class="link link-hover text-sm text-base-content/60">← all programs</a>
+
+    <header class="mt-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <h1 class="font-display text-3xl font-bold tracking-tight">{program.title}</h1>
+        <span class="badge badge-ghost badge-sm">{type}</span>
+      </div>
+      <p class="mt-1 text-sm text-base-content/60">
+        {program.provider ?? 'Unknown provider'} ·{' '}
+        <a
+          class="link link-hover"
+          href={program.url}
+          target="_blank"
+          rel="noopener noreferrer">View on Coursera ↗</a
+        >
+      </p>
+    </header>
+
+    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
+      <div class="stat">
+        <div class="stat-title">Course average</div>
+        <div class="stat-value text-2xl">{average == null ? '—' : average.toFixed(1)}</div>
+        {average == null ? null : <Stars value={average} size={16} />}
+        <div class="stat-desc">across {program.scored} scored courses</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Range</div>
+        <div class="stat-value text-2xl">
+          {program.low == null
+            ? '—'
+            : `${program.low.toFixed(1)}–${program.high.toFixed(1)}`}
+        </div>
+        <div class="stat-desc">worst course to best course</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Reviews read</div>
+        <div class="stat-value text-2xl">{program.reviews}</div>
+        <div class="stat-desc">across those courses</div>
+      </div>
+      {
+        program.umbrella != null && (
+          <div class="stat">
+            <div class="stat-title">Umbrella rating</div>
+            <div class="stat-value text-2xl">{program.umbrella.toFixed(1)}</div>
+            <Stars value={program.umbrella} size={16} />
+            <div class="stat-desc">the program page's own reviews</div>
+          </div>
+        )
+      }
+    </div>
+
+    <section class="mt-8">
+      <h2 class="font-display text-xl font-bold">
+        The {program.total === 1 ? 'course' : 'courses'}
+      </h2>
+      <ul class="mt-4 divide-y divide-base-300/60">
+        {
+          program.courses.map((course) => {
+            const hasScore = typeof course.starisk === 'number';
+            const verdict = VERDICT[verdictOf(course.coursera, course.starisk)];
+            return (
+              <li class="flex items-start gap-4 py-4">
+                <Logo src={course.image} class="mt-0.5 h-10 w-16" />
+                <div class="min-w-0 flex-1">
+                  {hasScore ? (
+                    <a class="link link-hover font-medium" href={`/${course.key}`}>
+                      {course.title ?? course.key}
+                    </a>
+                  ) : (
+                    <span class="font-medium">{course.title ?? course.key}</span>
+                  )}
+                  <div class="text-xs text-base-content/50">
+                    {course.provider ?? 'Unknown provider'}
+                  </div>
+                  {!hasScore && (
+                    <div class="mt-1 text-xs text-base-content/60">
+                      No written reviews yet — not included in the average.
+                    </div>
+                  )}
+                </div>
+                {hasScore ? (
+                  <div class="shrink-0 whitespace-nowrap text-right">
+                    <div class="font-bold">{course.starisk.toFixed(1)}</div>
+                    <div class="text-xs text-base-content/50">
+                      Coursera {course.coursera == null ? '—' : course.coursera.toFixed(1)}
+                    </div>
+                    <span class={`badge badge-sm mt-1 whitespace-nowrap ${verdict.badge}`}>
+                      {verdict.label}
+                    </span>
+                  </div>
+                ) : (
+                  <span class="badge badge-ghost badge-sm">No score</span>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    <section class="mt-10 space-y-3 text-sm text-base-content/60">
+      <p>
+        {program.scored} of {program.total} courses are scored. The average weights each course by
+        the reviews we read, so a course with four readable reviews does not pull as hard as one
+        with twenty. It is still a small sample: {program.reviews} reviews in total.
+      </p>
+      {
+        program.umbrella != null && (
+          <p>
+            The program page's own reviews put the umbrella at{' '}
+            <strong>{program.umbrella.toFixed(1)}</strong>; the average of its courses is{' '}
+            <strong>{average == null ? '—' : average.toFixed(1)}</strong>. The gap is the point —
+            the bundle can rate differently from the parts.
+          </p>
+        )
+      }
+      <p>
+        This is the same measurement as everywhere else on the site — what the most-upvoted reviews
+        say — not a verdict on the program as a product.
+        <a class="link link-hover" href="/method">The method.</a>
+      </p>
+    </section>
+  </article>
+</Base>
