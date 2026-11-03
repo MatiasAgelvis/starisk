@@ -52,6 +52,9 @@ function decode(buffer) {
 
   const palette = chunks.find((chunk) => chunk.type === 'PLTE')?.data ?? null;
   if (colorType === 3 && !palette) return null;
+  // tRNS carries transparency for palette and single-colour images, where the
+  // pixels themselves have no alpha channel.
+  const trns = chunks.find((chunk) => chunk.type === 'tRNS')?.data ?? null;
 
   const compressed = chunks.filter((chunk) => chunk.type === 'IDAT').map((chunk) => chunk.data);
   if (compressed.length === 0) return null;
@@ -83,12 +86,12 @@ function decode(buffer) {
     previous = line;
   }
 
-  return { channels, colorType, palette, pixels };
+  return { channels, colorType, palette, trns, pixels };
 }
 
 /** How light are the opaque pixels, and how much of the canvas do they cover? */
 function measure(image) {
-  const { channels, colorType, palette, pixels } = image;
+  const { channels, colorType, palette, trns, pixels } = image;
   let total = 0;
   let opaque = 0;
   let luminance = 0;
@@ -101,18 +104,29 @@ function measure(image) {
     let alpha = 255;
 
     if (colorType === 3) {
-      const index = pixels[i] * 3;
-      r = palette[index];
-      g = palette[index + 1];
-      b = palette[index + 2];
+      const index = pixels[i];
+      const offset = index * 3;
+      r = palette[offset];
+      g = palette[offset + 1];
+      b = palette[offset + 2];
+      if (trns && index < trns.length) alpha = trns[index];
     } else if (channels <= 2) {
       r = g = b = pixels[i];
       if (channels === 2) alpha = pixels[i + 1];
+      else if (trns && trns.length >= 2 && r === trns.readUInt16BE(0)) alpha = 0;
     } else {
       r = pixels[i];
       g = pixels[i + 1];
       b = pixels[i + 2];
       if (channels === 4) alpha = pixels[i + 3];
+      else if (
+        trns &&
+        trns.length >= 6 &&
+        r === trns.readUInt16BE(0) &&
+        g === trns.readUInt16BE(2) &&
+        b === trns.readUInt16BE(4)
+      )
+        alpha = 0;
     }
 
     total += 1;
@@ -140,20 +154,32 @@ function needsDarkChip(stats) {
   return stats.meanLuminance > 235 && stats.whiteShare > 0.85 && stats.opaqueShare < 0.95;
 }
 
+/** Every file under `dir`, with a `/`-joined key relative to it (`hi/google.png`). */
+function* walk(dir, prefix = '') {
+  const entries = readdirSync(dir, { withFileTypes: true }).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
+  for (const entry of entries) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) yield* walk(path, `${prefix}${entry.name}/`);
+    else yield { name: entry.name, path, key: `${prefix}${entry.name}` };
+  }
+}
+
 export function buildLogoTones(dir) {
   const tones = {};
   if (!existsSync(dir)) return tones;
 
-  for (const name of readdirSync(dir).sort()) {
-    if (!name.toLowerCase().endsWith('.png')) continue;
+  for (const file of walk(dir)) {
+    if (!file.name.toLowerCase().endsWith('.png')) continue;
     let stats = null;
     try {
-      const image = decode(readFileSync(join(dir, name)));
+      const image = decode(readFileSync(file.path));
       if (image) stats = measure(image);
     } catch {
       // A corrupt or exotic PNG must never break the build: treat it as light.
     }
-    if (stats && needsDarkChip(stats)) tones[`/logos/${name}`] = 'dark';
+    if (stats && needsDarkChip(stats)) tones[`/logos/${file.key}`] = 'dark';
   }
 
   return tones;

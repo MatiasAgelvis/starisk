@@ -68,8 +68,8 @@ function votes(count: number) {
     <BackLink fallback="/" />
 
     <header class="mt-4 flex items-start gap-4">
-      <Logo src={record.image} class="mt-1 h-12 w-20" />
-      <div>
+      <Logo src={record.image} full class="mt-1 h-20 w-20 sm:h-28 sm:w-28" />
+      <div class="min-w-0">
         <h1 class="font-display text-3xl font-bold tracking-tight">
           {record.title ?? key}
         </h1>
