@@ -7,6 +7,7 @@
 
   let query = $state('');
   let type = $state('all');
+  let completeOnly = $state(true);
   let sortKey = $state('average');
   let sortDir = $state('desc');
   let page = $state(1);
@@ -48,6 +49,11 @@
     page = 1;
   }
 
+  function toggleComplete() {
+    completeOnly = !completeOnly;
+    page = 1;
+  }
+
   function search(event) {
     query = event.currentTarget.value;
     page = 1;
@@ -56,6 +62,7 @@
   function clearFilters() {
     query = '';
     type = 'all';
+    completeOnly = true;
     page = 1;
   }
 
@@ -63,15 +70,23 @@
     return ariaSortFor(key, sortKey, sortDir);
   }
 
+  const completeCount = $derived(rows.filter((row) => row.complete).length);
+  const partialCount = $derived(rows.length - completeCount);
+  const availableCount = $derived(completeOnly ? completeCount : rows.length);
+
   const typeCounts = $derived.by(() => {
     const counts = new Map();
-    for (const row of rows) counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
+    for (const row of rows) {
+      if (completeOnly && !row.complete) continue;
+      counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
+    }
     return counts;
   });
 
   const filtered = $derived.by(() => {
     const needle = query.trim().toLowerCase();
     return rows.filter((row) => {
+      if (completeOnly && !row.complete) return false;
       if (type !== 'all' && row.type !== type) return false;
       if (!needle) return true;
       return `${row.title ?? ''} ${row.provider ?? ''} ${typeLabel(row.type)}`
@@ -100,10 +115,18 @@
       >
         {option.label}
         <span class="opacity-50">
-          {option.id === 'all' ? rows.length : (typeCounts.get(option.id) ?? 0)}
+          {option.id === 'all' ? availableCount : (typeCounts.get(option.id) ?? 0)}
         </span>
       </button>
     {/each}
+    <button
+      class="btn btn-sm whitespace-nowrap {completeOnly ? 'btn-neutral' : 'btn-ghost'}"
+      aria-pressed={completeOnly}
+      onclick={toggleComplete}
+    >
+      Complete sets only
+      {#if partialCount}<span class="opacity-50">{partialCount}</span>{/if}
+    </button>
   </div>
   <input
     class="input input-sm w-full sm:w-64"
@@ -169,7 +192,11 @@
 
   {#if ordered.length === 0}
     <div class="py-10 text-center text-sm text-base-content/60">
-      <p>No program matches those filters.</p>
+      <p>
+        {completeOnly
+          ? 'No complete program matches those filters.'
+          : 'No program matches those filters.'}
+      </p>
       <button class="btn btn-sm btn-ghost mt-3" onclick={clearFilters}>Reset filters</button>
     </div>
   {:else}

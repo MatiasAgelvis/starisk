@@ -43,6 +43,17 @@ const description =
       </p>
     </header>
 
+    {
+      !program.complete && (
+        <div class="alert alert-warning mt-6 text-sm">
+          <span>
+            <strong>Partial set.</strong> {program.total - program.scored} of {program.total}{' '}
+            courses have no Starisk score, so this program is hidden from the default directory.
+          </span>
+        </div>
+      )
+    }
+
     <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
       <div class="stat">
         <div class="stat-title">Course average</div>

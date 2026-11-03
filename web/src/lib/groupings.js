@@ -56,6 +56,7 @@ export function buildGroupings(groupings, scores) {
       ),
       scored: scored.length,
       total: members.length,
+      complete: members.length > 0 && scored.length === members.length,
       reviews,
       average,
       low: scored.length ? Math.min(...scored.map((course) => course.starisk)) : null,

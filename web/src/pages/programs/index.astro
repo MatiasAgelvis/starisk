@@ -6,7 +6,7 @@ import scores from '../../data/scores.json';
 import groupings from '../../data/groupings.json';
 
 const programs = buildGroupings(groupings, scores);
-const scoredPrograms = programs.filter((program) => program.average != null).length;
+const completePrograms = programs.filter((program) => program.complete).length;
 
 // The island only needs the columns it draws; shipping every course in every
 // program would bloat the page for no benefit.
@@ -17,6 +17,7 @@ const rows = programs.map((program) => ({
   provider: program.provider,
   scored: program.scored,
   total: program.total,
+  complete: program.complete,
   average: program.average,
   low: program.low,
   high: program.high,
@@ -40,6 +41,10 @@ const rows = programs.map((program) => ({
       Where the program page itself has a review score, its page shows that umbrella rating next
       to the course average.
     </p>
+    <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+      Only <strong>complete sets</strong> are shown by default: every course in the program has a
+      Starisk score. The toggle shows how many partial programs are hidden.
+    </p>
 
     <div class="mt-8">
       <GroupingTable client:load rows={rows} />
@@ -47,8 +52,8 @@ const rows = programs.map((program) => ({
 
     <section class="mt-10 space-y-3 text-sm text-base-content/60">
       <p>
-        {programs.length} programs, {scoredPrograms} with at least one scored course. A course can
-        belong to more than one program; each membership is counted separately.
+        {programs.length} programs; {completePrograms} complete. A course can belong to more than
+        one program; each membership is counted separately.
       </p>
       <p>
         None of this is a rating of the program as a product. It is the same measurement as
