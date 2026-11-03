@@ -6,6 +6,7 @@
   "scripts": {
     "predev": "node scripts/sync-data.mjs",
     "dev": "astro dev",
+    "test": "node --test scripts/*.test.mjs",
     "prebuild": "node scripts/sync-data.mjs",
     "build": "astro build",
     "preview": "astro preview"

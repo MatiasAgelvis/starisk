@@ -23,6 +23,14 @@ from starisk.fetch import RateLimited
 GOOD_FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 STAMP = datetime(2026, 1, 1, tzinfo=timezone.utc)
 
+EMPTY_HTML = (
+    '<p data-testid="reviews-table-empty">No reviews found</p>'
+    '<script type="application/ld+json">'
+    '{"@type":"Course","name":"Empty Course","provider":{"name":"Test University"},'
+    '"aggregateRating":{"ratingCount":2}}'
+    "</script>"
+)
+
 
 class ScorePageTest(unittest.TestCase):
     def test_scores_a_good_page(self):
@@ -41,6 +49,18 @@ class ScorePageTest(unittest.TestCase):
 
     def test_returns_none_when_there_are_no_reviews(self):
         self.assertIsNone(score_page("<html><body>nothing</body></html>"))
+
+    def test_records_an_explicit_empty_reviews_state(self):
+        result = score_page(EMPTY_HTML)
+
+        self.assertIsNotNone(result)
+        self.assertTrue(result["no_reviews"])
+        self.assertEqual(result["reviews"], 0)
+        self.assertEqual(result["title"], "Empty Course")
+        self.assertEqual(result["provider"], "Test University")
+        self.assertEqual(result["ratings_total"], 2)
+        self.assertNotIn("starisk", result)
+        self.assertNotIn("error", result)
 
     def test_records_the_population_and_the_spread(self):
         result = score_page(GOOD_FIXTURE.read_text(encoding="utf-8"))
@@ -119,6 +139,15 @@ class CrawlTest(unittest.TestCase):
         self.assertEqual(scores["learn/good"]["scrapedAt"], "old")
         self.assertIn("error", scores["learn/good"])
 
+    def test_an_empty_page_is_recorded_as_an_observation(self):
+        scores = crawl(["learn/empty"], fetch=lambda url: EMPTY_HTML, now=STAMP)
+        record = scores["learn/empty"]
+
+        self.assertTrue(record["no_reviews"])
+        self.assertEqual(record["reviews"], 0)
+        self.assertEqual(record["scrapedAt"], STAMP.isoformat())
+        self.assertNotIn("error", record)
+
     def test_throttles_between_requests(self):
         slept = []
 
@@ -173,6 +202,10 @@ class FreshnessTest(unittest.TestCase):
         self.assertFalse(is_fresh({"starisk": 3.0}, self.now, 30))
         self.assertFalse(is_fresh(None, self.now, 30))
 
+    def test_an_empty_course_is_a_real_observation(self):
+        record = {"no_reviews": True, "scrapedAt": "2026-05-20T00:00:00+00:00"}
+        self.assertTrue(is_fresh(record, self.now, 30))
+
     def test_zero_max_age_is_always_stale(self):
         record = {"starisk": 3.0, "scrapedAt": self.now.isoformat()}
         self.assertFalse(is_fresh(record, self.now, 0))
@@ -225,6 +258,28 @@ class IncrementalCrawlTest(unittest.TestCase):
         self.assertTrue(str(scores["learn/b"]["error"]).startswith("rate limited"))
         self.assertNotIn("learn/c", scores)
         self.assertFalse(any("learn/c" in url for url in calls))
+
+    def test_empty_records_age_out_of_the_queue(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return self.html
+
+        existing = {"learn/empty": {"no_reviews": True, "scrapedAt": STAMP.isoformat()}}
+        now = datetime(2026, 1, 2, tzinfo=timezone.utc)
+
+        crawl(
+            ["learn/empty", "learn/new"],
+            fetch=fetch,
+            existing=existing,
+            now=now,
+            max_age_days=30,
+        )
+
+        self.assertEqual(
+            [u for u in calls if u.endswith("/reviews")], [reviews_url("learn/new")]
+        )
 
 
 class ArgsTest(unittest.TestCase):
@@ -460,6 +515,46 @@ class CacheTest(unittest.TestCase):
         # Re-parsed, but not re-scraped: the date must survive.
         self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertEqual(scores["learn/a"]["scrapedAt"], "2026-01-01T00:00:00+00:00")
+
+    def test_an_empty_page_does_not_erase_a_scored_record(self):
+        existing = {
+            "learn/a": {"starisk": 4.2, "reviews": 10, "scrapedAt": "old"}
+        }
+
+        scores = crawl(
+            ["learn/a"],
+            fetch=lambda url: EMPTY_HTML,
+            existing=existing,
+            now=STAMP,
+        )
+
+        self.assertEqual(scores["learn/a"]["starisk"], 4.2)
+        self.assertEqual(scores["learn/a"]["scrapedAt"], STAMP.isoformat())
+
+    def test_a_missing_landing_page_keeps_the_previous_metadata(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        existing = {
+            "learn/a": {
+                "starisk": 2.2,
+                "scrapedAt": "2026-01-01T00:00:00+00:00",
+                "instructors": [{"name": "Ada Lovelace", "page": "ada-lovelace"}],
+                "categories": ["Computer Science"],
+            }
+        }
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", reviews, directory)
+            scores = crawl(
+                ["learn/a"],
+                existing=existing,
+                now=STAMP,
+                offline=True,
+                cache_dir=directory,
+            )
+
+        self.assertEqual(scores["learn/a"]["instructors"], existing["learn/a"]["instructors"])
+        self.assertEqual(scores["learn/a"]["categories"], ["Computer Science"])
 
     def test_offline_missing_cache_leaves_a_good_record_alone(self):
         with TemporaryDirectory() as tmp:

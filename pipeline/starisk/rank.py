@@ -26,6 +26,12 @@ def average_ranks(values: list[float]) -> list[float]:
 
 
 def spearman(xs: list[float], ys: list[float]) -> float:
+    """Rank correlation, with 0.0 when either side has no variance.
+
+    A constant series has no ranks to correlate, so the coefficient is
+    undefined; returning 0.0 keeps a small or degenerate calibration set from
+    crashing the report.
+    """
     if len(xs) != len(ys) or not xs:
         raise ValueError("spearman needs two equal-length, non-empty arrays")
 
@@ -39,5 +45,8 @@ def spearman(xs: list[float], ys: list[float]) -> float:
     covariance = sum((a - mean_x) * (b - mean_y) for a, b in zip(rx, ry))
     variance_x = sum((a - mean_x) ** 2 for a in rx)
     variance_y = sum((b - mean_y) ** 2 for b in ry)
+
+    if variance_x == 0 or variance_y == 0:
+        return 0.0
 
     return covariance / (variance_x * variance_y) ** 0.5

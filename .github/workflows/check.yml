@@ -30,5 +30,8 @@ jobs:
       - name: Install
         working-directory: web
         run: npm ci
+      - name: Test
+        working-directory: web
+        run: npm test
       - name: Build the site
         run: ./build.sh

@@ -12,6 +12,7 @@ from starisk.adapter import (
     extract_reviews,
     extract_specialization_courses,
     extract_title,
+    is_empty_reviews_page,
 )
 
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
@@ -454,6 +455,18 @@ class ScriptTextTest(unittest.TestCase):
 
         self.assertIn("review body", reviews[0]["text"])
         self.assertNotIn("sidebar", reviews[0]["text"])
+
+
+class EmptyReviewsTest(unittest.TestCase):
+    def test_the_empty_state_is_recognised(self):
+        html = '<p data-testid="reviews-table-empty">No reviews found</p>'
+        self.assertTrue(is_empty_reviews_page(html))
+
+    def test_a_page_with_cards_is_not_empty(self):
+        self.assertFalse(is_empty_reviews_page(FIXTURE.read_text(encoding="utf-8")))
+
+    def test_unknown_markup_is_not_assumed_to_be_empty(self):
+        self.assertFalse(is_empty_reviews_page("<html><body>nothing</body></html>"))
 
 
 if __name__ == "__main__":

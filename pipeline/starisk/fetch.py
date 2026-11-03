@@ -68,9 +68,11 @@ def _request(
             last_error = error
             if error.code in FATAL_CODES:
                 raise RuntimeError(f"HTTP {error.code} for {url}") from error
+            if error.code in RATE_LIMIT_CODES:
+                # 403/429 is the host telling us to stop. Retrying it is what
+                # turns a warning into a block, so fail immediately (SPEC D21).
+                raise RateLimited(f"HTTP {error.code} for {url}") from error
             if attempt == retries:
-                if error.code in RATE_LIMIT_CODES:
-                    raise RateLimited(f"HTTP {error.code} for {url}") from error
                 break
             time.sleep(_wait_seconds(error, attempt, backoff))
         except (urllib.error.URLError, TimeoutError) as error:

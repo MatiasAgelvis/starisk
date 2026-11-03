@@ -36,6 +36,12 @@ class CorrelateTest(unittest.TestCase):
 
         self.assertAlmostEqual(rho, -1.0)
 
+    def test_constant_labels_do_not_crash(self):
+        courses = [course("A", "a", 5), course("B", "b", 5)]
+        rho, _ = correlate(courses, self.scores(a=1.0, b=4.0))
+
+        self.assertEqual(rho, 0.0)
+
     def test_unlabelled_and_unscored_are_skipped(self):
         courses = [course("A", "a", 5), course("B", "b"), course("C", "c", 2)]
         rho, pairs = correlate(courses, self.scores(a=4.0))
