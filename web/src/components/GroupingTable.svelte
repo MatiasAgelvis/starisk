@@ -23,7 +23,6 @@
   // plus its stars, which would spill into the next cell. The title takes the rest.
   const COLUMNS = [
     { key: 'title', label: 'Program', align: 'text-left', width: 'w-auto' },
-    { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-24' },
     { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[6rem] md:w-[9.5rem]' },
     { key: 'low', label: 'Min', align: 'text-right', width: 'w-[5rem]', hide: true },
     { key: 'high', label: 'Max', align: 'text-right', width: 'w-[5rem]', hide: true },
@@ -33,7 +32,6 @@
   function value(row, key) {
     if (key === 'title') return (row.title ?? row.key).toLowerCase();
     if (key === 'type') return typeLabel(row.type).toLowerCase();
-    if (key === 'courses') return row.scored;
     return row[key] ?? null;
   }
 
@@ -171,12 +169,24 @@
               <div class="truncate font-medium">
                 <a class="link link-hover" href={`/programs/${row.key}`}>{row.title}</a>
               </div>
-              <div class="truncate text-xs text-base-content/50">
-                {row.provider ?? 'Unknown provider'}{' · '}{typeLabel(row.type)}
+              <!-- Coverage is all-or-nothing for almost every program, so it is a
+                   tag rather than a column: only the exceptions need saying. -->
+              <div class="flex items-center gap-2 text-xs text-base-content/50">
+                <span class="min-w-0 truncate">
+                  {row.provider ?? 'Unknown provider'}{' · '}{typeLabel(row.type)}
+                </span>
+                {#if !row.complete}
+                  <span
+                    class="badge badge-sm shrink-0 whitespace-nowrap {row.scored
+                      ? 'badge-warning'
+                      : 'badge-ghost'}"
+                  >
+                    {row.scored ? `Incomplete ${row.scored}/${row.total}` : 'No scores'}
+                  </span>
+                {/if}
               </div>
             </div>
           </td>
-          <td class="text-right font-mono text-sm">{row.scored}/{row.total}</td>
           <td class="text-right">
             <div class="flex items-center justify-end gap-2">
               <span class="font-bold">{row.average == null ? '—' : row.average.toFixed(1)}</span>
