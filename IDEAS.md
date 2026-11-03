@@ -284,3 +284,16 @@ intact.
 5. **I5** — crawl, `/transcript`.
 6. **I4** — the scatter, once there are 40+ courses.
 7. **I6, I8, I9** — the cheap ones, whenever.
+
+
+---
+
+## Blog
+
+- Write short posts about groups of courses about the same subject,  
+  such as 'Best R courses in coursera', 'Top Python courses for data science', etc.
+- If I took some of the courses, compare my own experience with the official ratings — "What I learned vs. What the stars say"
+- Highlight the most contested courses (high spread, low score) and analyze why they get mixed reviews
+- Profile standout instructors based on the `/instructors` data — who consistently teaches high-quality courses?
+- Discuss the limitations of weighted reviews and how to interpret them when making course decisions
+- Feature the most popular courses (high score, high volume) and analyze what makes them stand out
