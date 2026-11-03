@@ -1,6 +1,7 @@
 <script>
   import { untrack } from 'svelte';
   import Stars from './Stars.svelte';
+  import logoTones from '../data/logo-tones.json';
   import { verdictOf, VERDICT } from '../lib/verdict.js';
   import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
 
@@ -252,11 +253,14 @@
         {@const inflation = inflationOf(row)}
         {@const style = VERDICT[verdictKey(row)]}
         {@const scored = typeof row.starisk === 'number'}
+        {@const darkChip = logoTones[row.image] === 'dark'}
         <tr>
           <td>
             <div class="flex items-center gap-3">
               <span
-                class="inline-flex h-8 w-14 shrink-0 items-center justify-center rounded bg-white p-1 ring-1 ring-base-300/60"
+                class="inline-flex h-8 w-14 shrink-0 items-center justify-center rounded p-1 ring-1 {darkChip
+                  ? 'bg-base-content ring-base-content/20'
+                  : 'bg-white ring-base-300/60'}"
               >
                 <img
                   src={row.image ?? '/coursera-logo.png'}
