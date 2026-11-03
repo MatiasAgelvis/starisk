@@ -39,9 +39,11 @@ class LabelCliTest(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "courses.json"
             path.write_text("[]", encoding="utf-8")
-            with mock.patch("builtins.input", side_effect=["4", "s", "q"]):
-                with redirect_stdout(io.StringIO()):
-                    result = label_cli(courses, path)
+            with (
+                mock.patch("builtins.input", side_effect=["4", "s", "q"]),
+                redirect_stdout(io.StringIO()),
+            ):
+                result = label_cli(courses, path)
             saved = json.loads(path.read_text(encoding="utf-8"))
 
         self.assertEqual(result, 0)
@@ -53,9 +55,11 @@ class LabelCliTest(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "courses.json"
             path.write_text("[]", encoding="utf-8")
-            with mock.patch("builtins.input") as prompt:
-                with redirect_stdout(io.StringIO()):
-                    result = label_cli([course("A", "a", 4)], path)
+            with (
+                mock.patch("builtins.input") as prompt,
+                redirect_stdout(io.StringIO()),
+            ):
+                result = label_cli([course("A", "a", 4)], path)
 
         self.assertEqual(result, 0)
         prompt.assert_not_called()
@@ -66,9 +70,11 @@ class LabelCliTest(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "courses.json"
             path.write_text("[]", encoding="utf-8")
-            with mock.patch("builtins.input", side_effect=["not a number", "q"]):
-                with redirect_stdout(io.StringIO()):
-                    label_cli(courses, path)
+            with (
+                mock.patch("builtins.input", side_effect=["not a number", "q"]),
+                redirect_stdout(io.StringIO()),
+            ):
+                label_cli(courses, path)
 
         self.assertIsNone(courses[0]["label"])
 

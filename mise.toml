@@ -9,6 +9,7 @@
 [tools]
 node = "24"
 python = "3.13"
+ruff = "latest"
 
 [tasks.setup]
 description = "Install the front-end dependencies"
@@ -18,6 +19,11 @@ run = "npm ci --prefix web"
 description = "Run the Python pipeline tests"
 dir = "pipeline"
 run = "python -m unittest discover -s tests"
+
+[tasks."pipeline:lint"]
+description = "Lint the Python pipeline"
+dir = "pipeline"
+run = "ruff check ."
 
 [tasks."pipeline:crawl"]
 description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
@@ -67,5 +73,5 @@ description = "Copy fresh scores from the pipeline, then build the site"
 run = "./build.sh"
 
 [tasks.check]
-description = "Run the pipeline tests and build the site"
-depends = ["pipeline:test", "site:build"]
+description = "Lint and test the pipeline, then build the site"
+depends = ["pipeline:lint", "pipeline:test", "site:build"]
