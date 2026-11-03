@@ -25,10 +25,8 @@ for the small, near-term stuff.
 - **OG image.** Shared links render a bare text card. Needs a raster (satori/resvg at
   build, or one hand-made PNG) — the pipeline can draw SVG, but social platforms
   don't accept SVG.
-- Decide whether to keep hotlinking Coursera's CDN or download the provider logos.
-- **Model choice:** `SIMPLE` vs a size-aware shrinkage model — decide by calibration.
-- **Tame the amplification:** try `sqrt(likes)` or a like cap so one review can't own a score.
-- Search / filter / sort controls for the leaderboard.
+- **Size-aware shrinkage** — the model choice itself is settled (`CALIBRATED`); whether
+  to shrink small samples is still open, and should be decided by calibration.
 - **Teacher photos** are remote and lazy, like course thumbnails (SPEC D24). If
   hotlinking becomes a privacy or breakage problem, localize them the way provider
   logos are: one file per person, downloaded during the crawl.
@@ -44,8 +42,8 @@ for the small, near-term stuff.
   (landing pages expose `data-e2e="sdp-course-list-link"`). The **expansion** side is done
   (D25); aggregate *scoring* of the umbrella is still open.
 - Grow the crawl list along the two existing edges (`mise run pipeline:expand`), not by
-  sampling the sitemap. 108 sources as of the instructor/specialization pass.
-- **Teacher pages are only as good as the corpus.** 17 of 30 teachers have exactly one
+  sampling the sitemap. 454 sources as of the latest pass.
+- **Teacher pages are only as good as the corpus.** 49 of 151 teachers have exactly one
   course; the surface gets interesting at 3+ per person, which is a crawl problem, not a
   code one.
 

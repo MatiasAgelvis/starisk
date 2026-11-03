@@ -59,10 +59,9 @@ def review_weight(review: dict, options: dict | None = None) -> float:
     """Weight of a single review: how much its star count should count."""
     opts = options or DEFAULTS
     peers = (opts["base_review_value"] + review["likes"]) ** opts["peer_power"]
-    if opts["timedecay"] == 0:
-        time = 1.0
-    else:
-        time = review["age_days"] ** opts["timedecay"]
+    time = (
+        1.0 if opts["timedecay"] == 0 else review["age_days"] ** opts["timedecay"]
+    )
     return peers * time
 
 

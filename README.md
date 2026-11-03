@@ -61,9 +61,10 @@ Everything the site shows comes from that file.
 ```sh
 mise trust && mise install    # node 24, python 3.13
 mise run setup                # install web dependencies
+mise run pipeline:lint        # ruff
 mise run pipeline:test        # python unit tests (stdlib only)
 mise run web:dev              # astro dev server
-mise run check                # tests + a full site build
+mise run check                # lint + tests + a full site build
 ```
 
 Without mise, it's still plain: `python -m unittest discover -s pipeline/tests`

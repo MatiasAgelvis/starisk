@@ -7,8 +7,10 @@ The scores come from `scores.json` once the crawler has run.
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
 from .crawl import SCORES_PATH, write_atomic
@@ -182,22 +184,42 @@ def label_cli(courses: list[dict], path: Path) -> int:
     return 0
 
 
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        prog="python -m starisk.calibration",
+        description="Compare my labels with the model (Spearman).",
+    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--label",
+        action="store_true",
+        help="rate mapped courses, one at a time",
+    )
+    group.add_argument(
+        "--parse",
+        metavar="CERTIFICATES.md",
+        help="rebuild calibration/courses.json from a Certificates.md",
+    )
+    return parser.parse_args(argv)
+
+
 def main(argv: list[str]) -> int:
     """
     python -m starisk.calibration                      # report
     python -m starisk.calibration --label              # ask, one course at a time
     python -m starisk.calibration --parse <Certificate.md>   # rebuild the file
     """
+    options = parse_args(argv)
     courses = json.loads(CALIBRATION_PATH.read_text(encoding="utf-8"))
 
-    if "--parse" in argv:
-        source = Path(argv[argv.index("--parse") + 1])
+    if options.parse:
+        source = Path(options.parse)
         entries = parse_certificates(source.read_text(encoding="utf-8"))
         write_atomic(CALIBRATION_PATH, entries)
         print(f"wrote {len(entries)} entries to {CALIBRATION_PATH}")
         return 0
 
-    if "--label" in argv:
+    if options.label:
         return label_cli(courses, CALIBRATION_PATH)
 
     scores = json.loads(SCORES_PATH.read_text(encoding="utf-8")) if SCORES_PATH.exists() else {}
@@ -225,6 +247,4 @@ def main(argv: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    import sys
-
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main(sys.argv[1:]))

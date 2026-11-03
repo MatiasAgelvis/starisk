@@ -16,6 +16,7 @@ to confirm Coursera still serves the reviews page.
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -75,34 +76,45 @@ def reachable(key: str, fetch=fetch_page) -> bool:
         return False
 
 
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        prog="python -m starisk.add",
+        description="Add Coursera courses to data/sources.json.",
+    )
+    parser.add_argument(
+        "sources",
+        nargs="*",
+        metavar="URL_OR_SLUG",
+        help="course URLs or slugs",
+    )
+    parser.add_argument(
+        "--from",
+        dest="source_file",
+        metavar="FILE|-",
+        help="read one source per line from a file or stdin",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="ask Coursera whether each added course still resolves",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="show what would change without writing",
+    )
+    return parser.parse_args(argv)
+
+
 def main(argv: list[str]) -> int:
-    flags = set()
-    positional = []
-    source_file = None
+    options = parse_args(argv)
 
-    index = 0
-    while index < len(argv):
-        arg = argv[index]
-        if arg == "--from":
-            source_file = argv[index + 1] if index + 1 < len(argv) else "-"
-            index += 2
-            continue
-        if arg.startswith("--"):
-            flags.add(arg)
-            index += 1
-            continue
-        positional.append(arg)
-        index += 1
-
-    dry_run = "--dry-run" in flags
-    check = "--check" in flags
-
-    raw = list(positional)
-    if source_file:
+    raw = list(options.sources)
+    if options.source_file:
         text = (
             sys.stdin.read()
-            if source_file == "-"
-            else Path(source_file).read_text(encoding="utf-8")
+            if options.source_file == "-"
+            else Path(options.source_file).read_text(encoding="utf-8")
         )
         raw.extend(sources_from_text(text))
 
@@ -117,7 +129,7 @@ def main(argv: list[str]) -> int:
     added, duplicates, invalid, merged = merge(raw, existing)
 
     missing = []
-    if check:
+    if options.check:
         kept = []
         for key in added:
             if reachable(key):
@@ -137,7 +149,7 @@ def main(argv: list[str]) -> int:
     for value in invalid:
         print(f"  skip   {value!r}  (not a Coursera course URL)")
 
-    if dry_run:
+    if options.dry_run:
         print(f"\ndry run: {len(added)} would be added, {len(merged)} sources total.")
         return 0
 

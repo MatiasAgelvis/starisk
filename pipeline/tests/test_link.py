@@ -1,6 +1,18 @@
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
-from starisk.link import candidates, clean_title, confirm, page_title, resolve, score, slug_tokens, tokens
+from starisk.link import (
+    candidates,
+    clean_title,
+    confirm,
+    load_slugs,
+    page_title,
+    resolve,
+    score,
+    slug_tokens,
+    tokens,
+)
 
 SLUGS = [
     "convolutional-neural-networks-tensorflow",
@@ -120,6 +132,47 @@ class ConfirmTest(unittest.TestCase):
 
         confirm("sequence-models", "Sequence Models", fetch=capture)
         self.assertEqual(seen, ["https://www.coursera.org/learn/sequence-models/reviews"])
+
+
+class LoadSlugsTest(unittest.TestCase):
+    def test_parses_courses_and_drops_language_variants(self):
+        xml = (
+            "<url><loc>https://www.coursera.org/learn/machine-learning</loc></url>"
+            "<url><loc>https://www.coursera.org/learn/machine-learning-fr</loc></url>"
+            "<url><loc>https://www.coursera.org/specializations/deep-learning</loc></url>"
+        )
+
+        with TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "coursera-slugs.txt"
+            slugs = load_slugs(fetch=lambda url: xml, cache_path=cache)
+
+        self.assertEqual(slugs, ["machine-learning"])
+
+    def test_reads_the_cache_without_fetching(self):
+        with TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "coursera-slugs.txt"
+            cache.write_text("alpha\nbeta\n", encoding="utf-8")
+
+            def failing(url):
+                raise AssertionError("should not fetch")
+
+            slugs = load_slugs(fetch=failing, cache_path=cache)
+
+        self.assertEqual(slugs, ["alpha", "beta"])
+
+    def test_refresh_downloads_again(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return "<url><loc>https://www.coursera.org/learn/machine-learning</loc></url>"
+
+        with TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "coursera-slugs.txt"
+            load_slugs(fetch=fetch, cache_path=cache)
+            load_slugs(fetch=fetch, cache_path=cache, refresh=True)
+
+        self.assertEqual(len(calls), 2)
 
 
 class ResolveTest(unittest.TestCase):

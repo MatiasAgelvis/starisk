@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import re
 import unicodedata
+from contextlib import suppress
 from datetime import datetime, timezone
 from html import unescape
 
@@ -350,10 +351,8 @@ def extract_population(html: str) -> dict:
 
     average_match = _AVERAGE.search(html)
     if average_match:
-        try:
+        with suppress(ValueError):
             result["average"] = float(average_match.group(1))
-        except ValueError:
-            pass
 
     return result
 
@@ -381,10 +380,8 @@ def extract_aggregate(html: str) -> dict:
         result["reviews_total"] = _as_int(aggregate.get("reviewCount"))
         value = aggregate.get("ratingValue")
         if value is not None:
-            try:
+            with suppress(TypeError, ValueError):
                 result["rating"] = float(value)
-            except (TypeError, ValueError):
-                pass
         break
 
     if result["rating"] is None:

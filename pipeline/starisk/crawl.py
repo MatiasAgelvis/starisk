@@ -25,6 +25,7 @@ Design notes:
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -415,7 +416,7 @@ def resolve_instructors(scores: dict) -> dict:
     return scores
 
 
-def write_atomic(path: Path, data: dict) -> None:
+def write_atomic(path: Path, data: dict | list) -> None:
     """Write JSON in one atomic replace, so a crash cannot truncate the file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
@@ -430,36 +431,48 @@ def write_atomic(path: Path, data: dict) -> None:
 
 
 def parse_args(argv: list[str]) -> dict:
-    options = {
-        "delay": DEFAULT_DELAY,
-        "max_age": float(DEFAULT_MAX_AGE_DAYS),
-        "limit": None,
-        "offline": False,
-        "sources": None,
+    parser = argparse.ArgumentParser(
+        prog="python -m starisk.crawl",
+        description="Fetch, score and merge Coursera course reviews.",
+    )
+    parser.add_argument(
+        "sources",
+        nargs="*",
+        help="course slugs or URLs (default: data/sources.json)",
+    )
+    parser.add_argument(
+        "--delay",
+        type=float,
+        default=DEFAULT_DELAY,
+        help="seconds to wait between requests",
+    )
+    parser.add_argument(
+        "--max-age",
+        type=float,
+        default=float(DEFAULT_MAX_AGE_DAYS),
+        dest="max_age",
+        help="skip records younger than this many days",
+    )
+    parser.add_argument("--limit", type=int, help="fetch at most this many courses")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="ignore freshness and refetch everything",
+    )
+    parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="re-score cached pages without making requests",
+    )
+    options = parser.parse_args(argv)
+
+    return {
+        "delay": options.delay,
+        "max_age": 0.0 if options.force else options.max_age,
+        "limit": options.limit,
+        "offline": options.offline,
+        "sources": options.sources or None,
     }
-    index = 0
-    while index < len(argv):
-        arg = argv[index]
-        if arg == "--delay":
-            options["delay"] = float(argv[index + 1])
-            index += 2
-        elif arg == "--max-age":
-            options["max_age"] = float(argv[index + 1])
-            index += 2
-        elif arg == "--limit":
-            options["limit"] = int(argv[index + 1])
-            index += 2
-        elif arg == "--force":
-            options["max_age"] = 0.0
-            index += 1
-        elif arg == "--offline":
-            options["offline"] = True
-            index += 1
-        else:
-            options["sources"] = options["sources"] or []
-            options["sources"].append(arg)
-            index += 1
-    return options
 
 
 def progress_line(done: int, total: int, key: str, elapsed: float, width: int = 22) -> str:
