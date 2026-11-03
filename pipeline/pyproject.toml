@@ -5,5 +5,5 @@ description = "Fetch, parse and score Coursera course reviews."
 requires-python = ">=3.10"
 dependencies = []
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+# Tests use the standard library:
+#   python -m unittest discover -s tests
