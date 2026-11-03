@@ -40,7 +40,7 @@ for the small, near-term stuff.
 ## Coverage
 - Professional Certificates / specializations: score their constituent courses and aggregate
   (landing pages expose `data-e2e="sdp-course-list-link"`). The **expansion** side is done
-  (D25); aggregate *scoring* of the umbrella is still open.
+  (D25); aggregate *scoring* of the program is still open.
 - Grow the crawl list along the two existing edges (`mise run pipeline:expand`), not by
   sampling the sitemap. 454 sources as of the latest pass.
 - **Teacher pages are only as good as the corpus.** 49 of 151 teachers have exactly one

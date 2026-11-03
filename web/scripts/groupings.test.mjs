@@ -40,7 +40,7 @@ test('weights the average by reviews read', () => {
   assert.equal(program.total, 3);
   assert.equal(program.complete, false);
   assert.equal(program.reviews, 40);
-  assert.equal(program.umbrella, 3.5);
+  assert.equal(program.programRating, 3.5);
 });
 
 test('falls back to the plain mean when no course has reviews', () => {
@@ -51,7 +51,7 @@ test('falls back to the plain mean when no course has reviews', () => {
   assert.equal(program.average, 5.0);
   assert.equal(program.scored, 1);
   assert.equal(program.complete, true);
-  assert.equal(program.umbrella, null);
+  assert.equal(program.programRating, null);
 });
 
 test('keeps unscored and missing courses in the list', () => {

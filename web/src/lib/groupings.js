@@ -61,7 +61,7 @@ export function buildGroupings(groupings, scores) {
       average,
       low: scored.length ? Math.min(...scored.map((course) => course.starisk)) : null,
       high: scored.length ? Math.max(...scored.map((course) => course.starisk)) : null,
-      umbrella: typeof scores[key]?.starisk === 'number' ? scores[key].starisk : null,
+      programRating: typeof scores[key]?.starisk === 'number' ? scores[key].starisk : null,
     });
   }
 
