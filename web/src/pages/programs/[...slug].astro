@@ -1,10 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BackLink from '../../components/BackLink.astro';
-import Logo from '../../components/Logo.astro';
+import ScoreTable from '../../components/ScoreTable.svelte';
 import Stars from '../../components/Stars.astro';
 import { buildGroupings, typeLabel } from '../../lib/groupings.js';
-import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import scores from '../../data/scores.json';
 import groupings from '../../data/groupings.json';
 
@@ -86,49 +85,14 @@ const description =
       <h2 class="font-display text-xl font-bold">
         The {program.total === 1 ? 'course' : 'courses'}
       </h2>
-      <ul class="mt-4 divide-y divide-base-300/60">
-        {
-          program.courses.map((course) => {
-            const hasScore = typeof course.starisk === 'number';
-            const verdict = VERDICT[verdictOf(course.coursera, course.starisk)];
-            return (
-              <li class="flex items-start gap-4 py-4">
-                <Logo src={course.image} class="mt-0.5 h-10 w-16" />
-                <div class="min-w-0 flex-1">
-                  {hasScore ? (
-                    <a class="link link-hover font-medium" href={`/${course.key}`}>
-                      {course.title ?? course.key}
-                    </a>
-                  ) : (
-                    <span class="font-medium">{course.title ?? course.key}</span>
-                  )}
-                  <div class="text-xs text-base-content/50">
-                    {course.provider ?? 'Unknown provider'}
-                  </div>
-                  {!hasScore && (
-                    <div class="mt-1 text-xs text-base-content/60">
-                      No written reviews yet — not included in the average.
-                    </div>
-                  )}
-                </div>
-                {hasScore ? (
-                  <div class="shrink-0 whitespace-nowrap text-right">
-                    <div class="font-bold">{course.starisk.toFixed(1)}</div>
-                    <div class="text-xs text-base-content/50">
-                      Coursera {course.coursera == null ? '—' : course.coursera.toFixed(1)}
-                    </div>
-                    <span class={`badge badge-sm mt-1 whitespace-nowrap ${verdict.badge}`}>
-                      {verdict.label}
-                    </span>
-                  </div>
-                ) : (
-                  <span class="badge badge-ghost badge-sm">No score</span>
-                )}
-              </li>
-            );
-          })
-        }
-      </ul>
+      <div class="mt-4">
+        <ScoreTable
+          rows={program.courses}
+          showFilters={false}
+          compact={true}
+          defaultSortKey="starisk"
+        />
+      </div>
     </section>
 
     <section class="mt-10 space-y-3 text-sm text-base-content/60">

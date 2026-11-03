@@ -18,13 +18,16 @@
     { id: 'professional-certificate', label: 'Professional Certificates' },
   ];
 
+  // The numeric columns are sized to their content rather than as percentages:
+  // the page is max-w-4xl, and a percentage of it is narrower than the score
+  // plus its stars, which would spill into the next cell. The title takes the rest.
   const COLUMNS = [
-    { key: 'title', label: 'Program', align: 'text-left', width: 'w-[54%] sm:w-[42%]' },
-    { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-[16%] sm:w-[14%]' },
-    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[30%] sm:w-[14%]' },
-    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[8%]', hide: true },
-    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[8%]', hide: true },
-    { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[14%]', hide: true },
+    { key: 'title', label: 'Program', align: 'text-left', width: 'w-auto' },
+    { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-24' },
+    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[6rem] md:w-[9.5rem]' },
+    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[5rem]', hide: true },
+    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[5rem]', hide: true },
+    { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[8rem]', hide: true },
   ];
 
   function value(row, key) {

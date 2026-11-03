@@ -14,13 +14,16 @@
   // Default order is "most courses first" — a directory, not a podium. The
   // average is sortable because a visitor will want it, and pretending otherwise
   // would just be a table that fights its reader.
+  // The numeric columns are sized to their content rather than as percentages:
+  // the page is max-w-4xl, and a percentage of it is narrower than the score
+  // plus its stars, which would spill into the next cell. The name takes the rest.
   const COLUMNS = [
-    { key: 'name', label: 'Teacher', align: 'text-left', width: 'w-[60%] sm:w-[42%]' },
-    { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-[14%] sm:w-[12%]' },
-    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[26%] sm:w-[16%]' },
-    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[8%]', hide: true },
-    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[8%]', hide: true },
-    { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[14%]', hide: true },
+    { key: 'name', label: 'Teacher', align: 'text-left', width: 'w-auto' },
+    { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-24' },
+    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[6rem] md:w-[9.5rem]' },
+    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[5rem]', hide: true },
+    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[5rem]', hide: true },
+    { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[8rem]', hide: true },
   ];
 
   function value(row, key) {
