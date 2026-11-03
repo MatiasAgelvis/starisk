@@ -27,6 +27,7 @@ from pathlib import Path
 from .adapter import LANGUAGE_SUFFIX as _LANGUAGE_SUFFIX
 from .crawl import SCORES_PATH, SOURCES_PATH, normalize_source, write_atomic
 from .fetch import fetch_page
+from .sitemap import load_slugs as load_cached_slugs
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CALIBRATION_PATH = REPO_ROOT / "calibration" / "courses.json"
@@ -196,21 +197,22 @@ def resolve(
     return results
 
 
-def load_slugs(refresh: bool = False, fetch=fetch_page) -> list[str]:
-    """Read the cached sitemap, downloading it when missing or `refresh`."""
-    if not CACHE_PATH.exists() or refresh:
+def load_slugs(
+    refresh: bool = False,
+    fetch=fetch_page,
+    cache_path: Path = CACHE_PATH,
+) -> list[str]:
+    """Read the cached course sitemap, downloading it when missing or `refresh`."""
+    if refresh or not cache_path.exists():
         print(f"downloading {SITEMAP_URL} ...")
-        xml = fetch(SITEMAP_URL)
-        found = []
-        for loc in re.findall(r"<loc>([^<]+)</loc>", xml):
-            if "/learn/" in loc:
-                slug = loc.rsplit("/learn/", 1)[1].strip("/")
-                if slug and not _LANGUAGE_SUFFIX.search(slug):
-                    found.append(slug)
-        CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        CACHE_PATH.write_text("\n".join(sorted(set(found))) + "\n", encoding="utf-8")
-
-    return [line.strip() for line in CACHE_PATH.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return load_cached_slugs(
+        SITEMAP_URL,
+        "/learn/",
+        cache_path,
+        fetch=fetch,
+        refresh=refresh,
+        reject=_LANGUAGE_SUFFIX,
+    )
 
 
 def write_back(entries: list[dict], results: list[dict], include_review: bool = False) -> int:
