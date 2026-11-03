@@ -1,6 +1,7 @@
 <script>
   import Stars from './Stars.svelte';
   import { verdictOf, VERDICT } from '../lib/verdict.js';
+  import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
 
   let { rows = [], pageSize = 25 } = $props();
 
@@ -46,22 +47,13 @@
   }
 
   function compare(a, b) {
-    const av = value(a, sortKey);
-    const bv = value(b, sortKey);
-    if (av == null && bv == null) return 0;
-    if (av == null) return 1; // unknown always last
-    if (bv == null) return -1;
-    const result = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
-    return sortDir === 'asc' ? result : -result;
+    return compareValues(value(a, sortKey), value(b, sortKey), sortDir);
   }
 
   function sortBy(key) {
-    if (sortKey === key) {
-      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-      sortKey = key;
-      sortDir = key === 'title' ? 'asc' : 'desc';
-    }
+    const next = toggleSort(key, sortKey, sortDir, 'title');
+    sortKey = next.key;
+    sortDir = next.direction;
     page = 1;
   }
 
@@ -94,8 +86,7 @@
   }
 
   function ariaSort(key) {
-    if (sortKey !== key) return 'none';
-    return sortDir === 'asc' ? 'ascending' : 'descending';
+    return ariaSortFor(key, sortKey, sortDir);
   }
 
   const lowCount = $derived(rows.filter((row) => row.low).length);
@@ -126,14 +117,13 @@
   });
 
   const ordered = $derived.by(() => [...filtered].sort(compare));
-  const pageCount = $derived(Math.max(1, Math.ceil(ordered.length / pageSize)));
+  const paging = $derived(paginate(ordered, page, pageSize));
+  const pageCount = $derived(paging.pageCount);
   // Clamp instead of trusting `page`: a filter can shrink the list under it.
-  const current = $derived(Math.min(page, pageCount));
-  const visible = $derived(
-    ordered.slice((current - 1) * pageSize, current * pageSize),
-  );
-  const first = $derived(ordered.length === 0 ? 0 : (current - 1) * pageSize + 1);
-  const last = $derived(Math.min(current * pageSize, ordered.length));
+  const current = $derived(paging.current);
+  const visible = $derived(paging.visible);
+  const first = $derived(paging.first);
+  const last = $derived(paging.last);
   const narrowed = $derived(ordered.length !== rows.length);
 </script>
 

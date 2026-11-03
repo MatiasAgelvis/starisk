@@ -1,6 +1,7 @@
 <script>
   import Stars from './Stars.svelte';
   import { initials } from '../lib/instructors.js';
+  import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
 
   let { rows = [], pageSize = 25 } = $props();
 
@@ -27,22 +28,13 @@
   }
 
   function compare(a, b) {
-    const av = value(a, sortKey);
-    const bv = value(b, sortKey);
-    if (av == null && bv == null) return 0;
-    if (av == null) return 1;
-    if (bv == null) return -1;
-    const result = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
-    return sortDir === 'asc' ? result : -result;
+    return compareValues(value(a, sortKey), value(b, sortKey), sortDir);
   }
 
   function sortBy(key) {
-    if (sortKey === key) {
-      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-      sortKey = key;
-      sortDir = key === 'name' ? 'asc' : 'desc';
-    }
+    const next = toggleSort(key, sortKey, sortDir, 'name');
+    sortKey = next.key;
+    sortDir = next.direction;
     page = 1;
   }
 
@@ -59,8 +51,7 @@
   const multiCount = $derived(rows.filter((row) => row.courses >= 2).length);
 
   function ariaSort(key) {
-    if (sortKey !== key) return 'none';
-    return sortDir === 'asc' ? 'ascending' : 'descending';
+    return ariaSortFor(key, sortKey, sortDir);
   }
 
   const visible = $derived.by(() => {
@@ -75,11 +66,12 @@
     return [...filtered].sort(compare);
   });
 
-  const pageCount = $derived(Math.max(1, Math.ceil(visible.length / pageSize)));
-  const current = $derived(Math.min(page, pageCount));
-  const shown = $derived(visible.slice((current - 1) * pageSize, current * pageSize));
-  const first = $derived(visible.length === 0 ? 0 : (current - 1) * pageSize + 1);
-  const last = $derived(Math.min(current * pageSize, visible.length));
+  const paging = $derived(paginate(visible, page, pageSize));
+  const pageCount = $derived(paging.pageCount);
+  const current = $derived(paging.current);
+  const shown = $derived(paging.visible);
+  const first = $derived(paging.first);
+  const last = $derived(paging.last);
 </script>
 
 <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
