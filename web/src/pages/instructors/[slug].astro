@@ -68,20 +68,6 @@ const description = single
           {single ? 'one course scored' : `across ${person.courses.length} scored courses`}
         </div>
       </div>
-      <div class="stat">
-        <div class="stat-title">Range</div>
-        <div class="stat-value text-2xl">
-          {single ? person.low.toFixed(1) : `${person.low.toFixed(1)}–${person.high.toFixed(1)}`}
-        </div>
-        <div class="stat-desc">
-          {single ? 'no spread yet' : 'worst course to best course'}
-        </div>
-      </div>
-      <div class="stat">
-        <div class="stat-title">Reviews read</div>
-        <div class="stat-value text-2xl">{person.reviews}</div>
-        <div class="stat-desc">across those courses</div>
-      </div>
     </div>
 
     {
