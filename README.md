@@ -28,7 +28,8 @@ and puts the result next to Coursera's number.
 - **A teacher directory.** Who teaches what, and whether the catalogue holds up —
   the same measurement re-cut by instructor, with the range across their courses.
 - **A program directory.** Specializations and Professional Certificates, with the
-  courses they contain and the average score of those courses.
+  courses they contain and the average score of those courses. Complete sets are
+  shown by default.
 - **Not** a browser extension, not a product with accounts, not a claim about
   objective quality.
 
@@ -67,6 +68,7 @@ mise run setup                # install web dependencies
 mise run pipeline:lint        # ruff
 mise run pipeline:test        # python unit tests (stdlib only)
 mise run pipeline:groupings   # rebuild the program index
+mise run pipeline:seed-programs  # fetch seeded program pages, then rebuild
 mise run web:dev              # astro dev server
 mise run check                # lint + tests + a full site build
 ```
@@ -111,6 +113,13 @@ mise run pipeline:expand -- --instructors --limit 10
 Both cost one cached request per parent page. Language variants (`-fr`, `-de`, …)
 are dropped; a separately-created translation with its own slug is not (only one
 so far — the landing page carries `inLanguage` if it ever matters).
+
+Professional Certificates are not in the calibration file, so they are seeded
+explicitly in `pipeline/data/programs.json`:
+
+```sh
+mise run pipeline:seed-programs   # fetch missing seeds, then rebuild groupings.json
+```
 
 To add specific courses by hand:
 
@@ -182,7 +191,7 @@ deploy that ships only `web/`), the committed copy is kept.
 pipeline/      Python — crawler, scoring engine, calibration
   starisk/     engine, adapter, fetch, crawl, rank, calibration, groupings
   data/        sources.json (what to crawl), scores.json (the seam),
-               groupings.json (derived program index)
+               groupings.json (derived program index), programs.json (program seeds)
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
   public/logos/  provider logos, downloaded once by the pipeline
