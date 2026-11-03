@@ -3,11 +3,34 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from starisk.expand import bare_title, indexed_instructors, load_slugs, plan, resolve_specialization
+from starisk.expand import (
+    bare_title,
+    indexed_instructors,
+    load_slugs,
+    parse_args,
+    plan,
+    resolve_specialization,
+)
 
 
 def og(title: str) -> str:
     return f'<meta data-rh="true" property="og:title" content="{title}"/>'
+
+
+class ParseArgsTest(unittest.TestCase):
+    def test_defaults_to_both_levers(self):
+        options = parse_args([])
+
+        self.assertFalse(options.specializations)
+        self.assertFalse(options.instructors)
+        self.assertFalse(options.write)
+
+    def test_flags(self):
+        options = parse_args(["--instructors", "--limit", "5", "--write"])
+
+        self.assertTrue(options.instructors)
+        self.assertEqual(options.limit, 5)
+        self.assertTrue(options.write)
 
 
 class BareTitleTest(unittest.TestCase):

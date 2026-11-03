@@ -1,6 +1,25 @@
+import io
 import unittest
+from contextlib import redirect_stderr
 
-from starisk.add import classify, merge, sources_from_text
+from starisk.add import classify, merge, parse_args, sources_from_text
+
+
+class ParseArgsTest(unittest.TestCase):
+    def test_positional_and_flags(self):
+        options = parse_args(["learn/a", "--from", "links.txt", "--check", "--dry-run"])
+
+        self.assertEqual(options.sources, ["learn/a"])
+        self.assertEqual(options.source_file, "links.txt")
+        self.assertTrue(options.check)
+        self.assertTrue(options.dry_run)
+
+    def test_from_stdin(self):
+        self.assertEqual(parse_args(["--from", "-"]).source_file, "-")
+
+    def test_unknown_flags_are_rejected(self):
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--nope"])
 
 
 class ClassifyTest(unittest.TestCase):

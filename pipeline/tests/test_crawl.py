@@ -1,4 +1,6 @@
+import io
 import unittest
+from contextlib import redirect_stderr
 from datetime import datetime, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -300,6 +302,14 @@ class ArgsTest(unittest.TestCase):
 
     def test_force_means_everything_is_stale(self):
         self.assertEqual(parse_args(["--force"])["max_age"], 0.0)
+
+    def test_unknown_flags_are_rejected(self):
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--nope"])
+
+    def test_missing_values_are_rejected(self):
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--limit"])
 
 
     def test_landing_page_adds_instructors_and_categories(self):

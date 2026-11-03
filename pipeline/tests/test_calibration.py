@@ -1,10 +1,30 @@
+import io
 import unittest
+from contextlib import redirect_stderr
 
-from starisk.calibration import correlate, disagreements, report, score_key
+from starisk.calibration import (
+    correlate,
+    disagreements,
+    parse_args,
+    report,
+    score_key,
+)
 
 
 def course(title, slug, label=None):
     return {"title": title, "slug": slug, "label": label}
+
+
+class ParseArgsTest(unittest.TestCase):
+    def test_default_is_the_report(self):
+        options = parse_args([])
+
+        self.assertFalse(options.label)
+        self.assertIsNone(options.parse)
+
+    def test_label_and_parse_are_exclusive(self):
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--label", "--parse", "certificates.md"])
 
 
 class ScoreKeyTest(unittest.TestCase):
