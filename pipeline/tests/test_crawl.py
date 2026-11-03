@@ -261,6 +261,22 @@ class IncrementalCrawlTest(unittest.TestCase):
         self.assertNotIn("learn/c", scores)
         self.assertFalse(any("learn/c" in url for url in calls))
 
+    def test_a_landing_rate_limit_keeps_the_scored_reviews_page(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            if url.endswith("/reviews"):
+                return self.html
+            raise RateLimited("HTTP 429")
+
+        scores = crawl(["learn/a", "learn/b"], fetch=fetch, now=STAMP)
+
+        self.assertIn("starisk", scores["learn/a"])
+        self.assertTrue(scores["learn/a"]["landing_error"].startswith("rate limited"))
+        self.assertNotIn("learn/b", scores)
+        self.assertFalse(any("learn/b" in url for url in calls))
+
     def test_empty_records_age_out_of_the_queue(self):
         calls = []
 

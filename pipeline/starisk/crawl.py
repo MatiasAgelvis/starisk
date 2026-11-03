@@ -304,6 +304,8 @@ def crawl(
 
         url = reviews_url(key)
 
+        landing = None
+        rate_limited = None
         if offline:
             html = load_page(key, cache_dir)
             landing = load_page(f"{key}.landing", cache_dir)
@@ -333,12 +335,13 @@ def crawl(
             try:
                 landing = landing_html(key, fetch, cache_dir)
             except RateLimited as error:
-                record = scores.get(key) or {}
-                record["error"] = f"rate limited: {error}"
-                scores[key] = record
-                break
+                # The reviews page is already cached and scoreable. Keep it, stop
+                # the run, and let the next pass pick up the landing page.
+                rate_limited = error
 
         result = score_page(html)
+        if rate_limited and result is not None:
+            result["landing_error"] = f"rate limited: {rate_limited}"
         previous = scores.get(key) or {}
         if result is None:
             # Never overwrite a good record with a failed parse.
@@ -385,6 +388,8 @@ def crawl(
             stamped = previous.get("scrapedAt", stamp) if offline else stamp
             scores[key] = {**result, "slug": key, "scrapedAt": stamped}
 
+        if rate_limited:
+            break
         if delay:
             sleep(delay)
 
