@@ -1,9 +1,16 @@
+import json
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from starisk.cache import store_page
-from starisk.groupings import build_groupings, extract_grouping, grouping_key
+from starisk.cache import load_page, store_page
+from starisk.groupings import (
+    build_groupings,
+    extract_grouping,
+    fetch_missing,
+    grouping_key,
+    load_seed_keys,
+)
 
 PAGE = (
     '<meta property="og:title" content="Algorithms">'
@@ -93,6 +100,65 @@ class BuildGroupingsTest(unittest.TestCase):
 
         self.assertIn("specializations/algorithms", groupings)
         self.assertEqual(len(groupings["specializations/algorithms"]["courses"]), 2)
+
+
+class SeedTest(unittest.TestCase):
+    def test_load_seed_keys_filters_and_dedupes(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "programs.json"
+            path.write_text(
+                json.dumps(
+                    [
+                        "professional-certificates/ibm-data-science",
+                        "learn/not-a-program",
+                        "specializations/algorithms",
+                        "specializations/algorithms",
+                        "bad",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            keys = load_seed_keys(path)
+
+        self.assertEqual(
+            keys,
+            ["professional-certificates/ibm-data-science", "specializations/algorithms"],
+        )
+
+    def test_a_missing_seed_is_fetched_once(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return PAGE
+
+        def failing(url):
+            raise AssertionError("should not fetch a cached page")
+
+        key = "professional-certificates/ibm-data-science"
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            first = fetch_missing([key], fetch=fetch, cache_dir=directory)
+            second = fetch_missing([key], fetch=failing, cache_dir=directory)
+
+            self.assertEqual(first, 1)
+            self.assertEqual(second, 0)
+            self.assertEqual(load_page(key, directory), PAGE)
+
+        self.assertEqual(calls, [f"https://www.coursera.org/{key}"])
+
+    def test_a_landing_copy_counts_as_cached(self):
+        key = "professional-certificates/ibm-data-science"
+
+        def failing(url):
+            raise AssertionError("should not fetch a cached page")
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page(f"{key}.landing", PAGE, directory)
+
+            self.assertEqual(fetch_missing([key], fetch=failing, cache_dir=directory), 0)
 
 
 if __name__ == "__main__":

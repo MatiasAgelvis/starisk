@@ -13,12 +13,18 @@ specializations) or added explicitly (for Professional Certificates).
 from __future__ import annotations
 
 import argparse
+import json
 import sys
+import time
 from pathlib import Path
 
 from .adapter import extract_details, extract_specialization_courses, extract_title
-from .cache import CACHE_DIR, load_page
+from .cache import CACHE_DIR, load_page, store_page
 from .crawl import DATA_DIR, write_atomic
+from .fetch import RateLimited, fetch_page
+
+GROUPINGS_PATH = DATA_DIR / "groupings.json"
+PROGRAMS_PATH = DATA_DIR / "programs.json"
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
 
@@ -104,17 +110,67 @@ def build_groupings(directory: Path = CACHE_DIR) -> dict[str, dict]:
     return groupings
 
 
+def load_seed_keys(path: Path = PROGRAMS_PATH) -> list[str]:
+    """Program keys to fetch when their pages are not cached yet."""
+    if not path.exists():
+        return []
+
+    data = json.loads(path.read_text(encoding="utf-8"))
+    keys = []
+    for value in data:
+        key = str(value).strip()
+        kind = key.split("/", 1)[0] if "/" in key else ""
+        if kind in GROUPING_TYPES and key.count("/") == 1:
+            keys.append(key)
+    return list(dict.fromkeys(keys))
+
+
+def fetch_missing(
+    keys: list[str],
+    fetch=fetch_page,
+    cache_dir: Path = CACHE_DIR,
+    delay: float = 0.0,
+    sleep=time.sleep,
+) -> int:
+    """Fetch seeded program pages that are not in the cache. Returns the count."""
+    fetched = 0
+    for key in keys:
+        if load_page(key, cache_dir) or load_page(f"{key}.landing", cache_dir):
+            continue
+        try:
+            html = fetch(f"https://www.coursera.org/{key}")
+        except RateLimited:
+            raise
+        except Exception as error:  # noqa: BLE001 - one bad seed must not block the rest
+            print(f"  ! seed failed ({key}): {error}")
+            continue
+        store_page(key, html, cache_dir)
+        fetched += 1
+        if delay:
+            sleep(delay)
+    return fetched
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="python -m starisk.groupings",
         description="Rebuild data/groupings.json from cached program pages.",
     )
     parser.add_argument("--write", action="store_true", help="write data/groupings.json")
+    parser.add_argument(
+        "--fetch",
+        action="store_true",
+        help="fetch seeded program pages that are not cached yet",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str]) -> int:
     options = parse_args(argv)
+    if options.fetch:
+        fetched = fetch_missing(load_seed_keys(), delay=1.5)
+        print(f"seeded {fetched} program page(s)")
+
     groupings = build_groupings()
     links = sum(len(grouping["courses"]) for grouping in groupings.values())
 
