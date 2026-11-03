@@ -18,8 +18,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import sys
+import tempfile
 import unicodedata
 from pathlib import Path
 
@@ -126,7 +128,14 @@ def localize_images(
             continue
 
         path = out_dir / f"{stem}{extension}"
-        path.write_bytes(body)
+        descriptor, temporary = tempfile.mkstemp(dir=out_dir, suffix=".tmp")
+        try:
+            with os.fdopen(descriptor, "wb") as handle:
+                handle.write(body)
+            os.replace(temporary, path)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
         resolved[stem] = f"{IMAGE_PREFIX}{path.name}"
 
     for record in scores.values():

@@ -304,6 +304,8 @@ def crawl(
 
         url = reviews_url(key)
 
+        landing = None
+        rate_limited = None
         if offline:
             html = load_page(key, cache_dir)
             landing = load_page(f"{key}.landing", cache_dir)
@@ -333,12 +335,13 @@ def crawl(
             try:
                 landing = landing_html(key, fetch, cache_dir)
             except RateLimited as error:
-                record = scores.get(key) or {}
-                record["error"] = f"rate limited: {error}"
-                scores[key] = record
-                break
+                # The reviews page is already cached and scoreable. Keep it, stop
+                # the run, and let the next pass pick up the landing page.
+                rate_limited = error
 
         result = score_page(html)
+        if rate_limited and result is not None:
+            result["landing_error"] = f"rate limited: {rate_limited}"
         previous = scores.get(key) or {}
         if result is None:
             # Never overwrite a good record with a failed parse.
@@ -385,6 +388,8 @@ def crawl(
             stamped = previous.get("scrapedAt", stamp) if offline else stamp
             scores[key] = {**result, "slug": key, "scrapedAt": stamped}
 
+        if rate_limited:
+            break
         if delay:
             sleep(delay)
 
@@ -516,16 +521,14 @@ def main(argv: list[str]) -> int:
         if max_age
         else 0
     )
-    planned = len(sources) - skipped
-    if options["limit"] is not None:
-        planned = min(planned, options["limit"])
 
-    state = {"drawn": False}
+    state = {"drawn": False, "done": 0}
     started = time.monotonic()
     interactive = sys.stdout.isatty()
 
     def report(done, total, key):
         state["drawn"] = True
+        state["done"] = done
         line = progress_line(done, total, key, time.monotonic() - started)
         if interactive:
             sys.stdout.write("\r" + line)
@@ -550,13 +553,21 @@ def main(argv: list[str]) -> int:
 
     scored = sum(1 for record in scores.values() if "starisk" in record)
     no_reviews = sum(1 for record in scores.values() if record.get("no_reviews"))
-    errors = sum(1 for record in scores.values() if record.get("error"))
+    errors = sum(
+        1
+        for record in scores.values()
+        if record.get("error") or record.get("landing_error")
+    )
     verb = "reparsed" if options["offline"] else "fetched"
     print(
-        f"listed {len(sources)} | skipped fresh {skipped} | {verb} {planned} "
+        f"listed {len(sources)} | skipped fresh {skipped} | {verb} {state['done']} "
         f"| records {len(scores)} | scored {scored} | no reviews {no_reviews} | errors {errors}"
     )
-    if any(str(record.get("error", "")).startswith("rate limited") for record in scores.values()):
+    if any(
+        str(record.get("error", "")).startswith("rate limited")
+        or str(record.get("landing_error", "")).startswith("rate limited")
+        for record in scores.values()
+    ):
         print(
             "stopped early: the host rate-limited us. Re-run later — it resumes at the "
             "stalest course, so nothing is repeated."

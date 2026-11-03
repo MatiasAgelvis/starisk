@@ -79,7 +79,7 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D4 | **Static site**, not a monolith server (v1) | Read path needs no server; static is cheapest, most durable, best distribution. |
 | D5 | Two toolchains in one repo is fine | Python for the pipeline, Node to build the site. Prior art: the docx→cards project already does Python + SvelteKit. |
 | D6 | Crawl **locally, on demand** | Residential IP dodges Cloudflare's bot-challenge for free. Not nightly CI (datacenter IP risk). |
-| D7 | `scores.json` is **the seam** | Keeps pipeline and site decoupled in code even though they ship together. |
+| D7 | `scores.json` is **the seam** | Keeps pipeline and site decoupled in code even though they ship together. `web/src/data/scores.json` is a committed build-time copy refreshed by `scripts/sync-data.mjs`; `pipeline/data/scores.json` remains the source. |
 | D8 | Reads from **static JSON**; writes (user data) to a **DB later** (Turso) | Keep user writes off the read path. |
 | D9 | **Fail-safe crawl** | Atomic write; never overwrite good data with a broken parse; distinguish an explicit no-review page from a parse failure; report both counts in the run summary. Alerting on N consecutive parse failures is still TODO. |
 | D10 | Port the scoring **faithfully**; the 16 JS tests (tag `legacy-mv2-extension`) are the port spec | Don't silently change behavior. Keep the original model for reference; `SIMPLE` (`1 + likes`) as the default candidate. |
@@ -167,7 +167,7 @@ calibration against my labels, not aesthetics.**
 - `spread` — unweighted std-dev of the sampled stars (contention).
 - `spread_weighted` — the same with like weights; it *collapses* when one review
   dominates, which is informative but not a contention measure.
-- Optional: `level`, `enrollment`, `low_sample`, `source: "jsonld"`, `no_reviews`, `error`.
+- Optional: `level`, `enrollment`, `low_sample`, `source: "jsonld"`, `no_reviews`, `error`, `landing_error`.
 
 ## 9. Repo layout (target)
 

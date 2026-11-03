@@ -6,10 +6,10 @@ const records = Object.values(scores).filter(
   (record) => typeof record.starisk === 'number' && typeof record.coursera === 'number',
 );
 const count = records.length;
-const meanCoursera = records.reduce((total, r) => total + r.coursera, 0) / count;
-const meanStarisk = records.reduce((total, r) => total + r.starisk, 0) / count;
-const lowest = Math.min(...records.map((r) => r.coursera));
-const highest = Math.max(...records.map((r) => r.coursera));
+const meanCoursera = count ? records.reduce((total, r) => total + r.coursera, 0) / count : 0;
+const meanStarisk = count ? records.reduce((total, r) => total + r.starisk, 0) / count : 0;
+const lowest = count ? Math.min(...records.map((r) => r.coursera)) : 0;
+const highest = count ? Math.max(...records.map((r) => r.coursera)) : 0;
 const inflated = records.filter((r) => r.coursera - r.starisk >= 1.5).length;
 const heldUp = records.filter((r) => r.coursera - r.starisk < 0.5).length;
 
@@ -32,12 +32,16 @@ const description =
     <section class="mt-10">
       <h2 class="font-display text-2xl font-bold">1. The ratings stopped ranking anything</h2>
       <div class="mt-3 space-y-3 text-base-content/85">
-        <p>
-          Coursera's headline ratings cluster. Across the {count} courses here, the mean is{' '}
-          <strong>{meanCoursera.toFixed(2)}</strong> and they run from {lowest.toFixed(1)} to{' '}
-          {highest.toFixed(1)}. Two tenths of a star is not a difference in what you will get —
-          it is rounding.
-        </p>
+        {count > 0 ? (
+          <p>
+            Coursera's headline ratings cluster. Across the {count} courses here, the mean is{' '}
+            <strong>{meanCoursera.toFixed(2)}</strong> and they run from {lowest.toFixed(1)} to{' '}
+            {highest.toFixed(1)}. Two tenths of a star is not a difference in what you will get —
+            it is rounding.
+          </p>
+        ) : (
+          <p>No scored courses yet.</p>
+        )}
         <p>
           A number only helps you choose if it separates things. When everything is 4.8, the
           headline rating answers “is this a normal Coursera course?” rather than “is this one
@@ -174,9 +178,14 @@ const description =
         <p>
           The gap is worth more than the score. <strong>Inflation</strong> = Coursera minus Starisk:
           at or above 1.5 the headline is <em>inflated</em>, at or above 0.5 it is <em>padded</em>,
-          otherwise it <em>holds up</em>. Right now, {inflated} of {count} courses are inflated and{' '}
-          {heldUp} hold up, with means of {meanCoursera.toFixed(2)} and {meanStarisk.toFixed(2)}.
+          otherwise it <em>holds up</em>.
         </p>
+        {count > 0 && (
+          <p>
+            Right now, {inflated} of {count} courses are inflated and {heldUp} hold up, with means
+            of {meanCoursera.toFixed(2)} and {meanStarisk.toFixed(2)}.
+          </p>
+        )}
       </div>
     </section>
 

@@ -1,7 +1,9 @@
 import io
 import unittest
 import urllib.error
+from datetime import datetime, timedelta, timezone
 from email.message import Message
+from email.utils import format_datetime
 from unittest import mock
 
 from starisk.fetch import RateLimited, _wait_seconds, fetch_page
@@ -124,12 +126,25 @@ class BackoffTest(unittest.TestCase):
         self.assertEqual(_wait_seconds(http_error(429, {"Retry-After": "7"}), 0, 2.0), 7.0)
 
     def test_a_non_numeric_retry_after_falls_back_to_jittered_backoff(self):
-        wait = _wait_seconds(
-            http_error(429, {"Retry-After": "Wed, 21 Oct 2026 07:28:00 GMT"}), 1, 2.0
-        )
+        wait = _wait_seconds(http_error(429, {"Retry-After": "not-a-date"}), 1, 2.0)
 
         self.assertGreaterEqual(wait, 4.0)
         self.assertLessEqual(wait, 5.2)
+
+    def test_retry_after_http_date_is_honoured(self):
+        when = datetime.now(timezone.utc) + timedelta(seconds=30)
+        header = format_datetime(when, usegmt=True)
+
+        wait = _wait_seconds(http_error(429, {"Retry-After": header}), 0, 2.0)
+
+        self.assertGreaterEqual(wait, 25.0)
+        self.assertLessEqual(wait, 30.0)
+
+    def test_a_past_http_date_waits_at_least_one_second(self):
+        when = datetime.now(timezone.utc) - timedelta(seconds=30)
+        header = format_datetime(when, usegmt=True)
+
+        self.assertEqual(_wait_seconds(http_error(429, {"Retry-After": header}), 0, 2.0), 1.0)
 
 
 if __name__ == "__main__":

@@ -261,6 +261,22 @@ class IncrementalCrawlTest(unittest.TestCase):
         self.assertNotIn("learn/c", scores)
         self.assertFalse(any("learn/c" in url for url in calls))
 
+    def test_a_landing_rate_limit_keeps_the_scored_reviews_page(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            if url.endswith("/reviews"):
+                return self.html
+            raise RateLimited("HTTP 429")
+
+        scores = crawl(["learn/a", "learn/b"], fetch=fetch, now=STAMP)
+
+        self.assertIn("starisk", scores["learn/a"])
+        self.assertTrue(scores["learn/a"]["landing_error"].startswith("rate limited"))
+        self.assertNotIn("learn/b", scores)
+        self.assertFalse(any("learn/b" in url for url in calls))
+
     def test_empty_records_age_out_of_the_queue(self):
         calls = []
 
@@ -483,6 +499,22 @@ class CacheTest(unittest.TestCase):
 
             self.assertEqual(load_page("learn/a", directory), "<html>hello</html>")
             self.assertTrue(path_for("learn/a", directory).name.startswith("learn__a"))
+
+    def test_store_leaves_no_temporary_file(self):
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", "<html>hello</html>", directory)
+
+            self.assertEqual(list(directory.glob("*.tmp")), [])
+
+    def test_a_corrupt_cache_file_is_a_miss(self):
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            path = path_for("learn/a", directory)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"not a gzip stream")
+
+            self.assertIsNone(load_page("learn/a", directory))
 
     def test_missing_page_is_none(self):
         with TemporaryDirectory() as tmp:

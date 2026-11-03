@@ -44,8 +44,6 @@ STOPWORDS = frozenset(
     }
 )
 
-# Coursera duplicates most courses per language under the same slug.
-
 # Decorations Coursera adds to a certificate but not to the course page.
 _DECORATIONS = re.compile(
     r"\s*\(\s*(?:with\s+)?(?:honou?rs?|distinction)\s*\)|^\s*capstone\s*:\s*", re.IGNORECASE

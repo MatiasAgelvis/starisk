@@ -76,6 +76,12 @@ class EngineTest(unittest.TestCase):
         self.assertGreater(ratio, 1.0)
         self.assertLess(ratio, 1.05)
 
+    def test_non_finite_or_zero_age_does_not_poison_the_weight(self):
+        # A missing or malformed date must not turn the legacy weight into NaN.
+        for age in (float("nan"), float("inf"), 0.0):
+            weight = review_weight({"stars": 3, "likes": 4, "age_days": age}, DEFAULTS)
+            self.assertEqual(weight, 36.0)
+
 
 class SpreadTest(unittest.TestCase):
     @staticmethod
