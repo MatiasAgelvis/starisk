@@ -226,7 +226,7 @@
                   <a class="link link-hover" href={`/${row.slug}`}>{row.title ?? row.slug}</a>
                 </div>
                 <div class="truncate text-xs text-base-content/50">
-                  {row.provider ?? 'Unknown provider'}{#if row.low}<span class="text-warning/80"> · low sample</span>{/if}
+                  {row.provider ?? 'Unknown provider'}{#if row.low}{' '}<span class="text-warning/80">· low sample</span>{/if}
                 </div>
               </div>
             </div>
