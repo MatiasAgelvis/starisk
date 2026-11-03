@@ -56,7 +56,7 @@ const description =
 
     <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
       <div class="stat">
-        <div class="stat-title">Course average</div>
+        <div class="stat-title">Starisk average</div>
         <div class="stat-value text-2xl">{average == null ? '—' : average.toFixed(1)}</div>
         {average == null ? null : <Stars value={average} size={16} />}
         <div class="stat-desc">across {program.scored} scored courses</div>
@@ -64,10 +64,10 @@ const description =
       {
         program.programRating != null && (
           <div class="stat">
-            <div class="stat-title">Program rating</div>
+            <div class="stat-title">Program page (Starisk)</div>
             <div class="stat-value text-2xl">{program.programRating.toFixed(1)}</div>
             <Stars value={program.programRating} size={16} />
-            <div class="stat-desc">from the program page's own reviews</div>
+            <div class="stat-desc">from its own reviews</div>
           </div>
         )
       }
@@ -76,7 +76,7 @@ const description =
     {
       program.low != null && (
         <p class="mt-3 text-sm text-base-content/60">
-          Course scores run {program.low.toFixed(1)}–{program.high.toFixed(1)}.
+          Starisk course range: {program.low.toFixed(1)}–{program.high.toFixed(1)}.
         </p>
       )
     }
@@ -139,7 +139,7 @@ const description =
       {
         program.programRating != null && (
           <p>
-            The program page's own reviews rate it at{' '}
+            The program page's own reviews give it a Starisk score of{' '}
             <strong>{program.programRating.toFixed(1)}</strong>; the average of its courses is{' '}
             <strong>{average == null ? '—' : average.toFixed(1)}</strong>. The gap is the point —
             the bundle can rate differently from the parts.
