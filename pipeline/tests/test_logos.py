@@ -2,7 +2,8 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from starisk.logos import localize_images, provider_slug, sniff_extension
+from starisk.logos import localize_images, prune_base_logos, sniff_extension
+from starisk.naming import provider_slug
 
 PNG = b"\x89PNG\r\n\x1a\n" + b"0" * 32
 WEBP = b"RIFF\x00\x00\x00\x00WEBP" + b"0" * 32
@@ -35,6 +36,62 @@ class SniffTest(unittest.TestCase):
     def test_unknown(self):
         self.assertIsNone(sniff_extension(b"<html>nope</html>"))
         self.assertIsNone(sniff_extension(b""))
+
+
+class PruneTest(unittest.TestCase):
+    def make(self, out):
+        for sub in ("tile", "full"):
+            (out / sub).mkdir(exist_ok=True)
+        return out
+
+    def test_removes_the_lockup_once_both_sizes_exist(self):
+        with TemporaryDirectory() as tmp:
+            out = self.make(Path(tmp))
+            (out / "yale-university.png").write_bytes(PNG)
+            (out / "tile" / "yale-university.png").write_bytes(PNG)
+            (out / "full" / "yale-university.png").write_bytes(PNG)
+            scores = {
+                "learn/a": {"provider": "Yale University", "image": "/logos/yale-university.png"},
+                "learn/b": {"provider": "Yale University", "image": "/logos/yale-university.png"},
+            }
+
+            removed = prune_base_logos(scores, out_dir=out, log=lambda *_: None)
+
+            # One file, two records: both are repointed, the file is deleted once.
+            self.assertEqual(removed, 1)
+            self.assertFalse((out / "yale-university.png").exists())
+            for key in scores:
+                self.assertEqual(scores[key]["image"], "/logos/tile/yale-university.png")
+
+    def test_keeps_the_lockup_when_a_size_is_missing(self):
+        # The lockup is then the only mark the page has.
+        with TemporaryDirectory() as tmp:
+            out = self.make(Path(tmp))
+            (out / "duke-university.png").write_bytes(PNG)
+            (out / "tile" / "duke-university.png").write_bytes(PNG)
+            scores = {
+                "learn/a": {"provider": "Duke University", "image": "/logos/duke-university.png"}
+            }
+
+            removed = prune_base_logos(scores, out_dir=out, log=lambda *_: None)
+
+            self.assertEqual(removed, 0)
+            self.assertTrue((out / "duke-university.png").exists())
+            self.assertEqual(scores["learn/a"]["image"], "/logos/duke-university.png")
+
+    def test_leaves_a_variant_path_alone(self):
+        with TemporaryDirectory() as tmp:
+            out = self.make(Path(tmp))
+            (out / "tile" / "yale-university.png").write_bytes(PNG)
+            (out / "full" / "yale-university.png").write_bytes(PNG)
+            scores = {
+                "learn/a": {"provider": "Yale University", "image": "/logos/tile/yale-university.png"}
+            }
+
+            removed = prune_base_logos(scores, out_dir=out, log=lambda *_: None)
+
+            self.assertEqual(removed, 0)
+            self.assertEqual(scores["learn/a"]["image"], "/logos/tile/yale-university.png")
 
 
 class LocalizeTest(unittest.TestCase):
