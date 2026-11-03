@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/sync-data.mjs",
+    "predev": "node scripts/sync-data.mjs && node scripts/logo-tones.mjs",
     "dev": "astro dev",
     "test": "node --test scripts/*.test.mjs",
-    "prebuild": "node scripts/sync-data.mjs",
+    "prebuild": "node scripts/sync-data.mjs && node scripts/logo-tones.mjs",
     "build": "astro build",
     "preview": "astro preview"
   },

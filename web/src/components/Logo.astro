@@ -1,21 +1,44 @@
 ---
-// A logo "tile": every provider mark sits on the same light chip, and the image
-// gets a 1px dark drop-shadow. `drop-shadow` follows the image's alpha channel,
-// so white-on-transparent logos (which would otherwise vanish) get a visible
-// edge, while dark/coloured logos are unaffected.
+// A logo "tile": every provider mark sits on the same chip, and the image gets a
+// 1px dark drop-shadow. `drop-shadow` follows the image's alpha channel, so
+// white-on-transparent logos get a visible edge, while dark/coloured logos are
+// unaffected.
+//
+// Some marks are white artwork on transparency, made for dark headers: an edge
+// does not make them readable, so those get a dark chip instead. `logo-tones.json`
+// is generated from the files themselves (scripts/logo-tones.mjs) rather than
+// curated by hand, so a new provider logo classifies itself.
+//
+// `logo-sizes.json` holds the partner's square mark at two sizes (see
+// pipeline/starisk/logo_hires.py): `tile` for tables, `full` for the course page.
+// The 160x60 lockup in `scores.json` is the fallback — some providers put a
+// course photo there instead of a logo.
+import logoTones from '../data/logo-tones.json';
+import logoSizes from '../data/logo-sizes.json';
+
 interface Props {
   src?: string | null;
+  full?: boolean;
   class?: string;
 }
 
-const { src, class: className = 'h-8 w-14' } = Astro.props;
+const { src, full = false, class: className = 'h-9 w-9' } = Astro.props;
+// The generated maps are sparse, so widen them before indexing by an arbitrary path.
+const tones: Record<string, string> = logoTones;
+const sizes: Record<string, { tile?: string; full?: string }> = logoSizes;
+
+const entry = src != null ? sizes[src] : undefined;
+const image = (full ? (entry?.full ?? entry?.tile) : entry?.tile) ?? src;
+const darkChip = image != null && tones[image] === 'dark';
 ---
 
 <span
-  class={`inline-flex shrink-0 items-center justify-center rounded bg-white p-1 ring-1 ring-base-300/60 ${className}`}
+  class={`inline-flex shrink-0 items-center justify-center rounded p-1 ring-1 ${
+    darkChip ? 'bg-base-content ring-base-content/20' : 'bg-white ring-base-300/60'
+  } ${className}`}
 >
   <img
-    src={src ?? '/coursera-logo.png'}
+    src={image ?? '/coursera-logo.png'}
     alt=""
     class="h-full w-full object-contain drop-shadow-[0_0_1px_rgba(0,0,0,0.6)]"
     loading="lazy"

@@ -328,6 +328,50 @@ class ArgsTest(unittest.TestCase):
             parse_args(["--limit"])
 
 
+    def test_a_truncated_landing_description_does_not_replace_the_full_one(self):
+        # Coursera caps the landing page's JSON-LD description at 500 characters,
+        # cut mid-word. The reviews page carries the whole thing; it must win.
+        full = "A full sentence about the course. " * 60
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8").replace(
+            "A sample course used to test the parser.", full
+        )
+        landing = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Sample Course","description":"'
+            + full[:500]
+            + '"}'
+            "</script>"
+        )
+
+        def fetch(url):
+            return landing if url.endswith("/learn/a") else reviews
+
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
+
+        self.assertEqual(scores["learn/a"]["description"], full.strip())
+
+    def test_a_richer_landing_description_still_wins(self):
+        # The rule is "longer", not "ignore the landing page": some reviews pages
+        # ship boilerplate, and the landing page is then the only real description.
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8").replace(
+            "A sample course used to test the parser.", "Short."
+        )
+        landing = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Sample Course",'
+            '"description":"A much richer description of the course."}'
+            "</script>"
+        )
+
+        def fetch(url):
+            return landing if url.endswith("/learn/a") else reviews
+
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
+
+        self.assertEqual(scores["learn/a"]["description"], "A much richer description of the course.")
+
     def test_landing_page_adds_instructors_and_categories(self):
         reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
         landing = (
@@ -542,6 +586,27 @@ class CacheTest(unittest.TestCase):
 
         self.assertEqual(calls, [])
         self.assertEqual(scores["learn/a"]["starisk"], 2.2)
+
+    def test_offline_crawl_does_not_throttle(self):
+        # Calling `sleep` here would make a re-parse of a few hundred cached pages
+        # take a quarter of an hour for no benefit: no request is being made.
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        slept = []
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+
+            crawl(
+                ["learn/a"],
+                fetch=lambda _: html,
+                delay=1.5,
+                now=STAMP,
+                offline=True,
+                cache_dir=directory,
+                sleep=slept.append,
+            )
+
+        self.assertEqual(slept, [])
 
     def test_offline_keeps_the_original_stamp(self):
         html = GOOD_FIXTURE.read_text(encoding="utf-8")

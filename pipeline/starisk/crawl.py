@@ -364,8 +364,14 @@ def crawl(
                         result[field] = landing_data[field]
                 details = extract_details(landing)
                 for field in ("title", "provider", "image", "description", "level", "enrollment"):
-                    if details.get(field):
-                        result[field] = details[field]
+                    if not details.get(field):
+                        continue
+                    if field == "description" and len(details[field]) <= len(result.get(field) or ""):
+                        # Coursera caps the landing page's JSON-LD description at 500
+                        # characters, cut mid-word, while the reviews page carries the
+                        # full text. Whichever is longer wins.
+                        continue
+                    result[field] = details[field]
 
             # The reviews page carries neither the teaching team nor the subjects,
             # and its metadata can be missing or boilerplate. If the landing page
@@ -390,7 +396,8 @@ def crawl(
 
         if rate_limited:
             break
-        if delay:
+        # Offline is a re-parse: no requests, so there is nothing to be polite about.
+        if delay and not offline:
             sleep(delay)
 
     return resolve_instructors(scores)

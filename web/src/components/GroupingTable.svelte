@@ -7,7 +7,7 @@
 
   let query = $state('');
   let type = $state('all');
-  let completeOnly = $state(true);
+  let hideIncomplete = $state(true);
   let sortKey = $state('average');
   let sortDir = $state('desc');
   let page = $state(1);
@@ -18,19 +18,20 @@
     { id: 'professional-certificate', label: 'Professional Certificates' },
   ];
 
+  // The numeric columns are sized to their content rather than as percentages:
+  // the page is max-w-4xl, and a percentage of it is narrower than the score
+  // plus its stars, which would spill into the next cell. The title takes the rest.
   const COLUMNS = [
-    { key: 'title', label: 'Program', align: 'text-left', width: 'w-[54%] sm:w-[42%]' },
-    { key: 'courses', label: 'Courses', align: 'text-right', width: 'w-[16%] sm:w-[14%]' },
-    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[30%] sm:w-[14%]' },
-    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[8%]', hide: true },
-    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[8%]', hide: true },
-    { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[14%]', hide: true },
+    { key: 'title', label: 'Program', align: 'text-left', width: 'w-auto' },
+    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[6rem] md:w-[9.5rem]' },
+    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[5rem]', hide: true },
+    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[5rem]', hide: true },
+    { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[8rem]', hide: true },
   ];
 
   function value(row, key) {
     if (key === 'title') return (row.title ?? row.key).toLowerCase();
     if (key === 'type') return typeLabel(row.type).toLowerCase();
-    if (key === 'courses') return row.scored;
     return row[key] ?? null;
   }
 
@@ -50,8 +51,8 @@
     page = 1;
   }
 
-  function toggleComplete() {
-    completeOnly = !completeOnly;
+  function toggleIncomplete() {
+    hideIncomplete = !hideIncomplete;
     page = 1;
   }
 
@@ -63,7 +64,7 @@
   function clearFilters() {
     query = '';
     type = 'all';
-    completeOnly = true;
+    hideIncomplete = true;
     page = 1;
   }
 
@@ -73,12 +74,12 @@
 
   const completeCount = $derived(rows.filter((row) => row.complete).length);
   const partialCount = $derived(rows.length - completeCount);
-  const availableCount = $derived(completeOnly ? completeCount : rows.length);
+  const availableCount = $derived(hideIncomplete ? completeCount : rows.length);
 
   const typeCounts = $derived.by(() => {
     const counts = new Map();
     for (const row of rows) {
-      if (completeOnly && !row.complete) continue;
+      if (hideIncomplete && !row.complete) continue;
       counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
     }
     return counts;
@@ -87,7 +88,7 @@
   const filtered = $derived.by(() => {
     const needle = query.trim().toLowerCase();
     return rows.filter((row) => {
-      if (completeOnly && !row.complete) return false;
+      if (hideIncomplete && !row.complete) return false;
       if (type !== 'all' && row.type !== type) return false;
       if (!needle) return true;
       return `${row.title ?? ''} ${row.provider ?? ''} ${typeLabel(row.type)}`
@@ -121,11 +122,11 @@
       </button>
     {/each}
     <button
-      class="btn btn-sm whitespace-nowrap {completeOnly ? 'btn-neutral' : 'btn-ghost'}"
-      aria-pressed={completeOnly}
-      onclick={toggleComplete}
+      class="btn btn-sm whitespace-nowrap {hideIncomplete ? 'btn-neutral' : 'btn-ghost'}"
+      aria-pressed={hideIncomplete}
+      onclick={toggleIncomplete}
     >
-      Complete sets only
+      Hide incomplete sets
       {#if partialCount}<span class="opacity-50">{partialCount}</span>{/if}
     </button>
   </div>
@@ -168,12 +169,24 @@
               <div class="truncate font-medium">
                 <a class="link link-hover" href={`/programs/${row.key}`}>{row.title}</a>
               </div>
-              <div class="truncate text-xs text-base-content/50">
-                {row.provider ?? 'Unknown provider'}{' · '}{typeLabel(row.type)}
+              <!-- Coverage is all-or-nothing for almost every program, so it is a
+                   tag rather than a column: only the exceptions need saying. -->
+              <div class="flex items-center gap-2 text-xs text-base-content/50">
+                <span class="min-w-0 truncate">
+                  {row.provider ?? 'Unknown provider'}{' · '}{typeLabel(row.type)}
+                </span>
+                {#if !row.complete}
+                  <span
+                    class="badge badge-sm shrink-0 whitespace-nowrap {row.scored
+                      ? 'badge-warning'
+                      : 'badge-ghost'}"
+                  >
+                    {row.scored ? `Incomplete ${row.scored}/${row.total}` : 'No scores'}
+                  </span>
+                {/if}
               </div>
             </div>
           </td>
-          <td class="text-right font-mono text-sm">{row.scored}/{row.total}</td>
           <td class="text-right">
             <div class="flex items-center justify-end gap-2">
               <span class="font-bold">{row.average == null ? '—' : row.average.toFixed(1)}</span>
@@ -197,7 +210,7 @@
   {#if ordered.length === 0}
     <div class="py-10 text-center text-sm text-base-content/60">
       <p>
-        {completeOnly
+        {hideIncomplete
           ? 'No complete program matches those filters.'
           : 'No program matches those filters.'}
       </p>
