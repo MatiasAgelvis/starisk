@@ -167,7 +167,7 @@ calibration against my labels, not aesthetics.**
 - `spread` — unweighted std-dev of the sampled stars (contention).
 - `spread_weighted` — the same with like weights; it *collapses* when one review
   dominates, which is informative but not a contention measure.
-- Optional: `level`, `enrollment`, `low_sample`, `source: "jsonld"`, `no_reviews`, `error`.
+- Optional: `level`, `enrollment`, `low_sample`, `source: "jsonld"`, `no_reviews`, `error`, `landing_error`.
 
 ## 9. Repo layout (target)
 
