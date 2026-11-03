@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ScoreTable from '../components/ScoreTable.svelte';
 import Lookup from '../components/Lookup.svelte';
 import { buildInstructors, teacherIndex } from '../lib/instructors.js';
+import { buildLookup } from '../lib/lookup.js';
 import scores from '../data/scores.json';
 
 const rows = Object.entries(scores)
@@ -19,20 +20,9 @@ const rows = Object.entries(scores)
   }));
 
 // The lookup island only needs the numbers. Passing the whole records would ship
-// every description and review body to the browser with the homepage.
-const lookup = Object.fromEntries(
-  Object.entries(scores).map(([key, record]) => [
-    key,
-    {
-      title: record.title,
-      slug: record.slug,
-      coursera: record.coursera,
-      starisk: record.starisk,
-      reviews: record.reviews,
-      reviews_total: record.reviews_total,
-    },
-  ]),
-);
+// every description and review body to the browser with the homepage. Failed
+// scrapes are excluded: they have no score and no state the island can render.
+const lookup = buildLookup(scores);
 
 // Coursera profile slug -> our page, so pasting either URL works.
 const teachers = teacherIndex(buildInstructors(scores));
