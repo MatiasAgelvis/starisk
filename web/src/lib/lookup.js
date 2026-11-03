@@ -6,6 +6,24 @@
 // act on, and passing it through made `starisk.toFixed` throw at runtime.
 
 /**
+ * The course key for a pasted URL, path, or bare slug.
+ *
+ * A bare slug is a course, matching `starisk.add`'s v1 rule: `x`, `/learn/x`,
+ * `learn/x`, and a full Coursera URL all normalise to `learn/x`.
+ *
+ * @param {string} input
+ * @returns {string}
+ */
+export function normalizeCourseKey(input) {
+  const match = input.trim().match(/coursera\.org\/([^/?#]+)\/([^/?#]+)/);
+  if (match) return `${match[1]}/${match[2]}`;
+
+  const cleaned = input.trim().replace(/^\/+|\/+$/g, '');
+  if (!cleaned) return cleaned;
+  return cleaned.includes('/') ? cleaned : `learn/${cleaned}`;
+}
+
+/**
  * @param {Record<string, any>} scores
  * @returns {Record<string, any>}
  */

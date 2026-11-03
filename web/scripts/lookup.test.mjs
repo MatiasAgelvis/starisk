@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildLookup } from '../src/lib/lookup.js';
+import { buildLookup, normalizeCourseKey } from '../src/lib/lookup.js';
 
 test('keeps scored courses and explicit empty states, drops failed scrapes', () => {
   const lookup = buildLookup({
@@ -28,6 +28,22 @@ test('keeps scored courses and explicit empty states, drops failed scrapes', () 
   assert.equal(lookup['learn/empty'].ratings_total, 2);
   assert.equal(lookup['learn/broken'], undefined);
 });
+
+test('normalizes URLs, paths, and bare slugs', () => {
+  assert.equal(
+    normalizeCourseKey('https://www.coursera.org/learn/machine-learning/reviews'),
+    'learn/machine-learning',
+  );
+  assert.equal(normalizeCourseKey('/learn/machine-learning/'), 'learn/machine-learning');
+  assert.equal(normalizeCourseKey('learn/machine-learning'), 'learn/machine-learning');
+  assert.equal(normalizeCourseKey('machine-learning'), 'learn/machine-learning');
+  assert.equal(
+    normalizeCourseKey('specializations/deep-learning'),
+    'specializations/deep-learning',
+  );
+  assert.equal(normalizeCourseKey('  '), '');
+});
+
 
 test('falls back to the record key when slug is absent', () => {
   const lookup = buildLookup({ 'learn/x': { starisk: 4.0 } });

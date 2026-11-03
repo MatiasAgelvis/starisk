@@ -1,18 +1,13 @@
 <script>
   import Stars from './Stars.svelte';
   import { requestHref } from '../lib/config.js';
+  import { normalizeCourseKey } from '../lib/lookup.js';
   import { verdictOf } from '../lib/verdict.js';
 
   let { scores = {}, teachers = {} } = $props();
 
   let query = $state('');
   let result = $state(null);
-
-  function normalize(input) {
-    const match = input.trim().match(/coursera\.org\/([^/?#]+)\/([^/?#]+)/);
-    if (match) return `${match[1]}/${match[2]}`;
-    return input.trim().replace(/^\/+|\/+$/g, '');
-  }
 
   function verdictLabel(record) {
     if (record.coursera == null) return 'no headline rating';
@@ -34,7 +29,7 @@
       return;
     }
 
-    const key = normalize(raw);
+    const key = normalizeCourseKey(raw);
     result = { kind: 'course', key, record: scores[key] ?? null };
   }
 </script>
