@@ -608,6 +608,49 @@ class CacheTest(unittest.TestCase):
 
         self.assertEqual(slept, [])
 
+    def test_a_reparse_keeps_the_local_logo_path(self):
+        # Pages only carry a remote URL, so a re-parse would otherwise undo
+        # `logos.py` and every record would point back at Coursera.
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+            store_page("learn/a.landing", html, directory)
+            existing = {
+                "learn/a": {
+                    "starisk": 2.2,
+                    "provider": "Test University",
+                    "image": "/logos/test-university.png",
+                }
+            }
+
+            scores = crawl(
+                ["learn/a"], existing=existing, now=STAMP, offline=True, cache_dir=directory
+            )
+
+        self.assertEqual(scores["learn/a"]["image"], "/logos/test-university.png")
+
+    def test_a_new_provider_drops_the_local_logo_path(self):
+        # Keeping the old file here would show the previous provider's mark.
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+            store_page("learn/a.landing", html, directory)
+            existing = {
+                "learn/a": {
+                    "starisk": 2.2,
+                    "provider": "Old University",
+                    "image": "/logos/old-university.png",
+                }
+            }
+
+            scores = crawl(
+                ["learn/a"], existing=existing, now=STAMP, offline=True, cache_dir=directory
+            )
+
+        self.assertTrue(scores["learn/a"]["image"].startswith("https://"))
+
     def test_offline_keeps_the_original_stamp(self):
         html = GOOD_FIXTURE.read_text(encoding="utf-8")
         with TemporaryDirectory() as tmp:

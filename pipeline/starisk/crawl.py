@@ -48,6 +48,7 @@ from .adapter import (
 from .cache import CACHE_DIR, load_page, store_page
 from .engine import CALIBRATED, course_score, peer_spread, review_spread
 from .fetch import RateLimited, fetch_page
+from .naming import IMAGE_PREFIX, stem
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 SOURCES_PATH = DATA_DIR / "sources.json"
@@ -391,6 +392,7 @@ def crawl(
                     result[field] = previous[field]
 
             # Re-parsing a cached page is not a fresh scrape: keep the old stamp.
+            keep_local_image(result, previous)
             stamped = previous.get("scrapedAt", stamp) if offline else stamp
             scores[key] = {**result, "slug": key, "scrapedAt": stamped}
 
@@ -426,6 +428,21 @@ def resolve_instructors(scores: dict) -> dict:
                 instructor["url"] = match["url"]
                 instructor["page"] = match["page"]
     return scores
+
+
+def keep_local_image(result: dict, previous: dict) -> None:
+    """A re-parse must not undo `logos.py`.
+
+    Pages only ever carry a remote image URL, so without this every crawl resets
+    `image` and drops the self-hosted logo. Keep the local path while it still names
+    the same provider; a provider change falls through, so the logo is fetched
+    again instead of the page quietly showing someone else's mark.
+    """
+    local = previous.get("image")
+    if not isinstance(local, str) or not local.startswith(IMAGE_PREFIX):
+        return
+    if stem({**previous, **result}) == Path(local).stem:
+        result["image"] = local
 
 
 def write_atomic(path: Path, data: dict | list) -> None:
