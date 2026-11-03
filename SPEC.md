@@ -81,7 +81,7 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D6 | Crawl **locally, on demand** | Residential IP dodges Cloudflare's bot-challenge for free. Not nightly CI (datacenter IP risk). |
 | D7 | `scores.json` is **the seam** | Keeps pipeline and site decoupled in code even though they ship together. |
 | D8 | Reads from **static JSON**; writes (user data) to a **DB later** (Turso) | Keep user writes off the read path. |
-| D9 | **Fail-safe crawl** | Atomic write; never overwrite good data with a broken parse; flag `stale`; alert when N parses in a row yield 0 reviews (adapter is stale). |
+| D9 | **Fail-safe crawl** | Atomic write; never overwrite good data with a broken parse; distinguish an explicit no-review page from a parse failure; report both counts in the run summary. Alerting on N consecutive parse failures is still TODO. |
 | D10 | Port the scoring **faithfully**; the 16 JS tests (tag `legacy-mv2-extension`) are the port spec | Don't silently change behavior. Keep the original model for reference; `SIMPLE` (`1 + likes`) as the default candidate. |
 | D11 | Simplify the model where it doesn't earn its keep | Drop the inert time term; keep one real knob. Decide final model by *calibration*, not taste. |
 | D12 | Parse Coursera's **semantic hooks** (`data-e2e`, `data-testid`, `aria-label`) + **JSON-LD fallback** | Verified on 8 live snapshots: server-rendered review cards carry **stars, likes and dates**; JSON-LD carries stars/dates but **no likes**. No DOM library needed; a repair is a selector change. |
@@ -149,7 +149,7 @@ calibration against my labels, not aesthetics.**
     "reviews_total": 6214,
     "ratings_total": 32982,
     "rating_counts": { "1": 122, "2": 56, "3": 226, "4": 2391, "5": 30187 },
-    "model": "simple",
+    "model": "sqrt-likes",
     "scrapedAt": "2026-10-20T03:00:00Z"
   }
 }
