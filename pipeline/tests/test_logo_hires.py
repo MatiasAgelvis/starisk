@@ -74,7 +74,7 @@ class LocalizeHiresTest(unittest.TestCase):
             self.assertEqual(
                 mapping,
                 {
-                    "/logos/yale-university.png": {
+                    "yale-university": {
                         "tile": "/logos/tile/yale-university.png",
                         "full": "/logos/full/yale-university.png",
                     }
@@ -139,9 +139,7 @@ class LocalizeHiresTest(unittest.TestCase):
             mapping = localize_hires(
                 self.scores(), cache_dir=cache, out_dir=out, fetch=flaky_fetch, log=lambda *_: None
             )
-            self.assertEqual(
-                mapping, {"/logos/yale-university.png": {"tile": "/logos/tile/yale-university.png"}}
-            )
+            self.assertEqual(mapping, {"yale-university": {"tile": "/logos/tile/yale-university.png"}})
 
     def test_ignores_paths_that_are_not_localized_logos(self):
         scores = {"learn/a": {"provider": "Yale University", "image": "https://cdn/yale.png"}}

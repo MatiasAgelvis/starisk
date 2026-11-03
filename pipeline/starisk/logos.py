@@ -12,25 +12,22 @@ non-stdlib encoder into a pipeline that is deliberately stdlib-only.
     cd pipeline
     python3 -m starisk.logos             # fetch whatever is missing
     python3 -m starisk.logos --force     # re-download everything
+    python3 -m starisk.logos --prune     # drop lockups the square marks replaced
 """
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
-import re
 import sys
 import tempfile
-import unicodedata
 from pathlib import Path
 
 from .crawl import SCORES_PATH, write_atomic
 from .fetch import fetch_bytes
+from .naming import IMAGE_PREFIX, stem
 
 LOGO_DIR = Path(__file__).resolve().parents[2] / "web" / "public" / "logos"
-IMAGE_PREFIX = "/logos/"
-MAX_STEM = 64
 
 # Extensions we are willing to store. Alpha matters: several provider marks are
 # white-on-transparent, which is why JPEG is not a safe blanket choice.
@@ -40,28 +37,6 @@ _SIGNATURES = (
     (b"GIF87a", ".gif"),
     (b"GIF89a", ".gif"),
 )
-
-
-def provider_slug(name: str) -> str:
-    """'DeepLearning.AI' -> 'deeplearning-ai'. Stable, filesystem-safe."""
-    folded = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii")
-    slug = re.sub(r"[^a-z0-9]+", "-", folded.lower()).strip("-")
-    # Filesystem limit is 255 bytes per component; a wrong provider name must not
-    # become a 900-character filename (Errno 63).
-    return slug[:MAX_STEM].strip("-") or "provider"
-
-
-def _stem(record: dict) -> str:
-    """Filename stem for a record's logo: its provider, or a URL hash.
-
-    An older crawl could store a serialized JSON-LD person as `provider`; that is
-    not a name, so it must never reach the filename. Those get the hash fallback.
-    """
-    provider = str(record.get("provider") or "").strip()
-    image = str(record.get("image") or "")
-    if provider and "@type" not in provider and not provider.startswith(("[", "{")):
-        return provider_slug(provider)
-    return hashlib.sha1(image.encode()).hexdigest()[:10]
 
 
 def sniff_extension(body: bytes) -> str | None:
@@ -107,27 +82,27 @@ def localize_images(
         image = record.get("image")
         if not _is_remote(image):
             continue
-        wanted.setdefault(_stem(record), image)
+        wanted.setdefault(stem(record), image)
 
     resolved: dict[str, str] = {}
-    for stem, url in wanted.items():
-        found = None if force else _existing(out_dir, stem)
+    for name, url in wanted.items():
+        found = None if force else _existing(out_dir, name)
         if found is not None:
-            resolved[stem] = f"{IMAGE_PREFIX}{found.name}"
+            resolved[name] = f"{IMAGE_PREFIX}{found.name}"
             continue
 
         try:
             body = fetch(url)
         except Exception as error:  # noqa: BLE001 - a logo must not stop the pipeline
-            log(f"  ! logo failed ({stem}): {error}")
+            log(f"  ! logo failed ({name}): {error}")
             continue
 
         extension = sniff_extension(body)
         if extension is None:
-            log(f"  ! logo skipped ({stem}): unrecognised image format")
+            log(f"  ! logo skipped ({name}): unrecognised image format")
             continue
 
-        path = out_dir / f"{stem}{extension}"
+        path = out_dir / f"{name}{extension}"
         descriptor, temporary = tempfile.mkstemp(dir=out_dir, suffix=".tmp")
         try:
             with os.fdopen(descriptor, "wb") as handle:
@@ -136,20 +111,57 @@ def localize_images(
         finally:
             if os.path.exists(temporary):
                 os.unlink(temporary)
-        resolved[stem] = f"{IMAGE_PREFIX}{path.name}"
+        resolved[name] = f"{IMAGE_PREFIX}{path.name}"
 
     for record in scores.values():
         if not _is_remote(record.get("image")):
             continue
-        stem = _stem(record)
-        if stem in resolved:
-            record["image"] = resolved[stem]
+        name = stem(record)
+        if name in resolved:
+            record["image"] = resolved[name]
 
     return scores
 
 
+def prune_base_logos(scores: dict, out_dir: Path = LOGO_DIR, log=print) -> int:
+    """Delete the 160x60 lockups that the square marks have replaced.
+
+    Only when both derived sizes exist — otherwise the lockup is the only mark the
+    page has. Records are repointed at the tile file, so `image` never names a file
+    that is not there.
+    """
+    variants = {"tile", "full"}
+    by_image: dict[str, list[dict]] = {}
+    for record in scores.values():
+        image = record.get("image")
+        if not isinstance(image, str) or not image.startswith(IMAGE_PREFIX):
+            continue
+        if Path(image).parent.name in variants:
+            continue
+        by_image.setdefault(image, []).append(record)
+
+    removed = 0
+    for image, group in by_image.items():
+        name = stem(group[0])
+        tile = _existing(out_dir / "tile", name)
+        larger = _existing(out_dir / "full", name)
+        base = out_dir / Path(image).name
+        if not (tile and larger and base.exists()):
+            continue
+
+        base.unlink()
+        removed += 1
+        for record in group:
+            record["image"] = f"{IMAGE_PREFIX}tile/{tile.name}"
+
+    if removed:
+        log(f"pruned {removed} base lockup(s)")
+    return removed
+
+
 def main(argv: list[str]) -> int:
     force = "--force" in argv
+    prune = "--prune" in argv
 
     if not SCORES_PATH.exists():
         print(f"no scores yet. run the crawl first: {SCORES_PATH}")
@@ -157,6 +169,8 @@ def main(argv: list[str]) -> int:
 
     scores = json.loads(SCORES_PATH.read_text(encoding="utf-8"))
     localize_images(scores, force=force)
+    if prune:
+        prune_base_logos(scores)
     write_atomic(SCORES_PATH, scores)
 
     local = sum(1 for record in scores.values() if str(record.get("image", "")).startswith(IMAGE_PREFIX))

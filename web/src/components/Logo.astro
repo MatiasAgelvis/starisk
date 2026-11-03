@@ -14,7 +14,7 @@
 // The 160x60 lockup in `scores.json` is the fallback — some providers put a
 // course photo there instead of a logo.
 import logoTones from '../data/logo-tones.json';
-import logoSizes from '../data/logo-sizes.json';
+import { logoFull, logoTile } from '../lib/logos.js';
 
 interface Props {
   src?: string | null;
@@ -23,12 +23,10 @@ interface Props {
 }
 
 const { src, full = false, class: className = 'h-9 w-9' } = Astro.props;
-// The generated maps are sparse, so widen them before indexing by an arbitrary path.
+// The generated map is sparse, so widen it before indexing by an arbitrary path.
 const tones: Record<string, string> = logoTones;
-const sizes: Record<string, { tile?: string; full?: string }> = logoSizes;
 
-const entry = src != null ? sizes[src] : undefined;
-const image = (full ? (entry?.full ?? entry?.tile) : entry?.tile) ?? src;
+const image = full ? logoFull(src) : logoTile(src);
 const darkChip = image != null && tones[image] === 'dark';
 ---
 

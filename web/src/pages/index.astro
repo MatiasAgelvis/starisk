@@ -4,9 +4,9 @@ import ScoreTable from '../components/ScoreTable.svelte';
 import Lookup from '../components/Lookup.svelte';
 import { buildInstructors, teacherIndex } from '../lib/instructors.js';
 import { buildLookup } from '../lib/lookup.js';
-import scores from '../data/scores.json';
+import { courses } from '../lib/courses.js';
 
-const rows = Object.entries(scores)
+const rows = Object.entries(courses)
   .filter(([, record]) => typeof record.starisk === 'number')
   .map(([slug, record]) => ({
     slug,
@@ -22,10 +22,10 @@ const rows = Object.entries(scores)
 // The lookup island only needs the numbers. Passing the whole records would ship
 // every description and review body to the browser with the homepage. Failed
 // scrapes are excluded: they have no score and no state the island can render.
-const lookup = buildLookup(scores);
+const lookup = buildLookup(courses);
 
 // Coursera profile slug -> our page, so pasting either URL works.
-const teachers = teacherIndex(buildInstructors(scores));
+const teachers = teacherIndex(buildInstructors(courses));
 ---
 
 <Base title="Starisk — what learners actually say">

@@ -182,9 +182,10 @@ deploy that ships only `web/`), the committed copy is kept.
   (default: `https://starisk.pages.dev`).
 - `/data/scores.json` is published as a file — the whole dataset, CORS `*`.
 - Provider logos are committed in `web/public/logos/`, so no download runs at
-  build time. `mise run pipeline:logos` fetches any that are missing, plus the
-  `tile/` and `full/` sizes the tables and course pages draw — the crawl writes
-  remote URLs back into `scores.json`, so this step follows every crawl.
+  build time. `mise run pipeline:logos` fetches any that are missing and derives
+  the `tile/` and `full/` sizes the tables and course pages draw. `--prune` drops
+  the 160px lockup once a provider has both; the crawl keeps local logo paths, so
+  neither step is needed *after* a crawl to keep `scores.json` honest.
 - `web/public/_headers` sets caching for Cloudflare Pages (ignored elsewhere).
 
 ### Layout
@@ -196,7 +197,7 @@ pipeline/      Python — crawler, scoring engine, calibration
                groupings.json (derived program index), programs.json (program seeds)
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
-  public/logos/  provider logos: the 160px lockup, plus tile/ and full/ marks
+  public/logos/  provider logos: tile/ and full/ marks, plus a lockup fallback
   src/pages/instructors/  the teacher directory (a derived view, not a crawl unit)
   src/pages/programs/     the program directory (derived from groupings.json)
 calibration/   my own 74 credentials, for measuring the model
