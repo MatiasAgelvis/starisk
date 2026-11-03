@@ -516,6 +516,46 @@ class CacheTest(unittest.TestCase):
         self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertEqual(scores["learn/a"]["scrapedAt"], "2026-01-01T00:00:00+00:00")
 
+    def test_an_empty_page_does_not_erase_a_scored_record(self):
+        existing = {
+            "learn/a": {"starisk": 4.2, "reviews": 10, "scrapedAt": "old"}
+        }
+
+        scores = crawl(
+            ["learn/a"],
+            fetch=lambda url: EMPTY_HTML,
+            existing=existing,
+            now=STAMP,
+        )
+
+        self.assertEqual(scores["learn/a"]["starisk"], 4.2)
+        self.assertEqual(scores["learn/a"]["scrapedAt"], STAMP.isoformat())
+
+    def test_a_missing_landing_page_keeps_the_previous_metadata(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        existing = {
+            "learn/a": {
+                "starisk": 2.2,
+                "scrapedAt": "2026-01-01T00:00:00+00:00",
+                "instructors": [{"name": "Ada Lovelace", "page": "ada-lovelace"}],
+                "categories": ["Computer Science"],
+            }
+        }
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", reviews, directory)
+            scores = crawl(
+                ["learn/a"],
+                existing=existing,
+                now=STAMP,
+                offline=True,
+                cache_dir=directory,
+            )
+
+        self.assertEqual(scores["learn/a"]["instructors"], existing["learn/a"]["instructors"])
+        self.assertEqual(scores["learn/a"]["categories"], ["Computer Science"])
+
     def test_offline_missing_cache_leaves_a_good_record_alone(self):
         with TemporaryDirectory() as tmp:
             existing = {"learn/a": {"starisk": 3.3, "scrapedAt": "2026-01-01T00:00:00+00:00"}}

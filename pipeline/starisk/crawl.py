@@ -338,24 +338,49 @@ def crawl(
                 break
 
         result = score_page(html)
+        previous = scores.get(key) or {}
         if result is None:
             # Never overwrite a good record with a failed parse.
-            record = scores.get(key) or {}
-            record["error"] = "no reviews parsed (markup changed?)"
-            scores[key] = record
+            previous["error"] = "no reviews parsed (markup changed?)"
+            scores[key] = previous
+        elif result.get("no_reviews") and "starisk" in previous:
+            # Fail safe: a course that once had readable reviews should not lose
+            # its score because Coursera is showing the empty state today.
+            previous["scrapedAt"] = previous.get("scrapedAt", stamp) if offline else stamp
+            scores[key] = previous
         else:
             if landing:
-                result.update(extract_landing(landing))
+                landing_data = extract_landing(landing)
                 # The landing page is the description page: title, provider,
                 # image and level live there. The reviews page sometimes carries
                 # the site's boilerplate instead (seen on every specialization),
                 # so the landing wins whenever it has something to say.
+                for field in ("instructors", "categories"):
+                    if landing_data.get(field):
+                        result[field] = landing_data[field]
                 details = extract_details(landing)
                 for field in ("title", "provider", "image", "description", "level", "enrollment"):
                     if details.get(field):
                         result[field] = details[field]
+
+            # The reviews page carries neither the teaching team nor the subjects,
+            # and its metadata can be missing or boilerplate. If the landing page
+            # was unavailable (offline, or a transient failure), keep what the
+            # last good parse found instead of erasing it.
+            for field in (
+                "title",
+                "provider",
+                "description",
+                "image",
+                "level",
+                "enrollment",
+                "instructors",
+                "categories",
+            ):
+                if not result.get(field) and previous.get(field):
+                    result[field] = previous[field]
+
             # Re-parsing a cached page is not a fresh scrape: keep the old stamp.
-            previous = scores.get(key) or {}
             stamped = previous.get("scrapedAt", stamp) if offline else stamp
             scores[key] = {**result, "slug": key, "scrapedAt": stamped}
 
