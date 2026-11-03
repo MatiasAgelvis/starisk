@@ -1,9 +1,18 @@
 <script>
+  import { untrack } from 'svelte';
   import Stars from './Stars.svelte';
   import { verdictOf, VERDICT } from '../lib/verdict.js';
   import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
 
-  let { rows = [], pageSize = 25 } = $props();
+  let {
+    rows = [],
+    pageSize = 25,
+    showFilters = true,
+    showCoTeachers = false,
+    compact = false,
+    defaultSortKey = 'inflation',
+    defaultSortDir = 'desc',
+  } = $props();
 
   let query = $state('');
   let verdict = $state('all');
@@ -12,8 +21,10 @@
   // hidden by default — but the count below always says how many are hidden, and
   // the toggle is one click away. Never hide them silently.
   let hideLow = $state(true);
-  let sortKey = $state('inflation');
-  let sortDir = $state('desc');
+  // Props are read once at mount (untrack says so explicitly): from then on
+  // the table owns the sort order.
+  let sortKey = $state(untrack(() => defaultSortKey));
+  let sortDir = $state(untrack(() => defaultSortDir));
   let page = $state(1);
 
   const VERDICTS = [
@@ -27,13 +38,42 @@
     { key: 'title', label: 'Course', align: 'text-left', width: 'w-[56%] sm:w-[50%]' },
     { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[13%]', hide: true },
     { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[22%] sm:w-[13%]' },
-    { key: 'inflation', label: 'Inflation', align: 'text-right', width: 'w-[22%] sm:w-[12%]' },
+    { key: 'inflation', label: 'Inflation', align: 'text-right', width: 'w-[22%] sm:w-[12%]', compactHide: true },
     { key: 'verdict', label: 'Verdict', align: 'text-left', width: 'w-[12%]', hide: true },
   ];
 
+  // Percentages work on the wide leaderboard, but the detail pages are max-w-3xl:
+  // there the numeric columns would be starved and their contents would spill
+  // into the neighbouring cells. Compact mode sizes them to their content and
+  // lets the title take whatever is left — and the title wraps rather than
+  // truncating, because a course list often shares a prefix ("Calculus
+  // through…") and an ellipsis hides the only part that tells them apart.
+  const COMPACT_WIDTH = {
+    title: 'w-auto',
+    coursera: 'w-[6.5rem]',
+    starisk: 'w-[6.5rem]',
+    inflation: 'w-[7rem]',
+    verdict: 'w-[7rem]',
+  };
+
+  function widthOf(column) {
+    return compact ? COMPACT_WIDTH[column.key] : column.width;
+  }
+
+  // A phone only has room for the course and its score; the rest of the columns
+  // return at sm.
+  function hiddenClass(column) {
+    return column.hide || (compact && column.compactHide) ? 'hidden sm:table-cell' : '';
+  }
+
+  /** Leaderboard rows use `slug`; the per-person and per-program rows use `key`. */
+  function idOf(row) {
+    return row.slug ?? row.key;
+  }
+
   /** Coursera minus Starisk. Positive = the headline is above the reviews. */
   function inflationOf(row) {
-    return row.coursera == null ? null : row.coursera - row.starisk;
+    return row.coursera == null || row.starisk == null ? null : row.coursera - row.starisk;
   }
 
   function verdictKey(row) {
@@ -41,7 +81,7 @@
   }
 
   function value(row, key) {
-    if (key === 'title') return (row.title ?? row.slug).toLowerCase();
+    if (key === 'title') return (row.title ?? idOf(row)).toLowerCase();
     if (key === 'inflation' || key === 'verdict') return inflationOf(row);
     return row[key] ?? null;
   }
@@ -106,13 +146,13 @@
   const filtered = $derived.by(() => {
     const needle = query.trim().toLowerCase();
     return rows.filter((row) => {
-      if (hideLow && row.low) return false;
-      if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
-      if (topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
+      if (showFilters) {
+        if (hideLow && row.low) return false;
+        if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
+        if (topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
+      }
       if (!needle) return true;
-      return `${row.title ?? ''} ${row.provider ?? ''} ${row.slug}`
-        .toLowerCase()
-        .includes(needle);
+      return `${row.title ?? ''} ${row.provider ?? ''} ${idOf(row)}`.toLowerCase().includes(needle);
     });
   });
 
@@ -127,60 +167,62 @@
   const narrowed = $derived(ordered.length !== rows.length);
 </script>
 
-<div class="mb-4 flex flex-col gap-3">
-  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-    <div class="flex flex-wrap gap-2">
-      {#each VERDICTS as option (option.id)}
+{#if showFilters}
+  <div class="mb-4 flex flex-col gap-3">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex flex-wrap gap-2">
+        {#each VERDICTS as option (option.id)}
+          <button
+            class="btn btn-sm whitespace-nowrap {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
+            aria-pressed={verdict === option.id}
+            onclick={() => pickVerdict(option.id)}
+          >
+            {option.label}
+          </button>
+        {/each}
         <button
-          class="btn btn-sm whitespace-nowrap {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
-          aria-pressed={verdict === option.id}
-          onclick={() => pickVerdict(option.id)}
+          class="btn btn-sm whitespace-nowrap {hideLow ? 'btn-neutral' : 'btn-ghost'}"
+          aria-pressed={hideLow}
+          onclick={toggleLow}
         >
-          {option.label}
+          Hide small samples{#if lowCount} <span class="opacity-50">{lowCount}</span>{/if}
         </button>
-      {/each}
-      <button
-        class="btn btn-sm whitespace-nowrap {hideLow ? 'btn-neutral' : 'btn-ghost'}"
-        aria-pressed={hideLow}
-        onclick={toggleLow}
-      >
-        Hide small samples{#if lowCount} <span class="opacity-50">{lowCount}</span>{/if}
-      </button>
+      </div>
+
+      <input
+        class="input input-sm w-full sm:w-56"
+        value={query}
+        oninput={search}
+        placeholder="Filter by course, provider…"
+        aria-label="Filter courses"
+      />
     </div>
 
-    <input
-      class="input input-sm w-full sm:w-56"
-      value={query}
-      oninput={search}
-      placeholder="Filter by course, provider…"
-      aria-label="Filter courses"
-    />
-  </div>
-
-  <div class="flex flex-wrap items-center gap-1.5">
-    <span class="mr-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
-      Topic
-    </span>
-    <button
-      class="btn btn-xs whitespace-nowrap {topic === 'all' ? 'btn-neutral' : 'btn-ghost'}"
-      aria-pressed={topic === 'all'}
-      onclick={() => pickTopic('all')}
-    >
-      All <span class="opacity-50">{rows.length}</span>
-    </button>
-    {#each topics as [name, count] (name)}
+    <div class="flex flex-wrap items-center gap-1.5">
+      <span class="mr-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+        Topic
+      </span>
       <button
-        class="btn btn-xs whitespace-nowrap {topic === name ? 'btn-neutral' : 'btn-ghost'}"
-        aria-pressed={topic === name}
-        onclick={() => pickTopic(name)}
+        class="btn btn-xs whitespace-nowrap {topic === 'all' ? 'btn-neutral' : 'btn-ghost'}"
+        aria-pressed={topic === 'all'}
+        onclick={() => pickTopic('all')}
       >
-        {name} <span class="opacity-50">{count}</span>
+        All <span class="opacity-50">{rows.length}</span>
       </button>
-    {/each}
+      {#each topics as [name, count] (name)}
+        <button
+          class="btn btn-xs whitespace-nowrap {topic === name ? 'btn-neutral' : 'btn-ghost'}"
+          aria-pressed={topic === name}
+          onclick={() => pickTopic(name)}
+        >
+          {name} <span class="opacity-50">{count}</span>
+        </button>
+      {/each}
+    </div>
   </div>
-</div>
+{/if}
 
-<!-- No overflow container: the table is fixed-width with truncating cells, so
+<!-- No overflow container: the table is fluid and its columns shrink, so
      anything wider than the viewport would be a bug — and a nested scroller
      swallows vertical drags on phones. -->
 <div>
@@ -188,7 +230,10 @@
     <thead>
       <tr>
         {#each COLUMNS as column (column.key)}
-          <th class="{column.align} {column.width} {column.hide ? 'hidden sm:table-cell' : ''}" aria-sort={ariaSort(column.key)}>
+          <th
+            class="{column.align} {widthOf(column)} {hiddenClass(column)}"
+            aria-sort={ariaSort(column.key)}
+          >
             <button
               class="inline-flex items-center gap-1 font-semibold hover:underline"
               onclick={() => sortBy(column.key)}
@@ -203,9 +248,10 @@
       </tr>
     </thead>
     <tbody>
-      {#each visible as row (row.slug)}
+      {#each visible as row (idOf(row))}
         {@const inflation = inflationOf(row)}
         {@const style = VERDICT[verdictKey(row)]}
+        {@const scored = typeof row.starisk === 'number'}
         <tr>
           <td>
             <div class="flex items-center gap-3">
@@ -222,28 +268,51 @@
                 />
               </span>
               <div class="min-w-0">
-                <div class="truncate font-medium">
-                  <a class="link link-hover" href={`/${row.slug}`}>{row.title ?? row.slug}</a>
+                <div class={compact ? 'font-medium' : 'truncate font-medium'}>
+                  {#if scored}
+                    <a class="link link-hover" href={`/${idOf(row)}`}>{row.title ?? idOf(row)}</a>
+                  {:else}
+                    {row.title ?? idOf(row)}
+                  {/if}
                 </div>
                 <div class="truncate text-xs text-base-content/50">
-                  {row.provider ?? 'Unknown provider'}{#if row.low}{' '}<span class="text-warning/80">· low sample</span>{/if}
+                  {row.provider ?? 'Unknown provider'}{#if row.low}{' '}<span class="text-warning/80"
+                      >· low sample</span
+                    >{/if}
                 </div>
+                {#if showCoTeachers && row.co?.length}
+                  <div class="truncate text-xs text-base-content/60">
+                    with{' '}
+                    {#each row.co as other, index (other.page)}
+                      {#if index > 0}{', '}{/if}<a
+                        class="link link-hover"
+                        href={`/instructors/${other.page}`}>{other.name}</a
+                      >
+                    {/each}
+                  </div>
+                {/if}
               </div>
             </div>
           </td>
           <td class="hidden text-right sm:table-cell">
             <div class="flex items-center justify-end gap-2">
               <span>{row.coursera == null ? '—' : row.coursera.toFixed(1)}</span>
-              {#if row.coursera != null}<span class="hidden md:inline-flex"><Stars value={row.coursera} /></span>{/if}
+              {#if row.coursera != null && !compact}<span class="hidden md:inline-flex"
+                  ><Stars value={row.coursera} /></span
+                >{/if}
             </div>
           </td>
           <td class="text-right">
-            <div class="flex items-center justify-end gap-2">
-              <span class="font-bold">{row.starisk.toFixed(1)}</span>
-              <span class="hidden md:inline-flex"><Stars value={row.starisk} /></span>
-            </div>
+            {#if scored}
+              <div class="flex items-center justify-end gap-2">
+                <span class="font-bold">{row.starisk.toFixed(1)}</span>
+                {#if !compact}<span class="hidden md:inline-flex"><Stars value={row.starisk} /></span>{/if}
+              </div>
+            {:else}
+              <span class="badge badge-ghost badge-sm whitespace-nowrap">No score</span>
+            {/if}
           </td>
-          <td class="text-right">
+          <td class="text-right {compact ? 'hidden sm:table-cell' : ''}">
             <div class="flex items-center justify-end gap-2">
               <span class="font-mono text-sm">
                 {inflation == null ? '—' : inflation.toFixed(1)}
@@ -255,7 +324,9 @@
               ></span>
             </div>
           </td>
-          <td class="hidden sm:table-cell"><span class="badge whitespace-nowrap {style.badge}">{style.label}</span></td>
+          <td class="hidden sm:table-cell">
+            <span class="badge whitespace-nowrap {style.badge}">{style.label}</span>
+          </td>
         </tr>
       {/each}
     </tbody>
@@ -266,7 +337,7 @@
       <p>No course matches those filters.</p>
       <button class="btn btn-sm btn-ghost mt-3" onclick={clearFilters}>Reset filters</button>
     </div>
-  {:else}
+  {:else if narrowed || pageCount > 1}
     <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
       <p class="text-xs text-base-content/60" aria-live="polite">
         Showing {first}–{last} of {ordered.length}{narrowed ? ` (${rows.length} total)` : ''}
