@@ -59,6 +59,7 @@ class LocalizeTest(unittest.TestCase):
             self.assertEqual(scores["learn/b"]["image"], "/logos/deeplearning-ai.png")
             self.assertEqual(scores["learn/c"]["image"], "/logos/yale-university.png")
             self.assertTrue((out / "deeplearning-ai.png").exists())
+            self.assertEqual(list(out.glob("*.tmp")), [])
 
     def test_second_run_makes_no_requests(self):
         def failing_fetch(url):

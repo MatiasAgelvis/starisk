@@ -484,6 +484,22 @@ class CacheTest(unittest.TestCase):
             self.assertEqual(load_page("learn/a", directory), "<html>hello</html>")
             self.assertTrue(path_for("learn/a", directory).name.startswith("learn__a"))
 
+    def test_store_leaves_no_temporary_file(self):
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", "<html>hello</html>", directory)
+
+            self.assertEqual(list(directory.glob("*.tmp")), [])
+
+    def test_a_corrupt_cache_file_is_a_miss(self):
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            path = path_for("learn/a", directory)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"not a gzip stream")
+
+            self.assertIsNone(load_page("learn/a", directory))
+
     def test_missing_page_is_none(self):
         with TemporaryDirectory() as tmp:
             self.assertIsNone(load_page("learn/gone", Path(tmp)))
