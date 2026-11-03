@@ -31,6 +31,7 @@ dir = "pipeline"
 run = """
 python -m starisk.crawl
 python -m starisk.logos
+python -m starisk.logo_hires
 python -m starisk.groupings --write
 """
 
@@ -45,9 +46,12 @@ dir = "pipeline"
 run = "python -m starisk.expand"
 
 [tasks."pipeline:logos"]
-description = "Download provider logos that scores.json references"
+description = "Localise provider logos, then derive the tile/full marks"
 dir = "pipeline"
-run = "python -m starisk.logos"
+run = """
+python -m starisk.logos
+python -m starisk.logo_hires
+"""
 
 [tasks."pipeline:groupings"]
 description = "Rebuild data/groupings.json from cached program pages"

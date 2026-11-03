@@ -183,6 +183,9 @@ calibration against my labels, not aesthetics.**
   program has a Starisk score. Partial programs stay in the index (and have a
   direct URL) but are hidden behind a toggle.
 
+- `description` — JSON-LD `description`. Coursera caps the landing page's copy at
+  500 characters, cut mid-word, while the reviews page carries the full text, so
+  the longer of the two wins.
 - `reviews` — cards we actually read (one page, ~20).
 - `reviews_total` / `ratings_total` — the population, so the sampling is explicit.
 - `instructors` — the complete teaching team, one object per person. Identity is
