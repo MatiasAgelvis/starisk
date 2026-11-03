@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackLink from '../../components/BackLink.astro';
 import Avatar from '../../components/Avatar.astro';
 import Logo from '../../components/Logo.astro';
 import Stars from '../../components/Stars.astro';
@@ -37,7 +38,7 @@ const description = single
 
 <Base title={`${name} — Starisk`} description={description}>
   <article class="mx-auto max-w-3xl">
-    <a href="/instructors" class="link link-hover text-sm text-base-content/60">← all teachers</a>
+    <BackLink fallback="/instructors" />
 
     <header class="mt-4 flex items-start gap-4">
       <Avatar src={person.photo} name={name} class="h-16 w-16 text-lg" />

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackLink from '../../components/BackLink.astro';
 import Logo from '../../components/Logo.astro';
 import Stars from '../../components/Stars.astro';
 import { buildGroupings, typeLabel } from '../../lib/groupings.js';
@@ -25,7 +26,7 @@ const description =
 
 <Base title={`${program.title} — Starisk`} description={description}>
   <article class="mx-auto max-w-3xl">
-    <a href="/programs" class="link link-hover text-sm text-base-content/60">← all programs</a>
+    <BackLink fallback="/programs" />
 
     <header class="mt-4">
       <div class="flex flex-wrap items-center gap-2">

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackLink from '../../components/BackLink.astro';
 import Stars from '../../components/Stars.astro';
 import Logo from '../../components/Logo.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
@@ -64,7 +65,7 @@ function votes(count: number) {
 
 <Base title={`${record.title ?? key} — Starisk`} description={description}>
   <article class="mx-auto max-w-3xl">
-    <a href="/" class="link link-hover text-sm text-base-content/60">← all courses</a>
+    <BackLink fallback="/" />
 
     <header class="mt-4 flex items-start gap-4">
       <Logo src={record.image} class="mt-1 h-12 w-20" />

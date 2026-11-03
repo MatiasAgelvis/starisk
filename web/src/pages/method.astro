@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import BackLink from '../components/BackLink.astro';
 import scores from '../data/scores.json';
 
 const records = Object.values(scores).filter(
@@ -19,7 +20,7 @@ const description =
 
 <Base title="Method — Starisk" description={description}>
   <article class="mx-auto max-w-3xl">
-    <a href="/" class="link link-hover text-sm text-base-content/60">← all courses</a>
+    <BackLink fallback="/" />
 
     <h1 class="font-display mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
       Why this exists, and how it works
