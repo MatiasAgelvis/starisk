@@ -1,10 +1,15 @@
 import io
+import json
 import unittest
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest import mock
 
 from starisk.calibration import (
     correlate,
     disagreements,
+    label_cli,
     parse_args,
     report,
     score_key,
@@ -25,6 +30,47 @@ class ParseArgsTest(unittest.TestCase):
     def test_label_and_parse_are_exclusive(self):
         with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             parse_args(["--label", "--parse", "certificates.md"])
+
+
+class LabelCliTest(unittest.TestCase):
+    def test_saves_answers_and_skips(self):
+        courses = [course("A", "a"), course("B", "b"), course("C", "c")]
+
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "courses.json"
+            path.write_text("[]", encoding="utf-8")
+            with mock.patch("builtins.input", side_effect=["4", "s", "q"]):
+                with redirect_stdout(io.StringIO()):
+                    result = label_cli(courses, path)
+            saved = json.loads(path.read_text(encoding="utf-8"))
+
+        self.assertEqual(result, 0)
+        self.assertEqual(saved[0]["label"], 4.0)
+        self.assertIsNone(saved[1]["label"])
+        self.assertIsNone(saved[2]["label"])
+
+    def test_nothing_left_to_label_does_not_prompt(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "courses.json"
+            path.write_text("[]", encoding="utf-8")
+            with mock.patch("builtins.input") as prompt:
+                with redirect_stdout(io.StringIO()):
+                    result = label_cli([course("A", "a", 4)], path)
+
+        self.assertEqual(result, 0)
+        prompt.assert_not_called()
+
+    def test_a_non_number_is_skipped(self):
+        courses = [course("A", "a")]
+
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "courses.json"
+            path.write_text("[]", encoding="utf-8")
+            with mock.patch("builtins.input", side_effect=["not a number", "q"]):
+                with redirect_stdout(io.StringIO()):
+                    label_cli(courses, path)
+
+        self.assertIsNone(courses[0]["label"])
 
 
 class ScoreKeyTest(unittest.TestCase):
