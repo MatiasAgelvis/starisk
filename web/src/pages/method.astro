@@ -1,11 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import BackLink from '../components/BackLink.astro';
-import scores from '../data/scores.json';
+import { courses, isRated } from '../lib/courses.js';
 
-const records = Object.values(scores).filter(
-  (record) => typeof record.starisk === 'number' && typeof record.coursera === 'number',
-);
+const records = Object.values(courses).filter(isRated);
 const count = records.length;
 const meanCoursera = count ? records.reduce((total, r) => total + r.coursera, 0) / count : 0;
 const meanStarisk = count ? records.reduce((total, r) => total + r.starisk, 0) / count : 0;

@@ -2,7 +2,7 @@
   import { untrack } from 'svelte';
   import Stars from './Stars.svelte';
   import logoTones from '../data/logo-tones.json';
-  import logoSizes from '../data/logo-sizes.json';
+  import { logoTile } from '../lib/logos.js';
   import { verdictOf, VERDICT } from '../lib/verdict.js';
   import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
 
@@ -254,8 +254,7 @@
         {@const inflation = inflationOf(row)}
         {@const style = VERDICT[verdictKey(row)]}
         {@const scored = typeof row.starisk === 'number'}
-        {@const logoSrc =
-          (row.image != null ? logoSizes[row.image]?.tile : null) ?? row.image ?? '/coursera-logo.png'}
+        {@const logoSrc = logoTile(row.image) ?? '/coursera-logo.png'}
         {@const darkChip = logoTones[logoSrc] === 'dark'}
         <tr>
           <td>

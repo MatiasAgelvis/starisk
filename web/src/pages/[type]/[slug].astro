@@ -4,11 +4,11 @@ import BackLink from '../../components/BackLink.astro';
 import Stars from '../../components/Stars.astro';
 import Logo from '../../components/Logo.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
-import scores from '../../data/scores.json';
+import { courses, isScoredEntry } from '../../lib/courses.js';
 
 export function getStaticPaths() {
-  return Object.entries(scores)
-    .filter(([, record]) => typeof record.starisk === 'number')
+  return Object.entries(courses)
+    .filter(isScoredEntry)
     .map(([key, record]) => {
       const [type, slug] = key.split('/');
       return { params: { type, slug }, props: { record, key } };
@@ -207,7 +207,7 @@ const about = splitDescription(aboutText);
     }
 
     {
-      lowShare != null && record.coursera != null && (
+      lowShare != null && ratingsTotal != null && record.coursera != null && (
         <p class="mt-4 text-sm text-base-content/70">
           Coursera's {record.coursera.toFixed(1)} comes from{' '}
           <strong>{ratingsTotal.toLocaleString('en-GB')} ratings</strong>. Of those,{' '}
