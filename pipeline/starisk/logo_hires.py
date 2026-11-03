@@ -10,7 +10,10 @@ So we keep two sizes of that mark:
 
     web/public/logos/tile/<stem>.<ext>   dpr=1, ~180px  (tables)
     web/public/logos/full/<stem>.<ext>   dpr=2, 360-720px (course page)
-    web/src/data/logo-sizes.json         {"/logos/<stem>": {"tile": …, "full": …}}
+    web/src/data/logo-sizes.json         {"<stem>": {"tile": …, "full": …}}
+
+Keyed by provider stem rather than by image path: `logos.py --prune` repoints
+`image` at the tile file, and a path key would stop matching the moment it did.
 
 A table cell is ~36px, so the dpr=1 render is already 2x oversampled on a Retina
 screen and a third of the weight of the dpr=2 one. The small original stays where
@@ -36,7 +39,8 @@ from pathlib import Path
 from .cache import CACHE_DIR, load_page
 from .crawl import SCORES_PATH, write_atomic
 from .fetch import fetch_bytes
-from .logos import IMAGE_PREFIX, LOGO_DIR, sniff_extension
+from .logos import LOGO_DIR, sniff_extension
+from .naming import IMAGE_PREFIX, stem
 
 # name -> device pixel ratio. The directory is named after the size, not the dpr,
 # so the web build can ask for a role ("tile", "full") rather than a number.
@@ -102,14 +106,10 @@ def localize_hires(
         image = record.get("image")
         if not isinstance(image, str) or not image.startswith(IMAGE_PREFIX):
             continue
-        # Already a variant path: nothing to localize.
-        if Path(image).parent.name in dict(VARIANTS):
-            continue
-        keys_by_image.setdefault(image, []).append(key)
+        keys_by_image.setdefault(stem(record), []).append(key)
 
     mapping: dict[str, dict[str, str]] = {}
-    for image, keys in keys_by_image.items():
-        stem = Path(image).stem
+    for name, keys in keys_by_image.items():
         url: str | None = None
         sizes: dict[str, str] = {}
 
@@ -117,31 +117,31 @@ def localize_hires(
             directory = out_dir / variant
             directory.mkdir(parents=True, exist_ok=True)
 
-            found = _existing(directory, stem)
+            found = _existing(directory, name)
             if found is None:
                 if url is None:
                     url = _find_url(keys, cache_dir) or ""
                 if not url:
-                    log(f"  ! no header logo for {stem} (page not cached)")
+                    log(f"  ! no header logo for {name} (page not cached)")
                     break
 
                 try:
                     body = fetch(hires_url(url, dpr))
                 except Exception as error:  # noqa: BLE001 - a logo must not stop the run
-                    log(f"  ! {variant} failed ({stem}): {error}")
+                    log(f"  ! {variant} failed ({name}): {error}")
                     continue
 
                 extension = sniff_extension(body)
                 if extension is None:
-                    log(f"  ! {variant} skipped ({stem}): unrecognised image format")
+                    log(f"  ! {variant} skipped ({name}): unrecognised image format")
                     continue
 
-                found = _write(directory / f"{stem}{extension}", body)
+                found = _write(directory / f"{name}{extension}", body)
 
             sizes[variant] = f"{IMAGE_PREFIX}{variant}/{found.name}"
 
         if sizes:
-            mapping[image] = sizes
+            mapping[name] = sizes
 
     return mapping
 
