@@ -98,6 +98,7 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D23 | Instructor pages are keyed by **Coursera's id**, linked by its slug, and **URL'd by a readable slug** | The id is the only stable identity (names collide, slugs get assigned later). But 12 of 30 have no vanity slug, and `/instructors/~219741545` is a bad URL, so the page slug falls back to the name (`kara-pritchard`). The outbound link always goes to Coursera's profile. |
 | D24 | Instructor photos are **remote and `loading="lazy"`**, like course thumbnails — not self-hosted like provider logos | Deliberate exception to D20: there are 30 faces, they change, and only the rows a visitor scrolls to fetch anything. Logos were 4 files that must never flicker; photos are a directory you browse. Initials render behind each photo and take over if it 404s. |
 | D25 | The crawl list grows along **edges that already exist**: certificate specializations → their constituent courses, and indexed teachers → their other courses. Not by sampling the sitemap | A random sample of 23k slugs produces a leaderboard nobody cares about. Expanding along the two graphs the corpus already has is coherent (each new course belongs next to one already scored) and costs one cached request per parent page. Measured on the first run: 74 new courses from 30 teacher profiles, 8 from 7 certificates. |
+| D26 | **Programs are a derived surface, not a crawl unit.** `/programs` + `/programs/...`, built from `groupings.json` | A specialization or Professional Certificate is a many-to-many relationship. `groupings.json` is generated from cached program pages and its `courses` are foreign keys into `scores.json`, so a program does not need its own scored umbrella record. The course average is review-weighted like the teacher directory; the program's own umbrella rating is shown when we have it. |
 
 ## 7. The scoring model
 
@@ -154,6 +155,27 @@ calibration against my labels, not aesthetics.**
   }
 }
 ```
+
+`groupings.json` — the derived program index (the `programs` table plus the
+`program_courses` join):
+```json
+{
+  "specializations/algorithms": {
+    "key": "specializations/algorithms",
+    "type": "specialization",
+    "title": "Algorithms",
+    "url": "https://www.coursera.org/specializations/algorithms",
+    "courses": ["learn/algorithms-part1", "learn/algorithms-part2"]
+  }
+}
+```
+
+- `courses` are foreign keys into `scores.json`; a course can appear in several
+  programs.
+- Generated from cached program pages by `python -m starisk.groupings --write`.
+  It is a derived index, not a second source of truth.
+- `type` is `specialization` or `professional-certificate`; the parser supports
+  both because they use the same course-list hook.
 
 - `reviews` — cards we actually read (one page, ~20).
 - `reviews_total` / `ratings_total` — the population, so the sampling is explicit.
