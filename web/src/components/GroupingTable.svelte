@@ -7,7 +7,7 @@
 
   let query = $state('');
   let type = $state('all');
-  let completeOnly = $state(true);
+  let hideIncomplete = $state(true);
   let sortKey = $state('average');
   let sortDir = $state('desc');
   let page = $state(1);
@@ -51,8 +51,8 @@
     page = 1;
   }
 
-  function toggleComplete() {
-    completeOnly = !completeOnly;
+  function toggleIncomplete() {
+    hideIncomplete = !hideIncomplete;
     page = 1;
   }
 
@@ -64,7 +64,7 @@
   function clearFilters() {
     query = '';
     type = 'all';
-    completeOnly = true;
+    hideIncomplete = true;
     page = 1;
   }
 
@@ -74,12 +74,12 @@
 
   const completeCount = $derived(rows.filter((row) => row.complete).length);
   const partialCount = $derived(rows.length - completeCount);
-  const availableCount = $derived(completeOnly ? completeCount : rows.length);
+  const availableCount = $derived(hideIncomplete ? completeCount : rows.length);
 
   const typeCounts = $derived.by(() => {
     const counts = new Map();
     for (const row of rows) {
-      if (completeOnly && !row.complete) continue;
+      if (hideIncomplete && !row.complete) continue;
       counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
     }
     return counts;
@@ -88,7 +88,7 @@
   const filtered = $derived.by(() => {
     const needle = query.trim().toLowerCase();
     return rows.filter((row) => {
-      if (completeOnly && !row.complete) return false;
+      if (hideIncomplete && !row.complete) return false;
       if (type !== 'all' && row.type !== type) return false;
       if (!needle) return true;
       return `${row.title ?? ''} ${row.provider ?? ''} ${typeLabel(row.type)}`
@@ -122,11 +122,11 @@
       </button>
     {/each}
     <button
-      class="btn btn-sm whitespace-nowrap {completeOnly ? 'btn-neutral' : 'btn-ghost'}"
-      aria-pressed={completeOnly}
-      onclick={toggleComplete}
+      class="btn btn-sm whitespace-nowrap {hideIncomplete ? 'btn-neutral' : 'btn-ghost'}"
+      aria-pressed={hideIncomplete}
+      onclick={toggleIncomplete}
     >
-      Complete sets only
+      Hide incomplete sets
       {#if partialCount}<span class="opacity-50">{partialCount}</span>{/if}
     </button>
   </div>
@@ -210,7 +210,7 @@
   {#if ordered.length === 0}
     <div class="py-10 text-center text-sm text-base-content/60">
       <p>
-        {completeOnly
+        {hideIncomplete
           ? 'No complete program matches those filters.'
           : 'No program matches those filters.'}
       </p>
