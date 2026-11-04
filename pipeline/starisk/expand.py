@@ -22,6 +22,7 @@ Parent pages are cached, so a second run costs no requests.
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -33,6 +34,7 @@ from .cache import CACHE_DIR, load_page, store_page
 from .crawl import SCORES_PATH, SOURCES_PATH, normalize_source, write_atomic
 from .fetch import fetch_page
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
+from .sitemap import load_slugs as load_cached_slugs
 
 SITEMAP_URL = "https://www.coursera.org/sitemap~www~specializations.xml"
 SPECIALIZATION_URL = "https://www.coursera.org/specializations/{slug}"
@@ -55,21 +57,13 @@ def load_slugs(
     cache_path: Path = SITEMAP_CACHE,
 ) -> list[str]:
     """Specialization slugs from Coursera's sitemap, cached to disk."""
-    if not cache_path.exists() or refresh:
-        xml = fetch(SITEMAP_URL)
-        found = []
-        for loc in re.findall(r"<loc>([^<]+)</loc>", xml):
-            if "/specializations/" in loc:
-                slug = loc.rsplit("/specializations/", 1)[1].strip("/")
-                if slug:
-                    found.append(slug)
-        cache_path.parent.mkdir(parents=True, exist_ok=True)
-        cache_path.write_text("\n".join(sorted(set(found))) + "\n", encoding="utf-8")
-    return [
-        line.strip()
-        for line in cache_path.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    return load_cached_slugs(
+        SITEMAP_URL,
+        "/specializations/",
+        cache_path,
+        fetch=fetch,
+        refresh=refresh,
+    )
 
 
 def _page(key: str, url: str, fetch, delay, sleep, cache_dir) -> str | None:
@@ -206,14 +200,29 @@ def plan(
     return new, lines
 
 
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        prog="python -m starisk.expand",
+        description="Grow data/sources.json from specializations and instructor profiles.",
+    )
+    parser.add_argument("--write", action="store_true", help="extend data/sources.json")
+    parser.add_argument("--refresh", action="store_true", help="re-download the sitemap")
+    parser.add_argument(
+        "--specializations",
+        action="store_true",
+        help="use only the specialization lever",
+    )
+    parser.add_argument(
+        "--instructors",
+        action="store_true",
+        help="use only the instructor lever",
+    )
+    parser.add_argument("--limit", type=int, help="visit at most this many parent pages")
+    return parser.parse_args(argv)
+
+
 def main(argv: list[str]) -> int:
-    write = "--write" in argv
-    refresh = "--refresh" in argv
-    only_specializations = "--specializations" in argv
-    only_instructors = "--instructors" in argv
-    limit = None
-    if "--limit" in argv:
-        limit = int(argv[argv.index("--limit") + 1])
+    options = parse_args(argv)
 
     entries = (
         json.loads(CALIBRATION_PATH.read_text(encoding="utf-8"))
@@ -230,14 +239,14 @@ def main(argv: list[str]) -> int:
         entries,
         existing=sources,
         delay=DELAY,
-        specializations=only_specializations or not only_instructors,
-        instructors=only_instructors or not only_specializations,
-        limit=limit,
-        refresh=refresh,
+        specializations=options.specializations or not options.instructors,
+        instructors=options.instructors or not options.specializations,
+        limit=options.limit,
+        refresh=options.refresh,
     )
     print("\n".join(lines))
 
-    if not write:
+    if not options.write:
         print("\nreport only. re-run with --write to add them to data/sources.json.")
         return 0
 

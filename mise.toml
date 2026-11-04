@@ -9,6 +9,7 @@
 [tools]
 node = "24"
 python = "3.13"
+ruff = "latest"
 
 [tasks.setup]
 description = "Install the front-end dependencies"
@@ -19,12 +20,19 @@ description = "Run the Python pipeline tests"
 dir = "pipeline"
 run = "python -m unittest discover -s tests"
 
+[tasks."pipeline:lint"]
+description = "Lint the Python pipeline"
+dir = "pipeline"
+run = "ruff check ."
+
 [tasks."pipeline:crawl"]
 description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
 dir = "pipeline"
 run = """
 python -m starisk.crawl
 python -m starisk.logos
+python -m starisk.logo_hires
+python -m starisk.groupings --write
 """
 
 [tasks."pipeline:add"]
@@ -38,9 +46,22 @@ dir = "pipeline"
 run = "python -m starisk.expand"
 
 [tasks."pipeline:logos"]
-description = "Download provider logos that scores.json references"
+description = "Localise provider logos, then derive the tile/full marks"
 dir = "pipeline"
-run = "python -m starisk.logos"
+run = """
+python -m starisk.logos
+python -m starisk.logo_hires
+"""
+
+[tasks."pipeline:groupings"]
+description = "Rebuild data/groupings.json from cached program pages"
+dir = "pipeline"
+run = "python -m starisk.groupings --write"
+
+[tasks."pipeline:seed-programs"]
+description = "Fetch seeded program pages, then rebuild data/groupings.json"
+dir = "pipeline"
+run = "python -m starisk.groupings --fetch --write"
 
 [tasks."pipeline:calibration"]
 description = "Compare my labels with the model (Spearman); --label to add labels"
@@ -67,5 +88,5 @@ description = "Copy fresh scores from the pipeline, then build the site"
 run = "./build.sh"
 
 [tasks.check]
-description = "Run the pipeline tests and build the site"
-depends = ["pipeline:test", "site:build"]
+description = "Lint and test the pipeline, then build the site"
+depends = ["pipeline:lint", "pipeline:test", "site:build"]

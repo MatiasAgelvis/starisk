@@ -1,4 +1,6 @@
+import io
 import unittest
+from contextlib import redirect_stderr
 from datetime import datetime, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -23,6 +25,14 @@ from starisk.fetch import RateLimited
 GOOD_FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 STAMP = datetime(2026, 1, 1, tzinfo=timezone.utc)
 
+EMPTY_HTML = (
+    '<p data-testid="reviews-table-empty">No reviews found</p>'
+    '<script type="application/ld+json">'
+    '{"@type":"Course","name":"Empty Course","provider":{"name":"Test University"},'
+    '"aggregateRating":{"ratingCount":2}}'
+    "</script>"
+)
+
 
 class ScorePageTest(unittest.TestCase):
     def test_scores_a_good_page(self):
@@ -41,6 +51,18 @@ class ScorePageTest(unittest.TestCase):
 
     def test_returns_none_when_there_are_no_reviews(self):
         self.assertIsNone(score_page("<html><body>nothing</body></html>"))
+
+    def test_records_an_explicit_empty_reviews_state(self):
+        result = score_page(EMPTY_HTML)
+
+        self.assertIsNotNone(result)
+        self.assertTrue(result["no_reviews"])
+        self.assertEqual(result["reviews"], 0)
+        self.assertEqual(result["title"], "Empty Course")
+        self.assertEqual(result["provider"], "Test University")
+        self.assertEqual(result["ratings_total"], 2)
+        self.assertNotIn("starisk", result)
+        self.assertNotIn("error", result)
 
     def test_records_the_population_and_the_spread(self):
         result = score_page(GOOD_FIXTURE.read_text(encoding="utf-8"))
@@ -119,6 +141,15 @@ class CrawlTest(unittest.TestCase):
         self.assertEqual(scores["learn/good"]["scrapedAt"], "old")
         self.assertIn("error", scores["learn/good"])
 
+    def test_an_empty_page_is_recorded_as_an_observation(self):
+        scores = crawl(["learn/empty"], fetch=lambda url: EMPTY_HTML, now=STAMP)
+        record = scores["learn/empty"]
+
+        self.assertTrue(record["no_reviews"])
+        self.assertEqual(record["reviews"], 0)
+        self.assertEqual(record["scrapedAt"], STAMP.isoformat())
+        self.assertNotIn("error", record)
+
     def test_throttles_between_requests(self):
         slept = []
 
@@ -173,6 +204,10 @@ class FreshnessTest(unittest.TestCase):
         self.assertFalse(is_fresh({"starisk": 3.0}, self.now, 30))
         self.assertFalse(is_fresh(None, self.now, 30))
 
+    def test_an_empty_course_is_a_real_observation(self):
+        record = {"no_reviews": True, "scrapedAt": "2026-05-20T00:00:00+00:00"}
+        self.assertTrue(is_fresh(record, self.now, 30))
+
     def test_zero_max_age_is_always_stale(self):
         record = {"starisk": 3.0, "scrapedAt": self.now.isoformat()}
         self.assertFalse(is_fresh(record, self.now, 0))
@@ -226,6 +261,44 @@ class IncrementalCrawlTest(unittest.TestCase):
         self.assertNotIn("learn/c", scores)
         self.assertFalse(any("learn/c" in url for url in calls))
 
+    def test_a_landing_rate_limit_keeps_the_scored_reviews_page(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            if url.endswith("/reviews"):
+                return self.html
+            raise RateLimited("HTTP 429")
+
+        scores = crawl(["learn/a", "learn/b"], fetch=fetch, now=STAMP)
+
+        self.assertIn("starisk", scores["learn/a"])
+        self.assertTrue(scores["learn/a"]["landing_error"].startswith("rate limited"))
+        self.assertNotIn("learn/b", scores)
+        self.assertFalse(any("learn/b" in url for url in calls))
+
+    def test_empty_records_age_out_of_the_queue(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return self.html
+
+        existing = {"learn/empty": {"no_reviews": True, "scrapedAt": STAMP.isoformat()}}
+        now = datetime(2026, 1, 2, tzinfo=timezone.utc)
+
+        crawl(
+            ["learn/empty", "learn/new"],
+            fetch=fetch,
+            existing=existing,
+            now=now,
+            max_age_days=30,
+        )
+
+        self.assertEqual(
+            [u for u in calls if u.endswith("/reviews")], [reviews_url("learn/new")]
+        )
+
 
 class ArgsTest(unittest.TestCase):
     def test_defaults(self):
@@ -246,6 +319,58 @@ class ArgsTest(unittest.TestCase):
     def test_force_means_everything_is_stale(self):
         self.assertEqual(parse_args(["--force"])["max_age"], 0.0)
 
+    def test_unknown_flags_are_rejected(self):
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--nope"])
+
+    def test_missing_values_are_rejected(self):
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--limit"])
+
+
+    def test_a_truncated_landing_description_does_not_replace_the_full_one(self):
+        # Coursera caps the landing page's JSON-LD description at 500 characters,
+        # cut mid-word. The reviews page carries the whole thing; it must win.
+        full = "A full sentence about the course. " * 60
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8").replace(
+            "A sample course used to test the parser.", full
+        )
+        landing = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Sample Course","description":"'
+            + full[:500]
+            + '"}'
+            "</script>"
+        )
+
+        def fetch(url):
+            return landing if url.endswith("/learn/a") else reviews
+
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
+
+        self.assertEqual(scores["learn/a"]["description"], full.strip())
+
+    def test_a_richer_landing_description_still_wins(self):
+        # The rule is "longer", not "ignore the landing page": some reviews pages
+        # ship boilerplate, and the landing page is then the only real description.
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8").replace(
+            "A sample course used to test the parser.", "Short."
+        )
+        landing = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Sample Course",'
+            '"description":"A much richer description of the course."}'
+            "</script>"
+        )
+
+        def fetch(url):
+            return landing if url.endswith("/learn/a") else reviews
+
+        with TemporaryDirectory() as tmp:
+            scores = crawl(["learn/a"], fetch=fetch, now=STAMP, cache_dir=Path(tmp))
+
+        self.assertEqual(scores["learn/a"]["description"], "A much richer description of the course.")
 
     def test_landing_page_adds_instructors_and_categories(self):
         reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
@@ -419,6 +544,22 @@ class CacheTest(unittest.TestCase):
             self.assertEqual(load_page("learn/a", directory), "<html>hello</html>")
             self.assertTrue(path_for("learn/a", directory).name.startswith("learn__a"))
 
+    def test_store_leaves_no_temporary_file(self):
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", "<html>hello</html>", directory)
+
+            self.assertEqual(list(directory.glob("*.tmp")), [])
+
+    def test_a_corrupt_cache_file_is_a_miss(self):
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            path = path_for("learn/a", directory)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"not a gzip stream")
+
+            self.assertIsNone(load_page("learn/a", directory))
+
     def test_missing_page_is_none(self):
         with TemporaryDirectory() as tmp:
             self.assertIsNone(load_page("learn/gone", Path(tmp)))
@@ -446,6 +587,70 @@ class CacheTest(unittest.TestCase):
         self.assertEqual(calls, [])
         self.assertEqual(scores["learn/a"]["starisk"], 2.2)
 
+    def test_offline_crawl_does_not_throttle(self):
+        # Calling `sleep` here would make a re-parse of a few hundred cached pages
+        # take a quarter of an hour for no benefit: no request is being made.
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        slept = []
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+
+            crawl(
+                ["learn/a"],
+                fetch=lambda _: html,
+                delay=1.5,
+                now=STAMP,
+                offline=True,
+                cache_dir=directory,
+                sleep=slept.append,
+            )
+
+        self.assertEqual(slept, [])
+
+    def test_a_reparse_keeps_the_local_logo_path(self):
+        # Pages only carry a remote URL, so a re-parse would otherwise undo
+        # `logos.py` and every record would point back at Coursera.
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+            store_page("learn/a.landing", html, directory)
+            existing = {
+                "learn/a": {
+                    "starisk": 2.2,
+                    "provider": "Test University",
+                    "image": "/logos/test-university.png",
+                }
+            }
+
+            scores = crawl(
+                ["learn/a"], existing=existing, now=STAMP, offline=True, cache_dir=directory
+            )
+
+        self.assertEqual(scores["learn/a"]["image"], "/logos/test-university.png")
+
+    def test_a_new_provider_drops_the_local_logo_path(self):
+        # Keeping the old file here would show the previous provider's mark.
+        html = GOOD_FIXTURE.read_text(encoding="utf-8")
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", html, directory)
+            store_page("learn/a.landing", html, directory)
+            existing = {
+                "learn/a": {
+                    "starisk": 2.2,
+                    "provider": "Old University",
+                    "image": "/logos/old-university.png",
+                }
+            }
+
+            scores = crawl(
+                ["learn/a"], existing=existing, now=STAMP, offline=True, cache_dir=directory
+            )
+
+        self.assertTrue(scores["learn/a"]["image"].startswith("https://"))
+
     def test_offline_keeps_the_original_stamp(self):
         html = GOOD_FIXTURE.read_text(encoding="utf-8")
         with TemporaryDirectory() as tmp:
@@ -460,6 +665,46 @@ class CacheTest(unittest.TestCase):
         # Re-parsed, but not re-scraped: the date must survive.
         self.assertEqual(scores["learn/a"]["starisk"], 2.2)
         self.assertEqual(scores["learn/a"]["scrapedAt"], "2026-01-01T00:00:00+00:00")
+
+    def test_an_empty_page_does_not_erase_a_scored_record(self):
+        existing = {
+            "learn/a": {"starisk": 4.2, "reviews": 10, "scrapedAt": "old"}
+        }
+
+        scores = crawl(
+            ["learn/a"],
+            fetch=lambda url: EMPTY_HTML,
+            existing=existing,
+            now=STAMP,
+        )
+
+        self.assertEqual(scores["learn/a"]["starisk"], 4.2)
+        self.assertEqual(scores["learn/a"]["scrapedAt"], STAMP.isoformat())
+
+    def test_a_missing_landing_page_keeps_the_previous_metadata(self):
+        reviews = GOOD_FIXTURE.read_text(encoding="utf-8")
+        existing = {
+            "learn/a": {
+                "starisk": 2.2,
+                "scrapedAt": "2026-01-01T00:00:00+00:00",
+                "instructors": [{"name": "Ada Lovelace", "page": "ada-lovelace"}],
+                "categories": ["Computer Science"],
+            }
+        }
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            store_page("learn/a", reviews, directory)
+            scores = crawl(
+                ["learn/a"],
+                existing=existing,
+                now=STAMP,
+                offline=True,
+                cache_dir=directory,
+            )
+
+        self.assertEqual(scores["learn/a"]["instructors"], existing["learn/a"]["instructors"])
+        self.assertEqual(scores["learn/a"]["categories"], ["Computer Science"])
 
     def test_offline_missing_cache_leaves_a_good_record_alone(self):
         with TemporaryDirectory() as tmp:

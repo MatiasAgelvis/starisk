@@ -1,13 +1,14 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackLink from '../../components/BackLink.astro';
 import Stars from '../../components/Stars.astro';
 import Logo from '../../components/Logo.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
-import scores from '../../data/scores.json';
+import { courses, isScoredEntry } from '../../lib/courses.js';
 
 export function getStaticPaths() {
-  return Object.entries(scores)
-    .filter(([, record]) => typeof record.starisk === 'number')
+  return Object.entries(courses)
+    .filter(isScoredEntry)
     .map(([key, record]) => {
       const [type, slug] = key.split('/');
       return { params: { type, slug }, props: { record, key } };
@@ -60,15 +61,32 @@ function verdictText() {
 function votes(count: number) {
   return count === 0 ? 'no upvotes' : `${count} ${count === 1 ? 'vote' : 'votes'}`;
 }
+
+// Coursera collapses this block behind a "show more". We keep the whole text but
+// collapse it the same way, cutting on a sentence boundary instead of a pixel
+// height or a character count — a preview that stops mid-word reads as broken.
+const aboutText = (record.description ?? '').trim();
+const TARGET = 260;
+
+function splitDescription(text: string) {
+  if (text.length <= TARGET + 120) return { head: text, tail: '' };
+  const found = text.slice(TARGET).search(/[.!?](?=\s)/);
+  // No sentence end to cut on: show everything rather than truncate mid-word.
+  if (found === -1) return { head: text, tail: '' };
+  const cut = TARGET + found + 1;
+  return { head: text.slice(0, cut).trim(), tail: text.slice(cut).trim() };
+}
+
+const about = splitDescription(aboutText);
 ---
 
 <Base title={`${record.title ?? key} — Starisk`} description={description}>
   <article class="mx-auto max-w-3xl">
-    <a href="/" class="link link-hover text-sm text-base-content/60">← all courses</a>
+    <BackLink fallback="/" />
 
     <header class="mt-4 flex items-start gap-4">
-      <Logo src={record.image} class="mt-1 h-12 w-20" />
-      <div>
+      <Logo src={record.image} full class="mt-1 h-20 w-20 sm:h-28 sm:w-28" />
+      <div class="min-w-0">
         <h1 class="font-display text-3xl font-bold tracking-tight">
           {record.title ?? key}
         </h1>
@@ -139,12 +157,18 @@ function votes(count: number) {
     }
 
     {
-      record.description && (
+      about.head && (
         <section class="mt-8">
           <h2 class="font-display text-xl font-bold">About the course</h2>
-          <p class="mt-2 whitespace-pre-line text-base-content/80">
-            {record.description}
-          </p>
+          <p class="mt-2 whitespace-pre-line text-base-content/80">{about.head}</p>
+          {about.tail && (
+            <details class="mt-2">
+              <summary class="cursor-pointer text-sm text-base-content/60 hover:text-base-content">
+                Read more
+              </summary>
+              <p class="mt-2 whitespace-pre-line text-base-content/80">{about.tail}</p>
+            </details>
+          )}
         </section>
       )
     }
@@ -183,7 +207,7 @@ function votes(count: number) {
     }
 
     {
-      lowShare != null && record.coursera != null && (
+      lowShare != null && ratingsTotal != null && record.coursera != null && (
         <p class="mt-4 text-sm text-base-content/70">
           Coursera's {record.coursera.toFixed(1)} comes from{' '}
           <strong>{ratingsTotal.toLocaleString('en-GB')} ratings</strong>. Of those,{' '}

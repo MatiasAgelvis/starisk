@@ -46,6 +46,7 @@ export function buildInstructors(scores) {
         coursera: record.coursera ?? null,
         starisk: record.starisk,
         reviews: record.reviews ?? 0,
+        low: record.low_sample === true,
         co: team
           .filter((other) => (other.page ?? other.slug ?? other.name) !== page)
           .map((other) => ({

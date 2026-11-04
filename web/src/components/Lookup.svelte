@@ -1,24 +1,18 @@
 <script>
   import Stars from './Stars.svelte';
   import { requestHref } from '../lib/config.js';
+  import { normalizeCourseKey } from '../lib/lookup.js';
+  import { verdictOf } from '../lib/verdict.js';
 
   let { scores = {}, teachers = {} } = $props();
 
   let query = $state('');
   let result = $state(null);
 
-  function normalize(input) {
-    const match = input.trim().match(/coursera\.org\/([^/?#]+)\/([^/?#]+)/);
-    if (match) return `${match[1]}/${match[2]}`;
-    return input.trim().replace(/^\/+|\/+$/g, '');
-  }
-
   function verdictLabel(record) {
     if (record.coursera == null) return 'no headline rating';
-    const inflation = record.coursera - record.starisk;
-    if (inflation >= 1.5) return 'inflated';
-    if (inflation >= 0.5) return 'padded';
-    return 'holds up';
+    const verdict = verdictOf(record.coursera, record.starisk);
+    return verdict === 'holds-up' ? 'holds up' : verdict;
   }
 
   function search() {
@@ -35,7 +29,7 @@
       return;
     }
 
-    const key = normalize(raw);
+    const key = normalizeCourseKey(raw);
     result = { kind: 'course', key, record: scores[key] ?? null };
   }
 </script>
@@ -74,9 +68,26 @@
           </span>
         </div>
       {/if}
-    {:else if result.record}
+    {:else if result.record && result.record.no_reviews}
+      <div class="alert alert-info mt-6 text-left">
+        <span>
+          <span class="font-semibold">
+            {result.record.title ?? result.key}: no written reviews yet.
+          </span>
+          Coursera lists {result.record.ratings_total
+            ? `${result.record.ratings_total.toLocaleString()} ratings`
+            : 'a rating'} but no reviews, so there is nothing to weigh.
+          <a
+            class="link"
+            href={`https://www.coursera.org/${result.record.slug ?? result.key}/reviews`}
+            target="_blank"
+            rel="noopener noreferrer">Check on Coursera ↗</a
+          >
+        </span>
+      </div>
+    {:else if result.record && typeof result.record.starisk === 'number'}
       <h3 class="font-display mt-6 text-left text-lg font-semibold">
-        <a class="link link-hover" href={`/${result.record.slug}`}>
+        <a class="link link-hover" href={`/${result.record.slug ?? result.key}`}>
           {result.record.title ?? result.key}
         </a>
       </h3>
@@ -102,7 +113,7 @@
           <div class="stat-desc">{verdictLabel(result.record)}</div>
         </div>
       </div>
-      <a class="link link-hover mt-3 inline-block text-sm" href={`/${result.record.slug}`}>
+      <a class="link link-hover mt-3 inline-block text-sm" href={`/${result.record.slug ?? result.key}`}>
         Full breakdown, including the top critical review →
       </a>
     {:else}

@@ -79,9 +79,9 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D4 | **Static site**, not a monolith server (v1) | Read path needs no server; static is cheapest, most durable, best distribution. |
 | D5 | Two toolchains in one repo is fine | Python for the pipeline, Node to build the site. Prior art: the docx→cards project already does Python + SvelteKit. |
 | D6 | Crawl **locally, on demand** | Residential IP dodges Cloudflare's bot-challenge for free. Not nightly CI (datacenter IP risk). |
-| D7 | `scores.json` is **the seam** | Keeps pipeline and site decoupled in code even though they ship together. |
+| D7 | `scores.json` is **the seam** | Keeps pipeline and site decoupled in code even though they ship together. `web/src/data/scores.json` is a committed build-time copy refreshed by `scripts/sync-data.mjs`; `pipeline/data/scores.json` remains the source. |
 | D8 | Reads from **static JSON**; writes (user data) to a **DB later** (Turso) | Keep user writes off the read path. |
-| D9 | **Fail-safe crawl** | Atomic write; never overwrite good data with a broken parse; flag `stale`; alert when N parses in a row yield 0 reviews (adapter is stale). |
+| D9 | **Fail-safe crawl** | Atomic write; never overwrite good data with a broken parse; distinguish an explicit no-review page from a parse failure; report both counts in the run summary. Alerting on N consecutive parse failures is still TODO. |
 | D10 | Port the scoring **faithfully**; the 16 JS tests (tag `legacy-mv2-extension`) are the port spec | Don't silently change behavior. Keep the original model for reference; `SIMPLE` (`1 + likes`) as the default candidate. |
 | D11 | Simplify the model where it doesn't earn its keep | Drop the inert time term; keep one real knob. Decide final model by *calibration*, not taste. |
 | D12 | Parse Coursera's **semantic hooks** (`data-e2e`, `data-testid`, `aria-label`) + **JSON-LD fallback** | Verified on 8 live snapshots: server-rendered review cards carry **stars, likes and dates**; JSON-LD carries stars/dates but **no likes**. No DOM library needed; a repair is a selector change. |
@@ -91,13 +91,14 @@ Front and back are **separate**, joined by one file: `scores.json`.
 | D13 | Calibrate against my own labeled courses (Spearman) | ~74 credentials parsed locally (`calibration/courses.json`); my gut ranking is the ground truth. |
 | D14 | Deployment is **static-only**; no always-on server | Homelab detour cost 5h and still isn't up. Static is cheaper, more durable, and has no uptime/security/DDNS burden. The pipeline runs locally on demand. |
 | D19 | **Root has no build system.** Node lives only in `web/`, Python only in `pipeline/`; mise coordinates tasks, `build.sh` is the deploy entry point | One lockfile, one toolchain per side, no root `package.json` to rot. mise is a convenience for humans, so a CI runner or static host needs only node + python. The 2021 extension toolchain (Parcel, jest, puppeteer, `xo`, 454 MB of `node_modules`) was archived at tag `legacy-mv2-extension` and deleted. |
-| D20 | Provider logos are **self-hosted**: the pipeline downloads one file per provider into `web/public/logos/`, **no transcoding** | Hotlinking Coursera's image proxy leaks every visitor's IP to them, breaks all logos at once if the URL changes, and gives us no cache control. Measured: 4 unique logos for 6 courses, 33 KB total, ~160×60 PNGs shown at 56×32. Re-encoding buys nothing and would drag a non-stdlib encoder into a stdlib-only pipeline. Fail-safe: a logo that cannot be fetched keeps its remote URL. |
+| D20 | Provider logos are **self-hosted**: the pipeline downloads one file per provider into `web/public/logos/`, **no transcoding** | Hotlinking Coursera's image proxy leaks every visitor's IP to them, breaks all logos at once if the URL changes, and gives us no cache control. Measured: 4 unique logos for 6 courses, 33 KB total, ~160×60 PNGs shown at 56×32. Re-encoding buys nothing and would drag a non-stdlib encoder into a stdlib-only pipeline. Fail-safe: a logo that cannot be fetched keeps its remote URL. Since the square marks exist at 2-3× in the page header, `logo_hires.py` keeps `tile/` (dpr=1, tables) and `full/` (dpr=2, course page) per provider and `logos.py --prune` removes the lockup once both exist. |
 | D21 | Crawls are **incremental and polite**: sources normalised and deduped, records younger than `--max-age` (30 days) skipped without a request, work ordered stalest-first, `--limit` as a per-run budget | A growing list must not mean re-fetching everything, and the residential IP is the asset the project depends on. 403/429 raises `RateLimited` and **stops the run** instead of retrying; the next run resumes at the stalest course, so nothing is repeated and nothing is skipped. 404 is never retried — a retired course stays retired. |
 | D15 | Write path **deferred** until there are real users | A static site can't write to a DB without a trust anchor; don't build an API for a feature nobody has used yet. Start with a mailto/GitHub-issue link if needed. |
 | D22 | **Instructors are a derived surface, not a crawl unit.** `/instructors` + `/instructors/<slug>`, built from the course records | The landing page's data blob already carries the complete teaching team for every course — name, id, `shortName`, role, department, photo, learners reached — so the whole surface costs **zero extra requests**. The hero links only the first instructor; the blob has everyone, which is why "unlinked" never meant "no profile". |
 | D23 | Instructor pages are keyed by **Coursera's id**, linked by its slug, and **URL'd by a readable slug** | The id is the only stable identity (names collide, slugs get assigned later). But 12 of 30 have no vanity slug, and `/instructors/~219741545` is a bad URL, so the page slug falls back to the name (`kara-pritchard`). The outbound link always goes to Coursera's profile. |
 | D24 | Instructor photos are **remote and `loading="lazy"`**, like course thumbnails — not self-hosted like provider logos | Deliberate exception to D20: there are 30 faces, they change, and only the rows a visitor scrolls to fetch anything. Logos were 4 files that must never flicker; photos are a directory you browse. Initials render behind each photo and take over if it 404s. |
 | D25 | The crawl list grows along **edges that already exist**: certificate specializations → their constituent courses, and indexed teachers → their other courses. Not by sampling the sitemap | A random sample of 23k slugs produces a leaderboard nobody cares about. Expanding along the two graphs the corpus already has is coherent (each new course belongs next to one already scored) and costs one cached request per parent page. Measured on the first run: 74 new courses from 30 teacher profiles, 8 from 7 certificates. |
+| D26 | **Programs are a derived surface, not a crawl unit.** `/programs` + `/programs/...`, built from `groupings.json` | A specialization or Professional Certificate is a many-to-many relationship. `groupings.json` is generated from cached program pages and its `courses` are foreign keys into `scores.json`, so a program does not need its own scored record. The course average is review-weighted like the teacher directory; the program's own rating is shown when we have it. The directory defaults to complete sets; partial programs are hidden behind a toggle. |
 
 ## 7. The scoring model
 
@@ -149,12 +150,42 @@ calibration against my labels, not aesthetics.**
     "reviews_total": 6214,
     "ratings_total": 32982,
     "rating_counts": { "1": 122, "2": 56, "3": 226, "4": 2391, "5": 30187 },
-    "model": "simple",
+    "model": "sqrt-likes",
     "scrapedAt": "2026-10-20T03:00:00Z"
   }
 }
 ```
 
+`groupings.json` — the derived program index (the `programs` table plus the
+`program_courses` join):
+```json
+{
+  "specializations/algorithms": {
+    "key": "specializations/algorithms",
+    "type": "specialization",
+    "title": "Algorithms",
+    "url": "https://www.coursera.org/specializations/algorithms",
+    "courses": ["learn/algorithms-part1", "learn/algorithms-part2"]
+  }
+}
+```
+
+- `courses` are foreign keys into `scores.json`; a course can appear in several
+  programs.
+- Generated from cached program pages by `python -m starisk.groupings --write`.
+  It is a derived index, not a second source of truth.
+- `type` is `specialization` or `professional-certificate`; the parser supports
+  both because they use the same course-list hook.
+- `pipeline/data/programs.json` is the seed list for programs that are not in the
+  calibration file (currently the Professional Certificates). `python -m
+  starisk.groupings --fetch --write` fetches any missing seed pages first.
+- The Programs directory defaults to **complete sets** — every course in the
+  program has a Starisk score. Partial programs stay in the index (and have a
+  direct URL) but are hidden behind a toggle.
+
+- `description` — JSON-LD `description`. Coursera caps the landing page's copy at
+  500 characters, cut mid-word, while the reviews page carries the full text, so
+  the longer of the two wins.
 - `reviews` — cards we actually read (one page, ~20).
 - `reviews_total` / `ratings_total` — the population, so the sampling is explicit.
 - `instructors` — the complete teaching team, one object per person. Identity is
@@ -167,7 +198,7 @@ calibration against my labels, not aesthetics.**
 - `spread` — unweighted std-dev of the sampled stars (contention).
 - `spread_weighted` — the same with like weights; it *collapses* when one review
   dominates, which is informative but not a contention measure.
-- Optional: `level`, `enrollment`, `low_sample`, `source: "jsonld"`, `error`.
+- Optional: `level`, `enrollment`, `low_sample`, `source: "jsonld"`, `no_reviews`, `error`, `landing_error`.
 
 ## 9. Repo layout (target)
 

@@ -17,6 +17,8 @@ import random
 import time
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -40,13 +42,21 @@ class RateLimited(RuntimeError):
 
 
 def _wait_seconds(error: urllib.error.HTTPError, attempt: int, backoff: float) -> float:
-    """Respect Retry-After, else back off with jitter."""
+    """Respect Retry-After (seconds or HTTP-date), else back off with jitter."""
     header = error.headers.get("Retry-After") if getattr(error, "headers", None) else None
     if header:
         try:
             return max(float(header), 1.0)
         except ValueError:
             pass
+        try:
+            when = parsedate_to_datetime(header)
+        except (TypeError, ValueError):
+            when = None
+        if when is not None:
+            if when.tzinfo is None:
+                when = when.replace(tzinfo=timezone.utc)
+            return max((when - datetime.now(timezone.utc)).total_seconds(), 1.0)
     return backoff * (attempt + 1) * (1 + random.random() * 0.3)
 
 
@@ -68,9 +78,11 @@ def _request(
             last_error = error
             if error.code in FATAL_CODES:
                 raise RuntimeError(f"HTTP {error.code} for {url}") from error
+            if error.code in RATE_LIMIT_CODES:
+                # 403/429 is the host telling us to stop. Retrying it is what
+                # turns a warning into a block, so fail immediately (SPEC D21).
+                raise RateLimited(f"HTTP {error.code} for {url}") from error
             if attempt == retries:
-                if error.code in RATE_LIMIT_CODES:
-                    raise RateLimited(f"HTTP {error.code} for {url}") from error
                 break
             time.sleep(_wait_seconds(error, attempt, backoff))
         except (urllib.error.URLError, TimeoutError) as error:

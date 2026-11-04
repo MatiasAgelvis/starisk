@@ -20,6 +20,12 @@ class RankTest(unittest.TestCase):
         # ranks [1,2,3,4,5] vs [2,1,4,3,5] -> 0.8
         self.assertAlmostEqual(spearman([1, 2, 3, 4, 5], [2, 1, 4, 3, 5]), 0.8)
 
+    def test_spearman_is_zero_when_one_side_is_constant(self):
+        # No rank variance means the coefficient is undefined; returning 0.0
+        # keeps a degenerate calibration set from crashing the report.
+        self.assertEqual(spearman([1, 1, 1], [1, 2, 3]), 0.0)
+        self.assertEqual(spearman([1, 2, 3], [5, 5, 5]), 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()

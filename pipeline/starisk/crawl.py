@@ -10,8 +10,9 @@
     python3 -m starisk.crawl learn/machine-learning   # one-off source
 
 Design notes:
-- One request per course (the first page is sorted "Most Helpful", which is the
-  signal the model cares about).
+- Two requests per course: the reviews page, then the landing page (D18). The
+  reviews page is sorted "Most Helpful", which is the signal the model cares
+  about; the landing page carries the teaching team and subjects.
 - Fail-safe: a page that parses to zero reviews never overwrites a good record.
 - Idempotent: sources are normalised and deduped, and records younger than
   `--max-age` are skipped without a request. So re-running is cheap.
@@ -24,6 +25,7 @@ Design notes:
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -41,10 +43,12 @@ from .adapter import (
     extract_landing,
     extract_reviews,
     identity_key,
+    is_empty_reviews_page,
 )
 from .cache import CACHE_DIR, load_page, store_page
 from .engine import CALIBRATED, course_score, peer_spread, review_spread
 from .fetch import RateLimited, fetch_page
+from .naming import IMAGE_PREFIX, stem
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 SOURCES_PATH = DATA_DIR / "sources.json"
@@ -96,8 +100,13 @@ def unique_sources(sources: list[str]) -> list[str]:
 
 
 def is_fresh(record: dict | None, now: datetime, max_age_days: float) -> bool:
-    """Was this record scraped recently enough to skip? Failed records never count."""
-    if not record or "starisk" not in record:
+    """Was this record scraped recently enough to skip?
+
+    Failed records never count. A `no_reviews` record does: Coursera telling us
+    a course has no written reviews is an observation about the course, not a
+    failed parse, and it should age out of the queue like any other.
+    """
+    if not record or ("starisk" not in record and not record.get("no_reviews")):
         return False
     raw = record.get("scrapedAt")
     if not raw:
@@ -174,11 +183,13 @@ def _top_review(reviews: list[dict]) -> dict | None:
 
 
 def score_page(html: str) -> dict | None:
-    """Score one reviews page. Returns None when there is nothing to score."""
-    reviews = extract_reviews(html)
-    if not reviews:
-        return None
+    """Score one reviews page. Returns None when there is nothing to score.
 
+    A page Coursera explicitly marks as having no written reviews is not a parse
+    failure: it returns a metadata-only record with `no_reviews: True`, so the
+    crawl can stop re-fetching it and the site can say why it has no score.
+    """
+    reviews = extract_reviews(html)
     details = extract_details(html)
     aggregate = extract_aggregate(html)
     coursera = aggregate["rating"] if aggregate["rating"] is not None else float("nan")
@@ -189,31 +200,48 @@ def score_page(html: str) -> dict | None:
         "description": details["description"],
         "image": details["image"],
         "coursera": None if coursera != coursera else round(coursera, 1),  # NaN -> None
-        "starisk": round(
-            course_score({"reviews": reviews, "coursera": coursera}, CALIBRATED), 1
-        ),
-        "spread": round(review_spread(reviews), 2),
-        "spread_weighted": round(peer_spread(reviews, CALIBRATED), 2),
-        "reviews": len(reviews),
-        # The sample's own rating distribution, so a page can say "3 of 20 rated
-        # it 3★ or lower, but none of them wrote a comment" instead of guessing.
-        "review_counts": {
-            str(star): count for star, count in sorted(Counter(r["stars"] for r in reviews).items())
-        },
-        "top_review": _top_review(reviews),
-        "model": "sqrt-likes",
     }
 
     # Present on most course pages, missing on some. Omit rather than emit null.
-    for field, value in (
-        ("reviews_total", aggregate["reviews_total"]),
-        ("ratings_total", aggregate["ratings_total"]),
-        ("rating_counts", aggregate["counts"]),
-        ("level", details["level"]),
-        ("enrollment", details["enrollment"]),
-    ):
-        if value is not None:
-            record[field] = value
+    extras = {
+        field: value
+        for field, value in (
+            ("reviews_total", aggregate["reviews_total"]),
+            ("ratings_total", aggregate["ratings_total"]),
+            ("rating_counts", aggregate["counts"]),
+            ("level", details["level"]),
+            ("enrollment", details["enrollment"]),
+        )
+        if value is not None
+    }
+
+    if not reviews:
+        if not is_empty_reviews_page(html):
+            return None
+        record.update(extras)
+        record["reviews"] = 0
+        record["no_reviews"] = True
+        return record
+
+    record.update(
+        {
+            "starisk": round(
+                course_score({"reviews": reviews, "coursera": coursera}, CALIBRATED), 1
+            ),
+            "spread": round(review_spread(reviews), 2),
+            "spread_weighted": round(peer_spread(reviews, CALIBRATED), 2),
+            "reviews": len(reviews),
+            # The sample's own rating distribution, so a page can say "3 of 20 rated
+            # it 3★ or lower, but none of them wrote a comment" instead of guessing.
+            "review_counts": {
+                str(star): count
+                for star, count in sorted(Counter(r["stars"] for r in reviews).items())
+            },
+            "top_review": _top_review(reviews),
+            "model": "sqrt-likes",
+        }
+    )
+    record.update(extras)
 
     # JSON-LD reviews carry no like counts, so every weight collapses to 1.
     if REVIEW_CARD not in html:
@@ -277,6 +305,8 @@ def crawl(
 
         url = reviews_url(key)
 
+        landing = None
+        rate_limited = None
         if offline:
             html = load_page(key, cache_dir)
             landing = load_page(f"{key}.landing", cache_dir)
@@ -306,34 +336,70 @@ def crawl(
             try:
                 landing = landing_html(key, fetch, cache_dir)
             except RateLimited as error:
-                record = scores.get(key) or {}
-                record["error"] = f"rate limited: {error}"
-                scores[key] = record
-                break
+                # The reviews page is already cached and scoreable. Keep it, stop
+                # the run, and let the next pass pick up the landing page.
+                rate_limited = error
 
         result = score_page(html)
+        if rate_limited and result is not None:
+            result["landing_error"] = f"rate limited: {rate_limited}"
+        previous = scores.get(key) or {}
         if result is None:
             # Never overwrite a good record with a failed parse.
-            record = scores.get(key) or {}
-            record["error"] = "no reviews parsed (markup changed?)"
-            scores[key] = record
+            previous["error"] = "no reviews parsed (markup changed?)"
+            scores[key] = previous
+        elif result.get("no_reviews") and "starisk" in previous:
+            # Fail safe: a course that once had readable reviews should not lose
+            # its score because Coursera is showing the empty state today.
+            previous["scrapedAt"] = previous.get("scrapedAt", stamp) if offline else stamp
+            scores[key] = previous
         else:
             if landing:
-                result.update(extract_landing(landing))
+                landing_data = extract_landing(landing)
                 # The landing page is the description page: title, provider,
                 # image and level live there. The reviews page sometimes carries
                 # the site's boilerplate instead (seen on every specialization),
                 # so the landing wins whenever it has something to say.
+                for field in ("instructors", "categories"):
+                    if landing_data.get(field):
+                        result[field] = landing_data[field]
                 details = extract_details(landing)
                 for field in ("title", "provider", "image", "description", "level", "enrollment"):
-                    if details.get(field):
-                        result[field] = details[field]
+                    if not details.get(field):
+                        continue
+                    if field == "description" and len(details[field]) <= len(result.get(field) or ""):
+                        # Coursera caps the landing page's JSON-LD description at 500
+                        # characters, cut mid-word, while the reviews page carries the
+                        # full text. Whichever is longer wins.
+                        continue
+                    result[field] = details[field]
+
+            # The reviews page carries neither the teaching team nor the subjects,
+            # and its metadata can be missing or boilerplate. If the landing page
+            # was unavailable (offline, or a transient failure), keep what the
+            # last good parse found instead of erasing it.
+            for field in (
+                "title",
+                "provider",
+                "description",
+                "image",
+                "level",
+                "enrollment",
+                "instructors",
+                "categories",
+            ):
+                if not result.get(field) and previous.get(field):
+                    result[field] = previous[field]
+
             # Re-parsing a cached page is not a fresh scrape: keep the old stamp.
-            previous = scores.get(key) or {}
+            keep_local_image(result, previous)
             stamped = previous.get("scrapedAt", stamp) if offline else stamp
             scores[key] = {**result, "slug": key, "scrapedAt": stamped}
 
-        if delay:
+        if rate_limited:
+            break
+        # Offline is a re-parse: no requests, so there is nothing to be polite about.
+        if delay and not offline:
             sleep(delay)
 
     return resolve_instructors(scores)
@@ -364,7 +430,22 @@ def resolve_instructors(scores: dict) -> dict:
     return scores
 
 
-def write_atomic(path: Path, data: dict) -> None:
+def keep_local_image(result: dict, previous: dict) -> None:
+    """A re-parse must not undo `logos.py`.
+
+    Pages only ever carry a remote image URL, so without this every crawl resets
+    `image` and drops the self-hosted logo. Keep the local path while it still names
+    the same provider; a provider change falls through, so the logo is fetched
+    again instead of the page quietly showing someone else's mark.
+    """
+    local = previous.get("image")
+    if not isinstance(local, str) or not local.startswith(IMAGE_PREFIX):
+        return
+    if stem({**previous, **result}) == Path(local).stem:
+        result["image"] = local
+
+
+def write_atomic(path: Path, data: dict | list) -> None:
     """Write JSON in one atomic replace, so a crash cannot truncate the file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
@@ -379,36 +460,48 @@ def write_atomic(path: Path, data: dict) -> None:
 
 
 def parse_args(argv: list[str]) -> dict:
-    options = {
-        "delay": DEFAULT_DELAY,
-        "max_age": float(DEFAULT_MAX_AGE_DAYS),
-        "limit": None,
-        "offline": False,
-        "sources": None,
+    parser = argparse.ArgumentParser(
+        prog="python -m starisk.crawl",
+        description="Fetch, score and merge Coursera course reviews.",
+    )
+    parser.add_argument(
+        "sources",
+        nargs="*",
+        help="course slugs or URLs (default: data/sources.json)",
+    )
+    parser.add_argument(
+        "--delay",
+        type=float,
+        default=DEFAULT_DELAY,
+        help="seconds to wait between requests",
+    )
+    parser.add_argument(
+        "--max-age",
+        type=float,
+        default=float(DEFAULT_MAX_AGE_DAYS),
+        dest="max_age",
+        help="skip records younger than this many days",
+    )
+    parser.add_argument("--limit", type=int, help="fetch at most this many courses")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="ignore freshness and refetch everything",
+    )
+    parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="re-score cached pages without making requests",
+    )
+    options = parser.parse_args(argv)
+
+    return {
+        "delay": options.delay,
+        "max_age": 0.0 if options.force else options.max_age,
+        "limit": options.limit,
+        "offline": options.offline,
+        "sources": options.sources or None,
     }
-    index = 0
-    while index < len(argv):
-        arg = argv[index]
-        if arg == "--delay":
-            options["delay"] = float(argv[index + 1])
-            index += 2
-        elif arg == "--max-age":
-            options["max_age"] = float(argv[index + 1])
-            index += 2
-        elif arg == "--limit":
-            options["limit"] = int(argv[index + 1])
-            index += 2
-        elif arg == "--force":
-            options["max_age"] = 0.0
-            index += 1
-        elif arg == "--offline":
-            options["offline"] = True
-            index += 1
-        else:
-            options["sources"] = options["sources"] or []
-            options["sources"].append(arg)
-            index += 1
-    return options
 
 
 def progress_line(done: int, total: int, key: str, elapsed: float, width: int = 22) -> str:
@@ -452,16 +545,14 @@ def main(argv: list[str]) -> int:
         if max_age
         else 0
     )
-    planned = len(sources) - skipped
-    if options["limit"] is not None:
-        planned = min(planned, options["limit"])
 
-    state = {"drawn": False}
+    state = {"drawn": False, "done": 0}
     started = time.monotonic()
     interactive = sys.stdout.isatty()
 
     def report(done, total, key):
         state["drawn"] = True
+        state["done"] = done
         line = progress_line(done, total, key, time.monotonic() - started)
         if interactive:
             sys.stdout.write("\r" + line)
@@ -485,12 +576,22 @@ def main(argv: list[str]) -> int:
     write_atomic(SCORES_PATH, scores)
 
     scored = sum(1 for record in scores.values() if "starisk" in record)
+    no_reviews = sum(1 for record in scores.values() if record.get("no_reviews"))
+    errors = sum(
+        1
+        for record in scores.values()
+        if record.get("error") or record.get("landing_error")
+    )
     verb = "reparsed" if options["offline"] else "fetched"
     print(
-        f"listed {len(sources)} | skipped fresh {skipped} | {verb} {planned} "
-        f"| records {len(scores)} | scored {scored}"
+        f"listed {len(sources)} | skipped fresh {skipped} | {verb} {state['done']} "
+        f"| records {len(scores)} | scored {scored} | no reviews {no_reviews} | errors {errors}"
     )
-    if any(str(record.get("error", "")).startswith("rate limited") for record in scores.values()):
+    if any(
+        str(record.get("error", "")).startswith("rate limited")
+        or str(record.get("landing_error", "")).startswith("rate limited")
+        for record in scores.values()
+    ):
         print(
             "stopped early: the host rate-limited us. Re-run later — it resumes at the "
             "stalest course, so nothing is repeated."

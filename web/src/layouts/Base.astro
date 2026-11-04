@@ -21,7 +21,8 @@ const canonical = Astro.site
 // Astro's pathname carries a trailing slash on some routes (`/method/`), so
 // normalise before comparing — otherwise the active tab silently disappears.
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const isCourses = path === '/' || /^\/(learn|specializations)\//.test(path);
+const isCourses = path === '/' || /^\/(learn|specializations|professional-certificates)\//.test(path);
+const isPrograms = path.startsWith('/programs');
 const isTeachers = path.startsWith('/instructors');
 ---
 
@@ -78,6 +79,11 @@ const isTeachers = path.startsWith('/instructors');
           href="/"
           class={`btn btn-ghost btn-sm px-2 text-sm sm:px-3 ${isCourses ? 'btn-active' : ''}`}
           aria-current={isCourses ? 'page' : undefined}>Courses</a
+        >
+        <a
+          href="/programs"
+          class={`btn btn-ghost btn-sm px-2 text-sm sm:px-3 ${isPrograms ? 'btn-active' : ''}`}
+          aria-current={isPrograms ? 'page' : undefined}>Programs</a
         >
         <a
           href="/instructors"

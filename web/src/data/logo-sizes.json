@@ -1,0 +1,154 @@
+{
+  "deeplearning-ai": {
+    "tile": "/logos/tile/deeplearning-ai.png",
+    "full": "/logos/full/deeplearning-ai.png"
+  },
+  "deep-teaching-solutions": {
+    "tile": "/logos/tile/deep-teaching-solutions.png",
+    "full": "/logos/full/deep-teaching-solutions.png"
+  },
+  "princeton-university": {
+    "tile": "/logos/tile/princeton-university.jpg",
+    "full": "/logos/full/princeton-university.jpg"
+  },
+  "yale-university": {
+    "tile": "/logos/tile/yale-university.jpg",
+    "full": "/logos/full/yale-university.jpg"
+  },
+  "cloudera": {
+    "tile": "/logos/tile/cloudera.jpg",
+    "full": "/logos/full/cloudera.jpg"
+  },
+  "university-of-alberta": {
+    "tile": "/logos/tile/university-of-alberta.jpg",
+    "full": "/logos/full/university-of-alberta.jpg"
+  },
+  "atlassian": {
+    "tile": "/logos/tile/atlassian.png",
+    "full": "/logos/full/atlassian.png"
+  },
+  "duke-university": {
+    "tile": "/logos/tile/duke-university.jpg",
+    "full": "/logos/full/duke-university.jpg"
+  },
+  "the-chinese-university-of-hong-kong": {
+    "tile": "/logos/tile/the-chinese-university-of-hong-kong.png",
+    "full": "/logos/full/the-chinese-university-of-hong-kong.png"
+  },
+  "the-linux-foundation": {
+    "tile": "/logos/tile/the-linux-foundation.png",
+    "full": "/logos/full/the-linux-foundation.png"
+  },
+  "the-hong-kong-university-of-science-and-technology": {
+    "tile": "/logos/tile/the-hong-kong-university-of-science-and-technology.jpg",
+    "full": "/logos/full/the-hong-kong-university-of-science-and-technology.jpg"
+  },
+  "university-of-washington": {
+    "tile": "/logos/tile/university-of-washington.jpg",
+    "full": "/logos/full/university-of-washington.jpg"
+  },
+  "edhec-business-school": {
+    "tile": "/logos/tile/edhec-business-school.png",
+    "full": "/logos/full/edhec-business-school.png"
+  },
+  "28digital": {
+    "tile": "/logos/tile/28digital.jpg",
+    "full": "/logos/full/28digital.jpg"
+  },
+  "stanford-online": {
+    "tile": "/logos/tile/stanford-online.png",
+    "full": "/logos/full/stanford-online.png"
+  },
+  "ie-business-school": {
+    "tile": "/logos/tile/ie-business-school.png",
+    "full": "/logos/full/ie-business-school.png"
+  },
+  "universidad-austral": {
+    "tile": "/logos/tile/universidad-austral.png",
+    "full": "/logos/full/universidad-austral.png"
+  },
+  "vanderbilt-university": {
+    "tile": "/logos/tile/vanderbilt-university.png",
+    "full": "/logos/full/vanderbilt-university.png"
+  },
+  "arizona-state-university": {
+    "tile": "/logos/tile/arizona-state-university.jpg",
+    "full": "/logos/full/arizona-state-university.jpg"
+  },
+  "mcmaster-university": {
+    "tile": "/logos/tile/mcmaster-university.jpg",
+    "full": "/logos/full/mcmaster-university.jpg"
+  },
+  "ibm": {
+    "tile": "/logos/tile/ibm.png",
+    "full": "/logos/full/ibm.png"
+  },
+  "university-of-amsterdam": {
+    "tile": "/logos/tile/university-of-amsterdam.jpg",
+    "full": "/logos/full/university-of-amsterdam.jpg"
+  },
+  "johns-hopkins-university": {
+    "tile": "/logos/tile/johns-hopkins-university.png",
+    "full": "/logos/full/johns-hopkins-university.png"
+  },
+  "imperial-college-london": {
+    "tile": "/logos/tile/imperial-college-london.png",
+    "full": "/logos/full/imperial-college-london.png"
+  },
+  "university-of-london": {
+    "tile": "/logos/tile/university-of-london.png",
+    "full": "/logos/full/university-of-london.png"
+  },
+  "google": {
+    "tile": "/logos/tile/google.png",
+    "full": "/logos/full/google.png"
+  },
+  "berklee": {
+    "tile": "/logos/tile/berklee.jpg",
+    "full": "/logos/full/berklee.jpg"
+  },
+  "the-museum-of-modern-art": {
+    "tile": "/logos/tile/the-museum-of-modern-art.jpg",
+    "full": "/logos/full/the-museum-of-modern-art.jpg"
+  },
+  "universitat-de-barcelona": {
+    "tile": "/logos/tile/universitat-de-barcelona.png",
+    "full": "/logos/full/universitat-de-barcelona.png"
+  },
+  "yonsei-university": {
+    "tile": "/logos/tile/yonsei-university.png",
+    "full": "/logos/full/yonsei-university.png"
+  },
+  "georgia-institute-of-technology": {
+    "tile": "/logos/tile/georgia-institute-of-technology.jpg",
+    "full": "/logos/full/georgia-institute-of-technology.jpg"
+  },
+  "medcerts": {
+    "tile": "/logos/tile/medcerts.jpg",
+    "full": "/logos/full/medcerts.jpg"
+  },
+  "macquarie-university": {
+    "tile": "/logos/tile/macquarie-university.png",
+    "full": "/logos/full/macquarie-university.png"
+  },
+  "universiteit-leiden": {
+    "tile": "/logos/tile/universiteit-leiden.png",
+    "full": "/logos/full/universiteit-leiden.png"
+  },
+  "university-of-california-davis": {
+    "tile": "/logos/tile/university-of-california-davis.jpg",
+    "full": "/logos/full/university-of-california-davis.jpg"
+  },
+  "university-of-michigan": {
+    "tile": "/logos/tile/university-of-michigan.jpg",
+    "full": "/logos/full/university-of-michigan.jpg"
+  },
+  "coursera": {
+    "tile": "/logos/tile/coursera.jpg",
+    "full": "/logos/full/coursera.jpg"
+  },
+  "skillup": {
+    "tile": "/logos/tile/skillup.jpg",
+    "full": "/logos/full/skillup.jpg"
+  }
+}

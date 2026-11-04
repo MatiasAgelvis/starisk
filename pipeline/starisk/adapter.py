@@ -19,11 +19,15 @@ from __future__ import annotations
 import json
 import re
 import unicodedata
+from contextlib import suppress
 from datetime import datetime, timezone
 from html import unescape
 
 REVIEW_CARD = 'data-e2e="review-table-card"'
 CML_VIEWER = 'data-testid="cml-viewer"'
+# Coursera's explicit "no written reviews" state. A course can carry ratings
+# without any reviews, so this is an observation, not a failed parse.
+REVIEWS_EMPTY = 'data-testid="reviews-table-empty"'
 
 # A card slice ends at the next card, so the *last* slice runs to the end of the
 # document and swallows the footer. The review body starts at `cml-viewer`; the
@@ -347,10 +351,8 @@ def extract_population(html: str) -> dict:
 
     average_match = _AVERAGE.search(html)
     if average_match:
-        try:
+        with suppress(ValueError):
             result["average"] = float(average_match.group(1))
-        except ValueError:
-            pass
 
     return result
 
@@ -378,10 +380,8 @@ def extract_aggregate(html: str) -> dict:
         result["reviews_total"] = _as_int(aggregate.get("reviewCount"))
         value = aggregate.get("ratingValue")
         if value is not None:
-            try:
+            with suppress(TypeError, ValueError):
                 result["rating"] = float(value)
-            except (TypeError, ValueError):
-                pass
         break
 
     if result["rating"] is None:
@@ -653,6 +653,17 @@ def _reviews_from_jsonld(html: str) -> list[dict]:
 def extract_reviews(html: str) -> list[dict]:
     """Prefer DOM cards (they carry likes); fall back to JSON-LD reviews."""
     return _reviews_from_cards(html) or _reviews_from_jsonld(html)
+
+
+def is_empty_reviews_page(html: str) -> bool:
+    """Did Coursera explicitly render "no written reviews" for this course?
+
+    Distinct from a page whose review markup we failed to understand: the empty
+    state has its own test hook and no cards. Treating it as a parse failure
+    writes a misleading error and pins the course at the head of the staleness
+    queue forever.
+    """
+    return REVIEWS_EMPTY in html and REVIEW_CARD not in html
 
 
 def _course_slugs(html: str, marker: str) -> list[str]:

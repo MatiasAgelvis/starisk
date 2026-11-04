@@ -1,6 +1,18 @@
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
-from starisk.link import candidates, clean_title, confirm, page_title, resolve, score, slug_tokens, tokens
+from starisk.link import (
+    candidates,
+    clean_title,
+    confirm,
+    load_slugs,
+    page_title,
+    resolve,
+    score,
+    slug_tokens,
+    tokens,
+)
 
 SLUGS = [
     "convolutional-neural-networks-tensorflow",
@@ -17,7 +29,10 @@ SLUGS = [
 
 class TokensTest(unittest.TestCase):
     def test_drops_stopwords_and_punctuation(self):
-        self.assertEqual(tokens("Convolutional Neural Networks in TensorFlow"), {"convolutional", "neural", "networks", "tensorflow"})
+        self.assertEqual(
+            tokens("Convolutional Neural Networks in TensorFlow"),
+            {"convolutional", "neural", "networks", "tensorflow"},
+        )
         self.assertEqual(tokens("Machine-Learning, Part 2!"), {"machine", "learning", "part", "2"})
         self.assertEqual(tokens(""), set())
 
@@ -52,15 +67,24 @@ class CandidatesTest(unittest.TestCase):
 
 class PageTitleTest(unittest.TestCase):
     def test_strips_the_reviews_wrapper(self):
-        page = '<meta data-rh="true" property="og:title" content="Learner Reviews &amp; Feedback for Financial Markets Course | Coursera">'
+        page = (
+            '<meta data-rh="true" property="og:title" '
+            'content="Learner Reviews &amp; Feedback for Financial Markets Course | Coursera">'
+        )
         self.assertEqual(page_title(page), "Financial Markets")
 
     def test_attribute_order_does_not_matter(self):
-        page = '<meta content="Learner Reviews &amp; Feedback for Sequence Models Course | Coursera" property="og:title">'
+        page = (
+            '<meta content="Learner Reviews &amp; Feedback for Sequence Models Course | Coursera" '
+            'property="og:title">'
+        )
         self.assertEqual(page_title(page), "Sequence Models")
 
     def test_specialization_wrapper(self):
-        page = '<meta property="og:title" content="Learner Reviews &amp; Feedback for Deep Learning Specialization | Coursera">'
+        page = (
+            '<meta property="og:title" content="Learner Reviews &amp; Feedback for '
+            'Deep Learning Specialization | Coursera">'
+        )
         self.assertEqual(page_title(page), "Deep Learning")
 
     def test_missing(self):
@@ -71,7 +95,10 @@ class CleanTitleTest(unittest.TestCase):
     def test_strips_credential_decorations(self):
         self.assertEqual(clean_title("Financial Markets (with Honors)"), "Financial Markets")
         self.assertEqual(clean_title("Foundations (With Honours)"), "Foundations")
-        self.assertEqual(clean_title("Capstone: Autonomous Runway Detection for IoT"), "Autonomous Runway Detection for IoT")
+        self.assertEqual(
+            clean_title("Capstone: Autonomous Runway Detection for IoT"),
+            "Autonomous Runway Detection for IoT",
+        )
         self.assertEqual(clean_title("A Complete RL System (Capstone)"), "A Complete RL System (Capstone)")
 
 
@@ -96,7 +123,10 @@ class ConfirmTest(unittest.TestCase):
         self.assertFalse(confirm("nope", "Sequence Models", fetch=failing))
 
     def test_honors_suffix_still_matches(self):
-        page = '<meta property="og:title" content="Learner Reviews &amp; Feedback for Foundations for Big Data Analysis with SQL Course">'
+        page = (
+            '<meta property="og:title" content="Learner Reviews &amp; Feedback for '
+            'Foundations for Big Data Analysis with SQL Course">'
+        )
         self.assertTrue(
             confirm(
                 "foundations-big-data-analysis-sql",
@@ -108,7 +138,10 @@ class ConfirmTest(unittest.TestCase):
     def test_reused_slug_is_rejected(self):
         # /learn/machine-learning now serves a rewritten course; the 2019
         # certificate's course is gone, and scoring the new one would be a lie.
-        page = '<meta property="og:title" content="Learner Reviews &amp; Feedback for Supervised Machine Learning: Regression and Classification Course">'
+        page = (
+            '<meta property="og:title" content="Learner Reviews &amp; Feedback for '
+            'Supervised Machine Learning: Regression and Classification Course">'
+        )
         self.assertFalse(confirm("machine-learning", "Machine Learning", fetch=lambda _: page))
 
     def test_uses_the_reviews_url(self):
@@ -120,6 +153,47 @@ class ConfirmTest(unittest.TestCase):
 
         confirm("sequence-models", "Sequence Models", fetch=capture)
         self.assertEqual(seen, ["https://www.coursera.org/learn/sequence-models/reviews"])
+
+
+class LoadSlugsTest(unittest.TestCase):
+    def test_parses_courses_and_drops_language_variants(self):
+        xml = (
+            "<url><loc>https://www.coursera.org/learn/machine-learning</loc></url>"
+            "<url><loc>https://www.coursera.org/learn/machine-learning-fr</loc></url>"
+            "<url><loc>https://www.coursera.org/specializations/deep-learning</loc></url>"
+        )
+
+        with TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "coursera-slugs.txt"
+            slugs = load_slugs(fetch=lambda url: xml, cache_path=cache)
+
+        self.assertEqual(slugs, ["machine-learning"])
+
+    def test_reads_the_cache_without_fetching(self):
+        with TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "coursera-slugs.txt"
+            cache.write_text("alpha\nbeta\n", encoding="utf-8")
+
+            def failing(url):
+                raise AssertionError("should not fetch")
+
+            slugs = load_slugs(fetch=failing, cache_path=cache)
+
+        self.assertEqual(slugs, ["alpha", "beta"])
+
+    def test_refresh_downloads_again(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return "<url><loc>https://www.coursera.org/learn/machine-learning</loc></url>"
+
+        with TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "coursera-slugs.txt"
+            load_slugs(fetch=fetch, cache_path=cache)
+            load_slugs(fetch=fetch, cache_path=cache, refresh=True)
+
+        self.assertEqual(len(calls), 2)
 
 
 class ResolveTest(unittest.TestCase):

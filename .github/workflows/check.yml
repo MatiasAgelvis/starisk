@@ -13,6 +13,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+      - name: Install ruff
+        run: pip install ruff
+      - name: Lint
+        working-directory: pipeline
+        run: ruff check .
       - name: Run the tests
         working-directory: pipeline
         run: python -m unittest discover -s tests
@@ -30,5 +35,8 @@ jobs:
       - name: Install
         working-directory: web
         run: npm ci
+      - name: Test
+        working-directory: web
+        run: npm test
       - name: Build the site
         run: ./build.sh

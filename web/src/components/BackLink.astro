@@ -1,0 +1,30 @@
+---
+// A context-aware back link.
+//
+// The static page ships a sensible fallback (all courses / teachers / programs).
+// When the browser reports a same-origin referrer, the link follows it instead —
+// so specialization -> course returns to the specialization, not the full index.
+interface Props {
+  fallback?: string;
+}
+
+const { fallback = '/' } = Astro.props;
+---
+
+<a href={fallback} class="link link-hover text-sm text-base-content/60" data-back-link>← Back</a>
+
+<script>
+  for (const link of document.querySelectorAll('[data-back-link]')) {
+    const referrer = document.referrer;
+    if (!referrer) continue;
+
+    try {
+      const url = new URL(referrer);
+      if (url.origin !== location.origin) continue;
+      if (url.pathname === location.pathname && url.search === location.search) continue;
+      link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
+    } catch {
+      // A malformed referrer is not a reason to break the fallback link.
+    }
+  }
+</script>
