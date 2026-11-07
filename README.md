@@ -53,7 +53,7 @@ neutral is the thing this project exists to argue against.
 ```
 
 The crawler runs on a residential IP, on demand — no server, no cron, no
-database. It reads Coursera's server-rendered review cards (`data-e2e` hooks,
+database of its own. It reads Coursera's server-rendered review cards (`data-e2e` hooks,
 `aria-label`s) with fallbacks to the page's JSON-LD, and writes `scores.json`.
 A second, derived `groupings.json` records which courses belong to which
 specialization or Professional Certificate; the site reads both.
@@ -173,7 +173,13 @@ deploy that ships only `web/`), the committed copy is kept.
   redeploy. There is no repo change that can outvote a dashboard command.
 
   Set `SITE_URL` in the project's environment to the deployment origin.
-- **Cloudflare Pages:** root `web`, build `npm run build`, output `dist`.
+
+  The request queue (below) adds `web/api/course-request.js`, which only Vercel
+  picks up when the Root Directory is `web`. Rooted at the repository instead,
+  move that file to `api/course-request.js` — nothing else changes.
+- **Cloudflare Pages:** root `web`, build `npm run build`, output `dist`. The
+  static site works, but there is no Functions adapter, so the request button
+  reports the queue as unavailable.
 - **GitHub Pages:** a *project* site serves from `/starisk/`, so absolute links
   (`/learn/...`, `/logos/...`) would break. Use a custom domain, or set `base`
   and route internal links through `import.meta.env.BASE_URL` first.
@@ -187,6 +193,59 @@ deploy that ships only `web/`), the committed copy is kept.
   the 160px lockup once a provider has both; the crawl keeps local logo paths, so
   neither step is needed *after* a crawl to keep `scores.json` honest.
 - `web/public/_headers` sets caching for Cloudflare Pages (ignored elsewhere).
+
+### Course requests
+
+The landing page's lookup runs in the browser. When it misses, the result offers
+**Request this course**, which `POST`s to `/api/course-request` — a Vercel Edge
+Function in `web/api/`, with the logic in `web/src/lib/course-requests.js`. It is
+the only server-side code in the project: it validates the name and writes it to
+Turso over the HTTP API, with no driver and no Node built-ins.
+
+The function lives under `web/`, so the Vercel project's **Root Directory must be
+`web`**, the same directory the static build uses. If the project is rooted at the
+repository instead, add `api/course-request.js` there with the same three lines,
+importing `../web/src/lib/course-requests.js`.
+
+Set three variables in the Vercel project (Production, Preview and Development):
+
+| Variable | Value |
+|---|---|
+| `TURSO_DATABASE_URL` | `libsql://<database>-<org>.turso.io` |
+| `TURSO_AUTH_TOKEN` | from `turso db tokens create <database>` |
+| `REQUEST_SALT` | any random string; visitor IPs are hashed with it |
+
+The function creates its own tables on first use:
+
+- `course_requests` — one row per course (`key` unique, plus `query` and `kind`),
+  with `requests` as the demand count and `status` for moderation (`new`).
+- `request_hits` — hashed visitor and window, which caps the pace at 6 requests
+  per visitor per hour and 400 per day site-wide.
+
+Read the queue with:
+
+```sh
+turso db shell starisk \
+  "select key, requests, status from course_requests order by requests desc"
+```
+
+Validation is shared with the browser (`web/src/lib/requests.js`): Coursera course
+links and course names only, with a length cap, control-character stripping, a
+small unambiguous profanity list, and a refusal to store programs or teacher
+profiles. The function re-runs every check, because the browser is not a security
+boundary.
+
+`astro dev` does not serve functions. `mise run web:dev:api` runs `vercel dev`
+instead, which serves the site and `/api/*` together; pull the variables first
+with `vercel env pull .env.local`. For offline work, `turso dev --db-file
+.turso/dev.db` exposes the same HTTP API on `127.0.0.1:8080`.
+
+Edge Functions receive their environment at build time, so changing the Turso
+token or the salt means a redeploy.
+
+On a static-only host (Cloudflare Pages, GitHub Pages) the button says the list is
+unavailable and everything else keeps working; wrapping the same
+`handleCourseRequest` in that host's function format is the only change needed.
 
 ### Layout
 

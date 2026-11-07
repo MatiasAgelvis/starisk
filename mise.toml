@@ -83,6 +83,11 @@ description = "Build the site from the current data copy"
 dir = "web"
 run = "npm run build"
 
+[tasks."web:dev:api"]
+description = "Dev server with the /api function (vercel dev; needs web/.env.local)"
+dir = "web"
+run = "npx --yes vercel dev"
+
 [tasks."site:build"]
 description = "Copy fresh scores from the pipeline, then build the site"
 run = "./build.sh"
