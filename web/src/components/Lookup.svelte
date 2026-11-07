@@ -18,6 +18,13 @@
 
   const validation = $derived(lastQuery ? validateQuery(lastQuery) : null);
 
+  // The payload only carries courses that can be answered, so its size is an
+  // honest "read so far" number for the miss state. Scored-only matches the
+  // leaderboard's own count, rather than including courses with no reviews.
+  const scoredCount = Object.values(scores).filter(
+    (record) => typeof record.starisk === 'number',
+  ).length;
+
   function verdictLabel(record) {
     if (record.coursera == null) return 'no headline rating';
     const verdict = verdictOf(record.coursera, record.starisk);
@@ -84,6 +91,8 @@
 <div class="mx-auto w-full max-w-2xl">
   <form
     class="join w-full"
+    role="search"
+    aria-label="Find a course or teacher"
     onsubmit={(event) => {
       event.preventDefault();
       search();
@@ -94,105 +103,131 @@
       bind:value={query}
       placeholder="Paste a Coursera course or teacher URL"
       aria-label="Coursera course or teacher URL"
+      autocomplete="off"
+      autocapitalize="none"
+      spellcheck="false"
+      enterkeyhint="search"
     />
     <button class="btn join-item" type="submit">Score it</button>
   </form>
 
-  {#if result}
-    {#if result.kind === 'teacher'}
-      {#if result.person}
-        <div class="mt-6 rounded-box border border-base-300 p-5 text-left">
-          <p class="font-display text-lg font-semibold">{result.person.name}</p>
-          <a class="link link-hover mt-1 inline-block text-sm" href={`/instructors/${result.person.page}`}>
-            Their courses, and how they hold up →
-          </a>
-        </div>
-      {:else}
-        <div class="alert alert-warning mt-6 text-left">
-          <span>
-            <span class="font-semibold">Teacher not indexed yet.</span>
-            Starisk only knows the teachers on the courses it has read.
-          </span>
-        </div>
-      {/if}
-    {:else if result.record && result.record.no_reviews}
-      <div class="alert alert-info mt-6 text-left">
-        <span>
-          <span class="font-semibold">
-            {result.record.title ?? result.key}: no written reviews yet.
-          </span>
-          Coursera lists {result.record.ratings_total
-            ? `${result.record.ratings_total.toLocaleString()} ratings`
-            : 'a rating'} but no reviews, so there is nothing to weigh.
+  <!-- A permanently rendered live region: screen readers announce reliably only
+       when the region already exists. The score block keeps the site's `stats`
+       treatment; every other answer is the hairline card the teacher result
+       already used, so a miss and a hit read as the same kind of thing. -->
+  <div class="text-left" class:mt-6={Boolean(result)} aria-live="polite">
+    {#if result}
+      {#if result.kind === 'teacher'}
+        {#if result.person}
+          <div class="rounded-box border border-base-300 p-5">
+            <p class="font-display text-lg font-semibold">{result.person.name}</p>
+            <a
+              class="link link-hover mt-1 inline-block text-sm"
+              href={`/instructors/${result.person.page}`}
+            >
+              Their courses, and how they hold up →
+            </a>
+          </div>
+        {:else}
+          <div class="rounded-box border border-base-300 p-5">
+            <p class="font-display text-lg font-semibold">Teacher not indexed yet</p>
+            <p class="mt-1 text-sm text-base-content/70">
+              Starisk only knows the teachers on the courses it has read.
+            </p>
+          </div>
+        {/if}
+      {:else if result.record && result.record.no_reviews}
+        <div class="rounded-box border border-base-300 p-5">
+          <div class="flex flex-wrap items-center gap-2">
+            <p class="font-display text-lg font-semibold">
+              {result.record.title ?? result.key}
+            </p>
+            <span class="badge badge-ghost badge-sm">No written reviews</span>
+          </div>
+          <p class="mt-1 text-sm text-base-content/70">
+            Coursera lists {result.record.ratings_total
+              ? `${result.record.ratings_total.toLocaleString()} ratings`
+              : 'a rating'} but no reviews, so there is nothing to weigh.
+          </p>
           <a
-            class="link"
+            class="link link-hover mt-3 inline-block text-sm"
             href={`https://www.coursera.org/${result.record.slug ?? result.key}/reviews`}
             target="_blank"
             rel="noopener noreferrer">Check on Coursera ↗</a
           >
-        </span>
-      </div>
-    {:else if result.record && typeof result.record.starisk === 'number'}
-      <h3 class="font-display mt-6 text-left text-lg font-semibold">
-        <a class="link link-hover" href={`/${result.record.slug ?? result.key}`}>
-          {result.record.title ?? result.key}
+        </div>
+      {:else if result.record && typeof result.record.starisk === 'number'}
+        <h3 class="font-display text-lg font-semibold">
+          <a class="link link-hover" href={`/${result.record.slug ?? result.key}`}>
+            {result.record.title ?? result.key}
+          </a>
+        </h3>
+        <div class="stats stats-vertical mt-3 w-full shadow sm:stats-horizontal">
+          <div class="stat">
+            <div class="stat-title">Coursera</div>
+            <div class="stat-value text-2xl">
+              {result.record.coursera == null ? '—' : result.record.coursera.toFixed(1)}
+            </div>
+            {#if result.record.coursera != null}
+              <Stars value={result.record.coursera} size={16} />
+            {/if}
+            <div class="stat-desc">
+              {result.record.reviews}{result.record.reviews_total
+                ? ` of ${result.record.reviews_total.toLocaleString()}`
+                : ''} reviews read
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat-title">Starisk</div>
+            <div class="stat-value text-2xl">{result.record.starisk.toFixed(1)}</div>
+            <Stars value={result.record.starisk} size={16} />
+            <div class="stat-desc">{verdictLabel(result.record)}</div>
+          </div>
+        </div>
+        <a
+          class="link link-hover mt-3 inline-block text-sm"
+          href={`/${result.record.slug ?? result.key}`}
+        >
+          Full breakdown, including the top critical review →
         </a>
-      </h3>
-      <div class="stats stats-vertical mt-3 w-full shadow sm:stats-horizontal">
-        <div class="stat">
-          <div class="stat-title">Coursera</div>
-          <div class="stat-value text-2xl">
-            {result.record.coursera == null ? '—' : result.record.coursera.toFixed(1)}
-          </div>
-          {#if result.record.coursera != null}
-            <Stars value={result.record.coursera} size={16} />
-          {/if}
-          <div class="stat-desc">
-            {result.record.reviews}{result.record.reviews_total
-              ? ` of ${result.record.reviews_total.toLocaleString()}`
-              : ''} reviews read
+      {:else if validation?.ok}
+        <div class="rounded-box border border-base-300 p-5">
+          <p class="font-display text-lg font-semibold">Not indexed yet</p>
+          <p class="mt-1 text-sm text-base-content/70">
+            Starisk has scored {scoredCount} courses so far — this isn't one of them.
+          </p>
+          <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+            {#if requestState === 'sent'}
+              <span class="badge badge-ghost badge-sm gap-1">
+                <span aria-hidden="true">✓</span> Requested
+              </span>
+              <span class="text-sm text-base-content/60">{requestNote}</span>
+            {:else if requestState === 'sending'}
+              <button type="button" class="btn btn-sm" disabled>
+                <span class="loading loading-spinner loading-xs"></span>
+                Sending…
+              </button>
+            {:else}
+              <button type="button" class="btn btn-sm" onclick={sendRequest}>
+                Request this course
+              </button>
+              <span class="text-xs text-base-content/60">
+                Adds it to the crawl queue. No account, no email needed.
+              </span>
+            {/if}
+            {#if requestState === 'error'}
+              <span class="text-sm text-error">{requestNote}</span>
+            {/if}
           </div>
         </div>
-        <div class="stat">
-          <div class="stat-title">Starisk</div>
-          <div class="stat-value text-2xl">{result.record.starisk.toFixed(1)}</div>
-          <Stars value={result.record.starisk} size={16} />
-          <div class="stat-desc">{verdictLabel(result.record)}</div>
-        </div>
-      </div>
-      <a class="link link-hover mt-3 inline-block text-sm" href={`/${result.record.slug ?? result.key}`}>
-        Full breakdown, including the top critical review →
-      </a>
-    {:else}
-      <div class="alert alert-warning mt-6 text-left">
-        <span>
-          <span class="font-semibold">Not indexed yet.</span>
-          {validation?.ok
-            ? 'Starisk has only read a small set of courses so far.'
-            : (validation ? REASON_MESSAGES[validation.reason] : 'This one is not among them yet.')}
-        </span>
-      </div>
-      {#if validation?.ok}
-        <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-left">
-          {#if requestState === 'sent'}
-            <span class="badge badge-success badge-sm">Requested</span>
-            <span class="text-sm text-base-content/70">{requestNote}</span>
-          {:else if requestState === 'sending'}
-            <button type="button" class="btn btn-sm" disabled>
-              <span class="loading loading-spinner loading-xs"></span>
-              Sending…
-            </button>
-          {:else}
-            <button type="button" class="btn btn-sm" onclick={sendRequest}>Request this course</button>
-            <span class="text-xs text-base-content/60">
-              Adds the name to the crawl queue. No account, no email.
-            </span>
-          {/if}
-          {#if requestState === 'error'}
-            <span class="text-sm text-error">{requestNote}</span>
-          {/if}
+      {:else}
+        <div class="rounded-box border border-base-300 p-5">
+          <p class="font-display text-lg font-semibold">That doesn't look like a course</p>
+          <p class="mt-1 text-sm text-base-content/70">
+            {validation ? REASON_MESSAGES[validation.reason] : 'Try a Coursera course link.'}
+          </p>
         </div>
       {/if}
     {/if}
-  {/if}
+  </div>
 </div>
