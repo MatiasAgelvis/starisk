@@ -1,13 +1,22 @@
 <script>
   import Stars from './Stars.svelte';
-  import { requestHref } from '../lib/config.js';
   import { normalizeCourseKey } from '../lib/lookup.js';
+  import { REASON_MESSAGES, validateQuery } from '../lib/requests.js';
   import { verdictOf } from '../lib/verdict.js';
 
   let { scores = {}, teachers = {} } = $props();
 
   let query = $state('');
   let result = $state(null);
+
+  // A miss can be turned into a crawl request. `lastQuery` is the text the
+  // result belongs to, not the live input: editing the box without submitting
+  // must not change what would be sent.
+  let lastQuery = $state('');
+  let requestState = $state('idle'); // idle | sending | sent | error
+  let requestNote = $state('');
+
+  const validation = $derived(lastQuery ? validateQuery(lastQuery) : null);
 
   function verdictLabel(record) {
     if (record.coursera == null) return 'no headline rating';
@@ -18,6 +27,10 @@
   function search() {
     const raw = query.trim();
     if (!raw) return;
+
+    lastQuery = raw;
+    requestState = 'idle';
+    requestNote = '';
 
     // A teacher profile is a different kind of thing, not a course slug. Match
     // it first so `/instructor/x` never falls through to a course lookup.
@@ -31,6 +44,40 @@
 
     const key = normalizeCourseKey(raw);
     result = { kind: 'course', key, record: scores[key] ?? null };
+  }
+
+  async function sendRequest() {
+    if (requestState === 'sending' || !validation?.ok) return;
+
+    requestState = 'sending';
+    requestNote = '';
+
+    try {
+      const response = await fetch('/api/course-request', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ query: lastQuery }),
+      });
+      const body = await response.json().catch(() => null);
+
+      if (response.ok && body?.ok) {
+        requestState = 'sent';
+        requestNote =
+          body.count <= 1
+            ? 'You are the first to ask for this one.'
+            : `${body.count} people have asked for this one.`;
+        return;
+      }
+
+      requestState = 'error';
+      requestNote =
+        response.status === 429
+          ? 'Too many requests from this connection. Try again later.'
+          : (body?.message ?? 'The request list is unavailable right now.');
+    } catch {
+      requestState = 'error';
+      requestNote = 'The request list is unavailable right now.';
+    }
   }
 </script>
 
@@ -120,14 +167,32 @@
       <div class="alert alert-warning mt-6 text-left">
         <span>
           <span class="font-semibold">Not indexed yet.</span>
-          Starisk has only read a small set of courses so far.
-          {#if requestHref(result.key)}
-            <a class="link" href={requestHref(result.key)}>Ask for this one</a>.
-          {:else}
-            This one isn't among them yet.
-          {/if}
+          {validation?.ok
+            ? 'Starisk has only read a small set of courses so far.'
+            : (validation ? REASON_MESSAGES[validation.reason] : 'This one is not among them yet.')}
         </span>
       </div>
+      {#if validation?.ok}
+        <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-left">
+          {#if requestState === 'sent'}
+            <span class="badge badge-success badge-sm">Requested</span>
+            <span class="text-sm text-base-content/70">{requestNote}</span>
+          {:else if requestState === 'sending'}
+            <button type="button" class="btn btn-sm" disabled>
+              <span class="loading loading-spinner loading-xs"></span>
+              Sending…
+            </button>
+          {:else}
+            <button type="button" class="btn btn-sm" onclick={sendRequest}>Request this course</button>
+            <span class="text-xs text-base-content/60">
+              Adds the name to the crawl queue. No account, no email.
+            </span>
+          {/if}
+          {#if requestState === 'error'}
+            <span class="text-sm text-error">{requestNote}</span>
+          {/if}
+        </div>
+      {/if}
     {/if}
   {/if}
 </div>
