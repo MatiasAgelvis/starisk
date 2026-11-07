@@ -15,12 +15,13 @@
  * @returns {string}
  */
 export function normalizeCourseKey(input) {
-  const match = input.trim().match(/coursera\.org\/([^/?#]+)\/([^/?#]+)/);
-  if (match) return `${match[1]}/${match[2]}`;
+  const match = input.trim().match(/coursera\.org\/([^/?#]+)\/([^/?#]+)/i);
+  if (match) return `${match[1]}/${match[2]}`.toLowerCase();
 
   const cleaned = input.trim().replace(/^\/+|\/+$/g, '');
   if (!cleaned) return cleaned;
-  return cleaned.includes('/') ? cleaned : `learn/${cleaned}`;
+  const lower = cleaned.toLowerCase();
+  return lower.includes('/') ? lower : `learn/${lower}`;
 }
 
 /**
@@ -36,6 +37,7 @@ export function buildLookup(scores) {
         {
           title: record.title,
           slug: record.slug ?? key,
+          provider: record.provider ?? null,
           coursera: record.coursera ?? null,
           starisk: record.starisk,
           reviews: record.reviews,

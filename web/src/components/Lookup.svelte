@@ -2,6 +2,7 @@
   import Stars from './Stars.svelte';
   import { normalizeCourseKey } from '../lib/lookup.js';
   import { REASON_MESSAGES, validateQuery } from '../lib/requests.js';
+  import { buildSearchIndex, search } from '../lib/search.js';
   import { verdictOf } from '../lib/verdict.js';
 
   let { scores = {}, teachers = {} } = $props();
@@ -16,6 +17,26 @@
   let requestState = $state('idle'); // idle | sending | sent | error
   let requestNote = $state('');
 
+  // Type-ahead. The index is built once; scoring 600 titles on a keystroke is
+  // cheaper than debouncing it.
+  const index = buildSearchIndex(scores, teachers);
+  let focused = $state(false);
+  let activeIndex = $state(-1);
+
+  // A link is trusted only as an exact key; fuzzy matching it would let a typo'd
+  // host resolve to some unrelated course. A link with no match also keeps the
+  // panel closed, so typing a URL is not a stream of "no match" rows.
+  const LOOKS_LIKE_LINK =
+    /^(?:[a-z][a-z0-9+.-]*:\/\/|www\.)|coursera\.org\/|^\/?(?:learn|specializations|professional-certificates|instructor)\//i;
+
+  const suggestions = $derived(
+    focused && query.trim().length >= 2 ? search(index, query) : [],
+  );
+  const open = $derived(
+    focused &&
+      query.trim().length >= 2 &&
+      (suggestions.length > 0 || !LOOKS_LIKE_LINK.test(query)),
+  );
   const validation = $derived(lastQuery ? validateQuery(lastQuery) : null);
 
   // The payload only carries courses that can be answered, so its size is an
@@ -31,10 +52,22 @@
     return verdict === 'holds-up' ? 'holds up' : verdict;
   }
 
-  function search() {
+  function subtitle(item) {
+    if (item.kind === 'teacher') return 'Instructor';
+    if (item.noReviews) {
+      return item.provider ? `${item.provider} · No written reviews` : 'No written reviews';
+    }
+    const rating =
+      item.coursera == null ? 'No headline rating' : `Coursera ${item.coursera.toFixed(1)}`;
+    return item.provider ? `${item.provider} · ${rating}` : rating;
+  }
+
+  function lookup() {
     const raw = query.trim();
     if (!raw) return;
 
+    focused = false;
+    activeIndex = -1;
     lastQuery = raw;
     requestState = 'idle';
     requestNote = '';
@@ -50,7 +83,49 @@
     }
 
     const key = normalizeCourseKey(raw);
-    result = { kind: 'course', key, record: scores[key] ?? null };
+    let matchedKey = key;
+    let record = scores[key] ?? null;
+
+    // A typed title is not a slug. When the exact key misses and the input is
+    // not a link, ask the same matcher that powers the dropdown for its best
+    // guess — otherwise "Financial Markets" would always end in a request.
+    if (!record && !LOOKS_LIKE_LINK.test(raw)) {
+      const [best] = search(index, raw, 1);
+      if (best?.kind === 'course') {
+        matchedKey = best.key;
+        record = scores[best.key] ?? null;
+      } else if (best?.kind === 'teacher') {
+        result = {
+          kind: 'teacher',
+          slug: best.slug,
+          person: teachers[best.slug] ?? null,
+        };
+        return;
+      }
+    }
+
+    result = { kind: 'course', key: matchedKey, record };
+  }
+
+  function onKeydown(event) {
+    if (event.key === 'Escape' && open) {
+      focused = false;
+      activeIndex = -1;
+      return;
+    }
+
+    if (!open || suggestions.length === 0) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      activeIndex = (activeIndex + 1) % suggestions.length;
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      activeIndex = activeIndex <= 0 ? suggestions.length - 1 : activeIndex - 1;
+    } else if (event.key === 'Enter' && activeIndex >= 0) {
+      event.preventDefault();
+      window.location.assign(suggestions[activeIndex].href);
+    }
   }
 
   async function sendRequest() {
@@ -88,28 +163,102 @@
   }
 </script>
 
-<div class="mx-auto w-full max-w-2xl">
-  <form
-    class="join w-full"
-    role="search"
-    aria-label="Find a course or teacher"
-    onsubmit={(event) => {
-      event.preventDefault();
-      search();
-    }}
-  >
-    <input
-      class="input join-item w-full"
-      bind:value={query}
-      placeholder="Paste a Coursera course or teacher URL"
-      aria-label="Coursera course or teacher URL"
-      autocomplete="off"
-      autocapitalize="none"
-      spellcheck="false"
-      enterkeyhint="search"
-    />
-    <button class="btn join-item" type="submit">Score it</button>
-  </form>
+<div class="mx-auto w-full max-w-2xl text-left">
+  <div class="relative">
+    <form
+      class="join w-full"
+      role="search"
+      aria-label="Find a course or teacher"
+      onsubmit={(event) => {
+        event.preventDefault();
+        lookup();
+      }}
+    >
+      <input
+        class="input join-item w-full"
+        bind:value={query}
+        placeholder="Search courses and teachers"
+        aria-label="Search Coursera courses and teachers"
+        role="combobox"
+        aria-expanded={open}
+        aria-controls={open ? 'lookup-suggestions' : undefined}
+        aria-autocomplete="list"
+        aria-activedescendant={open && activeIndex >= 0
+          ? `lookup-option-${activeIndex}`
+          : undefined}
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        enterkeyhint="search"
+        onfocus={() => (focused = true)}
+        onblur={() => {
+          focused = false;
+          activeIndex = -1;
+        }}
+        oninput={() => {
+          focused = true;
+          activeIndex = -1;
+        }}
+        onkeydown={onKeydown}
+      />
+      <button class="btn join-item" type="submit">Score it</button>
+    </form>
+
+    {#if open}
+      <!-- Kept mousedown on the panel so the input keeps focus while a row is
+           clicked; otherwise the blur handler removes the row before the click. -->
+      <div
+        id="lookup-suggestions"
+        class="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-box border border-base-300 bg-base-100 p-1 shadow-xl"
+        onmousedown={(event) => event.preventDefault()}
+      >
+        {#if suggestions.length > 0}
+          <ul role="listbox" aria-label="Matches" class="m-0 list-none p-0">
+            {#each suggestions as item, i (item.key)}
+              <li role="presentation">
+                <a
+                  id={`lookup-option-${i}`}
+                  role="option"
+                  aria-selected={i === activeIndex}
+                  href={item.href}
+                  class="flex items-center gap-3 rounded-field px-3 py-2"
+                  class:bg-base-200={i === activeIndex}
+                  onmouseenter={() => (activeIndex = i)}
+                >
+                  <span class="min-w-0 flex-1">
+                    <span class="block truncate text-sm font-medium">{item.title}</span>
+                    <span class="block truncate text-xs text-base-content/60">
+                      {subtitle(item)}
+                    </span>
+                  </span>
+                  {#if item.kind === 'course' && item.starisk != null}
+                    <span class="shrink-0 text-right">
+                      <span class="block text-sm font-semibold tabular-nums">
+                        {item.starisk.toFixed(1)}
+                      </span>
+                      <span class="block text-[10px] uppercase tracking-wide text-base-content/50">
+                        Starisk
+                      </span>
+                    </span>
+                  {/if}
+                </a>
+              </li>
+            {/each}
+          </ul>
+        {:else}
+          <p class="px-3 py-2 text-sm text-base-content/60">
+            No match. Press Enter to ask for this one.
+          </p>
+        {/if}
+      </div>
+    {/if}
+  </div>
+
+  {#if !result && !open}
+    <p class="mt-2 text-xs text-base-content/50">
+      Search by title, or paste a Coursera course or teacher link.
+    </p>
+  {/if}
 
   <!-- A permanently rendered live region: screen readers announce reliably only
        when the region already exists. The score block keeps the site's `stats`
@@ -212,7 +361,7 @@
                 Request this course
               </button>
               <span class="text-xs text-base-content/60">
-                Adds it to the crawl queue. No account, no email needed.
+                Adds it to the crawl queue. No account, no email.
               </span>
             {/if}
             {#if requestState === 'error'}
