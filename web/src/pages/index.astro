@@ -4,6 +4,7 @@ import ScoreTable from '../components/ScoreTable.svelte';
 import Lookup from '../components/Lookup.svelte';
 import { buildInstructors, teacherIndex } from '../lib/instructors.js';
 import { buildLookup } from '../lib/lookup.js';
+import { buildFindings } from '../lib/findings.js';
 import { courses } from '../lib/courses.js';
 
 const rows = Object.entries(courses)
@@ -26,6 +27,10 @@ const lookup = buildLookup(courses);
 
 // Coursera profile slug -> our page, so pasting either URL works.
 const teachers = teacherIndex(buildInstructors(courses));
+
+// The findings page restates these; computing them here keeps the teaser honest.
+const findings = buildFindings(courses);
+const topShare = (bins) => `${Math.round(bins[bins.length - 1].share * 100)}%`;
 ---
 
 <Base title="Starisk — what learners actually say">
@@ -53,6 +58,25 @@ const teachers = teacherIndex(buildInstructors(courses));
       above what the most-upvoted reviews say. <strong>Inflated</strong> ≥ 1.5,
       <strong>padded</strong> ≥ 0.5, otherwise it <strong>holds up</strong>. Sort by any column.
     </p>
+  </section>
+
+  <section class="mt-12">
+    <a
+      class="group flex flex-col gap-2 rounded-box bg-base-200 p-5 transition-colors hover:bg-base-300/70 sm:flex-row sm:items-center sm:justify-between"
+      href="/findings"
+    >
+      <span>
+        <span class="font-display text-lg font-bold">The gap, plotted</span>
+        <span class="mt-1 block text-sm text-base-content/70">
+          {topShare(findings.theirs)} of Coursera's ratings are 4.5 or higher. Ours: {topShare(
+            findings.ours,
+          )}. All {findings.rated.length} courses, on two charts.
+        </span>
+      </span>
+      <span class="shrink-0 text-sm font-medium text-primary group-hover:underline">
+        See the findings →
+      </span>
+    </a>
   </section>
 
   <section id="method" class="mt-16">
