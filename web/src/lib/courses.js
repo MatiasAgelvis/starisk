@@ -6,7 +6,7 @@
 // on every member of the union. Importing `courses` here re-types the whole file
 // once, so pages get a single `Course` shape and the narrowing helpers below.
 
-import scores from '../data/scores.json';
+import scores from '../data/scores.json' with { type: 'json' };
 
 /**
  * @typedef {Object} TopReview
@@ -28,7 +28,10 @@ import scores from '../data/scores.json';
  * @property {number|null} [coursera]
  * @property {number} [starisk]
  * @property {number} [reviews]
+ * @property {number} [reviews_total]
  * @property {number} [ratings_total]
+ * @property {number} [spread]
+ * @property {number} [spread_weighted]
  * @property {Record<string, number>} [rating_counts]
  * @property {Record<string, number>} [review_counts]
  * @property {boolean} [low_sample]

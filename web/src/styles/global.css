@@ -11,6 +11,52 @@
   --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Data-viz series colours. Deliberately outside the semantic palette: `primary`
+   is a UI accent that will be repainted when the brand theme lands, while these
+   two should keep meaning "theirs" and "ours" regardless. Coursera is slate,
+   Starisk is the logo's gold — #a16207 is a deep gold that still clears 4.5:1 on
+   white, so a 10px label in it stays readable; on a dark surface it becomes the
+   logo's own #fbbf24. */
+:root {
+  --chart-theirs: #94a3b8;
+  --chart-ours: #a16207;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --chart-theirs: #64748b;
+    --chart-ours: #fbbf24;
+  }
+}
+
+/* The Evidence menu (Base.astro). daisyUI marks the current page with a solid
+   neutral pill; in a two-line nav row that is heavy, and the muted description
+   would inherit the pill's dark background token instead of the text colour.
+   A tinted row with a leading bar reads calmer and works in both themes. */
+.nav-menu .menu :where(li) > a[aria-current]:not([aria-current='false']) {
+  position: relative;
+  color: var(--color-base-content);
+  background-color: var(--color-base-200);
+  box-shadow: none;
+}
+
+.nav-menu .menu :where(li) > a[aria-current]:not([aria-current='false'])::before {
+  content: '';
+  position: absolute;
+  inset-block: 0.5rem;
+  inset-inline-start: 0.1875rem;
+  width: 2px;
+  border-radius: 9999px;
+  background-color: currentColor;
+  opacity: 0.35;
+}
+
+/* Per-element, not a group opacity: where dots overlap in the scatter, the
+   shading is the only thing that shows density. */
+.chart-dot {
+  fill-opacity: 0.55;
+}
+
 /* Star glyphs reference one shared <symbol> (see Base.astro). Styling them by
    class keeps each glyph to a few bytes: inline presentation attributes cost
    ~190 bytes each, and a leaderboard row renders twenty of them. */
