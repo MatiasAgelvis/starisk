@@ -264,6 +264,28 @@
        when the region already exists. The score block keeps the site's `stats`
        treatment; every other answer is the hairline card the teacher result
        already used, so a miss and a hit read as the same kind of thing. -->
+  {#snippet requestAction(buttonLabel, hint)}
+    <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+      {#if requestState === 'sent'}
+        <span class="badge badge-ghost badge-sm gap-1">
+          <span aria-hidden="true">✓</span> Requested
+        </span>
+        <span class="text-sm text-base-content/60">{requestNote}</span>
+      {:else if requestState === 'sending'}
+        <button type="button" class="btn btn-sm" disabled>
+          <span class="loading loading-spinner loading-xs"></span>
+          Sending…
+        </button>
+      {:else}
+        <button type="button" class="btn btn-sm" onclick={sendRequest}>{buttonLabel}</button>
+        <span class="text-xs text-base-content/60">{hint}</span>
+      {/if}
+      {#if requestState === 'error'}
+        <span class="text-sm text-error">{requestNote}</span>
+      {/if}
+    </div>
+  {/snippet}
+
   <div class="text-left" class:mt-6={Boolean(result)} aria-live="polite">
     {#if result}
       {#if result.kind === 'teacher'}
@@ -283,6 +305,12 @@
             <p class="mt-1 text-sm text-base-content/70">
               Starisk only knows the teachers on the courses it has read.
             </p>
+            {#if validation?.ok}
+              {@render requestAction(
+                'Request this instructor',
+                'Adds their courses to the crawl queue. No account, no email.',
+              )}
+            {/if}
           </div>
         {/if}
       {:else if result.record && result.record.no_reviews}
@@ -345,29 +373,10 @@
           <p class="mt-1 text-sm text-base-content/70">
             Starisk has scored {scoredCount} courses so far — this isn't one of them.
           </p>
-          <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-            {#if requestState === 'sent'}
-              <span class="badge badge-ghost badge-sm gap-1">
-                <span aria-hidden="true">✓</span> Requested
-              </span>
-              <span class="text-sm text-base-content/60">{requestNote}</span>
-            {:else if requestState === 'sending'}
-              <button type="button" class="btn btn-sm" disabled>
-                <span class="loading loading-spinner loading-xs"></span>
-                Sending…
-              </button>
-            {:else}
-              <button type="button" class="btn btn-sm" onclick={sendRequest}>
-                Request this course
-              </button>
-              <span class="text-xs text-base-content/60">
-                Adds it to the crawl queue. No account, no email.
-              </span>
-            {/if}
-            {#if requestState === 'error'}
-              <span class="text-sm text-error">{requestNote}</span>
-            {/if}
-          </div>
+          {@render requestAction(
+            'Request this course',
+            'Adds it to the crawl queue. No account, no email.',
+          )}
         </div>
       {:else}
         <div class="rounded-box border border-base-300 p-5">

@@ -40,6 +40,12 @@ test('normalizes URLs, paths, and bare slugs', () => {
   assert.equal(normalizeCourseKey('learn/machine-learning'), 'learn/machine-learning');
   assert.equal(normalizeCourseKey('machine-learning'), 'learn/machine-learning');
   assert.equal(
+    normalizeCourseKey(
+      'https://www.coursera.org/learn/ai-transformation-advisory-package?specialization=ibm',
+    ),
+    'learn/ai-transformation-advisory-package',
+  );
+  assert.equal(
     normalizeCourseKey('specializations/deep-learning'),
     'specializations/deep-learning',
   );

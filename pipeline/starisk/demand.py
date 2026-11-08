@@ -32,6 +32,7 @@ from pathlib import Path
 
 from .add import merge, reachable
 from .crawl import SOURCES_PATH, write_atomic
+from .expand import instructor_courses
 from .fetch import RateLimited
 from .groupings import (
     GROUPING_TYPES,
@@ -66,6 +67,7 @@ class Demand:
 @dataclass
 class Plan:
     courses: list[Demand] = field(default_factory=list)
+    teachers: list[Demand] = field(default_factory=list)
     programs: list[Demand] = field(default_factory=list)
     unresolved: list[Demand] = field(default_factory=list)
     ignored: list[Demand] = field(default_factory=list)
@@ -78,6 +80,8 @@ class Outcome:
     gone: list[Demand] = field(default_factory=list)
     added_programs: list[Demand] = field(default_factory=list)
     existing_programs: list[Demand] = field(default_factory=list)
+    added_teachers: list[Demand] = field(default_factory=list)
+    teacher_courses: dict[str, list[str]] = field(default_factory=dict)
     member_courses: list[str] = field(default_factory=list)
     program_keys: list[str] = field(default_factory=list)
     waiting: list[Demand] = field(default_factory=list)
@@ -258,12 +262,15 @@ def build_plan(demands: list[Demand], min_requests: int = 1, limit: int = DEFAUL
             plan.ignored.append(demand)
         elif kind == "name":
             plan.unresolved.append(demand)
-        elif kind not in {"learn", *GROUPING_TYPES}:
+        elif kind not in {"learn", *GROUPING_TYPES, "instructor"}:
             plan.ignored.append(demand)
         elif actionable >= limit:
             continue
         elif kind == "learn":
             plan.courses.append(demand)
+            actionable += 1
+        elif kind == "instructor":
+            plan.teachers.append(demand)
             actionable += 1
         else:
             plan.programs.append(demand)
@@ -281,6 +288,7 @@ def handle(
     check=reachable,
     sleep=time.sleep,
     fetch_programs=fetch_missing,
+    fetch_teachers=instructor_courses,
     build=build_groupings,
     delay: float = CHECK_DELAY,
 ) -> Outcome:
@@ -305,6 +313,21 @@ def handle(
             outcome.handled.append(demand.id)
         else:
             outcome.ignored.append(demand)
+
+    teachers = {demand.key.split("/", 1)[1]: demand for demand in plan.teachers}
+    if teachers:
+        fetched = fetch_teachers(list(teachers), delay=FETCH_DELAY, offline=offline)
+        for slug, demand in teachers.items():
+            courses = fetched.get(slug)
+            if courses is None:
+                outcome.waiting.append(demand)
+                continue
+
+            outcome.added_teachers.append(demand)
+            outcome.teacher_courses[slug] = courses
+            added, _, _, outcome.sources = merge(courses, outcome.sources)
+            outcome.member_courses.extend(added)
+            outcome.handled.append(demand.id)
 
     programs = {demand.key: demand for demand in plan.programs}
     for demand in plan.programs:
@@ -364,6 +387,10 @@ def report(outcome: Outcome, dry_run: bool) -> None:
         print(f"  program  {demand.key:<50} {asks(demand.requests)}")
     for demand in outcome.existing_programs:
         print(f"  seeded   {demand.key:<50} {asks(demand.requests)}")
+    for demand in outcome.added_teachers:
+        print(f"  teacher  {demand.key:<50} {asks(demand.requests)}")
+    for slug, courses in outcome.teacher_courses.items():
+        print(f"  courses  {f'instructor/{slug}':<50} {len(courses)} course(s)")
     for key in outcome.program_keys:
         count = len(((outcome.groupings.get(key) or {}).get("courses")) or [])
         if count:
@@ -371,15 +398,23 @@ def report(outcome: Outcome, dry_run: bool) -> None:
     for demand in outcome.unresolved:
         print(f"  manual   {demand.key:<50} {asks(demand.requests)}  ({demand.query!r})")
     for demand in outcome.waiting:
-        print(f"  waiting  {demand.key:<50} {asks(demand.requests)}  (program page not fetched)")
+        reason = (
+            "profile not fetched"
+            if demand.key.startswith("instructor/")
+            else "program page not fetched"
+        )
+        print(f"  waiting  {demand.key:<50} {asks(demand.requests)}  ({reason})")
     for demand in outcome.ignored:
         print(f"  skip     {demand.key:<50} {asks(demand.requests)}  (not a course key)")
 
     added = len(outcome.added_courses) + len(outcome.member_courses)
     verb = "would add" if dry_run else "added"
-    line = f"{verb}: {added} course(s), {len(outcome.added_programs)} program(s)"
+    line = (
+        f"{verb}: {added} course(s), {len(outcome.added_programs)} program(s), "
+        f"{len(outcome.added_teachers)} teacher(s)"
+    )
     if outcome.waiting:
-        line += f"; {len(outcome.waiting)} program page(s) pending"
+        line += f"; {len(outcome.waiting)} page(s) pending"
     if outcome.unresolved:
         line += f"; {len(outcome.unresolved)} need a human"
     print(f"\n{line}.")
