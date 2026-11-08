@@ -1,11 +1,11 @@
 <script>
   import Stars from './Stars.svelte';
   import { normalizeCourseKey } from '../lib/lookup.js';
-  import { REASON_MESSAGES, validateQuery } from '../lib/requests.js';
+  import { PROGRAM_TYPES, REASON_MESSAGES, validateQuery } from '../lib/requests.js';
   import { buildSearchIndex, search } from '../lib/search.js';
   import { verdictOf } from '../lib/verdict.js';
 
-  let { scores = {}, teachers = {} } = $props();
+  let { scores = {}, teachers = {}, programs = {} } = $props();
 
   let query = $state('');
   let result = $state(null);
@@ -19,7 +19,7 @@
 
   // Type-ahead. The index is built once; scoring 600 titles on a keystroke is
   // cheaper than debouncing it.
-  const index = buildSearchIndex(scores, teachers);
+  const index = buildSearchIndex(scores, teachers, programs);
   let focused = $state(false);
   let activeIndex = $state(-1);
 
@@ -45,6 +45,7 @@
   const scoredCount = Object.values(scores).filter(
     (record) => typeof record.starisk === 'number',
   ).length;
+  const programCount = Object.keys(programs).length;
 
   function verdictLabel(record) {
     if (record.coursera == null) return 'no headline rating';
@@ -54,6 +55,9 @@
 
   function subtitle(item) {
     if (item.kind === 'teacher') return 'Instructor';
+    if (item.kind === 'program') {
+      return `${item.label} · ${item.scored} of ${item.total} courses scored`;
+    }
     if (item.noReviews) {
       return item.provider ? `${item.provider} · No written reviews` : 'No written reviews';
     }
@@ -83,6 +87,13 @@
     }
 
     const key = normalizeCourseKey(raw);
+    const type = key.split('/')[0];
+
+    if (PROGRAM_TYPES.includes(type)) {
+      result = { kind: 'program', key, program: programs[key] ?? null };
+      return;
+    }
+
     let matchedKey = key;
     let record = scores[key] ?? null;
 
@@ -177,8 +188,8 @@
       <input
         class="input join-item w-full"
         bind:value={query}
-        placeholder="Search courses and teachers"
-        aria-label="Search Coursera courses and teachers"
+        placeholder="Search courses, teachers and programs"
+        aria-label="Search Coursera courses, teachers and programs"
         role="combobox"
         aria-expanded={open}
         aria-controls={open ? 'lookup-suggestions' : undefined}
@@ -231,7 +242,7 @@
                       {subtitle(item)}
                     </span>
                   </span>
-                  {#if item.kind === 'course' && item.starisk != null}
+                  {#if item.starisk != null}
                     <span class="shrink-0 text-right">
                       <span class="block text-sm font-semibold tabular-nums">
                         {item.starisk.toFixed(1)}
@@ -256,7 +267,7 @@
 
   {#if !result && !open}
     <p class="mt-2 text-xs text-base-content/50">
-      Search by title, or paste a Coursera course or teacher link.
+      Search by title, or paste a Coursera course, teacher or program link.
     </p>
   {/if}
 
@@ -309,6 +320,43 @@
               {@render requestAction(
                 'Request this instructor',
                 'Adds their courses to the crawl queue. No account, no email.',
+              )}
+            {/if}
+          </div>
+        {/if}
+      {:else if result.kind === 'program'}
+        {#if result.program}
+          <div class="rounded-box border border-base-300 p-5">
+            <div class="flex flex-wrap items-center gap-2">
+              <p class="font-display text-lg font-semibold">
+                <a class="link link-hover" href={`/programs/${result.program.key}`}>
+                  {result.program.title}
+                </a>
+              </p>
+              <span class="badge badge-ghost badge-sm">{result.program.label}</span>
+            </div>
+            <p class="mt-1 text-sm text-base-content/70">
+              {result.program.average == null
+                ? 'No course in it has a score yet.'
+                : `Starisk ${result.program.average.toFixed(1)} · ${result.program.scored} of ${result.program.total} courses scored.`}
+            </p>
+            <a
+              class="link link-hover mt-3 inline-block text-sm"
+              href={`/programs/${result.program.key}`}
+            >
+              The courses and how they hold up →
+            </a>
+          </div>
+        {:else}
+          <div class="rounded-box border border-base-300 p-5">
+            <p class="font-display text-lg font-semibold">Program not indexed yet</p>
+            <p class="mt-1 text-sm text-base-content/70">
+              Starisk has read {programCount} programs so far — this isn't one of them.
+            </p>
+            {#if validation?.ok}
+              {@render requestAction(
+                'Request this program',
+                'Fetches the program and the courses it lists. No account, no email.',
               )}
             {/if}
           </div>
