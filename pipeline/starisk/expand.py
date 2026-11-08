@@ -113,6 +113,33 @@ def indexed_instructors(scores: dict) -> dict[str, dict]:
     return people
 
 
+def instructor_courses(
+    slugs: list[str],
+    fetch=fetch_page,
+    delay: float = DELAY,
+    sleep=time.sleep,
+    cache_dir: Path = CACHE_DIR,
+    offline: bool = False,
+) -> dict[str, list[str]]:
+    """Course keys for these instructor profiles, keyed by instructor slug.
+
+    A slug missing from the result could not be read. With `offline`, only the
+    page cache is consulted — the same rule as `build_groupings`.
+    """
+    found: dict[str, list[str]] = {}
+    for slug in slugs:
+        key = f"instructor/{slug}"
+        html = (
+            load_page(key, cache_dir)
+            if offline
+            else _page(key, INSTRUCTOR_URL.format(slug=slug), fetch, delay, sleep, cache_dir)
+        )
+        if html is None:
+            continue
+        found[slug] = [f"learn/{course}" for course in extract_instructor_courses(html)]
+    return found
+
+
 def plan(
     scores: dict,
     entries: list[dict],

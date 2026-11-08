@@ -9,7 +9,7 @@ test('accepts the forms the lookup already accepts', () => {
     ok: true,
     kind: 'slug',
     key: 'learn/machine-learning',
-    query: 'https://www.coursera.org/learn/machine-learning/reviews?foo=bar',
+    query: 'learn/machine-learning',
   });
 
   assert.equal(validateQuery('/learn/machine-learning/').key, 'learn/machine-learning');
@@ -46,9 +46,22 @@ test('names may use other scripts and the punctuation course names use', () => {
 test('rejects links that are not Coursera courses', () => {
   assert.equal(validateQuery('https://www.coursera.com/learn/bad-name').reason, 'url');
   assert.equal(validateQuery('example.com/learn/something').reason, 'url');
-  assert.equal(validateQuery('https://www.coursera.org/instructor/andrew-ng').reason, 'not_a_course');
   assert.equal(validateQuery('https://www.coursera.org/specializations/deep-learning').reason, 'program');
   assert.equal(validateQuery('specializations/deep-learning').reason, 'program');
+});
+
+test('accepts an instructor profile, including the opaque numeric ids', () => {
+  assert.deepEqual(validateQuery('https://www.coursera.org/instructor/andrew-ng'), {
+    ok: true,
+    kind: 'teacher',
+    key: 'instructor/andrew-ng',
+    query: 'instructor/andrew-ng',
+  });
+
+  const opaque = validateQuery('https://www.coursera.org/instructor/~118561318');
+  assert.equal(opaque.ok, true);
+  assert.equal(opaque.kind, 'teacher');
+  assert.equal(opaque.key, 'instructor/~118561318');
 });
 
 test('rejects profanity in a slug, a name, and leetspeak', () => {

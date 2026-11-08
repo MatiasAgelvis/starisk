@@ -18,6 +18,10 @@ export const MAX_INPUT = 1024;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const MAX_SLUG = 80;
 
+// Instructor profiles are either name-based (`andrewng`) or an opaque
+// `~<number>` (79 of the 211 in the corpus).
+const INSTRUCTOR_SLUG = /^~?[a-z0-9][a-z0-9-]*$/;
+
 // What a course *name* may contain. Anything outside this is a link, markup, or
 // someone testing the input — none of which belong in a crawl queue. `#` and `+`
 // are here for C# and C++, and the dashes for names that were typed, not pasted.
@@ -64,7 +68,7 @@ export const REASON_MESSAGES = {
 };
 
 /**
- * @typedef {{ ok: true, query: string, kind: 'slug' | 'name', key: string }
+ * @typedef {{ ok: true, query: string, kind: 'slug' | 'name' | 'teacher', key: string }
  *   | { ok: false, reason: keyof typeof REASON_MESSAGES }} Validation
  */
 
@@ -78,7 +82,15 @@ export function validateQuery(raw) {
   if (query.length > MAX_INPUT) return { ok: false, reason: 'too_long' };
 
   const classified = classify(query);
-  return classified.ok ? { ...classified, query } : classified;
+  if (!classified.ok) return classified;
+
+  // A link is stored as the key it produced, not as the URL it was pasted from:
+  // `?specialization=…` and `utm_*` are not part of the request. A typed name is
+  // already the thing a human needs to read.
+  return {
+    ...classified,
+    query: classified.kind === 'name' ? query : classified.key,
+  };
 }
 
 /**
@@ -97,7 +109,7 @@ function clean(raw) {
 
 /**
  * @param {string} text
- * @returns {{ ok: true, kind: 'slug' | 'name', key: string } | { ok: false, reason: string }}
+ * @returns {{ ok: true, kind: 'slug' | 'name' | 'teacher', key: string } | { ok: false, reason: string }}
  */
 function classify(text) {
   const link = parseLink(text);
@@ -131,7 +143,7 @@ function parseLink(text) {
 
 /**
  * @param {string} link
- * @returns {{ ok: true, kind: 'slug' | 'name', key: string } | { ok: false, reason: string }}
+ * @returns {{ ok: true, kind: 'slug' | 'name' | 'teacher', key: string } | { ok: false, reason: string }}
  */
 function fromLink(link) {
   let parsed;
@@ -161,7 +173,7 @@ function fromLink(link) {
  */
 function fromPath(type, slug) {
   const kind = type.toLowerCase();
-  if (kind === 'instructor') return { ok: false, reason: 'not_a_course' };
+  if (kind === 'instructor') return instructorOf(slug);
   if (kind === 'specializations' || kind === 'professional-certificates') {
     return { ok: false, reason: 'program' };
   }
@@ -192,6 +204,30 @@ function slugOf(value) {
   if (isProfane(slug)) return { ok: false, reason: 'language' };
 
   return { ok: true, kind: 'slug', key: `learn/${slug}` };
+}
+
+/**
+ * @param {string | undefined} value
+ * @returns {{ ok: true, kind: 'teacher', key: string } | { ok: false, reason: string }}
+ */
+function instructorOf(value) {
+  if (!value) return { ok: false, reason: 'not_a_course' };
+
+  let slug;
+  try {
+    slug = decodeURIComponent(value);
+  } catch {
+    return { ok: false, reason: 'not_a_course' };
+  }
+
+  slug = slug.toLowerCase().replace(/\/+$/, '');
+
+  if (slug.length < 2) return { ok: false, reason: 'too_short' };
+  if (slug.length > MAX_SLUG) return { ok: false, reason: 'too_long' };
+  if (!INSTRUCTOR_SLUG.test(slug)) return { ok: false, reason: 'not_a_course' };
+  if (isProfane(slug)) return { ok: false, reason: 'language' };
+
+  return { ok: true, kind: 'teacher', key: `instructor/${slug}` };
 }
 
 /**

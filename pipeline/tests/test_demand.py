@@ -175,6 +175,7 @@ class BuildPlanTest(unittest.TestCase):
                 demand(5, "name/some course", 1, kind="name", query="Some Course"),
                 demand(6, "weird"),
                 demand(7, "learn"),
+                demand(8, "instructor/~118561318", 2),
             ]
         )
 
@@ -185,6 +186,7 @@ class BuildPlanTest(unittest.TestCase):
         )
         self.assertEqual([item.key for item in plan.unresolved], ["name/some course"])
         self.assertEqual([item.key for item in plan.ignored], ["weird", "learn"])
+        self.assertEqual([item.key for item in plan.teachers], ["instructor/~118561318"])
 
     def test_min_requests_filters_quiet_rows(self):
         plan = build_plan([demand(1, "learn/a", 3), demand(2, "learn/b", 1)], min_requests=2)
@@ -254,6 +256,36 @@ class HandleTest(unittest.TestCase):
         self.assertEqual([item.key for item in outcome.unresolved], ["name/thing"])
         self.assertEqual(checked, ["learn/new", "learn/dead"])
         self.assertEqual(fetched, ["professional-certificates/p"])
+
+    def test_a_teacher_request_adds_their_courses(self):
+        plan = build_plan(
+            [
+                demand(1, "instructor/~118561318", 2),
+                demand(2, "instructor/missing", 1),
+            ]
+        )
+        asked = []
+
+        def fetch_teachers(slugs, delay=0, offline=False):
+            asked.extend(slugs)
+            return {"~118561318": ["learn/a", "learn/b"]}
+
+        outcome = handle(
+            plan,
+            [],
+            [],
+            check=lambda key: True,
+            sleep=lambda _: None,
+            fetch_teachers=fetch_teachers,
+            build=lambda: {},
+        )
+
+        self.assertEqual(asked, ["~118561318", "missing"])
+        self.assertEqual([item.key for item in outcome.added_teachers], ["instructor/~118561318"])
+        self.assertEqual(outcome.teacher_courses["~118561318"], ["learn/a", "learn/b"])
+        self.assertEqual(outcome.sources, ["learn/a", "learn/b"])
+        self.assertEqual(outcome.handled, [1])
+        self.assertEqual([item.key for item in outcome.waiting], ["instructor/missing"])
 
     def test_offline_touches_no_network(self):
         plan = build_plan([demand(1, "learn/new")])
