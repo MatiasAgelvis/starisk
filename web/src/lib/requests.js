@@ -9,6 +9,11 @@
 
 export const MAX_QUERY = 120;
 
+// A pasted link is not a name: the query string can carry a specialization,
+// utm_* and friends, and only the slug inside it matters. The bound exists to
+// keep the body small, not to judge the link.
+export const MAX_INPUT = 1024;
+
 // A bare Coursera slug, which is what a URL or a pasted path becomes.
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const MAX_SLUG = 80;
@@ -48,7 +53,7 @@ const BLOCKED_INSIDE = ['fuck', 'shit', 'bitch', 'cunt', 'fagg', 'nigg', 'tranny
 
 export const REASON_MESSAGES = {
   empty: 'Type a course name or link first.',
-  too_long: `Course names are limited to ${MAX_QUERY} characters.`,
+  too_long: 'That is too long to be a course name or link.',
   too_short: 'That is too short to be a course name.',
   url: 'Only Coursera course links are accepted.',
   program: 'Starisk scores individual courses, not programs.',
@@ -70,7 +75,7 @@ export const REASON_MESSAGES = {
 export function validateQuery(raw) {
   const query = clean(raw);
   if (!query) return { ok: false, reason: 'empty' };
-  if (query.length > MAX_QUERY) return { ok: false, reason: 'too_long' };
+  if (query.length > MAX_INPUT) return { ok: false, reason: 'too_long' };
 
   const classified = classify(query);
   return classified.ok ? { ...classified, query } : classified;
@@ -195,6 +200,7 @@ function slugOf(value) {
  */
 function nameOf(value) {
   if (value.length < 3) return { ok: false, reason: 'too_short' };
+  if (value.length > MAX_QUERY) return { ok: false, reason: 'too_long' };
   if (countLetters(value) < 2) return { ok: false, reason: 'too_short' };
   if (!NAME_CHARS.test(value)) return { ok: false, reason: 'characters' };
   if (REPEATED.test(value)) return { ok: false, reason: 'repetitive' };
