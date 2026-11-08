@@ -16,14 +16,20 @@ const canonical = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).href
   : Astro.url.pathname;
 
-// Two sections, not two tabs on one page: the URL is what people share. The
-// leaderboard is the home page, so "Courses" points at `/`.
+// Three sections plus one grouped pair, not five tabs on one page: the URL is
+// what people share. The leaderboard is the home page, so "Courses" points at
+// `/`. Findings and Method are the same argument at two depths — what the corpus
+// says, and how it was measured — so they share a menu rather than growing the
+// top level again.
 // Astro's pathname carries a trailing slash on some routes (`/method/`), so
 // normalise before comparing — otherwise the active tab silently disappears.
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isCourses = path === '/' || /^\/(learn|specializations|professional-certificates)\//.test(path);
 const isPrograms = path.startsWith('/programs');
 const isTeachers = path.startsWith('/instructors');
+const isFindings = path.startsWith('/findings');
+const isMethod = path.startsWith('/method');
+const isEvidence = isFindings || isMethod;
 ---
 
 <!doctype html>
@@ -90,11 +96,57 @@ const isTeachers = path.startsWith('/instructors');
           class={`btn btn-ghost btn-sm px-2 text-sm sm:px-3 ${isTeachers ? 'btn-active' : ''}`}
           aria-current={isTeachers ? 'page' : undefined}>Teachers</a
         >
-        <a
-          href="/method"
-          class={`btn btn-ghost btn-sm px-2 text-sm sm:px-3 ${path === '/method' ? 'btn-active' : ''}`}
-          aria-current={path === '/method' ? 'page' : undefined}>Method</a
-        >
+        <!-- A <details> dropdown, so the menu still works with JavaScript off and
+             the links stay in the HTML for crawlers. The inline script at the end
+             of the body only adds the dismissal behaviour a popover would give us:
+             click outside or press Escape. -->
+        <details class="dropdown dropdown-end group nav-menu">
+          <summary
+            class={`btn btn-ghost btn-sm list-none gap-1 px-2 text-sm sm:px-3 ${isEvidence
+              ? 'btn-active'
+              : ''}`}
+          >
+            Evidence
+            <svg
+              class="h-3 w-3 opacity-60 transition-transform duration-200 group-open:rotate-180"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg
+            >
+          </summary>
+          <ul
+            class="menu dropdown-content z-50 mt-2.5 w-60 rounded-box border border-base-300/70 bg-base-100 p-1.5 shadow-xl"
+          >
+            <li>
+              <a
+                href="/findings"
+                class={`gap-2 py-2 pr-3${isFindings ? ' font-medium' : ''}`}
+                aria-current={isFindings ? 'page' : undefined}
+              >
+                <span class="flex flex-col gap-0.5">
+                  <span>Findings</span>
+                  <span class="text-xs font-normal opacity-60">Where our scores diverge</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/method"
+                class={`gap-2 py-2 pr-3${isMethod ? ' font-medium' : ''}`}
+                aria-current={isMethod ? 'page' : undefined}
+              >
+                <span class="flex flex-col gap-0.5">
+                  <span>Method</span>
+                  <span class="text-xs font-normal opacity-60">How a course gets its score</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </details>
       </div>
     </div>
 
@@ -106,5 +158,24 @@ const isTeachers = path.startsWith('/instructors');
       <p>Ratings computed from Coursera reviews. Not affiliated with Coursera.</p>
       <p class="text-xs text-base-content/40">Cookie-free visit counts.</p>
     </footer>
+
+    <!-- A <details> menu stays open until its summary is clicked again, which is
+         fine for a menu but not for a popover. Close it the way people expect:
+         click anywhere else, or press Escape (returning focus to the trigger). -->
+    <script>
+      const menu = document.querySelector('details.nav-menu');
+      const trigger = menu?.querySelector('summary');
+      if (menu && trigger) {
+        document.addEventListener('click', (event) => {
+          if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+        });
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && menu.open) {
+            menu.open = false;
+            trigger.focus();
+          }
+        });
+      }
+    </script>
   </body>
 </html>

@@ -15,8 +15,30 @@ for the small, near-term stuff.
   then the quadrant view.
 - **I5 spike.** Do Coursera credential pages expose the course slug? Decides how
   expensive the personal corpus is.
+- **Course requests.** The landing page's miss state writes to Turso through
+  `web/src/lib/course-requests.js` (served by `web/api/course-request.js`), and
+  `pipeline:demand` turns `status='new'` rows into crawl work. Open: using the
+  `status` column for moderation, and whether the queue should be public (a
+  `/wanted` page sorted by `requests`).
 
 ## Front end
+- **Brand theme: navy + gold.** The logo is `#111827` with `#fbbf24`, and the
+  `theme-color` meta already matches the navy, but the site still runs on daisyUI's
+  stock `light` / `dark`. Not in scope for `feat/findings` — it deserves its own
+  branch, since it changes every page at once. Sketch: a `@plugin "daisyui/theme"`
+  block in `global.css` defining both schemes, using `--color-neutral: #111827`
+  and `--color-primary: #fbbf24`.
+  - **Gold is a bad text colour** — `#fbbf24` on white is ~1.9:1. Keep it for fills
+    and highlights, and use a darker amber (~`#b45309`) for `text-primary` links,
+    or every link on the site becomes unreadable.
+  - The logo chips in `Logo.astro` and `ScoreTable.svelte` are literal `bg-white`
+    on purpose: the marks are dark artwork drawn for light backgrounds. A dark
+    theme should keep those chips light rather than tokenising them.
+  - The charts already fit: grey for Coursera, `primary` for Starisk. Under a
+    gold theme our bars turn gold without touching either page.
+  - Everything else uses semantic tokens (`bg-base-200`, `text-primary`,
+    `fill-primary/80`, `stroke-base-content/25`), so expect one file plus a
+    contrast pass, not a rewrite.
 - **Logo polarity.** White-on-transparent marks are handled by the shared logo tile +
   alpha drop-shadow in `Logo.astro`. If more edge cases show up, consider a checkerboard
   backing or per-provider overrides.

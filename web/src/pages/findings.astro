@@ -1,0 +1,489 @@
+---
+import Base from '../layouts/Base.astro';
+import BackLink from '../components/BackLink.astro';
+import { MAX, MIN, buildFindings } from '../lib/findings.js';
+
+const { theirs, ours, rated, scored, differentStars, topGaps, inflated, padded, holdsUp } =
+  buildFindings();
+
+// "1 in N" rather than a percentage: half the catalogue is easier to picture
+// than 52%, and the exact count is in the footnote.
+const clashIn = Math.max(1, Math.round(rated.length / Math.max(1, differentStars)));
+
+const pct = (share: number) => `${Math.round(share * 100)}%`;
+// One decimal is more than a 560px chart can show, and it keeps the HTML small:
+// 528 points × a few coordinates each is most of this page's weight.
+const round = (value: number) => Math.round(value * 10) / 10;
+
+// --- histogram -------------------------------------------------------------
+// Mirrored around a shared baseline so the two distributions are read against
+// the same axis. Shares rather than counts: the series have different totals.
+const HW = 720;
+const H_PAD = 12;
+const H_BAR = 116;
+const H_MID = 30 + H_BAR;
+const binW = (HW - 2 * H_PAD) / theirs.length;
+const barW = round(binW * 0.6);
+const maxShare = Math.max(...theirs.map((b) => b.share), ...ours.map((b) => b.share));
+const H_HEIGHT = H_MID + H_BAR + 40;
+
+const barX = (i: number) => round(H_PAD + i * binW + (binW - barW) / 2);
+const barH = (share: number) => round((share / maxShare) * H_BAR);
+const LAST = theirs.length - 1; // the five-star bucket gets the big label
+
+// The empty half of Coursera's chart is the argument, so it gets labelled rather
+// than left blank: the lowest rating in the corpus, and how much of ours sits
+// below the point where theirs stops.
+const minRated = Math.min(...rated.map((course) => course.coursera));
+const atMostTwo = (bins: { share: number }[]) =>
+  bins.slice(0, 2).reduce((total, bin) => total + bin.share, 0);
+
+// The low-star box frames two columns. Its annotations centre on the box, not on
+// a bar — a bar's one-sided offset is what pushed the label half outside it.
+const LOW_BOX_X = round(barX(0) - (binW - barW) / 2);
+const LOW_BOX_W = round(binW * 2);
+const LOW_CENTER = round(LOW_BOX_X + LOW_BOX_W / 2);
+
+// Axis labels are stars, not ranges: five columns of glyphs read faster than
+// eight `1.0–1.4` strings, and they are already the site's visual language.
+const STAR_SIZE = 9;
+const STAR_GAP = 1.5;
+const STAR_STEP = STAR_SIZE + STAR_GAP;
+
+// --- scatter ---------------------------------------------------------------
+// Both axes 1–5. The same scale is the point: the ratings huddle in a narrow
+// band while our scores use the whole axis.
+const SW = 560;
+const S_PAD = 34;
+const S_HEIGHT = SW + 20;
+const sx = (v: number) => round(S_PAD + ((v - MIN) / (MAX - MIN)) * (SW - 2 * S_PAD));
+const sy = (v: number) => round(S_PAD + ((MAX - v) / (MAX - MIN)) * (SW - 2 * S_PAD));
+
+// Deterministic jitter: many courses share a rounded pair, and 528 identical
+// dots would hide the shape. Clamped, so a dot never floats outside the axes.
+const JITTER = 0.06;
+const nudge = (value: number, seed: number) =>
+  Math.min(MAX, Math.max(MIN, value + (seed - 0.5) * JITTER));
+const points = rated.map((course) => ({
+  key: course.key,
+  cx: sx(nudge(course.coursera, course.jx)),
+  cy: sy(nudge(course.starisk, course.jy)),
+}));
+
+const ticks = [1, 2, 3, 4, 5];
+const description = `${rated.length} Coursera courses plotted: ${pct(
+  theirs[4].share,
+)} of their ratings are five-star, against ${pct(
+  ours[4].share,
+)} of ours. One course in ${clashIn} gets a different star rating from Starisk than from Coursera.`;
+---
+
+<Base title="Findings — Starisk" description={description}>
+  <article class="mx-auto max-w-4xl">
+    <BackLink fallback="/" />
+
+    <header class="mt-4">
+      <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+        The gap, plotted
+      </h1>
+      <p class="mt-3 max-w-2xl text-base-content/75">
+        Coursera's headline rating is an average of every star a course ever received. Starisk is
+        what the most-upvoted written reviews say. Put {rated.length} courses of both on the same
+        axes and the two stopped being the same measurement a long time ago.
+      </p>
+    </header>
+
+    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
+      <div class="stat">
+        <div class="stat-title">Courses plotted</div>
+        <div class="stat-value text-2xl">{rated.length}</div>
+        <div class="stat-desc">{scored.length} scored, {scored.length - rated.length} with no headline rating</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Where we differ</div>
+        <div class="stat-value text-2xl">1 in {clashIn}</div>
+        <div class="stat-desc">courses get a different star rating from us</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Rated five-star</div>
+        <div class="stat-value text-2xl">
+          {pct(theirs[4].share)} <span class="text-base-content/40">vs</span> {pct(ours[4].share)}
+        </div>
+        <div class="stat-desc">Coursera against Starisk</div>
+      </div>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">Two distributions, one axis</h2>
+      <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+        Share of courses at each star rating. Coursera's ratings sit almost entirely in the
+        top bucket; ours use the whole range.
+      </p>
+
+      <figure class="mt-4">
+        <p class="mb-2 flex flex-wrap items-center gap-4 text-[11px] text-base-content/60">
+          <span class="inline-flex items-center gap-1.5">
+            <span class="inline-block h-2.5 w-4 rounded-sm bg-[var(--chart-theirs)]"></span> Coursera
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="inline-block h-2.5 w-4 rounded-sm bg-[var(--chart-ours)]"></span> Starisk
+          </span>
+        </p>
+        <svg
+          viewBox={`0 0 ${HW} ${H_HEIGHT}`}
+          class="h-auto w-full"
+          role="img"
+          aria-label={`Histogram: ${pct(theirs[4].share)} of Coursera ratings are five-star, against ${pct(ours[4].share)} of Starisk scores. No Coursera rating falls below ${minRated.toFixed(1)}.`}
+        >
+          <!-- The empty low-star end of Coursera's chart, called out rather than left blank.
+               Both boxes span two columns; everything in them centres on LOW_CENTER. -->
+          <rect
+            x={LOW_BOX_X}
+            y={H_MID - H_BAR}
+            width={LOW_BOX_W}
+            height={H_BAR}
+            class="fill-none stroke-base-content/20"
+            stroke-dasharray="3 5"
+            rx="4"
+          />
+          <text
+            x={LOW_CENTER}
+            y={H_MID - 94}
+            text-anchor="middle"
+            class="fill-base-content/45 text-[10px]"
+          >
+            no rated course below {minRated.toFixed(1)}
+          </text>
+          <text
+            x={LOW_CENTER}
+            y={H_MID - 78}
+            text-anchor="middle"
+            class="fill-base-content/85 text-[15px] font-bold"
+          >
+            {pct(atMostTwo(theirs))}
+          </text>
+
+          <!-- The same region on our side is not empty, which is the argument. -->
+          <rect
+            x={LOW_BOX_X}
+            y={H_MID}
+            width={LOW_BOX_W}
+            height={H_BAR}
+            class="fill-none stroke-[var(--chart-ours)] opacity-30"
+            stroke-dasharray="3 5"
+            rx="4"
+          />
+          <text
+            x={LOW_CENTER}
+            y={H_MID + 78}
+            text-anchor="middle"
+            class="fill-[var(--chart-ours)] text-[15px] font-bold"
+          >
+            {pct(atMostTwo(ours))}
+          </text>
+          <text
+            x={LOW_CENTER}
+            y={H_MID + 94}
+            text-anchor="middle"
+            class="fill-[var(--chart-ours)] opacity-80 text-[10px]"
+          >
+            {ours.slice(0, 2).reduce((total, bin) => total + bin.count, 0)} of {scored.length} scores
+            are 1–2 stars
+          </text>
+
+          <line
+            x1={H_PAD}
+            x2={HW - H_PAD}
+            y1={H_MID}
+            y2={H_MID}
+            class="stroke-base-content/40"
+            stroke-width="1.5"
+          />
+
+          {
+            theirs.map((bin, index) => (
+              <g>
+                <rect
+                  x={barX(index)}
+                  y={H_MID - barH(bin.share)}
+                  width={barW}
+                  height={barH(bin.share)}
+                  class="bar fill-[var(--chart-theirs)]"
+                  style={`--i:${index}`}
+                  rx="2"
+                />
+                {bin.share >= 0.05 && index !== LAST && (
+                  <text
+                    x={barX(index) + barW / 2}
+                    y={H_MID - barH(bin.share) - 5}
+                    text-anchor="middle"
+                    class="fill-base-content/55 text-[10px]"
+                  >
+                    {pct(bin.share)}
+                  </text>
+                )}
+                {index === LAST && (
+                  <g>
+                    <text
+                      x={barX(index) + barW / 2}
+                      y={H_MID - barH(bin.share) - 18}
+                      text-anchor="middle"
+                      class="fill-base-content/85 text-[15px] font-bold"
+                    >
+                      {pct(bin.share)}
+                    </text>
+                    <text
+                      x={barX(index) + barW / 2}
+                      y={H_MID - barH(bin.share) - 5}
+                      text-anchor="middle"
+                      class="fill-base-content/45 text-[9px]"
+                    >
+                      {bin.count} of {rated.length}
+                    </text>
+                  </g>
+                )}
+              </g>
+            ))
+          }
+
+          {
+            ours.map((bin, index) => (
+              <g>
+                <rect
+                  x={barX(index)}
+                  y={H_MID}
+                  width={barW}
+                  height={barH(bin.share)}
+                  class="bar bar-down fill-[var(--chart-ours)]"
+                  style={`--i:${index}`}
+                  rx="2"
+                />
+                {bin.share >= 0.05 && index !== LAST && index >= 2 && (
+                  <text
+                    x={barX(index) + barW / 2}
+                    y={H_MID + barH(bin.share) + 12}
+                    text-anchor="middle"
+                    class="fill-[var(--chart-ours)] text-[10px]"
+                  >
+                    {pct(bin.share)}
+                  </text>
+                )}
+                {index === LAST && (
+                  <g>
+                    <text
+                      x={barX(index) + barW / 2}
+                      y={H_MID + barH(bin.share) + 16}
+                      text-anchor="middle"
+                      class="fill-[var(--chart-ours)] text-[15px] font-bold"
+                    >
+                      {pct(bin.share)}
+                    </text>
+                    <text
+                      x={barX(index) + barW / 2}
+                      y={H_MID + barH(bin.share) + 28}
+                      text-anchor="middle"
+                      class="fill-[var(--chart-ours)] text-[9px]"
+                    >
+                      {bin.count} of {scored.length}
+                    </text>
+                  </g>
+                )}
+              </g>
+            ))
+          }
+
+          {
+            ours.map((bin, index) => (
+              <g
+                transform={`translate(${round(
+                  barX(index) + barW / 2 - (bin.star * STAR_STEP - STAR_GAP) / 2,
+                )}, ${H_MID + H_BAR + 22})`}
+              >
+                {Array.from({ length: bin.star }, (_, star) => (
+                  <use
+                    href="#star"
+                    x={star * STAR_STEP}
+                    y={0}
+                    width={STAR_SIZE}
+                    height={STAR_SIZE}
+                    class="fill-base-content/45"
+                  />
+                ))}
+              </g>
+            ))
+          }
+        </svg>
+        <figcaption class="mt-2 text-sm text-base-content/60">
+          {theirs[LAST].count} of {rated.length} Coursera ratings are five-star. Ours: {ours[LAST]
+            .count} of {scored.length}. Below four stars, Coursera has {theirs
+            .slice(0, 3)
+            .reduce((total, bin) => total + bin.count, 0)} courses; we have {ours
+            .slice(0, 3)
+            .reduce((total, bin) => total + bin.count, 0)}.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="font-display text-xl font-bold">The same scale, all {rated.length} of them</h2>
+      <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+        One dot per course, both axes 1–5. On the diagonal the two agree; below it the headline is
+        kinder than the reviews.
+      </p>
+
+      <figure class="mt-4">
+        <svg
+          viewBox={`0 0 ${SW} ${S_HEIGHT}`}
+          class="mx-auto h-auto w-full max-w-[560px]"
+          role="img"
+          aria-label={`Scatter of ${rated.length} courses: Coursera rating against Starisk score. One course in ${clashIn} gets a different star rating from Starisk than from Coursera.`}
+        >
+          {
+            ticks.map((tick) => (
+              <g>
+                <line
+                  x1={sx(tick)}
+                  x2={sx(tick)}
+                  y1={sy(MAX)}
+                  y2={sy(MIN)}
+                  class="stroke-base-content/10"
+                />
+                <line
+                  x1={sx(MIN)}
+                  x2={sx(MAX)}
+                  y1={sy(tick)}
+                  y2={sy(tick)}
+                  class="stroke-base-content/10"
+                />
+                <text
+                  x={sx(tick)}
+                  y={sy(MIN) + 16}
+                  text-anchor="middle"
+                  class="fill-base-content/40 text-[10px]"
+                >
+                  {tick}
+                </text>
+                <text
+                  x={sx(MIN) - 10}
+                  y={sy(tick) + 3}
+                  text-anchor="end"
+                  class="fill-base-content/40 text-[10px]"
+                >
+                  {tick}
+                </text>
+              </g>
+            ))
+          }
+
+          <line
+            x1={sx(MIN)}
+            y1={sy(MIN)}
+            x2={sx(MAX)}
+            y2={sy(MAX)}
+            class="stroke-base-content/35"
+            stroke-dasharray="4 4"
+          />
+
+          {points.map((point) => <circle cx={point.cx} cy={point.cy} r="3.2" class="chart-dot fill-[var(--chart-ours)]" />)}
+
+          <text
+            x={sx(MAX)}
+            y={S_HEIGHT - 4}
+            text-anchor="end"
+            class="fill-base-content/50 text-[10px]"
+          >
+            Coursera's rating →
+          </text>
+          <text
+            x={12}
+            y={sy(MAX) - 10}
+            class="fill-base-content/50 text-[10px]"
+          >
+            ↑ Starisk
+          </text>
+        </svg>
+        <figcaption class="mt-2 text-sm text-base-content/60">
+          The cloud is a vertical smear: Coursera's axis barely moves while ours uses all of it.
+          {inflated} courses sit 1.5 stars or more below their headline rating, {padded} by half a
+          star, and {holdsUp} hold up.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="font-display text-xl font-bold">Where the gap is widest</h2>
+      <p class="mt-2 text-sm text-base-content/60">
+        The eight largest gaps between the headline and the reviews.
+      </p>
+      <ol class="mt-4 divide-y divide-base-300/60">
+        {
+          topGaps.map((course) => (
+            <li class="flex items-baseline justify-between gap-4 py-3">
+              <a class="link link-hover min-w-0 font-medium" href={`/${course.key}`}>
+                {course.title}
+              </a>
+              <span class="shrink-0 whitespace-nowrap font-mono text-sm text-base-content/60">
+                {course.coursera.toFixed(1)} → {course.starisk.toFixed(1)}
+                <span class="ml-2 text-base-content/40">({course.gap.toFixed(1)})</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="mt-10 space-y-3 text-sm text-base-content/60">
+      <p>
+        Every number here is the same one shown on a course page: the most-upvoted written reviews,
+        weighted by the square root of their votes. Nothing was recomputed for this page.
+      </p>
+      <p>
+        The caveats travel with it. We read one page of reviews per course — about twenty — so a
+        score is a reading of the most-endorsed reviews, not a survey. {scored.length - rated.length}
+        {' '}scored courses have no Coursera rating to compare against and are absent from the
+        A course counts as different when its score rounds to a different number of stars than Coursera's: {differentStars} of {rated.length} do.
+        <a class="link link-hover" href="/method">The full method.</a>
+      </p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  /* Bars grow from the baseline. Pure CSS, no JS: `both` holds the start frame so
+     nothing flashes at full height before the animation begins. */
+  .bar {
+    transform-box: fill-box;
+    transform-origin: bottom;
+    animation: bar-grow 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 55ms);
+  }
+
+  .bar-down {
+    transform-origin: top;
+  }
+
+  @keyframes bar-grow {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  /* Where scroll-driven animations exist, grow as the chart is scrolled to
+     instead of animating off-screen on load. */
+  @supports (animation-timeline: view()) {
+    .bar {
+      animation-timeline: view();
+      animation-range: cover 5% cover 40%;
+      animation-delay: 0ms;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar {
+      animation: none;
+    }
+  }
+</style>

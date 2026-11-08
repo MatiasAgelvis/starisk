@@ -8,6 +8,7 @@ test('keeps scored courses and explicit empty states, drops failed scrapes', () 
     'learn/scored': {
       title: 'Scored',
       slug: 'learn/scored',
+      provider: 'IBM',
       starisk: 3.2,
       coursera: 4.8,
       reviews: 20,
@@ -24,6 +25,7 @@ test('keeps scored courses and explicit empty states, drops failed scrapes', () 
 
   assert.deepEqual(Object.keys(lookup), ['learn/scored', 'learn/empty']);
   assert.equal(lookup['learn/scored'].starisk, 3.2);
+  assert.equal(lookup['learn/scored'].provider, 'IBM');
   assert.equal(lookup['learn/empty'].no_reviews, true);
   assert.equal(lookup['learn/empty'].ratings_total, 2);
   assert.equal(lookup['learn/broken'], undefined);
@@ -42,6 +44,14 @@ test('normalizes URLs, paths, and bare slugs', () => {
     'specializations/deep-learning',
   );
   assert.equal(normalizeCourseKey('  '), '');
+});
+
+test('slugs are case-insensitive, like Coursera\'s', () => {
+  assert.equal(
+    normalizeCourseKey('https://www.coursera.org/learn/Machine-Learning'),
+    'learn/machine-learning',
+  );
+  assert.equal(normalizeCourseKey('Learn/Machine-Learning'), 'learn/machine-learning');
 });
 
 

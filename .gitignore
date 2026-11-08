@@ -7,6 +7,9 @@ distribution
 .mise/
 mise.local.toml
 
+# Vercel CLI link state
+.vercel/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -156,3 +159,5 @@ dist
 
 .DS_Store
 # End of https://www.toptal.com/developers/gitignore/api/node
+.vercel
+.env*
