@@ -40,6 +40,11 @@ description = "Add a course by URL or slug to data/sources.json"
 dir = "pipeline"
 run = "python -m starisk.add"
 
+[tasks."pipeline:demand"]
+description = "Turn pending Turso course requests into crawl work (dry run; --write to apply)"
+dir = "pipeline"
+run = "python -m starisk.demand"
+
 [tasks."pipeline:expand"]
 description = "Grow sources.json from specializations and instructor profiles"
 dir = "pipeline"
