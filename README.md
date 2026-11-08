@@ -161,6 +161,7 @@ literal `{SENSITIVE}`. For this file, mint a dedicated token instead:
 `turso db show <db> --url` and `turso db tokens create <db>`.
 
 - `learn/*` — checked against Coursera, then appended to `data/sources.json`.
+- `instructor/*` — the profile is fetched and the courses it lists are added.
 - `specializations/*`, `professional-certificates/*` — seeded in
   `data/programs.json`, the program page is fetched, and its courses are added.
 - `name/*` — cannot become a slug without a Coursera search; printed for a human.
@@ -276,10 +277,11 @@ turso db shell starisk \
 ```
 
 Validation is shared with the browser (`web/src/lib/requests.js`): Coursera course
-links and course names only, with a length cap, control-character stripping, a
-small unambiguous profanity list, and a refusal to store programs or teacher
-profiles. The function re-runs every check, because the browser is not a security
-boundary.
+links, instructor profiles and typed names, with a length cap, control-character
+stripping, a small unambiguous profanity list, and a refusal to store programs.
+The function re-runs every check, because the browser is not a security boundary.
+A link is stored as the key it produced (`learn/…`, `instructor/…`), not the URL
+it was pasted from, so tracking parameters never reach the table.
 
 `astro dev` does not serve functions. `mise run web:dev:api` runs `vercel dev`
 instead, which serves the site and `/api/*` together; pull the variables first
