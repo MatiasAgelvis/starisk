@@ -137,6 +137,52 @@ dedupes against the list, and rejects anything that is not a course. Arguments a
 `--from` can be combined in one call. The added courses are scored by the next
 `pipeline:crawl`; nothing is fetched by `add` unless you pass `--check`.
 
+### Demand queue
+
+The landing page writes a missed course to Turso when a visitor asks for it. Turn
+that queue into crawl work:
+
+```sh
+cd pipeline
+python -m starisk.demand --env-file .env.prod            # dry run: what would change
+python -m starisk.demand --env-file .env.prod --write    # add it to sources.json
+```
+
+`--env-file` is any file holding `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN`; the
+explicit file wins over an exported variable, so a dev shell cannot silently
+write to production. A relative path is looked up in the current directory first,
+then at the repository root — so `mise run pipeline:demand -- --env-file .env.prod`
+finds a file kept at the top of the repo, with no copy inside `pipeline/`.
+Without `--write`, nothing on disk changes and no row is marked (`--dry-run` says
+so explicitly).
+
+Vercel's **Sensitive** variables cannot be pulled — `vercel env pull` writes the
+literal `{SENSITIVE}`. For this file, mint a dedicated token instead:
+`turso db show <db> --url` and `turso db tokens create <db>`.
+
+- `learn/*` — checked against Coursera, then appended to `data/sources.json`.
+- `specializations/*`, `professional-certificates/*` — seeded in
+  `data/programs.json`, the program page is fetched, and its courses are added.
+- `name/*` — cannot become a slug without a Coursera search; printed for a human.
+
+Processed rows move from `status='new'` to `planned`. Courses Coursera no longer
+serves are reported and left `new`, so a transient failure is not a permanent
+rejection. Useful flags: `--offline` (no link checks or program fetches),
+`--limit N`, `--min-requests N`.
+
+For a throwaway database, `turso dev --db-file .turso/dev.db` serves the same
+HTTP API on `127.0.0.1:8080`. Point `pipeline/.env.dev` at it:
+
+```sh
+turso dev --db-file .turso/dev.db          # terminal 1
+```
+
+```sh
+# .env.dev, at the repository root
+TURSO_DATABASE_URL=http://127.0.0.1:8080
+TURSO_AUTH_TOKEN=dev
+```
+
 ### Calibration
 
 ```sh

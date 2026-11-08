@@ -15,10 +15,11 @@ for the small, near-term stuff.
   then the quadrant view.
 - **I5 spike.** Do Coursera credential pages expose the course slug? Decides how
   expensive the personal corpus is.
-- **Course requests.** The landing page's miss state now writes to Turso through
-  `web/src/lib/course-requests.js` (served by `web/api/course-request.js`). Open:
-  using the `status` column for moderation, and whether the queue should be public
-  (a `/wanted` page sorted by `requests`).
+- **Course requests.** The landing page's miss state writes to Turso through
+  `web/src/lib/course-requests.js` (served by `web/api/course-request.js`), and
+  `pipeline:demand` turns `status='new'` rows into crawl work. Open: using the
+  `status` column for moderation, and whether the queue should be public (a
+  `/wanted` page sorted by `requests`).
 
 ## Front end
 - **Brand theme: navy + gold.** The logo is `#111827` with `#fbbf24`, and the
