@@ -48,6 +48,7 @@ const snapshot = {
     row('learn/scored', 'course', { added_at: '2026-01-02T10:00:00Z' }),
     row('learn/empty', 'course', { added_at: '2026-01-02T09:00:00Z' }),
     row('specializations/a', 'specialization', { requests: 3 }),
+    row('specializations/empty', 'specialization', { requests: 2 }),
     row('specializations/waiting', 'specialization', { query: 'Waiting Program' }),
     row('instructor/~123', 'instructor'),
   ],
@@ -59,7 +60,7 @@ const byKey = (rows, key) => rows.find((item) => item.key === key);
 test('derives waiting and fulfilled from the scores, not a status column', () => {
   assert.deepEqual(
     waiting.map((item) => item.key),
-    ['learn/pending', 'specializations/waiting'],
+    ['learn/pending', 'specializations/empty', 'specializations/waiting'],
   );
   assert.deepEqual(
     fulfilled.map((item) => item.key),
@@ -99,6 +100,14 @@ test('a program joins the grouping and links to its page', () => {
   assert.equal(item.href, '/programs/specializations/a');
   assert.equal(item.external, false);
   assert.equal(item.summary, 'Average 3.0 · 1 of 2 courses scored');
+});
+
+test('a program with no scored courses stays waiting', () => {
+  const item = byKey(waiting, 'specializations/empty');
+
+  assert.equal(item.title, 'Empty Program');
+  assert.equal(item.scored, false);
+  assert.equal(item.summary, 'Waiting for the crawl');
 });
 
 test('a program without a grouping is still waiting', () => {
