@@ -37,12 +37,9 @@ const SCHEMA = [
      query TEXT NOT NULL,
      kind TEXT NOT NULL,
      requests INTEGER NOT NULL DEFAULT 1,
-     status TEXT NOT NULL DEFAULT 'new',
      first_seen TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
      last_seen TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
    )`,
-  `CREATE INDEX IF NOT EXISTS course_requests_queue
-     ON course_requests (status, requests DESC)`,
   `CREATE TABLE IF NOT EXISTS request_hits (
      ip_hash TEXT NOT NULL,
      window TEXT NOT NULL,

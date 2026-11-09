@@ -20,6 +20,22 @@
     ],
     "provider": "IBM"
   },
+  "professional-certificates/ibm-enterprise-ai-transformation-and-consulting": {
+    "key": "professional-certificates/ibm-enterprise-ai-transformation-and-consulting",
+    "type": "professional-certificate",
+    "title": "IBM Enterprise AI Transformation and Consulting",
+    "url": "https://www.coursera.org/professional-certificates/ibm-enterprise-ai-transformation-and-consulting",
+    "courses": [
+      "learn/the-ai-transformation-advisor",
+      "learn/identify-and-prioritize-ai-opportunities",
+      "learn/assess-ai-readiness",
+      "learn/design-ai-transformation-roadmaps",
+      "learn/ai-business-cases-and-roi-models",
+      "learn/ai-governance-risk-and-executive-communication",
+      "learn/ai-transformation-advisory-package"
+    ],
+    "provider": "IBM"
+  },
   "specializations/ai-agents-mode-context-protocol": {
     "key": "specializations/ai-agents-mode-context-protocol",
     "type": "specialization",

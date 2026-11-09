@@ -13,6 +13,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const files = [
   ['../../pipeline/data/scores.json', '../src/data/scores.json'],
   ['../../pipeline/data/groupings.json', '../src/data/groupings.json'],
+  ['../../pipeline/data/requests.json', '../src/data/requests.json'],
 ];
 
 for (const [from, to] of files) {

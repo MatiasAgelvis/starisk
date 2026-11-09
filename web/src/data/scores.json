@@ -36296,5 +36296,743 @@
     "enrollment": 377981,
     "slug": "learn/python-for-data-visualization",
     "scrapedAt": "2026-11-03T09:56:57.555501+00:00"
+  },
+  "learn/analytics-excel": {
+    "title": "Mastering Data Analysis in Excel",
+    "provider": "Duke University",
+    "description": "This course focuses on essential data analysis using Excel. Learn to design and implement realistic predictive models to reduce uncertainty for informed business decisions. In a hands-on project, you'll act as a business data analyst, building models to assess credit card applications, minimize default risk and maximize bank profits. You'll master key uncertainty measures like classification error rates, entropy of information, and confidence intervals for linear regression. Assignments use data provided within the course and basic Excel functions, ensuring fluency for future business applications. No prior knowledge of advanced Excel features (Visual Basic, Pivot Tables) is required. The Excel and data analysis skills you will learn will enable you to apply business data analysis methods based on binary classification, information theory and entropy measures, and linear regression, and prepare you for roles such as a business data analyst.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.2,
+    "starisk": 1.3,
+    "spread": 0.91,
+    "spread_weighted": 0.78,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 16,
+      "2.0": 3,
+      "5.0": 1
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This course has more holes than swiss cheese. The instructor makes major leaps without thoroughly explaining things. A lot of times when I started to do a problem set it felt like I had missed 2 or 3 lectures. But I had not, the instructor just leaves you to figure a lot out on your own. The videos are choppy often containing errors that sometimes have a note stating the accurate information. The excel sheets are posted at the end of the lecture as opposed to the beginning. But they have nothing to do with the lectures other than the calculus behind the formulas. So you have to go through cell by cell to figure out what the hell the instructor did and what calculus was being used. I appreciate how the instructor combined a lot of material here but unless you are fresh of calculus 3 or several statistics class then this is complexly crap course.",
+      "stars": 1.0,
+      "likes": 90
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 952,
+    "ratings_total": 3960,
+    "rating_counts": {
+      "1": 209,
+      "2": 210,
+      "3": 363,
+      "4": 947,
+      "5": 2231
+    },
+    "instructors": [
+      {
+        "name": "Jana Schaich Borg",
+        "slug": "jana-schaich-borg",
+        "url": "https://www.coursera.org/instructor/jana-schaich-borg",
+        "page": "jana-schaich-borg",
+        "id": "12388058",
+        "role": "Assistant Research Professor",
+        "department": "Social Science Research Institute",
+        "learners": 767568,
+        "courses_taught": 7,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a5/d5c550500f11e59e72391aa537f5c9/Jana-Schaich-Borg-2.jpg"
+      },
+      {
+        "name": "Daniel Egger",
+        "slug": "daniel-egger",
+        "url": "https://www.coursera.org/instructor/daniel-egger",
+        "page": "daniel-egger",
+        "id": "13723820",
+        "role": "Executive in Residence and Director, Center for Quantitative Modeling",
+        "department": "Pratt School of Engineering, Duke University",
+        "learners": 1272906,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/d2/8dd470500f11e5a78fd13a80a4d3b4/Egger_Daniel_web.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 355216,
+    "slug": "learn/analytics-excel",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/image-segmentation": {
+    "title": "Image Segmentation, Filtering, and Region Analysis",
+    "provider": "MathWorks",
+    "description": "In this course, you will build on the skills learned in Introduction to Image Processing to work through common complications such as noise. You’ll use spatial filters to deal with different types of artifacts. You’ll learn new approaches to segmentation such as edge detection and clustering. You’ll also analyze regions of interest and calculate properties such as size, orientation, and location. \n\nBy the end of this course, you’ll be able to separate and analyze regions in your own images. You’ll apply your skills to segment an MRI image of a brain to separate different tissues. \n\nYou will use MATLAB throughout this course.  MATLAB is the go-to choice for millions of people working in engineering and science, and provides the capabilities you need to accomplish your image processing tasks.  You will be provided with free access to MATLAB for the duration of the course to complete your work.\n\nTo be successful in this course you should have a background in basic math and some exposure to MATLAB. If you want to familiarize yourself with MATLAB check out the free, two-hour MATLAB Onramp. Experience with image processing is not required.",
+    "image": "/logos/mathworks.webp",
+    "coursera": 4.8,
+    "starisk": 4.6,
+    "spread": 1.03,
+    "spread_weighted": 1.03,
+    "reviews": 17,
+    "review_counts": {
+      "1.0": 1,
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 14
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "The assignment and project instruction is not very clear",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 17,
+    "ratings_total": 59,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 2,
+      "4": 5,
+      "5": 51
+    },
+    "instructors": [
+      {
+        "name": "Amanda Wang",
+        "slug": "~154185359",
+        "url": "https://www.coursera.org/instructor/~154185359",
+        "page": "amanda-wang",
+        "id": "154185359",
+        "role": "Online Course Developer",
+        "department": "MathWorks",
+        "learners": 52007,
+        "courses_taught": 9,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/3d/553fe5c9f843cab6bb8eafd524e209/Amanda-Wang.jpg"
+      },
+      {
+        "name": "Matt Rich",
+        "slug": "~220017844",
+        "url": "https://www.coursera.org/instructor/~220017844",
+        "page": "matt-rich",
+        "id": "220017844",
+        "role": "Senior Online Course Developer",
+        "department": "MathWorks",
+        "learners": 79724,
+        "courses_taught": 13,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a9/a2412c61304491ac249be0859730f3/matt.jpg"
+      },
+      {
+        "name": "Megan Thompson",
+        "slug": "~186909436",
+        "url": "https://www.coursera.org/instructor/~186909436",
+        "page": "megan-thompson",
+        "id": "186909436",
+        "role": "Senior Online Course Developer",
+        "department": "MathWorks",
+        "learners": 54562,
+        "courses_taught": 11,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/7d/1b1550712b4155b0f7ea09c1c2421c/mthompso.jpg"
+      },
+      {
+        "name": "Brandon Armstrong",
+        "slug": "barmstro",
+        "url": "https://www.coursera.org/instructor/barmstro",
+        "page": "barmstro",
+        "id": "5201058",
+        "role": "Manager Online Courses",
+        "department": "MathWorks",
+        "learners": 117510,
+        "courses_taught": 18,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/85/74f1be1d234058852448dae99620f4/brandon.jpg"
+      },
+      {
+        "name": "Isaac Bruss",
+        "slug": "~163369794",
+        "url": "https://www.coursera.org/instructor/~163369794",
+        "page": "isaac-bruss",
+        "id": "163369794",
+        "role": null,
+        "department": null,
+        "learners": 72526,
+        "courses_taught": 9,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/59/7ccf0623334efb97ea8f4bf36063cc/isaac.jpg"
+      },
+      {
+        "name": "Sam Jones",
+        "slug": "~118561318",
+        "url": "https://www.coursera.org/instructor/~118561318",
+        "page": "sam-jones",
+        "id": "118561318",
+        "role": "Senior Online Course Developer",
+        "department": null,
+        "learners": 52656,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b8/23a3b3bea142e6942fbca82ecc8b00/sam-200.jpg"
+      }
+    ],
+    "categories": [
+      "Physical Science and Engineering",
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 12856,
+    "slug": "learn/image-segmentation",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/introduction-image-processing": {
+    "title": "Introduction to Image Processing",
+    "provider": "MathWorks",
+    "description": "In this introduction to image processing, you'll take your first steps in accessing and adjusting digital images for analysis and processing. You will load, save, and adjust image size and orientation while also understanding how digital images are recognized. You will then perform basic segmentation and quantitative analysis. Lastly, you will enhance the contrast of images to make objects of interest easier to identify. \n\nBy the end of the course, you’ll apply your segmentation skills to identify regions of interest, such as the amount of surface water from satellite images. This introduction to image processing will give you the foundation you need to conduct more advanced work on this topic.\n\nYou will use MATLAB throughout this course.  MATLAB is the go-to choice for millions of people working in engineering and science and provides the capabilities you need to accomplish your image processing tasks.  You will be provided with free access to MATLAB for the duration of the course to complete your work.\n\nTo be successful in this course you should have a background in basic math and some exposure to MATLAB. If you want to familiarize yourself with MATLAB check out the free, two-hour MATLAB Onramp. Experience with image processing is not required.",
+    "image": "/logos/mathworks.webp",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 20,
+    "review_counts": {
+      "5.0": 20
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "a very good introduction to image processing using MATLAB and its in built image processing toolbox.",
+      "stars": 5.0,
+      "likes": 4
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 46,
+    "ratings_total": 217,
+    "rating_counts": {
+      "1": 4,
+      "2": 1,
+      "3": 1,
+      "4": 31,
+      "5": 180
+    },
+    "instructors": [
+      {
+        "name": "Amanda Wang",
+        "slug": "~154185359",
+        "url": "https://www.coursera.org/instructor/~154185359",
+        "page": "amanda-wang",
+        "id": "154185359",
+        "role": "Online Course Developer",
+        "department": "MathWorks",
+        "learners": 52007,
+        "courses_taught": 9,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/3d/553fe5c9f843cab6bb8eafd524e209/Amanda-Wang.jpg"
+      },
+      {
+        "name": "Matt Rich",
+        "slug": "~220017844",
+        "url": "https://www.coursera.org/instructor/~220017844",
+        "page": "matt-rich",
+        "id": "220017844",
+        "role": "Senior Online Course Developer",
+        "department": "MathWorks",
+        "learners": 79724,
+        "courses_taught": 13,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a9/a2412c61304491ac249be0859730f3/matt.jpg"
+      },
+      {
+        "name": "Megan Thompson",
+        "slug": "~186909436",
+        "url": "https://www.coursera.org/instructor/~186909436",
+        "page": "megan-thompson",
+        "id": "186909436",
+        "role": "Senior Online Course Developer",
+        "department": "MathWorks",
+        "learners": 54562,
+        "courses_taught": 11,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/7d/1b1550712b4155b0f7ea09c1c2421c/mthompso.jpg"
+      },
+      {
+        "name": "Brandon Armstrong",
+        "slug": "barmstro",
+        "url": "https://www.coursera.org/instructor/barmstro",
+        "page": "barmstro",
+        "id": "5201058",
+        "role": "Manager Online Courses",
+        "department": "MathWorks",
+        "learners": 117510,
+        "courses_taught": 18,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/85/74f1be1d234058852448dae99620f4/brandon.jpg"
+      },
+      {
+        "name": "Isaac Bruss",
+        "slug": "~163369794",
+        "url": "https://www.coursera.org/instructor/~163369794",
+        "page": "isaac-bruss",
+        "id": "163369794",
+        "role": null,
+        "department": null,
+        "learners": 72526,
+        "courses_taught": 9,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/59/7ccf0623334efb97ea8f4bf36063cc/isaac.jpg"
+      },
+      {
+        "name": "Sam Jones",
+        "slug": "~118561318",
+        "url": "https://www.coursera.org/instructor/~118561318",
+        "page": "sam-jones",
+        "id": "118561318",
+        "role": "Senior Online Course Developer",
+        "department": null,
+        "learners": 52656,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b8/23a3b3bea142e6942fbca82ecc8b00/sam-200.jpg"
+      }
+    ],
+    "categories": [
+      "Physical Science and Engineering",
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 34248,
+    "slug": "learn/introduction-image-processing",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/predictive-modeling-machine-learning": {
+    "title": "Predictive Modeling and Machine Learning with MATLAB",
+    "provider": "MathWorks",
+    "description": "In this course, you will build on the skills learned in Exploratory Data Analysis with MATLAB and Data Processing and Feature Engineering with MATLAB to increase your ability to harness the power of MATLAB to analyze data relevant to the work you do.\n\nThese skills are valuable for those who have domain knowledge and some exposure to computational tools, but no programming background. To be successful in this course, you should have some background in basic statistics (histograms, averages, standard deviation, curve fitting, interpolation) and have completed courses 1 through 2 of this specialization. \n\nBy the end of this course, you will use MATLAB to identify the best machine learning model for obtaining answers from your data. You will prepare your data, train a predictive model, evaluate and improve your model, and understand how to get the most out of your models.",
+    "image": "/logos/mathworks.webp",
+    "coursera": 4.8,
+    "starisk": 4.8,
+    "spread": 0.48,
+    "spread_weighted": 0.53,
+    "reviews": 20,
+    "review_counts": {
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "A way to improve is to have the course materials not all over the place. For example, compile everything related to modelling (both via app and codes) in ONE place (in one week). That way, it is easier to follow. Also, each speaker seems to use different codes (although it has same outcomes). All speakers can prepare the codes in the same way (same coding) so that students do not get confused. Overall, my experience with the course is good.",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 29,
+    "ratings_total": 122,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 3,
+      "4": 19,
+      "5": 99
+    },
+    "instructors": [
+      {
+        "name": "Michael Reardon",
+        "slug": "~87880719",
+        "url": "https://www.coursera.org/instructor/~87880719",
+        "page": "michael-reardon",
+        "id": "87880719",
+        "role": "Senior Online Content Developer",
+        "department": null,
+        "learners": 57038,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/97/fad23a58144b859a3e4d9faae75fa6/michael.jpg"
+      },
+      {
+        "name": "Maria Gavilan-Alfonso",
+        "slug": "~77045322",
+        "url": "https://www.coursera.org/instructor/~77045322",
+        "page": "maria-gavilan-alfonso",
+        "id": "77045322",
+        "role": "Senior Online Content Developer",
+        "department": "MathWorks",
+        "learners": 57038,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/98/00c17e525d489fa5c7a61d107a7ddc/maria-200.jpg"
+      },
+      {
+        "name": "Erin Byrne",
+        "slug": "ebyrne",
+        "url": "https://www.coursera.org/instructor/ebyrne",
+        "page": "ebyrne",
+        "id": "44247698",
+        "role": "Principal Course Developer",
+        "department": "MathWorks",
+        "learners": 57038,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f8/e9670a03e74739a11588b5c568c6e0/erin.jpg"
+      },
+      {
+        "name": "Matt Rich",
+        "slug": "~220017844",
+        "url": "https://www.coursera.org/instructor/~220017844",
+        "page": "matt-rich",
+        "id": "220017844",
+        "role": "Senior Online Course Developer",
+        "department": "MathWorks",
+        "learners": 79724,
+        "courses_taught": 13,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a9/a2412c61304491ac249be0859730f3/matt.jpg"
+      },
+      {
+        "name": "Brandon Armstrong",
+        "slug": "barmstro",
+        "url": "https://www.coursera.org/instructor/barmstro",
+        "page": "barmstro",
+        "id": "5201058",
+        "role": "Manager Online Courses",
+        "department": "MathWorks",
+        "learners": 117510,
+        "courses_taught": 18,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/85/74f1be1d234058852448dae99620f4/brandon.jpg"
+      },
+      {
+        "name": "Adam Filion",
+        "slug": "afilion",
+        "url": "https://www.coursera.org/instructor/afilion",
+        "page": "afilion",
+        "id": "44311387",
+        "role": "Senior Product Manager",
+        "department": "MathWorks",
+        "learners": 57038,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/02/1262aec1714aac81e2d035732e64f9/adam.jpg"
+      },
+      {
+        "name": "Nikola Trica",
+        "slug": "ntrica",
+        "url": "https://www.coursera.org/instructor/ntrica",
+        "page": "ntrica",
+        "id": "6178589",
+        "role": "Principal Online Course Developer",
+        "department": "MathWorks",
+        "learners": 58758,
+        "courses_taught": 6,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b6/b5cd211d1c43e5ac4c5cb1ba5ec4b6/Image-29-.jpg"
+      },
+      {
+        "name": "Isaac Bruss",
+        "slug": "~163369794",
+        "url": "https://www.coursera.org/instructor/~163369794",
+        "page": "isaac-bruss",
+        "id": "163369794",
+        "role": null,
+        "department": null,
+        "learners": 72526,
+        "courses_taught": 9,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/59/7ccf0623334efb97ea8f4bf36063cc/isaac.jpg"
+      },
+      {
+        "name": "Brian Buechel",
+        "slug": "bbuechel",
+        "url": "https://www.coursera.org/instructor/bbuechel",
+        "page": "bbuechel",
+        "id": "41897834",
+        "role": "Senior Online Course Developer",
+        "department": "MathWorks",
+        "learners": 29646,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/e2/35ce995ea84691b5d9877204efed8f/brian.jpg"
+      },
+      {
+        "name": "Heather Gorr",
+        "slug": "hgorr",
+        "url": "https://www.coursera.org/instructor/hgorr",
+        "page": "hgorr",
+        "id": "44518315",
+        "role": "Senior Product Manager",
+        "department": "MathWorks",
+        "learners": 57038,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/fdb243b13049038aedbb4461e8cb9a/heather.jpg"
+      },
+      {
+        "name": "Sam Jones",
+        "slug": "~118561318",
+        "url": "https://www.coursera.org/instructor/~118561318",
+        "page": "sam-jones",
+        "id": "118561318",
+        "role": "Senior Online Course Developer",
+        "department": null,
+        "learners": 52656,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b8/23a3b3bea142e6942fbca82ecc8b00/sam-200.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 17561,
+    "slug": "learn/predictive-modeling-machine-learning",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/the-ai-transformation-advisor": {
+    "title": "The AI Transformation Advisor",
+    "provider": "IBM",
+    "description": "Step into the AI transformation advisor's role and learn what makes advising on AI different from general consulting and from technical implementation. You map the enterprise AI capability landscape at an advisory level, recognize the artifacts a strong advisor produces across an engagement, frame and scope an engagement so objectives, stakeholders, and boundaries are clear from the start, and build the diligence to test a claim, a vendor, and a market signal before you stake a client's plan on it. The emphasis throughout is on where AI changes the work — its uncertainty, data dependence, and pace — with IBM watsonx as one enterprise reference for capability awareness.",
+    "image": "/logos/ibm.png",
+    "coursera": null,
+    "starisk": 1.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 2,
+    "review_counts": {
+      "1.0": 2
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This is the worst course I've experienced in my life. It appears to be not only AI delivered but AI authored and it's just an absolute mess",
+      "stars": 1.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "ratings_total": 5,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "LearnQuest Network",
+        "slug": "~187597289",
+        "url": "https://www.coursera.org/instructor/~187597289",
+        "page": "learnquest-network",
+        "id": "187597289",
+        "role": null,
+        "department": null,
+        "learners": 1049592,
+        "courses_taught": 244,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a0/83f1b729934dce927b819701893940/AdobeStock_1071841979.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/the-ai-transformation-advisor",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/identify-and-prioritize-ai-opportunities": {
+    "title": "Identify and Prioritize AI Opportunities",
+    "provider": "IBM",
+    "description": "Turn the open question \"where should we use AI?\" into a defensible, prioritized AI opportunity portfolio. You learn to surface high-value use cases across functions and industries — including the fast-growing agentic and AI-assistant categories — by starting from how work actually gets done, qualify candidates honestly against value and feasibility, apply a value-effort lens to rank them, and group them into a balanced opportunity portfolio. These skills address the challenge research repeatedly names as decisive: choosing the right opportunities, not merely finding many.",
+    "image": "/logos/ibm.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "LearnQuest Network",
+        "slug": "~187597289",
+        "url": "https://www.coursera.org/instructor/~187597289",
+        "page": "learnquest-network",
+        "id": "187597289",
+        "role": null,
+        "department": null,
+        "learners": 1049592,
+        "courses_taught": 244,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a0/83f1b729934dce927b819701893940/AdobeStock_1071841979.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/identify-and-prioritize-ai-opportunities",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/assess-ai-readiness": {
+    "title": "Assess AI Readiness",
+    "provider": "IBM",
+    "description": "Before committing to AI initiatives, an advisor must judge whether the organization can actually execute. You learn to assess readiness across data, technology, and organizational dimensions; evaluate the data and technical foundations for a specific use case; gauge talent, operating-model, and change readiness; and synthesize findings into a clear, decision-ready readiness report. This is the deep diagnostic that fast opportunity screening only gestures at. Data-architecture framing draws on IBM watsonx.data as an enterprise reference.",
+    "image": "/logos/ibm.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "LearnQuest Network",
+        "slug": "~187597289",
+        "url": "https://www.coursera.org/instructor/~187597289",
+        "page": "learnquest-network",
+        "id": "187597289",
+        "role": null,
+        "department": null,
+        "learners": 1049592,
+        "courses_taught": 244,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a0/83f1b729934dce927b819701893940/AdobeStock_1071841979.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/assess-ai-readiness",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/design-ai-transformation-roadmaps": {
+    "title": "Design AI Transformation Roadmaps",
+    "provider": "IBM",
+    "description": "Convert prioritized opportunities and an honest readiness picture into a phased, fundable plan. You learn to construct a transformation roadmap with milestones and dependencies, sequence an AI investment portfolio across near-, mid-, and longer-term horizons, decide what to centralize and what to federate as the plan scales, recognize where AI-enabled workflows and agents add value, and pressure-test a roadmap for feasibility and value. AI-enabled workflow framing references IBM watsonx Orchestrate, reflecting the field's shift toward agentic, multi-agent operations.",
+    "image": "/logos/ibm.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "LearnQuest Network",
+        "slug": "~187597289",
+        "url": "https://www.coursera.org/instructor/~187597289",
+        "page": "learnquest-network",
+        "id": "187597289",
+        "role": null,
+        "department": null,
+        "learners": 1049592,
+        "courses_taught": 244,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a0/83f1b729934dce927b819701893940/AdobeStock_1071841979.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/design-ai-transformation-roadmaps",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/ai-business-cases-and-roi-models": {
+    "title": "AI Business Cases and ROI Models",
+    "provider": "IBM",
+    "description": "Most AI initiatives are approved or rejected on the strength of a single document, and most of those documents fail for structural reasons rather than financial ones. In this course, you learn to build the case a finance leader can check instead of one they have to trust. You structure a business case for AI investment approval, separate hard return from soft return and strategic option value, and build an ROI model at advisory depth: the drivers, the timing of benefits, and the assumptions finance will challenge. You also price what most models leave out, including rework that lands on another team and the quality decline that rising volume conceals. Then you define value metrics, baselines, and first- and second-year targets, and assemble a decision-ready business case tied to the readiness findings and roadmap it depends on. Your method can return an honest answer of \"not on these numbers,\" because a case that can only say yes is a proposal, not an analysis. No spreadsheet expertise or coding is required, and every activity runs in a web browser.",
+    "image": "/logos/ibm.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "LearnQuest Network",
+        "slug": "~187597289",
+        "url": "https://www.coursera.org/instructor/~187597289",
+        "page": "learnquest-network",
+        "id": "187597289",
+        "role": null,
+        "department": null,
+        "learners": 1049592,
+        "courses_taught": 244,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a0/83f1b729934dce927b819701893940/AdobeStock_1071841979.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/ai-business-cases-and-roi-models",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/ai-governance-risk-and-executive-communication": {
+    "title": "AI Governance, Risk, and Executive Communication",
+    "provider": "IBM",
+    "description": "Responsible governance is increasingly the difference between AI that scales and AI that stalls, and strategy gets approved only when someone communicates it well. In this course, you learn to apply AI governance and ethics frameworks to an initiative so that responsibility is designed in rather than added after an incident. You work with the NIST AI Risk Management Framework, ISO/IEC 42001, the EU AI Act, and IBM's AI governance principles, and learn what question each one answers. You identify and mitigate AI-specific risks, including model, data, regulatory, third-party, and agentic risks, and you test the control most governance plans never examine: whether a person assigned to review AI output can actually catch its errors at the volume they face. Then you develop the communication craft that turns analysis into a decision an executive can act on, including how to deliver an unwelcome finding early and plainly. You finish by rehearsing how to bring the whole advisory story together. No coding or legal background is required.",
+    "image": "/logos/ibm.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "LearnQuest Network",
+        "slug": "~187597289",
+        "url": "https://www.coursera.org/instructor/~187597289",
+        "page": "learnquest-network",
+        "id": "187597289",
+        "role": null,
+        "department": null,
+        "learners": 1049592,
+        "courses_taught": 244,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a0/83f1b729934dce927b819701893940/AdobeStock_1071841979.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/ai-governance-risk-and-executive-communication",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
+  },
+  "learn/ai-transformation-advisory-package": {
+    "title": "AI Transformation Advisory Package",
+    "provider": "IBM",
+    "description": "This capstone brings the whole program together in one documented, end-to-end advisory package. You act as the AI transformation advisor for a realistic multinational manufacturer, working from a company brief and a partial data room in which some early analysis is already started. You apply the frameworks you have learned rather than building from zero: you complete and connect an opportunity assessment, a prioritized opportunity portfolio, a readiness summary, a transformation roadmap, an ROI business case, and a governance and risk plan, then present the result in an executive presentation. The data room contains the complications real engagements contain, so approving everything will not produce a strong package. A well-evidenced recommendation to stop, defer, or scale back an idea is a correct and rewarded outcome. One rubric evaluates application of frameworks, quality of advisory reasoning, integration across themes, and clarity for an executive audience. The result is a portfolio-grade work sample that shows your reasoning, not only your conclusions. Plan on roughly three to four hours.",
+    "image": "/logos/ibm.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "LearnQuest Network",
+        "slug": "~187597289",
+        "url": "https://www.coursera.org/instructor/~187597289",
+        "page": "learnquest-network",
+        "id": "187597289",
+        "role": null,
+        "department": null,
+        "learners": 1049592,
+        "courses_taught": 244,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a0/83f1b729934dce927b819701893940/AdobeStock_1071841979.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/ai-transformation-advisory-package",
+    "scrapedAt": "2026-11-09T21:05:10.448974+00:00"
   }
 }

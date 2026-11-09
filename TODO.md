@@ -15,11 +15,24 @@ for the small, near-term stuff.
   then the quadrant view.
 - **I5 spike.** Do Coursera credential pages expose the course slug? Decides how
   expensive the personal corpus is.
-- **Course requests.** The landing page's miss state writes to Turso through
-  `web/src/lib/course-requests.js` (served by `web/api/course-request.js`), and
-  `pipeline:demand` turns `status='new'` rows into crawl work. Open: using the
-  `status` column for moderation, and whether the queue should be public (a
-  `/wanted` page sorted by `requests`).
+- **Course requests.** Shipped: the landing page's miss state writes to Turso
+  through `web/src/lib/course-requests.js` (served by `web/api/course-request.js`).
+  `pipeline:demand` reads that inbox, verifies new keys and merges them into
+  `sources.json` plus the local `requests.json`; `/wanted` and `/feed.xml` derive
+  waiting/fulfilled by joining that list against `scores.json` / `groupings.json`.
+  Open: the nightly homelab run (below).
+
+## Homelab
+- **Nightly request run.** In a container with the repo checked out and
+  `.env.prod` mounted (not baked into the image): `python -m starisk.demand
+  --env-file .env.prod --write`, then `pipeline:crawl`. The write step verifies
+  links and updates `data/requests.json`; the crawl supplies the scores and
+  titles the site derives from.
+- **Notify through the existing `ntfy` health check.** One digest per run: new
+  asks, what was added today, and anything left for a human (`name/*`, links
+  Coursera no longer serves). Silent when nothing changed.
+- Keep the container's data volume on `pipeline/data/` and the cache directory so
+  freshness and `--offline` keep working across runs.
 
 ## Front end
 - **Brand theme: navy + gold.** The logo is `#111827` with `#fbbf24`, and the
@@ -75,7 +88,7 @@ for the small, near-term stuff.
   challenged, and needs validation on ~50 hand-labeled reviews before any trust.
 - **Live lookup** is a contradiction — a Worker can't scrape (datacenter IP, D6).
   Enqueue instead: `IDEAS.md` I11.
-- **"Request this course"** — a GitHub issue link first (the issue *is* a queue and a
-  notification, with no PII). Turso only if it becomes real; design sketch in
-  `IDEAS.md` I11.
+- **"Request this course"** — shipped as the Turso queue behind `/wanted` and
+  `/feed.xml`. Remaining work is operational (homelab nightly), not the write
+  path; design sketch in `IDEAS.md` I11.
 - **Calibration** against the 74 labeled courses in `calibration/courses.json`.

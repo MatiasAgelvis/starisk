@@ -30,6 +30,8 @@ and puts the result next to Coursera's number.
 - **A program directory.** Specializations and Professional Certificates, with the
   courses they contain and the average score of those courses. Complete sets are
   shown by default.
+- **A wanted list.** Courses readers asked for but Starisk has not scored yet, what
+  came of the ones it has, and an Atom feed for the handful who follow them.
 - **Not** a browser extension, not a product with accounts, not a claim about
   objective quality.
 
@@ -52,11 +54,11 @@ neutral is the thing this project exists to argue against.
   (run locally, on demand)    (the seam)    (deploy anywhere static)
 ```
 
-The crawler runs on a residential IP, on demand — no server, no cron, no
-database of its own. It reads Coursera's server-rendered review cards (`data-e2e` hooks,
-`aria-label`s) with fallbacks to the page's JSON-LD, and writes `scores.json`.
-A second, derived `groupings.json` records which courses belong to which
-specialization or Professional Certificate; the site reads both.
+The crawler runs on a residential IP, on demand — no server and no cron; the only
+database is the request queue (below). It reads Coursera's server-rendered review
+cards (`data-e2e` hooks, `aria-label`s) with fallbacks to the page's JSON-LD, and
+writes `scores.json`. A second, derived `groupings.json` records which courses
+belong to which specialization or Professional Certificate; the site reads both.
 
 ## Working on it
 
@@ -110,9 +112,11 @@ mise run pipeline:expand -- --instructors --limit 10
 - **instructors** — every teacher already in `scores.json`, read from their
   Coursera profile (`data-e2e="course-card"`).
 
-Both cost one cached request per parent page. Language variants (`-fr`, `-de`, …)
-are dropped; a separately-created translation with its own slug is not (only one
-so far — the landing page carries `inLanguage` if it ever matters).
+Both cost one cached request per parent page. Each page is printed as it finishes
+with `[i/N]` and elapsed seconds, so a long expand run shows progress instead of
+looking frozen. Language variants (`-fr`, `-de`, …) are dropped; a separately-created
+translation with its own slug is not (only one so far — the landing page carries
+`inLanguage` if it ever matters).
 
 Professional Certificates are not in the calibration file, so they are seeded
 explicitly in `pipeline/data/programs.json`:
@@ -139,22 +143,44 @@ dedupes against the list, and rejects anything that is not a course. Arguments a
 
 ### Demand queue
 
-The landing page writes a missed course to Turso when a visitor asks for it. Turn
-that queue into crawl work:
+The landing page writes a missed course to Turso when someone asks for it. Turso
+is only the inbox; the durable ask list is `pipeline/data/requests.json`, which
+the site reads.
 
 ```sh
 cd pipeline
 python -m starisk.demand --env-file .env.prod            # dry run: what would change
-python -m starisk.demand --env-file .env.prod --write    # add it to sources.json
+python -m starisk.demand --env-file .env.prod --write    # verify, add to crawl list, update asks
 ```
+
+`--write` reads the inbox, checks each new `learn/*` link, captures its advertised
+title from the same page, appends it to `data/sources.json` (or seeds a
+program/instructor), and merges the ask into `data/requests.json` with `added_at`.
+It never updates Turso — the inbox stays read-only from the pipeline's side. Run
+`mise run web:sync` to copy the ask list into `web/src/data/` without a full build;
+`web:dev` and `web:build` do it automatically.
+
+Everything after that is derived from files the site already ships:
+
+- **waiting** — asks in `requests.json` that are not in `scores.json` /
+  `groupings.json`
+- **fulfilled** — asks that are; score and final title come from those files
+
+The ask-list `title` is only the pre-crawl display name captured during
+verification. It is not written back to Turso.
+- **feed** — fulfilled asks at `/feed.xml`, newest `added_at` first (50 max)
+
+A key already in `requests.json` is not processed again. `name/*` stays in the
+inbox and is printed for a human; it never reaches the public list. Courses
+Coursera no longer serves are reported and left for the next run. Useful flags:
+`--offline` (no link checks or program fetches), `--limit N`, `--min-requests N`.
 
 `--env-file` is any file holding `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN`; the
 explicit file wins over an exported variable, so a dev shell cannot silently
-write to production. A relative path is looked up in the current directory first,
+read production. A relative path is looked up in the current directory first,
 then at the repository root — so `mise run pipeline:demand -- --env-file .env.prod`
 finds a file kept at the top of the repo, with no copy inside `pipeline/`.
-Without `--write`, nothing on disk changes and no row is marked (`--dry-run` says
-so explicitly).
+Without `--write`, nothing on disk changes (`--dry-run` says so explicitly).
 
 Vercel's **Sensitive** variables cannot be pulled — `vercel env pull` writes the
 literal `{SENSITIVE}`. For this file, mint a dedicated token instead:
@@ -166,10 +192,9 @@ literal `{SENSITIVE}`. For this file, mint a dedicated token instead:
   `data/programs.json`, the program page is fetched, and its courses are added.
 - `name/*` — cannot become a slug without a Coursera search; printed for a human.
 
-Processed rows move from `status='new'` to `planned`. Courses Coursera no longer
-serves are reported and left `new`, so a transient failure is not a permanent
-rejection. Useful flags: `--offline` (no link checks or program fetches),
-`--limit N`, `--min-requests N`.
+The intended cadence is one nightly run from a homelab container: `--write`, then
+`pipeline:crawl` (see `TODO.md`). The crawl writes the scores and titles that
+`/wanted` and the feed join against; there is no second reconciliation step.
 
 For a throwaway database, `turso dev --db-file .turso/dev.db` serves the same
 HTTP API on `127.0.0.1:8080`. Point `pipeline/.env.dev` at it:
@@ -199,10 +224,11 @@ would anchor the answer and turn calibration into confirmation.
 The site is static files in `web/dist`. Any static host works; the settings are
 root `web`, build `npm run build`, output `dist`. `npm run build` and
 `npm run dev` first run `scripts/sync-data.mjs`, which copies
-`pipeline/data/scores.json` and `pipeline/data/groupings.json` into
-`web/src/data/` — so a fresh clone and a deploy always reflect the last crawl,
-without anyone remembering to run `build.sh`. If a pipeline file is absent (a
-deploy that ships only `web/`), the committed copy is kept.
+`pipeline/data/scores.json`, `pipeline/data/groupings.json` and
+`pipeline/data/requests.json` into `web/src/data/` — so a fresh clone and a deploy
+always reflect the last crawl and queue export, without anyone remembering to run
+`build.sh`. If a pipeline file is absent (a deploy that ships only `web/`), the
+committed copy is kept.
 
 - **Vercel:** two setups work, but the **dashboard must match the config file**
   you are relying on — Vercel's Project Settings override `vercel.json`:
@@ -264,16 +290,17 @@ Set three variables in the Vercel project (Production, Preview and Development):
 
 The function creates its own tables on first use:
 
-- `course_requests` — one row per course (`key` unique, plus `query` and `kind`),
-  with `requests` as the demand count and `status` for moderation (`new`).
+- `course_requests` — one row per request (`key` unique, plus `query` and `kind`),
+  with `requests` as the demand count and the first/last seen timestamps. This is
+  an inbox, not a workflow: the pipeline reads it and never writes to it.
 - `request_hits` — hashed visitor and window, which caps the pace at 6 requests
   per visitor per hour and 400 per day site-wide.
 
-Read the queue with:
+Read the inbox with:
 
 ```sh
 turso db shell starisk \
-  "select key, requests, status from course_requests order by requests desc"
+  "select key, requests from course_requests order by requests desc"
 ```
 
 Validation is shared with the browser (`web/src/lib/requests.js`): Coursera course
@@ -301,7 +328,8 @@ unavailable and everything else keeps working; wrapping the same
 pipeline/      Python — crawler, scoring engine, calibration
   starisk/     engine, adapter, fetch, crawl, rank, calibration, groupings
   data/        sources.json (what to crawl), scores.json (the seam),
-               groupings.json (derived program index), programs.json (program seeds)
+               groupings.json (derived program index), programs.json (program seeds),
+               requests.json (exported request queue)
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
   public/logos/  provider logos: tile/ and full/ marks, plus a lockup fallback

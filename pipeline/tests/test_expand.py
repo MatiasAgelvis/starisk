@@ -137,6 +137,30 @@ class PlanTest(unittest.TestCase):
         self.assertIn("specialization:deep-learning", new["learn/course-b"])
         self.assertTrue(any("already listed" in line for line in lines))
 
+    def test_streams_progress_as_each_parent_page_finishes(self):
+        seen = []
+
+        def fetch(url):
+            return self.specialization_page
+
+        with TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            slug_cache = tmp / "specializations.txt"
+            slug_cache.write_text("deep-learning\n", encoding="utf-8")
+
+            plan(
+                {},
+                self.entries,
+                fetch=fetch,
+                delay=0,
+                cache_dir=tmp / "pages",
+                slug_cache=slug_cache,
+                log=seen.append,
+            )
+
+        self.assertTrue(any(line.startswith("[1/1") for line in seen))
+        self.assertTrue(any("ok" in line and "deep-learning" in line for line in seen))
+
     def test_instructors_contribute_the_courses_they_teach(self):
         scores = {
             "learn/course-a": {

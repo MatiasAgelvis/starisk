@@ -9,7 +9,9 @@ from starisk.demand import (
     Demand,
     TursoError,
     build_plan,
+    build_snapshot,
     execute,
+    export_requests,
     handle,
     http_base,
     is_placeholder,
@@ -17,9 +19,10 @@ from starisk.demand import (
     main,
     parse_args,
     parse_env,
+    probe_course,
+    queue_type,
     read_requests,
     resolve,
-    status_update,
 )
 
 
@@ -131,13 +134,26 @@ class ReadRequestsTest(unittest.TestCase):
                     {"type": "text", "value": "slug"},
                     {"type": "text", "value": "learn/machine-learning"},
                     {"type": "integer", "value": "3"},
+                    {"type": "text", "value": "2026-01-01T00:00:00Z"},
+                    {"type": "text", "value": "2026-01-02T00:00:00Z"},
                 ]
             ]
             return FakeResponse(turso_reply(rows))
 
         [found] = read_requests("libsql://db.turso.io", "tok", fetch=fetch)
 
-        self.assertEqual(found, Demand(7, "learn/machine-learning", "slug", "learn/machine-learning", 3))
+        self.assertEqual(
+            found,
+            Demand(
+                7,
+                "learn/machine-learning",
+                "slug",
+                "learn/machine-learning",
+                3,
+                "2026-01-01T00:00:00Z",
+                "2026-01-02T00:00:00Z",
+            ),
+        )
         self.assertEqual(calls[0].full_url, "https://db.turso.io/v2/pipeline")
         self.assertEqual(calls[0].headers.get("Authorization"), "Bearer tok")
 
@@ -227,7 +243,7 @@ class HandleTest(unittest.TestCase):
 
         def check(key):
             checked.append(key)
-            return key != "learn/dead"
+            return "Some Title" if key != "learn/dead" else None
 
         def fetch_programs(keys, delay=0):
             fetched.extend(keys)
@@ -237,9 +253,15 @@ class HandleTest(unittest.TestCase):
             ["learn/existing"],
             [],
             check=check,
+            known_titles={"learn/existing": "Existing Title"},
             sleep=lambda _: None,
             fetch_programs=fetch_programs,
-            build=lambda: {"professional-certificates/p": {"courses": ["learn/m1", "learn/m2"]}},
+            build=lambda: {
+                "professional-certificates/p": {
+                    "title": "Program P",
+                    "courses": ["learn/m1", "learn/m2"],
+                }
+            },
         )
 
         self.assertEqual(
@@ -252,10 +274,33 @@ class HandleTest(unittest.TestCase):
         self.assertEqual([item.key for item in outcome.gone], ["learn/dead"])
         self.assertEqual([item.key for item in outcome.added_programs], ["professional-certificates/p"])
         self.assertEqual(outcome.member_courses, ["learn/m1", "learn/m2"])
-        self.assertEqual(outcome.handled, [1, 2, 4])
+        self.assertEqual(
+            outcome.handled,
+            ["learn/new", "learn/existing", "professional-certificates/p"],
+        )
+        self.assertEqual(
+            outcome.titles,
+            {"learn/new": "Some Title", "professional-certificates/p": "Program P"},
+        )
         self.assertEqual([item.key for item in outcome.unresolved], ["name/thing"])
         self.assertEqual(checked, ["learn/new", "learn/dead"])
         self.assertEqual(fetched, ["professional-certificates/p"])
+
+    def test_an_existing_course_can_backfill_its_title(self):
+        plan = build_plan([demand(1, "learn/existing")])
+
+        outcome = handle(
+            plan,
+            ["learn/existing"],
+            [],
+            check=lambda key: "Existing Title",
+            known_titles={},
+            sleep=lambda _: None,
+            build=lambda: {},
+        )
+
+        self.assertEqual([item.key for item in outcome.existing_courses], ["learn/existing"])
+        self.assertEqual(outcome.titles, {"learn/existing": "Existing Title"})
 
     def test_a_teacher_request_adds_their_courses(self):
         plan = build_plan(
@@ -284,7 +329,7 @@ class HandleTest(unittest.TestCase):
         self.assertEqual([item.key for item in outcome.added_teachers], ["instructor/~118561318"])
         self.assertEqual(outcome.teacher_courses["~118561318"], ["learn/a", "learn/b"])
         self.assertEqual(outcome.sources, ["learn/a", "learn/b"])
-        self.assertEqual(outcome.handled, [1])
+        self.assertEqual(outcome.handled, ["instructor/~118561318"])
         self.assertEqual([item.key for item in outcome.waiting], ["instructor/missing"])
 
     def test_offline_touches_no_network(self):
@@ -321,7 +366,7 @@ class HandleTest(unittest.TestCase):
         self.assertEqual(outcome.added_programs, [])
         self.assertEqual([item.key for item in outcome.existing_programs], ["professional-certificates/p"])
         self.assertEqual(outcome.sources, ["learn/m1"])
-        self.assertEqual(outcome.handled, [1])
+        self.assertEqual(outcome.handled, ["professional-certificates/p"])
 
     def test_a_program_without_a_cached_page_stays_new(self):
         plan = build_plan([demand(1, "professional-certificates/p")])
@@ -336,7 +381,7 @@ class HandleTest(unittest.TestCase):
         )
 
         self.assertEqual([item.key for item in outcome.waiting], ["professional-certificates/p"])
-        self.assertNotIn(1, outcome.handled)
+        self.assertNotIn("professional-certificates/p", outcome.handled)
 
 
 class ParseArgsTest(unittest.TestCase):
@@ -372,12 +417,115 @@ class PlaceholderTest(unittest.TestCase):
         self.assertIn("{SENSITIVE}", stderr.getvalue())
 
 
-class StatusUpdateTest(unittest.TestCase):
-    def test_one_placeholder_per_row(self):
-        sql, args = status_update([3, 8])
+class ProbeCourseTest(unittest.TestCase):
+    def test_liveness_and_title_come_from_one_request(self):
+        def fetch(url):
+            self.assertTrue(url.endswith("/learn/machine-learning/reviews"))
+            return (
+                '<script type="application/ld+json">'
+                '{"@type":"Course","name":"Machine Learning"}</script>'
+            )
 
-        self.assertEqual(sql, "UPDATE course_requests SET status = 'planned' WHERE id IN (?, ?)")
-        self.assertEqual(args, [3, 8])
+        self.assertEqual(probe_course("learn/machine-learning", fetch=fetch), "Machine Learning")
+
+    def test_a_dead_link_is_none(self):
+        def fetch(url):
+            raise RuntimeError("404")
+
+        self.assertIsNone(probe_course("learn/gone", fetch=fetch))
+
+    def test_alive_without_a_title_is_an_empty_string(self):
+        self.assertEqual(probe_course("learn/x", fetch=lambda url: "<html></html>"), "")
+
+
+class QueueSnapshotTest(unittest.TestCase):
+    def test_types_follow_the_key_prefix(self):
+        self.assertEqual(queue_type("learn/x"), "course")
+        self.assertEqual(queue_type("specializations/x"), "specialization")
+        self.assertEqual(queue_type("professional-certificates/x"), "professional-certificate")
+        self.assertEqual(queue_type("instructor/x"), "instructor")
+        self.assertEqual(queue_type("name/x"), "other")
+
+    def test_snapshot_keeps_only_the_ask_fields(self):
+        demands = [
+            Demand(
+                1,
+                "learn/x",
+                "slug",
+                "learn/x",
+                2,
+                "2026-01-01T00:00:00Z",
+                "2026-01-02T00:00:00Z",
+            )
+        ]
+
+        snapshot = build_snapshot(
+            demands,
+            "2026-01-03T00:00:00Z",
+            handled=["learn/x"],
+            titles={"learn/x": "A Title"},
+        )
+
+        self.assertEqual(snapshot["generatedAt"], "2026-01-03T00:00:00Z")
+        self.assertEqual(
+            snapshot["rows"],
+            [
+                {
+                    "key": "learn/x",
+                    "type": "course",
+                    "query": "learn/x",
+                    "requests": 2,
+                    "first_seen": "2026-01-01T00:00:00Z",
+                    "last_seen": "2026-01-02T00:00:00Z",
+                    "title": "A Title",
+                    "added_at": "2026-01-03T00:00:00Z",
+                }
+            ],
+        )
+
+    def test_unhandled_requests_are_not_published(self):
+        demands = [Demand(1, "name/thing", "name", "Thing", 1)]
+
+        snapshot = build_snapshot(demands, "2026-01-03T00:00:00Z")
+
+        self.assertEqual(snapshot["rows"], [])
+
+    def test_previous_rows_keep_their_added_at(self):
+        previous = {
+            "rows": [
+                {
+                    "key": "learn/x",
+                    "type": "course",
+                    "query": "learn/x",
+                    "requests": 2,
+                    "first_seen": "2026-01-01T00:00:00Z",
+                    "last_seen": "2026-01-02T00:00:00Z",
+                    "title": "Old Title",
+                    "added_at": "2026-01-02T12:00:00Z",
+                }
+            ]
+        }
+        demands = [Demand(1, "learn/x", "slug", "learn/x", 4)]
+
+        snapshot = build_snapshot(demands, "2026-01-03T00:00:00Z", previous=previous)
+
+        self.assertEqual(snapshot["rows"][0]["added_at"], "2026-01-02T12:00:00Z")
+        self.assertEqual(snapshot["rows"][0]["requests"], 4)
+        self.assertEqual(snapshot["rows"][0]["title"], "Old Title")
+
+    def test_export_writes_the_local_ask_list(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "requests.json"
+            snapshot = export_requests(
+                [Demand(1, "learn/x", "slug", "learn/x", 1)],
+                handled=["learn/x"],
+                titles={"learn/x": "A Title"},
+                path=path,
+                generated_at="2026-01-03T00:00:00Z",
+            )
+
+            self.assertEqual(json.loads(path.read_text(encoding="utf-8")), snapshot)
+            self.assertEqual(snapshot["rows"][0]["title"], "A Title")
 
 
 if __name__ == "__main__":
