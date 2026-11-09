@@ -89,6 +89,10 @@ description = "Build the site from the current data copy"
 dir = "web"
 run = "npm run build"
 
+[tasks."web:sync"]
+description = "Copy pipeline data into the site without a full build"
+run = "node web/scripts/sync-data.mjs"
+
 [tasks."web:dev:api"]
 description = "Dev server with the /api function (vercel dev; needs web/.env.local)"
 dir = "web"

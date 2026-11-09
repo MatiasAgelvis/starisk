@@ -154,7 +154,9 @@ python -m starisk.demand --env-file .env.prod --write    # verify, add to crawl 
 `--write` reads the inbox, checks each new `learn/*` link, appends it to
 `data/sources.json` (or seeds a program/instructor), and merges the ask into
 `data/requests.json` with `added_at`. It never updates Turso — the inbox stays
-read-only from the pipeline's side.
+read-only from the pipeline's side. Run `mise run web:sync` to copy the ask list
+into `web/src/data/` without a full build; `web:dev` and `web:build` do it
+automatically.
 
 Everything after that is derived from files the site already ships:
 
