@@ -17,20 +17,39 @@ for the small, near-term stuff.
   expensive the personal corpus is.
 - **Course requests.** Shipped: the landing page's miss state writes to Turso
   through `web/src/lib/course-requests.js` (served by `web/api/course-request.js`).
-  `pipeline:demand` reads that inbox, verifies new keys and merges them into
-  `sources.json` plus the local `requests.json`; `/wanted` and `/feed.xml` derive
-  waiting/fulfilled by joining that list against `scores.json` / `groupings.json`.
-  Open: the nightly homelab run (below).
+  `pipeline:demand` reads that inbox, turns `status='new'` rows into crawl work,
+  verifies new keys and merges them into `sources.json` plus the local
+  `requests.json`; `/wanted` and `/feed.xml` derive waiting/fulfilled by joining
+  that list against `scores.json` / `groupings.json`. Next: reconcile `planned` →
+  `done` (`done_at`), then export a queue snapshot for `/wanted` and the request
+  feed. Moderation still means editing `status` by hand.
 
 ## Homelab
-- **Nightly request run.** In a container with the repo checked out and
-  `.env.prod` mounted (not baked into the image): `python -m starisk.demand
-  --env-file .env.prod --write`, then `pipeline:crawl`. The write step verifies
-  links and updates `data/requests.json`; the crawl supplies the scores and
-  titles the site derives from.
-- **Notify through the existing `ntfy` health check.** One digest per run: new
-  asks, what was added today, and anything left for a human (`name/*`, links
-  Coursera no longer serves). Silent when nothing changed.
+
+A clone of the repo in a container, on a schedule. The box has the residential
+IP the crawl wants and the notification channel the repo cannot own. With the
+repo checked out and `.env.prod` mounted (not baked into the image):
+`python -m starisk.demand --env-file .env.prod --write`, then `pipeline:crawl`.
+The write step verifies links and updates `data/requests.json`; the crawl
+supplies the scores and titles the site derives from.
+
+- **Nightly queue read.** Query `course_requests` and send one `ntfy` digest
+  through the existing health check: new asks (`first_seen` since the last run),
+  what was added today, and anything left for a human (`name/*` rows, gone
+  links, failed program/instructor pages). Silent when nothing changed. A local
+  watermark file is enough for one box; a `notified_at` column only if a second
+  consumer appears.
+- **Gate before crawling.** `pipeline:demand --dry-run` is the test: if every
+  row reports `add`, run `--write` then `pipeline:crawl --limit N`. Anything
+  `manual` / `gone` / `waiting` goes into the notification instead of the run.
+- **Close the loop.** After the crawl, reconcile `planned` keys against
+  `scores.json` / `groupings.json`, export the snapshot, commit and push so the
+  site and feed rebuild. Non-zero exit and 403/429 are high-priority alerts;
+  send a heartbeat on success so the existing health check catches a dead cron.
+- **Secrets live on the box:** `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, a deploy
+  key for the push, and the `ntfy` topic. No repo secrets are needed.
+- **Never automate `name/*` rows.** They cannot be resolved to a slug without a
+  human, so the run should count them and stop.
 - Keep the container's data volume on `pipeline/data/` and the cache directory so
   freshness and `--offline` keep working across runs.
 
