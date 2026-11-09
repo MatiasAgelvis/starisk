@@ -11,7 +11,7 @@ type WantedRow = {
   href: string;
   title: string;
   external: boolean;
-  hasTitle: boolean;
+  showKey: boolean;
   key: string;
   query?: string | null;
   requests: number;
@@ -79,9 +79,9 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
                   {row.title}
                   {row.external ? ' ↗' : ''}
                 </a>
-                {row.hasTitle ? null : (
+                {row.showKey ? (
                   <span class="font-mono text-xs text-base-content/50">{row.key}</span>
-                )}
+                ) : null}
                 <span class="ml-auto flex flex-wrap items-baseline gap-x-3 text-sm text-base-content/60">
                   <span>{asks(row.requests)}</span>
                   {date(row.added_at) ? <span>added {date(row.added_at)}</span> : null}

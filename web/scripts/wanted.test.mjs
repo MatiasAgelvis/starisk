@@ -65,7 +65,7 @@ test('a waiting course shows what was asked and points at Coursera', () => {
   const item = byKey(waiting, 'learn/pending');
 
   assert.equal(item.title, 'A Requested Course');
-  assert.equal(item.hasTitle, true);
+  assert.equal(item.showKey, true);
   assert.equal(item.href, 'https://www.coursera.org/learn/pending');
   assert.equal(item.external, true);
   assert.equal(item.summary, 'Waiting for the crawl');
@@ -99,9 +99,21 @@ test('a program without a grouping is still waiting', () => {
   const item = byKey(waiting, 'specializations/waiting');
 
   assert.equal(item.title, 'Waiting Program');
+  assert.equal(item.showKey, true);
   assert.equal(item.href, 'https://www.coursera.org/specializations/waiting');
   assert.equal(item.external, true);
   assert.equal(item.summary, 'Waiting for the crawl');
+});
+
+test('a slug-only ask does not repeat its key as the title', () => {
+  const slugOnly = buildWanted(
+    { generatedAt: null, rows: [row('learn/slug-only', 'course')] },
+    {},
+    {},
+  ).waiting[0];
+
+  assert.equal(slugOnly.title, 'learn/slug-only');
+  assert.equal(slugOnly.showKey, false);
 });
 
 test('instructor requests stay out of the public wanted list', () => {

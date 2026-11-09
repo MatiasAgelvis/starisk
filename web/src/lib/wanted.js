@@ -49,7 +49,7 @@ export function buildWanted(snapshot, scores, groupings) {
           : Boolean(program);
 
       const title = program?.title || record?.title || readableQuery(row);
-      const hasTitle = title !== row.key;
+      const showKey = title !== row.key;
 
       let href = `https://www.coursera.org/${row.key}`;
       let external = true;
@@ -67,7 +67,7 @@ export function buildWanted(snapshot, scores, groupings) {
         title,
         href,
         external,
-        hasTitle,
+        showKey,
         anchor: requestAnchor(row.key),
         record,
         program,
