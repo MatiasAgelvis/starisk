@@ -22,6 +22,12 @@ const groupings = {
     title: 'Program A',
     courses: ['learn/scored', 'learn/empty'],
   },
+  'specializations/empty': {
+    key: 'specializations/empty',
+    type: 'specialization',
+    title: 'Empty Program',
+    courses: ['learn/missing'],
+  },
 };
 
 const row = (key, type, extra = {}) => ({

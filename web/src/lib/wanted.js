@@ -46,7 +46,7 @@ export function buildWanted(snapshot, scores, groupings) {
       const scored =
         row.type === 'course'
           ? Boolean(record && (typeof record.starisk === 'number' || record.no_reviews === true))
-          : Boolean(program);
+          : Boolean(program && program.scored > 0);
 
       const title = program?.title || record?.title || readableQuery(row);
       const showKey = title !== row.key;
@@ -96,7 +96,7 @@ function summaryOf(row, record, program) {
     return `Coursera ${coursera} → Starisk ${starisk}`;
   }
 
-  if (program) {
+  if (program && program.scored > 0) {
     const average = program.average == null ? '—' : program.average.toFixed(1);
     return `Average ${average} · ${program.scored} of ${program.total} courses scored`;
   }
