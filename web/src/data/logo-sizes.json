@@ -150,5 +150,9 @@
   "skillup": {
     "tile": "/logos/tile/skillup.jpg",
     "full": "/logos/full/skillup.jpg"
+  },
+  "mathworks": {
+    "tile": "/logos/tile/mathworks.png",
+    "full": "/logos/full/mathworks.png"
   }
 }
