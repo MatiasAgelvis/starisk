@@ -525,6 +525,7 @@ def report(outcome: Outcome, dry_run: bool) -> None:
         print("dry run: nothing written. re-run with --write to apply.")
     elif outcome.handled:
         print("next: mise run pipeline:crawl")
+        print("site: mise run web:sync")
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
