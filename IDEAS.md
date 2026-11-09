@@ -209,13 +209,20 @@ state a static site provably cannot hold.
 
 **Shape**
 
+Turso is only the inbox:
+
 ```
-requests(slug, requested_at, status, crawled_at)
-status: queued → crawled | failed | rejected
+course_requests(key, query, kind, requests, first_seen, last_seen)
 ```
 
-The crawler drains N rows per run with the throttle it already has, then flips
-the status. The site can render a `/requests` page from the same table.
+The local drain reads N rows per run, verifies the link, adds it to
+`data/sources.json`, and merges the ask into `data/requests.json` with `added_at`.
+That file is the durable list the site builds from; the inbox stays read-only from
+the pipeline's side.
+
+`/wanted` and the feed derive their state by joining the ask list against
+`scores.json` / `groupings.json`. There is no status machine and no `crawled_at`:
+if the key has a score, it is fulfilled; otherwise it is still waiting.
 
 **Gates before building any of it**
 
