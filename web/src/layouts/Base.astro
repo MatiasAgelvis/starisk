@@ -60,6 +60,7 @@ const lastCrawlDate = lastCrawl
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/atom+xml" title="Starisk — wanted" href="/feed.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#111827" />
 
@@ -223,6 +224,8 @@ const lastCrawlDate = lastCrawl
               Data
             </p>
             <ul class="space-y-1">
+              <li><a class="link link-hover" href="/wanted">Wanted</a></li>
+              <li><a class="link link-hover" href="/feed.xml">RSS</a></li>
               <li><a class="link link-hover" href="/data/scores.json">Dataset</a></li>
               <li>
                 <a
