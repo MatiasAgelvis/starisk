@@ -304,11 +304,14 @@ turso db shell starisk \
 ```
 
 Validation is shared with the browser (`web/src/lib/requests.js`): Coursera course
-links, instructor profiles and typed names, with a length cap, control-character
-stripping, a small unambiguous profanity list, and a refusal to store programs.
-The function re-runs every check, because the browser is not a security boundary.
-A link is stored as the key it produced (`learn/…`, `instructor/…`), not the URL
-it was pasted from, so tracking parameters never reach the table.
+links, instructor profiles, program links and typed names, with a length cap,
+control-character stripping and a small unambiguous profanity list. The function
+re-runs every check, because the browser is not a security boundary. A link is
+stored as the key it produced (`learn/…`, `instructor/…`, `specializations/…`),
+not the URL it was pasted from, so tracking parameters never reach the table.
+
+A program already in `groupings.json` resolves to its page in the lookup; an
+unknown one can be requested and is seeded in `programs.json` for the next fetch.
 
 `astro dev` does not serve functions. `mise run web:dev:api` runs `vercel dev`
 instead, which serves the site and `/api/*` together; pull the variables first

@@ -78,6 +78,36 @@ test('records a missed course and returns its demand count', async () => {
   }
 });
 
+test('records a program request under its canonical key', async () => {
+  const turso = stubTurso({ count: 2 });
+
+  try {
+    const response = await handleCourseRequest({
+      request: post({
+        query:
+          'https://www.coursera.org/professional-certificates/ibm-enterprise-ai-transformation-and-consulting?utm_source=test',
+      }),
+      env,
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.kind, 'program');
+    assert.equal(
+      body.key,
+      'professional-certificates/ibm-enterprise-ai-transformation-and-consulting',
+    );
+
+    const upsert = turso.seen.find((stmt) => stmt.sql.includes('INSERT INTO course_requests'));
+    assert.deepEqual(
+      upsert.args.map((arg) => arg.value),
+      [body.key, body.key, 'program'],
+    );
+  } finally {
+    turso.restore();
+  }
+});
+
 test('rejects a non-Coursera link without writing anything', async () => {
   const turso = stubTurso();
 

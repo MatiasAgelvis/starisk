@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildGroupings, typeLabel } from '../src/lib/groupings.js';
+import { buildGroupings, buildProgramLookup, typeLabel } from '../src/lib/groupings.js';
 
 const groupings = {
   'specializations/a': {
@@ -25,6 +25,37 @@ const scores = {
   'learn/three': { starisk: 5.0, reviews: 0, title: 'Three' },
   'specializations/a': { starisk: 3.5 },
 };
+
+test('the lookup payload keeps only what the island draws', () => {
+  const lookup = buildProgramLookup(groupings, scores);
+  const program = lookup['specializations/a'];
+
+  assert.equal(program.title, 'Program A');
+  assert.equal(program.label, 'Specialization');
+  assert.equal(program.provider, 'Test U');
+  assert.equal(program.average, 2.5);
+  assert.equal(program.scored, 2);
+  assert.equal(program.total, 3);
+  assert.equal(program.reviews, 40);
+});
+
+test('a program with no scores still appears in the lookup', () => {
+  const lookup = buildProgramLookup(
+    {
+      'professional-certificates/empty': {
+        key: 'professional-certificates/empty',
+        type: 'professional-certificate',
+        title: 'Empty Program',
+        courses: ['learn/missing'],
+      },
+    },
+    {},
+  );
+
+  assert.equal(lookup['professional-certificates/empty'].average, null);
+  assert.equal(lookup['professional-certificates/empty'].scored, 0);
+  assert.equal(lookup['professional-certificates/empty'].total, 1);
+});
 
 test('weights the average by reviews read', () => {
   const program = buildGroupings(groupings, scores).find(

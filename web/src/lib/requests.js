@@ -22,6 +22,9 @@ const MAX_SLUG = 80;
 // `~<number>` (79 of the 211 in the corpus).
 const INSTRUCTOR_SLUG = /^~?[a-z0-9][a-z0-9-]*$/;
 
+// The two program URL types. Both are crawlable units that expand into courses.
+export const PROGRAM_TYPES = ['specializations', 'professional-certificates'];
+
 // What a course *name* may contain. Anything outside this is a link, markup, or
 // someone testing the input — none of which belong in a crawl queue. `#` and `+`
 // are here for C# and C++, and the dashes for names that were typed, not pasted.
@@ -60,7 +63,6 @@ export const REASON_MESSAGES = {
   too_long: 'That is too long to be a course name or link.',
   too_short: 'That is too short to be a course name.',
   url: 'Only Coursera course links are accepted.',
-  program: 'Starisk scores individual courses, not programs.',
   not_a_course: 'That link is not a course.',
   language: 'That does not look like a course name.',
   repetitive: 'That does not look like a course name.',
@@ -68,7 +70,7 @@ export const REASON_MESSAGES = {
 };
 
 /**
- * @typedef {{ ok: true, query: string, kind: 'slug' | 'name' | 'teacher', key: string }
+ * @typedef {{ ok: true, query: string, kind: 'slug' | 'name' | 'teacher' | 'program', key: string }
  *   | { ok: false, reason: keyof typeof REASON_MESSAGES }} Validation
  */
 
@@ -109,7 +111,7 @@ function clean(raw) {
 
 /**
  * @param {string} text
- * @returns {{ ok: true, kind: 'slug' | 'name' | 'teacher', key: string } | { ok: false, reason: string }}
+ * @returns {{ ok: true, kind: 'slug' | 'name' | 'teacher' | 'program', key: string } | { ok: false, reason: string }}
  */
 function classify(text) {
   const link = parseLink(text);
@@ -143,7 +145,7 @@ function parseLink(text) {
 
 /**
  * @param {string} link
- * @returns {{ ok: true, kind: 'slug' | 'name' | 'teacher', key: string } | { ok: false, reason: string }}
+ * @returns {{ ok: true, kind: 'slug' | 'name' | 'teacher' | 'program', key: string } | { ok: false, reason: string }}
  */
 function fromLink(link) {
   let parsed;
@@ -174,11 +176,35 @@ function fromLink(link) {
 function fromPath(type, slug) {
   const kind = type.toLowerCase();
   if (kind === 'instructor') return instructorOf(slug);
-  if (kind === 'specializations' || kind === 'professional-certificates') {
-    return { ok: false, reason: 'program' };
-  }
+  if (PROGRAM_TYPES.includes(kind)) return programOf(kind, slug);
   if (kind !== 'learn') return { ok: false, reason: 'not_a_course' };
   return slugOf(slug);
+}
+
+/**
+ * @param {string} kind
+ * @param {string | undefined} value
+ * @returns {{ ok: true, kind: 'program', key: string } | { ok: false, reason: string }}
+ */
+function programOf(kind, value) {
+  if (!value) return { ok: false, reason: 'not_a_course' };
+
+  let slug;
+  try {
+    slug = decodeURIComponent(value);
+  } catch {
+    return { ok: false, reason: 'not_a_course' };
+  }
+
+  slug = slug.toLowerCase().replace(/\/+$/, '');
+
+  if (slug.length < 2) return { ok: false, reason: 'too_short' };
+  if (slug.length > MAX_SLUG) return { ok: false, reason: 'too_long' };
+  if (!SLUG.test(slug)) return { ok: false, reason: 'not_a_course' };
+  if (REPEATED.test(slug.replace(/-/g, ''))) return { ok: false, reason: 'repetitive' };
+  if (isProfane(slug)) return { ok: false, reason: 'language' };
+
+  return { ok: true, kind: 'program', key: `${kind}/${slug}` };
 }
 
 /**
