@@ -68,6 +68,20 @@ test('derives waiting and fulfilled from the scores, not a status column', () =>
   );
 });
 
+test('a waiting course uses the title captured by the probe', () => {
+  const item = buildWanted(
+    {
+      generatedAt: null,
+      rows: [row('learn/captured', 'course', { title: 'Captured Course', query: 'https://example.test' })],
+    },
+    {},
+    {},
+  ).waiting[0];
+
+  assert.equal(item.title, 'Captured Course');
+  assert.equal(item.showKey, true);
+});
+
 test('a waiting course shows what was asked and points at Coursera', () => {
   const item = byKey(waiting, 'learn/pending');
 

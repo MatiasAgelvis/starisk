@@ -36,6 +36,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .adapter import extract_title
 from .add import merge
 from .crawl import SOURCES_PATH, reviews_url, write_atomic
 from .expand import instructor_courses
@@ -108,6 +109,7 @@ class Outcome:
     sources: list[str] = field(default_factory=list)
     seeds: list[str] = field(default_factory=list)
     groupings: dict = field(default_factory=dict)
+    titles: dict[str, str] = field(default_factory=dict)
     handled: list[str] = field(default_factory=list)
 
 
@@ -299,13 +301,16 @@ def build_plan(demands: list[Demand], min_requests: int = 1, limit: int = DEFAUL
     return plan
 
 
-def probe_course(key: str, fetch=fetch_page) -> bool:
-    """True when Coursera still serves the reviews page for this course."""
+def probe_course(key: str, fetch=fetch_page) -> str | None:
+    """Return the advertised title, None when the reviews page is gone.
+
+    An empty string means the page is alive but has no parseable title.
+    """
     try:
-        fetch(reviews_url(key))
+        html = fetch(reviews_url(key))
     except Exception:  # noqa: BLE001 - a 404 is the answer we want to report
-        return False
-    return True
+        return None
+    return extract_title(html) or ""
 
 
 def handle(
@@ -319,27 +324,39 @@ def handle(
     fetch_programs=fetch_missing,
     fetch_teachers=instructor_courses,
     build=build_groupings,
+    known_titles: dict[str, str] | None = None,
     delay: float = CHECK_DELAY,
 ) -> Outcome:
     """Decide what to add. Pure with respect to the data files: nothing is written."""
     outcome = Outcome(sources=list(sources), seeds=list(seeds))
+    known = known_titles or {}
 
     for demand in plan.courses:
         if demand.key in outcome.sources:
             outcome.existing_courses.append(demand)
             outcome.handled.append(demand.key)
+            if not known.get(demand.key) and not offline:
+                title = check(demand.key)
+                if title:
+                    outcome.titles[demand.key] = title
+                sleep(delay)
             continue
 
+        title = ""
         if not offline:
-            if not check(demand.key):
+            probed = check(demand.key)
+            if probed is None:
                 outcome.gone.append(demand)
                 continue
+            title = probed
             sleep(delay)
 
         added, _, _, outcome.sources = merge([demand.key], outcome.sources)
         if added:
             outcome.added_courses.append(demand)
             outcome.handled.append(demand.key)
+            if title:
+                outcome.titles[demand.key] = title
         else:
             outcome.ignored.append(demand)
 
@@ -384,6 +401,8 @@ def handle(
             added, _, _, outcome.sources = merge(courses, outcome.sources)
             outcome.member_courses.extend(added)
             outcome.handled.append(demand.key)
+            if grouping.get("title"):
+                outcome.titles[demand.key] = grouping["title"]
 
     outcome.unresolved = plan.unresolved
     outcome.ignored.extend(plan.ignored)
@@ -411,12 +430,14 @@ def build_snapshot(
     generated_at: str,
     previous: dict | None = None,
     handled: list[str] | None = None,
+    titles: dict[str, str] | None = None,
     stamp: str | None = None,
 ) -> dict:
     """The repo-owned ask list: requests that became crawl work.
 
-    `added_at` is the only lifecycle fact we store. Completion, score and title
-    are joined from `scores.json` / `groupings.json` when the site builds.
+    `added_at` is the only lifecycle fact we store. The title here is the
+    pre-crawl display name captured during validation; the score, final title
+    and completion are joined from `scores.json` / `groupings.json` at build time.
     """
     rows: dict[str, dict] = {}
     for row in ((previous or {}).get("rows") or []):
@@ -429,11 +450,13 @@ def build_snapshot(
                 "requests": int(row.get("requests") or 0),
                 "first_seen": row.get("first_seen"),
                 "last_seen": row.get("last_seen"),
+                "title": row.get("title"),
                 "added_at": row["added_at"],
             }
 
     touched = set(handled or [])
     added = stamp or generated_at
+    captured = titles or {}
     for demand in demands:
         old = rows.get(demand.key) or {}
         if demand.key not in touched and not old:
@@ -445,6 +468,7 @@ def build_snapshot(
             "requests": demand.requests,
             "first_seen": demand.first_seen or old.get("first_seen"),
             "last_seen": demand.last_seen or old.get("last_seen"),
+            "title": captured.get(demand.key) or old.get("title"),
             "added_at": old.get("added_at") or (added if demand.key in touched else None),
         }
 
@@ -460,6 +484,7 @@ def export_requests(
     demands: list[Demand],
     previous: dict | None = None,
     handled: list[str] | None = None,
+    titles: dict[str, str] | None = None,
     path: Path | None = None,
     generated_at: str | None = None,
 ) -> dict:
@@ -469,6 +494,7 @@ def export_requests(
         stamp,
         previous=previous,
         handled=handled,
+        titles=titles,
         stamp=stamp,
     )
     write_atomic(path or REQUESTS_PATH, snapshot)
@@ -603,19 +629,39 @@ def main(argv: list[str]) -> int:
     previous = read_json(REQUESTS_PATH)
     if not isinstance(previous, dict):
         previous = {}
-    known = {
-        str(row.get("key"))
-        for row in (previous.get("rows") or [])
-        if row.get("key") and row.get("added_at")
+    rows = previous.get("rows") or []
+    known = {str(row.get("key")) for row in rows if row.get("key") and row.get("added_at")}
+    known_titles = {
+        str(row["key"]): str(row["title"])
+        for row in rows
+        if row.get("key") and row.get("added_at") and row.get("title")
     }
-    pending = [demand for demand in demands if demand.key not in known]
+    missing_titles = {
+        str(row.get("key"))
+        for row in rows
+        if row.get("key")
+        and row.get("added_at")
+        and row.get("type") == "course"
+        and not row.get("title")
+    }
+    pending = [
+        demand
+        for demand in demands
+        if demand.key not in known or demand.key in missing_titles
+    ]
 
     plan = build_plan(pending, options.min_requests, options.limit)
     sources = read_list(SOURCES_PATH)
     seeds = read_list(PROGRAMS_PATH)
 
     try:
-        outcome = handle(plan, sources, seeds, offline=options.offline)
+        outcome = handle(
+            plan,
+            sources,
+            seeds,
+            offline=options.offline,
+            known_titles=known_titles,
+        )
     except RateLimited as error:
         print(f"Coursera rate limited the program fetch: {error}", file=sys.stderr)
         return 1
@@ -632,7 +678,12 @@ def main(argv: list[str]) -> int:
     if outcome.groupings:
         write_atomic(GROUPINGS_PATH, outcome.groupings)
 
-    snapshot = export_requests(demands, previous=previous, handled=outcome.handled)
+    snapshot = export_requests(
+        demands,
+        previous=previous,
+        handled=outcome.handled,
+        titles=outcome.titles,
+    )
     print(
         f"ask list: {len(snapshot['rows'])} row(s), "
         f"{len(outcome.handled)} request(s) added this run"

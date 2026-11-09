@@ -48,7 +48,7 @@ export function buildWanted(snapshot, scores, groupings) {
           ? Boolean(record && (typeof record.starisk === 'number' || record.no_reviews === true))
           : Boolean(program && program.scored > 0);
 
-      const title = program?.title || record?.title || readableQuery(row);
+      const title = program?.title || record?.title || row.title || readableQuery(row);
       const showKey = title !== row.key;
 
       let href = `https://www.coursera.org/${row.key}`;

@@ -151,18 +151,21 @@ python -m starisk.demand --env-file .env.prod            # dry run: what would c
 python -m starisk.demand --env-file .env.prod --write    # verify, add to crawl list, update asks
 ```
 
-`--write` reads the inbox, checks each new `learn/*` link, appends it to
-`data/sources.json` (or seeds a program/instructor), and merges the ask into
-`data/requests.json` with `added_at`. It never updates Turso — the inbox stays
-read-only from the pipeline's side. Run `mise run web:sync` to copy the ask list
-into `web/src/data/` without a full build; `web:dev` and `web:build` do it
-automatically.
+`--write` reads the inbox, checks each new `learn/*` link, captures its advertised
+title from the same page, appends it to `data/sources.json` (or seeds a
+program/instructor), and merges the ask into `data/requests.json` with `added_at`.
+It never updates Turso — the inbox stays read-only from the pipeline's side. Run
+`mise run web:sync` to copy the ask list into `web/src/data/` without a full build;
+`web:dev` and `web:build` do it automatically.
 
 Everything after that is derived from files the site already ships:
 
 - **waiting** — asks in `requests.json` that are not in `scores.json` /
   `groupings.json`
-- **fulfilled** — asks that are; score and title come from those files
+- **fulfilled** — asks that are; score and final title come from those files
+
+The ask-list `title` is only the pre-crawl display name captured during
+verification. It is not written back to Turso.
 - **feed** — fulfilled asks at `/feed.xml`, newest `added_at` first (50 max)
 
 A key already in `requests.json` is not processed again. `name/*` stays in the

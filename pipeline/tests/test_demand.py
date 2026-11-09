@@ -243,7 +243,7 @@ class HandleTest(unittest.TestCase):
 
         def check(key):
             checked.append(key)
-            return key != "learn/dead"
+            return "Some Title" if key != "learn/dead" else None
 
         def fetch_programs(keys, delay=0):
             fetched.extend(keys)
@@ -253,6 +253,7 @@ class HandleTest(unittest.TestCase):
             ["learn/existing"],
             [],
             check=check,
+            known_titles={"learn/existing": "Existing Title"},
             sleep=lambda _: None,
             fetch_programs=fetch_programs,
             build=lambda: {
@@ -277,9 +278,29 @@ class HandleTest(unittest.TestCase):
             outcome.handled,
             ["learn/new", "learn/existing", "professional-certificates/p"],
         )
+        self.assertEqual(
+            outcome.titles,
+            {"learn/new": "Some Title", "professional-certificates/p": "Program P"},
+        )
         self.assertEqual([item.key for item in outcome.unresolved], ["name/thing"])
         self.assertEqual(checked, ["learn/new", "learn/dead"])
         self.assertEqual(fetched, ["professional-certificates/p"])
+
+    def test_an_existing_course_can_backfill_its_title(self):
+        plan = build_plan([demand(1, "learn/existing")])
+
+        outcome = handle(
+            plan,
+            ["learn/existing"],
+            [],
+            check=lambda key: "Existing Title",
+            known_titles={},
+            sleep=lambda _: None,
+            build=lambda: {},
+        )
+
+        self.assertEqual([item.key for item in outcome.existing_courses], ["learn/existing"])
+        self.assertEqual(outcome.titles, {"learn/existing": "Existing Title"})
 
     def test_a_teacher_request_adds_their_courses(self):
         plan = build_plan(
@@ -397,18 +418,24 @@ class PlaceholderTest(unittest.TestCase):
 
 
 class ProbeCourseTest(unittest.TestCase):
-    def test_liveness_uses_the_reviews_page(self):
+    def test_liveness_and_title_come_from_one_request(self):
         def fetch(url):
             self.assertTrue(url.endswith("/learn/machine-learning/reviews"))
-            return "<html></html>"
+            return (
+                '<script type="application/ld+json">'
+                '{"@type":"Course","name":"Machine Learning"}</script>'
+            )
 
-        self.assertTrue(probe_course("learn/machine-learning", fetch=fetch))
+        self.assertEqual(probe_course("learn/machine-learning", fetch=fetch), "Machine Learning")
 
-    def test_a_dead_link_is_false(self):
+    def test_a_dead_link_is_none(self):
         def fetch(url):
             raise RuntimeError("404")
 
-        self.assertFalse(probe_course("learn/gone", fetch=fetch))
+        self.assertIsNone(probe_course("learn/gone", fetch=fetch))
+
+    def test_alive_without_a_title_is_an_empty_string(self):
+        self.assertEqual(probe_course("learn/x", fetch=lambda url: "<html></html>"), "")
 
 
 class QueueSnapshotTest(unittest.TestCase):
@@ -436,6 +463,7 @@ class QueueSnapshotTest(unittest.TestCase):
             demands,
             "2026-01-03T00:00:00Z",
             handled=["learn/x"],
+            titles={"learn/x": "A Title"},
         )
 
         self.assertEqual(snapshot["generatedAt"], "2026-01-03T00:00:00Z")
@@ -449,6 +477,7 @@ class QueueSnapshotTest(unittest.TestCase):
                     "requests": 2,
                     "first_seen": "2026-01-01T00:00:00Z",
                     "last_seen": "2026-01-02T00:00:00Z",
+                    "title": "A Title",
                     "added_at": "2026-01-03T00:00:00Z",
                 }
             ],
@@ -471,6 +500,7 @@ class QueueSnapshotTest(unittest.TestCase):
                     "requests": 2,
                     "first_seen": "2026-01-01T00:00:00Z",
                     "last_seen": "2026-01-02T00:00:00Z",
+                    "title": "Old Title",
                     "added_at": "2026-01-02T12:00:00Z",
                 }
             ]
@@ -481,6 +511,7 @@ class QueueSnapshotTest(unittest.TestCase):
 
         self.assertEqual(snapshot["rows"][0]["added_at"], "2026-01-02T12:00:00Z")
         self.assertEqual(snapshot["rows"][0]["requests"], 4)
+        self.assertEqual(snapshot["rows"][0]["title"], "Old Title")
 
     def test_export_writes_the_local_ask_list(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -488,11 +519,13 @@ class QueueSnapshotTest(unittest.TestCase):
             snapshot = export_requests(
                 [Demand(1, "learn/x", "slug", "learn/x", 1)],
                 handled=["learn/x"],
+                titles={"learn/x": "A Title"},
                 path=path,
                 generated_at="2026-01-03T00:00:00Z",
             )
 
             self.assertEqual(json.loads(path.read_text(encoding="utf-8")), snapshot)
+            self.assertEqual(snapshot["rows"][0]["title"], "A Title")
 
 
 if __name__ == "__main__":
