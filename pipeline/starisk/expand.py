@@ -153,74 +153,97 @@ def plan(
     instructors: bool = False,
     limit: int | None = None,
     refresh: bool = False,
+    log=None,
 ) -> tuple[dict[str, list[str]], list[str]]:
     """Work out which courses to add, and why.
 
     Returns `{key: [parents that linked it]}` plus printable report lines. Nothing
-    here writes to `sources.json`; `main` does, only under `--write`.
+    here writes to `sources.json`; `main` does, only under `--write`. `log`, when
+    given, receives each line as it happens (with progress), so a long run does
+    not look frozen.
     """
     known = {normalize_source(source) for source in existing}
     found: dict[str, list[str]] = {}
     lines: list[str] = []
     budget = limit
+    started = time.monotonic()
+
+    def report(line: str, live: str | None = None) -> None:
+        lines.append(line)
+        if log:
+            log(live or line)
+
+    def progress(index: int, total: int, line: str) -> str:
+        elapsed = time.monotonic() - started
+        return f"[{index}/{total} {elapsed:5.1f}s] {line.strip()}"
 
     if specializations:
+        report("specializations: reading sitemap...")
         slugs = load_slugs(fetch=fetch, refresh=refresh, cache_path=slug_cache)
         certificates = [
             entry
             for entry in entries
             if entry.get("issuer") == "Coursera" and entry.get("type") == "specialization"
         ]
-        lines.append(f"specializations: {len(slugs)} slugs in the sitemap")
+        report(f"specializations: {len(slugs)} slugs in the sitemap")
         resolved = 0
-        for entry in certificates:
+        for index, entry in enumerate(certificates, 1):
             if budget is not None and budget <= 0:
-                lines.append("  (budget reached)")
+                report("  (budget reached)")
                 break
             if budget is not None:
                 budget -= 1
             slug, html = resolve_specialization(entry, slugs, fetch, delay, sleep, cache_dir)
             if not html:
-                lines.append(f"  miss   {entry['title'][:52]}")
+                line = f"  miss   {entry['title'][:52]}"
+                report(line, progress(index, len(certificates), line))
                 continue
             resolved += 1
             courses = extract_specialization_courses(html)
             for course in courses:
                 found.setdefault(f"learn/{course}", []).append(f"specialization:{slug}")
-            lines.append(
-                f"  ok     {entry['title'][:52]:54} {slug:30} {len(courses)} courses"
-            )
-        lines.append(f"  resolved {resolved}/{len(certificates)} certificates")
+            line = f"  ok     {entry['title'][:52]:54} {slug:30} {len(courses)} courses"
+            report(line, progress(index, len(certificates), line))
+        report(f"  resolved {resolved}/{len(certificates)} certificates")
 
     if instructors:
         people = indexed_instructors(scores)
-        lines.append(f"instructors: {len(people)} indexed")
+        report(f"instructors: {len(people)} indexed")
         visited = 0
-        for slug, person in people.items():
+        for index, (slug, person) in enumerate(people.items(), 1):
             if budget is not None and budget <= 0:
-                lines.append("  (budget reached)")
+                report("  (budget reached)")
                 break
             if budget is not None:
                 budget -= 1
-            html = _page(f"instructor/{slug}", INSTRUCTOR_URL.format(slug=slug), fetch, delay, sleep, cache_dir)
+            html = _page(
+                f"instructor/{slug}",
+                INSTRUCTOR_URL.format(slug=slug),
+                fetch,
+                delay,
+                sleep,
+                cache_dir,
+            )
             if not html:
-                lines.append(f"  miss   {person.get('name', slug)}")
+                line = f"  miss   {person.get('name', slug)}"
+                report(line, progress(index, len(people), line))
                 continue
             visited += 1
             courses = extract_instructor_courses(html)
             for course in courses:
                 found.setdefault(f"learn/{course}", []).append(f"instructor:{slug}")
-            lines.append(f"  ok     {(person.get('name') or slug)[:52]:54} {len(courses)} courses")
-        lines.append(f"  read {visited}/{len(people)} profiles")
+            line = f"  ok     {(person.get('name') or slug)[:52]:54} {len(courses)} courses"
+            report(line, progress(index, len(people), line))
+        report(f"  read {visited}/{len(people)} profiles")
 
     new = {key: parents for key, parents in found.items() if key not in known}
-    lines.append("")
-    lines.append(
+    report("")
+    report(
         f"linked {len(found)} courses | already listed {len(found) - len(new)} | new {len(new)}"
     )
     if delay:
         requests = len(new) * 2  # reviews page + landing page, per D18
-        lines.append(
+        report(
             f"estimated crawl: {requests} requests, about {requests * delay / 60:.1f} min "
             f"at {delay:g}s between requests"
         )
@@ -261,7 +284,7 @@ def main(argv: list[str]) -> int:
     )
     sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8")) if SOURCES_PATH.exists() else []
 
-    new, lines = plan(
+    new, _lines = plan(
         scores,
         entries,
         existing=sources,
@@ -270,8 +293,8 @@ def main(argv: list[str]) -> int:
         instructors=options.instructors or not options.specializations,
         limit=options.limit,
         refresh=options.refresh,
+        log=lambda line: print(line, flush=True),
     )
-    print("\n".join(lines))
 
     if not options.write:
         print("\nreport only. re-run with --write to add them to data/sources.json.")
