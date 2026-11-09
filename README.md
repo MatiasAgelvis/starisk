@@ -112,9 +112,11 @@ mise run pipeline:expand -- --instructors --limit 10
 - **instructors** — every teacher already in `scores.json`, read from their
   Coursera profile (`data-e2e="course-card"`).
 
-Both cost one cached request per parent page. Language variants (`-fr`, `-de`, …)
-are dropped; a separately-created translation with its own slug is not (only one
-so far — the landing page carries `inLanguage` if it ever matters).
+Both cost one cached request per parent page. Each page is printed as it finishes
+with `[i/N]` and elapsed seconds, so a long expand run shows progress instead of
+looking frozen. Language variants (`-fr`, `-de`, …) are dropped; a separately-created
+translation with its own slug is not (only one so far — the landing page carries
+`inLanguage` if it ever matters).
 
 Professional Certificates are not in the calibration file, so they are seeded
 explicitly in `pipeline/data/programs.json`:
