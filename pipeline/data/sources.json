@@ -587,5 +587,16 @@
   "learn/what-is-datascience",
   "learn/open-source-tools-for-data-science",
   "learn/data-science-methodology",
-  "learn/python-for-data-visualization"
+  "learn/python-for-data-visualization",
+  "learn/analytics-excel",
+  "learn/image-segmentation",
+  "learn/introduction-image-processing",
+  "learn/predictive-modeling-machine-learning",
+  "learn/the-ai-transformation-advisor",
+  "learn/identify-and-prioritize-ai-opportunities",
+  "learn/assess-ai-readiness",
+  "learn/design-ai-transformation-roadmaps",
+  "learn/ai-business-cases-and-roi-models",
+  "learn/ai-governance-risk-and-executive-communication",
+  "learn/ai-transformation-advisory-package"
 ]
