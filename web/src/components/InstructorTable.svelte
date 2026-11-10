@@ -87,9 +87,7 @@
     >
       Two or more courses{#if multiCount} <span class="opacity-50">{multiCount}</span>{/if}
     </button>
-    <span class="text-xs text-base-content/60">
-      The rest teach exactly one course in the index.
-    </span>
+
   </div>
   <div class="flex items-center gap-3">
     <input
