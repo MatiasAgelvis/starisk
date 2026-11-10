@@ -12,8 +12,8 @@ export function verdictOf(coursera, starisk) {
 }
 
 export const VERDICT = {
-  inflated: { label: 'Inflated', badge: 'badge-error', bar: 'bg-error' },
-  padded: { label: 'Padded', badge: 'badge-warning', bar: 'bg-warning' },
-  'holds-up': { label: 'Holds up', badge: 'badge-success', bar: 'bg-success' },
-  unknown: { label: 'No rating', badge: 'badge-ghost', bar: 'bg-base-300' },
+  inflated: { label: 'Inflated', badge: 'badge-error', bar: 'bg-error', text: 'text-error' },
+  padded: { label: 'Padded', badge: 'badge-warning', bar: 'bg-warning', text: 'text-warning' },
+  'holds-up': { label: 'Holds up', badge: 'badge-success', bar: 'bg-success', text: 'text-success' },
+  unknown: { label: 'No rating', badge: 'badge-ghost', bar: 'bg-base-300', text: 'text-base-content' },
 };
