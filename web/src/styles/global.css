@@ -99,17 +99,20 @@
 [data-theme="starisk"] {
   --chart-theirs: #94a3b8;
   --chart-ours: #a16207;
+  --star: #eab308;
 }
 
 [data-theme="starisk-dark"] {
   --chart-theirs: #64748b;
   --chart-ours: #fbbf24;
+  --star: #fbbf24;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --chart-theirs: #64748b;
     --chart-ours: #fbbf24;
+    --star: #fbbf24;
   }
 }
 

@@ -20,7 +20,7 @@
       {/each}
     </span>
     <span
-      class="absolute inset-0 flex gap-0.5 overflow-hidden text-warning"
+      class="absolute inset-0 flex gap-0.5 overflow-hidden text-[var(--star)]"
       style={`width:${percent}%;font-size:${size}px`}
     >
       {#each STAR_SLOTS as slot (slot)}
