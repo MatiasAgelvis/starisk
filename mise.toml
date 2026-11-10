@@ -41,9 +41,10 @@ dir = "pipeline"
 run = "python -m starisk.add"
 
 [tasks."pipeline:demand"]
-description = "Turn pending Turso course requests into crawl work (dry run; --write to apply)"
+description = "Turn the Turso request inbox into crawl work and data/requests.json (dry run; --write to apply)"
 dir = "pipeline"
 run = "python -m starisk.demand"
+
 
 [tasks."pipeline:expand"]
 description = "Grow sources.json from specializations and instructor profiles"
@@ -87,6 +88,10 @@ run = "npm run dev"
 description = "Build the site from the current data copy"
 dir = "web"
 run = "npm run build"
+
+[tasks."web:sync"]
+description = "Copy pipeline data into the site without a full build"
+run = "node web/scripts/sync-data.mjs"
 
 [tasks."web:dev:api"]
 description = "Dev server with the /api function (vercel dev; needs web/.env.local)"

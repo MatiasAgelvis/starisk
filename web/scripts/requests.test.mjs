@@ -46,8 +46,27 @@ test('names may use other scripts and the punctuation course names use', () => {
 test('rejects links that are not Coursera courses', () => {
   assert.equal(validateQuery('https://www.coursera.com/learn/bad-name').reason, 'url');
   assert.equal(validateQuery('example.com/learn/something').reason, 'url');
-  assert.equal(validateQuery('https://www.coursera.org/specializations/deep-learning').reason, 'program');
-  assert.equal(validateQuery('specializations/deep-learning').reason, 'program');
+  assert.equal(validateQuery('https://www.coursera.org/degrees/mba').reason, 'not_a_course');
+});
+
+test('accepts both program types and stores the canonical key', () => {
+  assert.deepEqual(validateQuery('https://www.coursera.org/specializations/deep-learning'), {
+    ok: true,
+    kind: 'program',
+    key: 'specializations/deep-learning',
+    query: 'specializations/deep-learning',
+  });
+
+  const cert = validateQuery(
+    'https://www.coursera.org/professional-certificates/ibm-enterprise-ai-transformation-and-consulting',
+  );
+  assert.equal(cert.ok, true);
+  assert.equal(cert.kind, 'program');
+  assert.equal(
+    cert.key,
+    'professional-certificates/ibm-enterprise-ai-transformation-and-consulting',
+  );
+  assert.equal(cert.query, cert.key);
 });
 
 test('accepts an instructor profile, including the opaque numeric ids', () => {

@@ -150,5 +150,25 @@
   "skillup": {
     "tile": "/logos/tile/skillup.jpg",
     "full": "/logos/full/skillup.jpg"
+  },
+  "mathworks": {
+    "tile": "/logos/tile/mathworks.png",
+    "full": "/logos/full/mathworks.png"
+  },
+  "learnquest": {
+    "tile": "/logos/tile/learnquest.jpg",
+    "full": "/logos/full/learnquest.jpg"
+  },
+  "courses-for-dummies": {
+    "tile": "/logos/tile/courses-for-dummies.png",
+    "full": "/logos/full/courses-for-dummies.png"
+  },
+  "starweaver": {
+    "tile": "/logos/tile/starweaver.jpg",
+    "full": "/logos/full/starweaver.jpg"
+  },
+  "fred-hutchinson-cancer-center": {
+    "tile": "/logos/tile/fred-hutchinson-cancer-center.jpg",
+    "full": "/logos/full/fred-hutchinson-cancer-center.jpg"
   }
 }

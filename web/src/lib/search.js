@@ -24,8 +24,9 @@ export function normalize(text) {
 /**
  * @param {Record<string, any>} scores the lookup payload
  * @param {Record<string, { name?: string, page?: string }>} teachers
+ * @param {Record<string, any>} programs the program lookup payload
  */
-export function buildSearchIndex(scores = {}, teachers = {}) {
+export function buildSearchIndex(scores = {}, teachers = {}, programs = {}) {
   const courses = Object.entries(scores).map(([key, record]) => {
     const title = record.title ?? key;
     const slug = record.slug ?? key;
@@ -68,7 +69,30 @@ export function buildSearchIndex(scores = {}, teachers = {}) {
     };
   });
 
-  return { courses, teachers: people };
+  const programRows = Object.entries(programs).map(([key, program]) => {
+    const title = program?.title ?? key;
+    const provider = program?.provider ?? null;
+    const normalized = normalize(title);
+
+    return {
+      kind: /** @type {const} */ ('program'),
+      key,
+      href: `/programs/${key}`,
+      title,
+      provider,
+      normalized,
+      haystack: `${normalized} ${normalize(key)} ${normalize(provider)}`,
+      starisk: typeof program?.average === 'number' ? program.average : null,
+      coursera: null,
+      reviews: program?.reviews ?? 0,
+      noReviews: false,
+      label: program?.label ?? 'Program',
+      scored: program?.scored ?? 0,
+      total: program?.total ?? 0,
+    };
+  });
+
+  return { courses, teachers: people, programs: programRows };
 }
 
 /**
@@ -84,7 +108,7 @@ export function search(index, raw, limit = MAX_RESULTS) {
   const tokens = query.split(' ');
   const found = [];
 
-  for (const item of [...index.courses, ...index.teachers]) {
+  for (const item of [...index.courses, ...index.teachers, ...(index.programs ?? [])]) {
     const points = score(item, query, tokens);
     if (points > 0) found.push({ item, points });
   }
@@ -109,9 +133,15 @@ function score(item, query, tokens) {
   else if (item.normalized.split(' ').some((word) => word.startsWith(query))) points += 40;
   else if (item.normalized.includes(query)) points += 20;
 
-  // A course title should win a tie: visitors are here for courses, and a
-  // teacher's page is a second click anyway.
+  // Among equally textual matches, the shorter title is the more specific one:
+  // `AI in Healthcare` should beat `Evaluations of AI Applications in Healthcare`.
+  const extra = Math.max(0, item.normalized.split(' ').length - tokens.length);
+  points -= Math.min(extra, 10) * 0.5;
+
+  // Courses are the atomic thing; a program is a bundle. Prefer courses in a
+  // tie, and teachers behind both.
   if (item.kind === 'teacher') points -= 5;
+  else if (item.kind === 'program') points -= 3;
 
   return points;
 }

@@ -112,6 +112,66 @@ test('a course title outranks a teacher on equal text', () => {
   assert.equal(best.kind, 'course');
 });
 
+test('a shorter title wins among equal textual matches', () => {
+  const custom = buildSearchIndex({
+    'learn/a': { title: 'AI in Healthcare', starisk: 3, reviews: 5 },
+    'learn/b': {
+      title: 'Evaluations of AI Applications in Healthcare',
+      starisk: 3,
+      reviews: 50,
+    },
+  });
+
+  assert.equal(search(custom, 'ai healthcare')[0].title, 'AI in Healthcare');
+});
+
+test('programs are searchable and carry their average', () => {
+  const custom = buildSearchIndex({}, {}, {
+    'professional-certificates/ibm-data-science': {
+      key: 'professional-certificates/ibm-data-science',
+      title: 'IBM Data Science',
+      type: 'professional-certificate',
+      label: 'Professional Certificate',
+      provider: 'IBM',
+      average: 3.4,
+      scored: 9,
+      total: 12,
+      reviews: 120,
+    },
+  });
+
+  const [best] = search(custom, 'ibm data science');
+  assert.equal(best.kind, 'program');
+  assert.equal(best.href, '/programs/professional-certificates/ibm-data-science');
+  assert.equal(best.starisk, 3.4);
+  assert.equal(best.label, 'Professional Certificate');
+});
+
+test('an exact program title beats a course containing the words', () => {
+  const custom = buildSearchIndex(
+    {
+      'learn/ibm-data-science-capstone': {
+        title: 'IBM Data Science Capstone',
+        starisk: 3.0,
+        reviews: 10,
+      },
+    },
+    {},
+    {
+      'professional-certificates/ibm-data-science': {
+        title: 'IBM Data Science',
+        average: 3.4,
+        scored: 9,
+        total: 12,
+        reviews: 100,
+      },
+    },
+  );
+
+  const [best] = search(custom, 'ibm data science');
+  assert.equal(best.kind, 'program');
+});
+
 test('keeps the score information the dropdown needs', () => {
   const [best] = search(index, 'financial markets');
   assert.equal(best.starisk, 3.0);

@@ -7,14 +7,19 @@ for it. This is the other end of that wire:
     python -m starisk.demand --env-file .env.dev --dry-run
     python -m starisk.demand --env-file .env.prod --write
 
-It reads the queue, checks that each course still resolves, and appends it to
+It reads the inbox, checks that each course still resolves, and appends it to
 `data/sources.json` — the same file `pipeline:add` writes, so the next crawl
 picks it up. Program requests seed `data/programs.json`, fetch the program page
 and add the courses it contains.
 
+Turso is only the inbox. The durable ask list is `data/requests.json`, which this
+script owns and `scripts/sync-data.mjs` copies into the site. A request gets an
+`added_at` timestamp when it becomes crawl work; everything after that — score,
+title, completion — is derived from `scores.json` / `groupings.json`.
+
 Name-only requests cannot become a slug without a Coursera search, so they are
 reported and left alone. Writes are opt-in: without `--write` nothing on disk
-changes and no row is marked.
+changes.
 
 No third-party dependency: Turso's HTTP API is JSON, and the queue is small.
 """
@@ -28,12 +33,14 @@ import sys
 import time
 import urllib.request
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 
-from .add import merge, reachable
-from .crawl import SOURCES_PATH, write_atomic
+from .adapter import extract_title
+from .add import merge
+from .crawl import SOURCES_PATH, reviews_url, write_atomic
 from .expand import instructor_courses
-from .fetch import RateLimited
+from .fetch import RateLimited, fetch_page
 from .groupings import (
     GROUPING_TYPES,
     GROUPINGS_PATH,
@@ -46,9 +53,19 @@ ENV_URL = "TURSO_DATABASE_URL"
 ENV_TOKEN = "TURSO_AUTH_TOKEN"
 PLACEHOLDER = "{SENSITIVE}"
 REPO_ROOT = Path(__file__).resolve().parents[2]
+REQUESTS_PATH = Path(__file__).resolve().parents[1] / "data" / "requests.json"
 DEFAULT_LIMIT = 50
 CHECK_DELAY = 0.5
 FETCH_DELAY = 1.5
+
+# The key prefix is the type the rest of the pipeline understands. The snapshot
+# keeps it explicit so the site does not have to re-derive it.
+QUEUE_TYPES = {
+    "learn": "course",
+    "specializations": "specialization",
+    "professional-certificates": "professional-certificate",
+    "instructor": "instructor",
+}
 
 
 class TursoError(RuntimeError):
@@ -62,6 +79,8 @@ class Demand:
     kind: str
     query: str
     requests: int
+    first_seen: str | None = None
+    last_seen: str | None = None
 
 
 @dataclass
@@ -90,7 +109,8 @@ class Outcome:
     sources: list[str] = field(default_factory=list)
     seeds: list[str] = field(default_factory=list)
     groupings: dict = field(default_factory=dict)
-    handled: list[int] = field(default_factory=list)
+    titles: dict[str, str] = field(default_factory=dict)
+    handled: list[str] = field(default_factory=list)
 
 
 def parse_env(text: str) -> dict[str, str]:
@@ -221,8 +241,8 @@ def read_requests(url: str, token: str, fetch=urllib.request.urlopen) -> list[De
         token,
         [
             (
-                "SELECT id, key, kind, query, requests FROM course_requests"
-                " WHERE status = 'new' ORDER BY requests DESC, last_seen DESC",
+                "SELECT id, key, kind, query, requests, first_seen, last_seen"
+                " FROM course_requests ORDER BY requests DESC, last_seen DESC",
                 [],
             )
         ],
@@ -239,6 +259,8 @@ def read_requests(url: str, token: str, fetch=urllib.request.urlopen) -> list[De
                 kind=str(cells[2]),
                 query=str(cells[3]),
                 requests=int(cells[4]),
+                first_seen=cells[5],
+                last_seen=cells[6],
             )
         )
     return demands
@@ -279,38 +301,62 @@ def build_plan(demands: list[Demand], min_requests: int = 1, limit: int = DEFAUL
     return plan
 
 
+def probe_course(key: str, fetch=fetch_page) -> str | None:
+    """Return the advertised title, None when the reviews page is gone.
+
+    An empty string means the page is alive but has no parseable title.
+    """
+    try:
+        html = fetch(reviews_url(key))
+    except Exception:  # noqa: BLE001 - a 404 is the answer we want to report
+        return None
+    return extract_title(html) or ""
+
+
 def handle(
     plan: Plan,
     sources: list[str],
     seeds: list[str],
     *,
     offline: bool = False,
-    check=reachable,
+    check=probe_course,
     sleep=time.sleep,
     fetch_programs=fetch_missing,
     fetch_teachers=instructor_courses,
     build=build_groupings,
+    known_titles: dict[str, str] | None = None,
     delay: float = CHECK_DELAY,
 ) -> Outcome:
     """Decide what to add. Pure with respect to the data files: nothing is written."""
     outcome = Outcome(sources=list(sources), seeds=list(seeds))
+    known = known_titles or {}
 
     for demand in plan.courses:
         if demand.key in outcome.sources:
             outcome.existing_courses.append(demand)
-            outcome.handled.append(demand.id)
+            outcome.handled.append(demand.key)
+            if not known.get(demand.key) and not offline:
+                title = check(demand.key)
+                if title:
+                    outcome.titles[demand.key] = title
+                sleep(delay)
             continue
 
-        if not offline and not check(demand.key):
-            outcome.gone.append(demand)
-            continue
+        title = ""
         if not offline:
+            probed = check(demand.key)
+            if probed is None:
+                outcome.gone.append(demand)
+                continue
+            title = probed
             sleep(delay)
 
         added, _, _, outcome.sources = merge([demand.key], outcome.sources)
         if added:
             outcome.added_courses.append(demand)
-            outcome.handled.append(demand.id)
+            outcome.handled.append(demand.key)
+            if title:
+                outcome.titles[demand.key] = title
         else:
             outcome.ignored.append(demand)
 
@@ -327,7 +373,7 @@ def handle(
             outcome.teacher_courses[slug] = courses
             added, _, _, outcome.sources = merge(courses, outcome.sources)
             outcome.member_courses.extend(added)
-            outcome.handled.append(demand.id)
+            outcome.handled.append(demand.key)
 
     programs = {demand.key: demand for demand in plan.programs}
     for demand in plan.programs:
@@ -344,32 +390,115 @@ def handle(
 
         outcome.groupings = build()
         for key, demand in programs.items():
-            courses = (outcome.groupings.get(key) or {}).get("courses") or []
+            grouping = outcome.groupings.get(key) or {}
+            courses = grouping.get("courses") or []
             if not courses:
-                # The page was not fetched (or lists nothing). Leave the request
-                # new so the next run can try again instead of losing it.
+                # The page was not fetched (or lists nothing). Leave it out of
+                # the ask list so the next run can try again.
                 outcome.waiting.append(demand)
                 continue
 
             added, _, _, outcome.sources = merge(courses, outcome.sources)
             outcome.member_courses.extend(added)
-            outcome.handled.append(demand.id)
+            outcome.handled.append(demand.key)
+            if grouping.get("title"):
+                outcome.titles[demand.key] = grouping["title"]
 
     outcome.unresolved = plan.unresolved
     outcome.ignored.extend(plan.ignored)
     return outcome
 
 
-def status_update(ids: list[int]) -> tuple[str, list[int | str]]:
-    placeholders = ", ".join("?" for _ in ids)
-    return (
-        f"UPDATE course_requests SET status = 'planned' WHERE id IN ({placeholders})",
-        list(ids),
-    )
-
-
 def read_list(path: Path) -> list[str]:
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+
+
+def now_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def read_json(path: Path) -> dict | list:
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+
+
+def queue_type(key: str) -> str:
+    return QUEUE_TYPES.get(key.split("/", 1)[0], "other")
+
+
+def build_snapshot(
+    demands: list[Demand],
+    generated_at: str,
+    previous: dict | None = None,
+    handled: list[str] | None = None,
+    titles: dict[str, str] | None = None,
+    stamp: str | None = None,
+) -> dict:
+    """The repo-owned ask list: requests that became crawl work.
+
+    `added_at` is the only lifecycle fact we store. The title here is the
+    pre-crawl display name captured during validation; the score, final title
+    and completion are joined from `scores.json` / `groupings.json` at build time.
+    """
+    rows: dict[str, dict] = {}
+    for row in ((previous or {}).get("rows") or []):
+        key = row.get("key")
+        if key and row.get("added_at"):
+            rows[str(key)] = {
+                "key": str(key),
+                "type": row.get("type") or queue_type(str(key)),
+                "query": row.get("query"),
+                "requests": int(row.get("requests") or 0),
+                "first_seen": row.get("first_seen"),
+                "last_seen": row.get("last_seen"),
+                "title": row.get("title"),
+                "added_at": row["added_at"],
+            }
+
+    touched = set(handled or [])
+    added = stamp or generated_at
+    captured = titles or {}
+    for demand in demands:
+        old = rows.get(demand.key) or {}
+        if demand.key not in touched and not old:
+            continue
+        rows[demand.key] = {
+            "key": demand.key,
+            "type": queue_type(demand.key),
+            "query": demand.query,
+            "requests": demand.requests,
+            "first_seen": demand.first_seen or old.get("first_seen"),
+            "last_seen": demand.last_seen or old.get("last_seen"),
+            "title": captured.get(demand.key) or old.get("title"),
+            "added_at": old.get("added_at") or (added if demand.key in touched else None),
+        }
+
+    ordered = sorted(
+        rows.values(),
+        key=lambda row: (str(row.get("added_at") or ""), str(row.get("key") or "")),
+        reverse=True,
+    )
+    return {"generatedAt": generated_at, "rows": ordered}
+
+
+def export_requests(
+    demands: list[Demand],
+    previous: dict | None = None,
+    handled: list[str] | None = None,
+    titles: dict[str, str] | None = None,
+    path: Path | None = None,
+    generated_at: str | None = None,
+) -> dict:
+    stamp = generated_at or now_iso()
+    snapshot = build_snapshot(
+        demands,
+        stamp,
+        previous=previous,
+        handled=handled,
+        titles=titles,
+        stamp=stamp,
+    )
+    write_atomic(path or REQUESTS_PATH, snapshot)
+    return snapshot
 
 
 def asks(count: int) -> str:
@@ -422,16 +551,21 @@ def report(outcome: Outcome, dry_run: bool) -> None:
         print("dry run: nothing written. re-run with --write to apply.")
     elif outcome.handled:
         print("next: mise run pipeline:crawl")
+        print("site: mise run web:sync")
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="python -m starisk.demand",
-        description="Turn pending course requests in Turso into crawl work.",
+        description="Turn the Turso request inbox into crawl work and a local ask list.",
     )
     parser.add_argument("--offline", action="store_true", help="skip link checks and program fetches")
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--write", action="store_true", help="write the list and mark rows planned")
+    mode.add_argument(
+        "--write",
+        action="store_true",
+        help="write sources/programs and data/requests.json",
+    )
     mode.add_argument(
         "--dry-run",
         action="store_true",
@@ -492,12 +626,42 @@ def main(argv: list[str]) -> int:
         print(error, file=sys.stderr)
         return 1
 
-    plan = build_plan(demands, options.min_requests, options.limit)
+    previous = read_json(REQUESTS_PATH)
+    if not isinstance(previous, dict):
+        previous = {}
+    rows = previous.get("rows") or []
+    known = {str(row.get("key")) for row in rows if row.get("key") and row.get("added_at")}
+    known_titles = {
+        str(row["key"]): str(row["title"])
+        for row in rows
+        if row.get("key") and row.get("added_at") and row.get("title")
+    }
+    missing_titles = {
+        str(row.get("key"))
+        for row in rows
+        if row.get("key")
+        and row.get("added_at")
+        and row.get("type") == "course"
+        and not row.get("title")
+    }
+    pending = [
+        demand
+        for demand in demands
+        if demand.key not in known or demand.key in missing_titles
+    ]
+
+    plan = build_plan(pending, options.min_requests, options.limit)
     sources = read_list(SOURCES_PATH)
     seeds = read_list(PROGRAMS_PATH)
 
     try:
-        outcome = handle(plan, sources, seeds, offline=options.offline)
+        outcome = handle(
+            plan,
+            sources,
+            seeds,
+            offline=options.offline,
+            known_titles=known_titles,
+        )
     except RateLimited as error:
         print(f"Coursera rate limited the program fetch: {error}", file=sys.stderr)
         return 1
@@ -514,14 +678,16 @@ def main(argv: list[str]) -> int:
     if outcome.groupings:
         write_atomic(GROUPINGS_PATH, outcome.groupings)
 
-    if outcome.handled:
-        try:
-            execute(url, token, [status_update(outcome.handled)])
-        except TursoError as error:
-            print(f"could not mark requests: {error}", file=sys.stderr)
-            return 1
-        print(f"marked {len(outcome.handled)} request(s) as planned")
-
+    snapshot = export_requests(
+        demands,
+        previous=previous,
+        handled=outcome.handled,
+        titles=outcome.titles,
+    )
+    print(
+        f"ask list: {len(snapshot['rows'])} row(s), "
+        f"{len(outcome.handled)} request(s) added this run"
+    )
     return 0
 
 

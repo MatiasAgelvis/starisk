@@ -72,3 +72,26 @@ export function buildGroupings(groupings, scores) {
       a.title.localeCompare(b.title),
   );
 }
+
+/**
+ * The lookup island's program payload: only the fields a result card and a
+ * suggestion row draw. Keyed by program key, like the course lookup.
+ */
+export function buildProgramLookup(groupings, scores) {
+  return Object.fromEntries(
+    buildGroupings(groupings, scores).map((program) => [
+      program.key,
+      {
+        key: program.key,
+        title: program.title,
+        type: program.type,
+        label: typeLabel(program.type),
+        provider: program.provider,
+        total: program.total,
+        scored: program.scored,
+        average: program.average,
+        reviews: program.reviews,
+      },
+    ]),
+  );
+}

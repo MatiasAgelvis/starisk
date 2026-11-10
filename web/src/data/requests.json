@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-11-09T21:02:40Z",
+  "rows": [
+    {
+      "key": "professional-certificates/ibm-enterprise-ai-transformation-and-consulting",
+      "type": "professional-certificate",
+      "query": "professional-certificates/ibm-enterprise-ai-transformation-and-consulting",
+      "requests": 1,
+      "first_seen": "2026-11-08T13:38:37Z",
+      "last_seen": "2026-11-08T13:38:37Z",
+      "title": null,
+      "added_at": "2026-11-09T20:49:27Z"
+    },
+    {
+      "key": "learn/analytics-excel",
+      "type": "course",
+      "query": "https://www.coursera.org/learn/analytics-excel",
+      "requests": 1,
+      "first_seen": "2026-11-07T14:36:39Z",
+      "last_seen": "2026-11-07T14:36:39Z",
+      "title": "Mastering Data Analysis in Excel",
+      "added_at": "2026-11-09T20:49:27Z"
+    },
+    {
+      "key": "instructor/~118561318",
+      "type": "instructor",
+      "query": "instructor/~118561318",
+      "requests": 1,
+      "first_seen": "2026-11-08T13:28:24Z",
+      "last_seen": "2026-11-08T13:28:24Z",
+      "title": null,
+      "added_at": "2026-11-09T20:49:27Z"
+    }
+  ]
+}
