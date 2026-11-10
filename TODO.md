@@ -17,12 +17,10 @@ for the small, near-term stuff.
   expensive the personal corpus is.
 - **Course requests.** Shipped: the landing page's miss state writes to Turso
   through `web/src/lib/course-requests.js` (served by `web/api/course-request.js`).
-  `pipeline:demand` reads that inbox, turns `status='new'` rows into crawl work,
-  verifies new keys and merges them into `sources.json` plus the local
-  `requests.json`; `/wanted` and `/feed.xml` derive waiting/fulfilled by joining
-  that list against `scores.json` / `groupings.json`. Next: reconcile `planned` →
-  `done` (`done_at`), then export a queue snapshot for `/wanted` and the request
-  feed. Moderation still means editing `status` by hand.
+  `pipeline:demand` reads that inbox, verifies new keys and merges them into
+  `sources.json` plus the local `requests.json`; `/wanted` and `/feed.xml` derive
+  waiting/fulfilled by joining that list against `scores.json` / `groupings.json`.
+  Open: the nightly homelab run below.
 
 ## Homelab
 
@@ -42,10 +40,10 @@ supplies the scores and titles the site derives from.
 - **Gate before crawling.** `pipeline:demand --dry-run` is the test: if every
   row reports `add`, run `--write` then `pipeline:crawl --limit N`. Anything
   `manual` / `gone` / `waiting` goes into the notification instead of the run.
-- **Close the loop.** After the crawl, reconcile `planned` keys against
-  `scores.json` / `groupings.json`, export the snapshot, commit and push so the
-  site and feed rebuild. Non-zero exit and 403/429 are high-priority alerts;
-  send a heartbeat on success so the existing health check catches a dead cron.
+- **Close the loop.** After the crawl, run `mise run web:sync`, commit and push
+  so the site and feed rebuild. Non-zero exit and 403/429 are high-priority
+  alerts; send a heartbeat on success so the existing health check catches a dead
+  cron.
 - **Secrets live on the box:** `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, a deploy
   key for the push, and the `ntfy` topic. No repo secrets are needed.
 - **Never automate `name/*` rows.** They cannot be resolved to a slug without a
@@ -79,8 +77,7 @@ supplies the scores and titles the site derives from.
 - **OG image.** Shared links render a bare text card. Needs a raster (satori/resvg at
   build, or one hand-made PNG) — the pipeline can draw SVG, but social platforms
   don't accept SVG.
-- **Size-aware shrinkage** — the model choice itself is settled (`CALIBRATED`); whether
-  to shrink small samples is still open, and should be decided by calibration.
+
 - **Teacher photos** are remote and lazy, like course thumbnails (SPEC D24). If
   hotlinking becomes a privacy or breakage problem, localize them the way provider
   logos are: one file per person, downloaded during the crawl.
@@ -90,6 +87,13 @@ supplies the scores and titles the site derives from.
 - Optional pagination (`?page=N`) if we ever want more than the first reviews page.
 - Alert when a crawl produces several `error` records in a row (markup changed).
 - Score history over time — git commits of `scores.json` already form a timeline.
+- **Low-sample shrinkage (open).** `learn/introduction-test-driven-development`
+  exposes the failure mode: 2 written 5★ reviews (0 likes), while the star-only
+  ratings are 5×1★, 1×2★ and 11×5★ (Coursera 3.6). Because `peer_weight = 1`,
+  Starisk reports 5.0. `low_sample` hides it by default but does not fix the
+  number. Trial: `w = 1 - e^(-n/k)` with `k=5` gives 4.06 and only moves 89/728
+  courses, all low-sample. Calibration is inconclusive (29 labelled, only 2
+  low-sample), so label a few low-sample courses before choosing `k`.
 
 ## Coverage
 - Professional Certificates / specializations: score their constituent courses and aggregate
