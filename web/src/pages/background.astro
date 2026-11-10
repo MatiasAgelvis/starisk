@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import certificates from '../data/certificates.json';
+
+const rows = certificates.rows;
+
+const bySubject = new Map();
+for (const row of rows) {
+  if (!bySubject.has(row.subject)) bySubject.set(row.subject, new Map());
+  const subtopics = bySubject.get(row.subject);
+  if (!subtopics.has(row.subtopic)) subtopics.set(row.subtopic, []);
+  subtopics.get(row.subtopic).push(row);
+}
+
+const subjectOrder = ['Computer Science', 'Machine Learning', 'Finance', 'Science'];
+const groups = [...bySubject.entries()]
+  .map(([name, subtopics]) => ({
+    name,
+    count: [...subtopics.values()].reduce((total, items) => total + items.length, 0),
+    subtopics: [...subtopics.entries()].map(([subtopic, items]) => ({
+      name: subtopic,
+      rows: items,
+    })),
+  }))
+  .sort((a, b) => subjectOrder.indexOf(a.name) - subjectOrder.indexOf(b.name));
+
+const total = rows.length;
+const coursera = rows.filter((row) => row.issuer === 'Coursera').length;
+const programs = rows.filter((row) => row.type !== 'Course').length;
+const other = total - coursera;
+---
+
+<Base
+  title="Background — Starisk"
+  description="The Coursera and other credentials behind Starisk, grouped by subject."
+>
+  <article class="mx-auto max-w-3xl">
+    <header>
+      <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Background</h1>
+      <p class="mt-3 max-w-2xl text-base-content/75">
+        The credentials behind the project. Programs count once; their constituent courses are
+        not counted again.
+      </p>
+      <p class="mt-2 text-sm text-base-content/60">
+        {total} credentials · {coursera} Coursera · {programs} programs · {other} from other
+        serious platforms.
+      </p>
+    </header>
+
+    <div class="mt-8 space-y-3">
+      {
+        groups.map((group) => (
+          <details class="group rounded-box border border-base-300">
+            <summary class="flex cursor-pointer list-none items-baseline justify-between gap-3 p-4">
+              <span class="font-display text-lg font-bold">{group.name}</span>
+              <span class="text-sm text-base-content/50">{group.count}</span>
+            </summary>
+            <div class="border-t border-base-300 px-4 pb-4">
+              {group.subtopics.map((subtopic) => (
+                <section class="mt-4">
+                  {subtopic.name ? (
+                    <h3 class="mb-1 text-xs font-semibold uppercase tracking-wide text-base-content/50">
+                      {subtopic.name}
+                    </h3>
+                  ) : null}
+                  <ul>
+                    {subtopic.rows.map((row) => (
+                      <li class="flex flex-wrap items-baseline gap-x-2 gap-y-1 border-t border-base-300/60 py-2 first:border-t-0">
+                        <a
+                          class="link link-hover font-medium"
+                          href={row.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {row.name}
+                        </a>
+                        {row.type !== 'Course' ? (
+                          <span class="badge badge-ghost badge-sm">{row.type}</span>
+                        ) : null}
+                        <span class="ml-auto text-xs text-base-content/50">
+                          {row.issuer} · {row.date}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+
+    <p class="mt-8 text-xs text-base-content/50">
+      Links open the issuing platform. The 29-course calibration sample is a subset of this
+      history; see the <a class="link link-hover" href="/method">method</a> for why.
+    </p>
+  </article>
+</Base>
