@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import BackLink from '../../components/BackLink.astro';
 import Stars from '../../components/Stars.astro';
+import ScoreGap from '../../components/ScoreGap.astro';
 import Logo from '../../components/Logo.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import { courses, isScoredEntry } from '../../lib/courses.js';
@@ -126,21 +127,12 @@ const about = splitDescription(aboutText);
       </div>
     </header>
 
-    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
-      <div class="stat">
-        <div class="stat-title">Coursera</div>
-        <div class="stat-value text-2xl">
-          {record.coursera == null ? '—' : record.coursera.toFixed(1)}
-        </div>
-        {record.coursera == null ? null : <Stars value={record.coursera} size={16} />}
-        <div class="stat-desc">headline rating</div>
-      </div>
-      <div class="stat">
-        <div class="stat-title">Starisk</div>
-        <div class="stat-value text-2xl">{record.starisk.toFixed(1)}</div>
-        <Stars value={record.starisk} size={16} />
-        <div class="stat-desc">{verdictText()}</div>
-      </div>
+    <div class="mt-6">
+      <ScoreGap
+        coursera={record.coursera}
+        starisk={record.starisk}
+        verdict={verdictText()}
+      />
     </div>
 
     {

@@ -1,0 +1,60 @@
+---
+import Mark from './Mark.astro';
+import Stars from './Stars.astro';
+
+interface Props {
+  coursera: number | null;
+  starisk: number;
+  verdict?: string;
+}
+
+const { coursera, starisk, verdict = '' } = Astro.props;
+const gap = coursera == null ? null : coursera - starisk;
+---
+
+<div
+  class="grid gap-4 rounded-box border border-base-300 bg-base-200/50 p-5 sm:grid-cols-[1fr_auto_1fr] sm:items-center"
+>
+  <div>
+    <div class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-base-content/50">
+      <span class="inline-block h-2.5 w-2.5 rounded-full bg-[var(--chart-theirs)]"></span>
+      Coursera
+    </div>
+    <div class="mt-1 flex items-baseline gap-2">
+      <span class="font-display text-3xl font-bold">
+        {coursera == null ? '—' : coursera.toFixed(1)}
+      </span>
+      {coursera == null ? null : <Stars value={coursera} size={16} />}
+    </div>
+    <div class="text-xs text-base-content/50">headline rating</div>
+  </div>
+
+  <div class="flex flex-col items-center justify-center gap-0.5">
+    <span class="text-base text-base-content/30 sm:hidden">↓</span>
+    <span class="hidden text-base text-base-content/30 sm:inline">→</span>
+    {gap == null ? null : (
+      <>
+        <span class="text-[10px] font-semibold uppercase tracking-wider text-base-content/40">
+          gap
+        </span>
+        <span class="font-display text-xl font-bold text-[var(--chart-ours)]">
+          {gap.toFixed(1)}
+        </span>
+      </>
+    )}
+  </div>
+
+  <div class="sm:text-right">
+    <div class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-base-content/50 sm:justify-end">
+      <Mark class="h-3 w-3 text-[var(--star)]" />
+      Starisk
+    </div>
+    <div class="mt-1 flex items-baseline gap-2 sm:justify-end">
+      <span class="font-display text-3xl font-bold text-[var(--chart-ours)]">
+        {starisk.toFixed(1)}
+      </span>
+      <Stars value={starisk} size={16} />
+    </div>
+    {verdict ? <div class="text-xs text-base-content/50">{verdict}</div> : null}
+  </div>
+</div>
