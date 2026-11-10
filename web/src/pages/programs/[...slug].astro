@@ -2,7 +2,9 @@
 import Base from '../../layouts/Base.astro';
 import BackLink from '../../components/BackLink.astro';
 import ScoreTable from '../../components/ScoreTable.svelte';
+import ScoreGap from '../../components/ScoreGap.astro';
 import Stars from '../../components/Stars.astro';
+import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import { buildGroupings, typeLabel } from '../../lib/groupings.js';
 import scores from '../../data/scores.json';
 import groupings from '../../data/groupings.json';
@@ -17,6 +19,10 @@ export function getStaticPaths() {
 const { program } = Astro.props;
 const average = program.average;
 const type = typeLabel(program.type);
+const verdict =
+  program.programRating == null
+    ? ''
+    : VERDICT[verdictOf(program.programCoursera, program.programRating)].label;
 const description =
   average == null
     ? `${program.title}: ${program.total} courses, none with written reviews yet.`
@@ -54,30 +60,28 @@ const description =
       )
     }
 
-    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
-      <div class="stat">
-        <div class="stat-title">Starisk average</div>
-        <div class="stat-value text-2xl">{average == null ? '—' : average.toFixed(1)}</div>
-        {average == null ? null : <Stars value={average} size={16} />}
-        <div class="stat-desc">across {program.scored} scored courses</div>
-      </div>
-      {
-        program.programRating != null && (
-          <div class="stat">
-            <div class="stat-title">Program page (Starisk)</div>
-            <div class="stat-value text-2xl">{program.programRating.toFixed(1)}</div>
-            <Stars value={program.programRating} size={16} />
-            <div class="stat-desc">from its own reviews</div>
-          </div>
-        )
-      }
-    </div>
-
     {
-      program.low != null && (
-        <p class="mt-3 text-sm text-base-content/60">
-          Starisk course range: {program.low.toFixed(1)}–{program.high.toFixed(1)}.
-        </p>
+      program.programRating != null ? (
+        <div class="mt-6">
+          <ScoreGap
+            coursera={program.programCoursera}
+            starisk={program.programRating}
+            verdict={verdict}
+          />
+        </div>
+      ) : (
+        <div class="mt-6 rounded-box border border-base-300 bg-base-200/50 p-5">
+          <div class="text-xs font-semibold uppercase tracking-wide text-base-content/50">
+            Course average
+          </div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <span class="font-display text-3xl font-bold">
+              {average == null ? '—' : average.toFixed(1)}
+            </span>
+            {average == null ? null : <Stars value={average} size={16} />}
+          </div>
+          <div class="text-xs text-base-content/50">across {program.scored} scored courses</div>
+        </div>
       )
     }
 
@@ -98,17 +102,20 @@ const description =
 
     <section class="mt-10 space-y-3 text-sm text-base-content/60">
       <p>
-        {program.scored} of {program.total} courses are scored. The average weights each course by
-        the reviews we read, so a course with four readable reviews does not pull as hard as one
-        with twenty. It is still a small sample: {program.reviews} reviews in total.
+        {program.scored} of {program.total} courses are scored
+        {program.programRating == null
+          ? ', and the card above averages them, weighting each course by the reviews we read, so a course with four readable reviews does not pull as hard as one with twenty'
+          : ''}. It is still a small sample: {program.reviews} reviews across the course pages.
       </p>
       {
         program.programRating != null && (
           <p>
-            The program page's own reviews give it a Starisk score of{' '}
-            <strong>{program.programRating.toFixed(1)}</strong>; the average of its courses is{' '}
-            <strong>{average == null ? '—' : average.toFixed(1)}</strong>. The gap is the point —
-            the bundle can rate differently from the parts.
+            The program page has a rating of its own: Coursera lists it at{' '}
+            <strong
+              >{program.programCoursera == null ? '—' : program.programCoursera.toFixed(1)}</strong
+            >, and the most-upvoted reviews of that page put it at{' '}
+            <strong>{program.programRating.toFixed(1)}</strong>. That is the same comparison as on a
+            course page, applied to the bundle.
           </p>
         )
       }
