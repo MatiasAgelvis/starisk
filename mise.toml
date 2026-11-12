@@ -51,6 +51,11 @@ description = "Grow sources.json from specializations and instructor profiles"
 dir = "pipeline"
 run = "python -m starisk.expand"
 
+[tasks."pipeline:nightly"]
+description = "One unattended run; try it with `-- --dry-run` (see ops/README.md)"
+dir = "pipeline"
+run = "python -m starisk.nightly"
+
 [tasks."pipeline:logos"]
 description = "Localise provider logos, then derive the tile/full marks"
 dir = "pipeline"

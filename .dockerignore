@@ -1,0 +1,12 @@
+# The image copies nothing from the build context — the repo is mounted at run
+# time — so this only keeps the context small. See ops/Dockerfile.
+.git
+node_modules
+web/node_modules
+web/dist
+web/.astro
+web/.vercel
+pipeline/data
+samples
+calibration
+logs

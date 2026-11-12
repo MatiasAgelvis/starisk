@@ -31,6 +31,11 @@ repo checked out and `.env.prod` mounted (not baked into the image):
 The write step verifies links and updates `data/requests.json`; the crawl
 supplies the scores and titles the site derives from.
 
+Built: `pipeline/starisk/nightly.py` runs the sequence and gates the commit;
+`ops/` holds the code-less image, the compose service, the systemd timer and the
+setup notes (`ops/README.md`). The container commits on `data/crawl` and keeps
+one pull request open against `develop`.
+
 - **Nightly queue read.** Query `course_requests` and send one `ntfy` digest
   through the existing health check: new asks (`first_seen` since the last run),
   what was added today, and anything left for a human (`name/*` rows, gone

@@ -18,6 +18,7 @@ from starisk.crawl import (
     resolve_instructors,
     reviews_url,
     score_page,
+    summarize,
     unique_sources,
 )
 from starisk.fetch import RateLimited
@@ -772,6 +773,31 @@ class TopReviewTest(unittest.TestCase):
 
     def test_nothing_with_text_is_none(self):
         self.assertIsNone(_top_review([self.review(1.0, 3, None)]))
+
+
+class SummarizeTest(unittest.TestCase):
+    def test_counts_what_the_gate_reads(self):
+        stats = summarize(
+            {
+                "learn/a": {"starisk": 4.2, "reviews": 20},
+                "learn/b": {"no_reviews": True},
+                "learn/c": {"starisk": 3.0, "error": "fetch: timeout"},
+            }
+        )
+
+        self.assertEqual(stats["records"], 3)
+        self.assertEqual(stats["scored"], 2)
+        self.assertEqual(stats["no_reviews"], 1)
+        self.assertEqual(stats["errors"], 1)
+        self.assertFalse(stats["rate_limited"])
+
+    def test_a_rate_limited_landing_page_is_still_partial(self):
+        stats = summarize(
+            {"learn/a": {"starisk": 4.2, "landing_error": "rate limited: 429"}}
+        )
+
+        self.assertTrue(stats["rate_limited"])
+        self.assertEqual(stats["scored"], 1)
 
 
 if __name__ == "__main__":
