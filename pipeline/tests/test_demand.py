@@ -527,6 +527,58 @@ class QueueSnapshotTest(unittest.TestCase):
             self.assertEqual(json.loads(path.read_text(encoding="utf-8")), snapshot)
             self.assertEqual(snapshot["rows"][0]["title"], "A Title")
 
+    def test_export_keeps_the_stamp_when_nothing_changed(self):
+        """A quiet run must not rewrite the file with a new timestamp."""
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "requests.json"
+            export_requests(
+                [Demand(1, "learn/x", "slug", "learn/x", 1)],
+                handled=["learn/x"],
+                titles={"learn/x": "A Title"},
+                path=path,
+                generated_at="2026-01-03T00:00:00Z",
+            )
+            first = path.read_bytes()
+
+            # Same rows, next night, no new asks.
+            snapshot = export_requests(
+                [Demand(1, "learn/x", "slug", "learn/x", 1)],
+                previous=json.loads(first),
+                handled=["learn/x"],
+                titles={"learn/x": "A Title"},
+                path=path,
+                generated_at="2026-01-04T00:00:00Z",
+            )
+
+            self.assertEqual(snapshot["generatedAt"], "2026-01-03T00:00:00Z")
+            self.assertEqual(path.read_bytes(), first)
+
+    def test_export_moves_the_stamp_when_a_row_arrives(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "requests.json"
+            export_requests(
+                [Demand(1, "learn/x", "slug", "learn/x", 1)],
+                handled=["learn/x"],
+                titles={"learn/x": "A Title"},
+                path=path,
+                generated_at="2026-01-03T00:00:00Z",
+            )
+            previous = json.loads(path.read_text(encoding="utf-8"))
+
+            snapshot = export_requests(
+                [
+                    Demand(1, "learn/x", "slug", "learn/x", 1),
+                    Demand(2, "learn/y", "slug", "learn/y", 1),
+                ],
+                previous=previous,
+                handled=["learn/y"],
+                path=path,
+                generated_at="2026-01-04T00:00:00Z",
+            )
+
+            self.assertEqual(snapshot["generatedAt"], "2026-01-04T00:00:00Z")
+            self.assertEqual(len(snapshot["rows"]), 2)
+
 
 if __name__ == "__main__":
     unittest.main()
