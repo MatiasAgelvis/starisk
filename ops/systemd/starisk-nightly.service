@@ -1,0 +1,14 @@
+[Unit]
+Description=Starisk nightly crawl
+Documentation=file:/srv/starisk/ops/README.md
+Requires=docker.service
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/starisk/ops
+ExecStart=/usr/bin/docker compose run --rm nightly
+# A capped run is minutes; this is the ceiling for the first run after a gap.
+TimeoutStartSec=3h
+Nice=10

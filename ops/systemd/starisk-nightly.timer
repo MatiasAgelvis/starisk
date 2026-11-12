@@ -1,0 +1,12 @@
+[Unit]
+Description=Run the Starisk crawl every night
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+# Catch up after the box was off, and avoid hitting Coursera at the same second
+# every night.
+Persistent=true
+RandomizedDelaySec=15m
+
+[Install]
+WantedBy=timers.target
