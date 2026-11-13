@@ -10,6 +10,8 @@ from starisk.groupings import (
     fetch_missing,
     grouping_key,
     load_seed_keys,
+    read_index,
+    refuse_reason,
 )
 
 PAGE = (
@@ -159,6 +161,46 @@ class SeedTest(unittest.TestCase):
             store_page(f"{key}.landing", PAGE, directory)
 
             self.assertEqual(fetch_missing([key], fetch=failing, cache_dir=directory), 0)
+
+
+class RefuseReasonTest(unittest.TestCase):
+    def test_an_empty_rebuild_over_a_full_index_is_refused(self):
+        reason = refuse_reason({}, {"specializations/a": {}, "specializations/b": {}})
+
+        self.assertIn("page cache", reason)
+        self.assertIn("over 2", reason)
+
+    def test_a_partial_rebuild_is_refused_too(self):
+        reason = refuse_reason(
+            {"specializations/a": {}},
+            {"specializations/a": {}, "specializations/b": {}},
+        )
+
+        self.assertIsNotNone(reason)
+
+    def test_the_same_index_is_written(self):
+        index = {"specializations/a": {}}
+
+        self.assertIsNone(refuse_reason(index, index))
+
+    def test_growth_is_written(self):
+        self.assertIsNone(refuse_reason({"a": {}, "b": {}}, {"a": {}}))
+
+    def test_force_overrides(self):
+        self.assertIsNone(refuse_reason({}, {"a": {}}, force=True))
+
+
+class ReadIndexTest(unittest.TestCase):
+    def test_a_missing_file_is_an_empty_index(self):
+        with TemporaryDirectory() as tmp:
+            self.assertEqual(read_index(Path(tmp) / "groupings.json"), {})
+
+    def test_a_broken_file_is_an_empty_index(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "groupings.json"
+            path.write_text("{not json", encoding="utf-8")
+
+            self.assertEqual(read_index(path), {})
 
 
 if __name__ == "__main__":
