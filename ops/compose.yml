@@ -1,0 +1,25 @@
+# The nightly crawl. The image holds no code: everything it runs is the clone
+# bind-mounted at /srv/starisk, including the entrypoint. So `build` is a
+# one-time step (or one per runtime bump) and updating the job is `git pull`.
+
+services:
+  nightly:
+    build:
+      context: ..
+      dockerfile: ops/Dockerfile
+    image: starisk-nightly
+    env_file: .env
+    # The clone on the host belongs to you; keep the files it writes yours too.
+    user: "${PUID:-1000}:${PGID:-1000}"
+    volumes:
+      - /srv/starisk:/srv/starisk
+    working_dir: /srv/starisk
+    entrypoint: ["/srv/starisk/ops/entrypoint.sh"]
+    # No passwd entry for an arbitrary UID: give git and python a writable home.
+    environment:
+      HOME: /tmp
+      GIT_AUTHOR_NAME: Starisk Bot
+      GIT_AUTHOR_EMAIL: bot@matiasagelvis.com
+      GIT_COMMITTER_NAME: Starisk Bot
+      GIT_COMMITTER_EMAIL: bot@matiasagelvis.com
+    init: true

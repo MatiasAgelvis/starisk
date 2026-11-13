@@ -497,6 +497,12 @@ def export_requests(
         titles=titles,
         stamp=stamp,
     )
+    # An unattended run that learns nothing new must leave the file untouched:
+    # always bumping the stamp writes a one-line diff every night and makes
+    # "did anything change?" unanswerable.
+    kept = (previous or {}).get("generatedAt")
+    if kept and snapshot["rows"] == ((previous or {}).get("rows") or []):
+        snapshot["generatedAt"] = kept
     write_atomic(path or REQUESTS_PATH, snapshot)
     return snapshot
 

@@ -459,6 +459,27 @@ def write_atomic(path: Path, data: dict | list) -> None:
             os.unlink(temporary)
 
 
+def summarize(scores: dict) -> dict:
+    """The counts a run is judged by.
+
+    `nightly.py` reads this back from the file the crawl just wrote, so the gate
+    and the log line cannot disagree about what counts as an error.
+    """
+    return {
+        "records": len(scores),
+        "scored": sum(1 for record in scores.values() if "starisk" in record),
+        "no_reviews": sum(1 for record in scores.values() if record.get("no_reviews")),
+        "errors": sum(
+            1 for record in scores.values() if record.get("error") or record.get("landing_error")
+        ),
+        "rate_limited": any(
+            str(record.get("error", "")).startswith("rate limited")
+            or str(record.get("landing_error", "")).startswith("rate limited")
+            for record in scores.values()
+        ),
+    }
+
+
 def parse_args(argv: list[str]) -> dict:
     parser = argparse.ArgumentParser(
         prog="python -m starisk.crawl",
@@ -575,23 +596,14 @@ def main(argv: list[str]) -> int:
         sys.stdout.write("\n")
     write_atomic(SCORES_PATH, scores)
 
-    scored = sum(1 for record in scores.values() if "starisk" in record)
-    no_reviews = sum(1 for record in scores.values() if record.get("no_reviews"))
-    errors = sum(
-        1
-        for record in scores.values()
-        if record.get("error") or record.get("landing_error")
-    )
+    stats = summarize(scores)
     verb = "reparsed" if options["offline"] else "fetched"
     print(
         f"listed {len(sources)} | skipped fresh {skipped} | {verb} {state['done']} "
-        f"| records {len(scores)} | scored {scored} | no reviews {no_reviews} | errors {errors}"
+        f"| records {stats['records']} | scored {stats['scored']} "
+        f"| no reviews {stats['no_reviews']} | errors {stats['errors']}"
     )
-    if any(
-        str(record.get("error", "")).startswith("rate limited")
-        or str(record.get("landing_error", "")).startswith("rate limited")
-        for record in scores.values()
-    ):
+    if stats["rate_limited"]:
         print(
             "stopped early: the host rate-limited us. Re-run later — it resumes at the "
             "stalest course, so nothing is repeated."

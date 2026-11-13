@@ -1,0 +1,18 @@
+---
+// The mark from the favicon: the bare glyph on a rounded square. `class` sizes
+// the square, and the glyph fills it, so the two never drift apart. The square
+// is `neutral` rather than the favicon's literal navy so it stays visible on the
+// dark theme's navy surfaces; in the light theme the two are the same colour.
+import Mark from './Mark.astro';
+
+interface Props {
+  class?: string;
+  title?: string;
+}
+
+const { class: className = 'h-4 w-4', title } = Astro.props;
+---
+
+<span class={`inline-flex ${className} items-center justify-center rounded bg-neutral`}>
+  <Mark class="h-full w-full text-[var(--star)]" title={title} />
+</span>

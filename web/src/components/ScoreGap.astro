@@ -1,5 +1,5 @@
 ---
-import Mark from './Mark.astro';
+import BrandMark from './BrandMark.astro';
 import Stars from './Stars.astro';
 import { verdictOf, VERDICT } from '../lib/verdict.js';
 
@@ -51,9 +51,7 @@ const tone = VERDICT[verdictOf(coursera, starisk)].text;
 
   <div class="sm:text-right">
     <div class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-base-content/50 sm:justify-end">
-      <span class="inline-flex h-4 w-4 items-center justify-center rounded bg-neutral">
-        <Mark class="h-4 w-4 text-[var(--star)]" />
-      </span>
+      <BrandMark />
       Starisk
     </div>
     <div class="mt-1 flex items-baseline gap-2 sm:justify-end">
