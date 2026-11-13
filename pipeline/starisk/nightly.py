@@ -246,7 +246,19 @@ def prepare() -> None:
 def commit(message: str, body: str) -> str:
     paths = [path for path in changed() if allowed(path)]
     git("add", "--", *paths)
-    git("commit", "-m", message, "-m", body)
+    # The author is the bot even when the run is a local rehearsal: the identity
+    # belongs to the job, not to whoever happens to own the clone.
+    git(
+        "-c",
+        f"user.name={os.environ.get('GIT_AUTHOR_NAME', 'Starisk Bot')}",
+        "-c",
+        f"user.email={os.environ.get('GIT_AUTHOR_EMAIL', 'bot@matiasagelvis.com')}",
+        "commit",
+        "-m",
+        message,
+        "-m",
+        body,
+    )
     return git("rev-parse", "--short", "HEAD").stdout.strip()
 
 
@@ -501,7 +513,10 @@ def run(options) -> int:
             if module.main([]) != 0:
                 return finish(env, started, FAILED, f"{module.__name__} exited non-zero")
 
-        if groupings.main(["--write"]) != 0:
+        # --fetch first: the index is derived from the page cache, and a fresh
+        # clone has none. Without it the rebuild is empty and deletes every
+        # program — the exact failure this guard now also refuses.
+        if groupings.main(["--fetch", "--write"]) != 0:
             return finish(env, started, FAILED, "the program index rebuild failed")
 
         synced = subprocess.run(("node", "web/scripts/sync-data.mjs"), cwd=REPO)
