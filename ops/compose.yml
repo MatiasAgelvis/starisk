@@ -1,9 +1,11 @@
-# The nightly crawl. The image holds no code: everything it runs is the clone
-# mounted at /srv/starisk, including the entrypoint. So `build` is a one-time
-# step (or one per runtime bump) and updating the job is `git pull`.
+# The nightly crawl.
 #
-# Local rehearsal is the same command: run it from a scratch clone and point
-# STARISK_REPO at it (defaults to the repo this file lives in).
+# The clone lives in the `starisk` volume, owned by the container: the host has
+# no checkout to switch, no cache to keep and no branch to clean up. The host
+# provides this file, `ops/.env` and the cron line — nothing else.
+#
+# Reset the clone (it will be cloned again on the next run):
+#   docker compose down -v
 
 services:
   nightly:
@@ -16,17 +18,10 @@ services:
     env_file:
       - path: .env
         required: false
-    # The clone belongs to you; keep the files the run writes yours too.
-    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - ${STARISK_REPO:-..}:/srv/starisk
+      - starisk:/srv/starisk
     working_dir: /srv/starisk
-    entrypoint: ["/srv/starisk/ops/entrypoint.sh"]
-    # No passwd entry for an arbitrary UID: give git and python a writable home.
-    environment:
-      HOME: /tmp
-      GIT_AUTHOR_NAME: Starisk Bot
-      GIT_AUTHOR_EMAIL: bot@matiasagelvis.com
-      GIT_COMMITTER_NAME: Starisk Bot
-      GIT_COMMITTER_EMAIL: bot@matiasagelvis.com
     init: true
+
+volumes:
+  starisk:
