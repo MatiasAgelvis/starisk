@@ -1,6 +1,9 @@
 # The nightly crawl. The image holds no code: everything it runs is the clone
-# bind-mounted at /srv/starisk, including the entrypoint. So `build` is a
-# one-time step (or one per runtime bump) and updating the job is `git pull`.
+# mounted at /srv/starisk, including the entrypoint. So `build` is a one-time
+# step (or one per runtime bump) and updating the job is `git pull`.
+#
+# Local rehearsal is the same command: run it from a scratch clone and point
+# STARISK_REPO at it (defaults to the repo this file lives in).
 
 services:
   nightly:
@@ -8,11 +11,15 @@ services:
       context: ..
       dockerfile: ops/Dockerfile
     image: starisk-nightly
-    env_file: .env
-    # The clone on the host belongs to you; keep the files it writes yours too.
+    # Optional so a rehearsal can start with no secrets and fail with a clear
+    # "missing config" message instead of a compose error.
+    env_file:
+      - path: .env
+        required: false
+    # The clone belongs to you; keep the files the run writes yours too.
     user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - /srv/starisk:/srv/starisk
+      - ${STARISK_REPO:-..}:/srv/starisk
     working_dir: /srv/starisk
     entrypoint: ["/srv/starisk/ops/entrypoint.sh"]
     # No passwd entry for an arbitrary UID: give git and python a writable home.
