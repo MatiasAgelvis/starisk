@@ -32,7 +32,7 @@ The write step verifies links and updates `data/requests.json`; the crawl
 supplies the scores and titles the site derives from.
 
 Built: `pipeline/starisk/nightly.py` runs the sequence and gates the commit;
-`ops/` holds the code-less image, the compose service, the systemd timer and the
+`ops/` holds the code-less image, the compose service, the cron line and the
 setup notes (`ops/README.md`). The container commits on `data/crawl` and keeps
 one pull request open against `develop`.
 
