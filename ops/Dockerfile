@@ -25,6 +25,11 @@ RUN apt-get update \
 
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 
+# Rebase rewrites commits and therefore needs a committer identity, which a bare
+# container has none of. System-wide so it applies to every git invocation.
+RUN git config --system user.name "Starisk Bot" \
+ && git config --system user.email "bot@matiasagelvis.com"
+
 # The launcher has to live in the image: on a fresh volume there is no clone yet,
 # so nothing can be read from /srv/starisk. It is the only script that is baked.
 COPY ops/entrypoint.sh /usr/local/bin/entrypoint.sh
