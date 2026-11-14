@@ -101,14 +101,25 @@ to: the crawl is staleness-based, so the next run picks up whatever was skipped.
 ## Flags
 
 ```sh
-nightly                 # the real run
-nightly --dry-run       # config + smoke only, writes nothing
-nightly --no-git        # the pipeline on the current checkout, no commit
-nightly --limit 20      # smaller valve for one night
-nightly --limit 0       # uncapped
-nightly --no-push       # commit on the branch, stop before push/PR
-nightly --offline       # re-parse the cache, no requests
+nightly                     # the real run
+nightly --dry-run           # config + smoke only, writes nothing
+nightly --no-git            # the pipeline on the current checkout, no commit
+nightly --limit 20          # smaller valve for one night
+nightly --limit 0           # uncapped
+nightly --no-push           # commit on the branch, stop before push/PR
+nightly --offline           # re-parse the cache, no requests
+nightly --env-file .env.prod  # host runs: read a dotenv instead of exporting it
 ```
+
+The container gets its environment from `ops/.env` through compose, so
+`--env-file` is for running the module directly on the host:
+
+```sh
+mise run pipeline:nightly -- --env-file .env.prod --dry-run
+```
+
+A relative path is resolved against the shell's directory first, then the repo
+root, so `.env.prod` works from `pipeline/` without copying it there.
 
 `--offline` is for adapter fixes: after changing a selector, re-score the cached
 pages instead of re-fetching the corpus from the one residential IP.
