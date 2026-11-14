@@ -1,4 +1,4 @@
-# Nightly crawl on the homelab box
+# Nightly crawl
 
 One unattended run: read the request queue from Turso, check that Coursera still
 parses, crawl, rebuild the derived data, then commit on a bot branch and keep a
@@ -7,7 +7,44 @@ pull request open against `develop`. Production is untouched until you merge.
 The box is the right place for this because it has the residential IP and the
 notification channel; nothing here needs to run on the site's host.
 
-## One-time setup
+The image contains **no code**: everything it runs is the clone mounted at
+`/srv/starisk`, including `ops/entrypoint.sh`. So `build` is a one-time step (or
+one per runtime bump) and updating the job is `git pull`.
+
+## Try it locally first
+
+Same image, same command, same behaviour — the mount just points at your clone.
+
+```sh
+cd ops
+
+# 1. Build once.
+docker compose build
+
+# 2. Config, connectivity and the live pages. Writes nothing, needs no .env.
+docker compose run --rm \
+  -e TURSO_DATABASE_URL=x -e TURSO_AUTH_TOKEN=y \
+  nightly --dry-run
+
+# 3. The whole pipeline on the current checkout: no branch, no commit, no push.
+#    It rewrites data/ in the working tree, so undo with git checkout afterwards.
+docker compose run --rm \
+  -e TURSO_DATABASE_URL=x -e TURSO_AUTH_TOKEN=y \
+  nightly --no-git --limit 1
+```
+
+For a rehearsal of the real thing — branch prep, commit, push — use a scratch
+clone and point `STARISK_REPO` at it, so the bot never touches your dev tree:
+
+```sh
+git clone -b develop https://github.com/MatiasAgelvis/starisk.git /tmp/starisk-test
+STARISK_REPO=/tmp/starisk-test docker compose run --rm nightly --limit 1
+```
+
+`STARISK_REPO` defaults to the repo this compose file lives in, which is why the
+plain commands above need no path.
+
+## Deploy
 
 ```sh
 # 1. The clone the job owns. Not your dev checkout.
@@ -16,21 +53,25 @@ git clone -b develop https://github.com/MatiasAgelvis/starisk.git /srv/starisk
 # 2. The secrets.
 cd /srv/starisk/ops
 cp .env.example .env
-$EDITOR .env            # Turso, GitHub token, ntfy topic
+$EDITOR .env            # Turso, GitHub token, ntfy topic, PUID/PGID
 
-# 3. The image. It contains no code, so this is a one-time step.
+# 3. The image.
 docker compose build
 
-# 4. A rehearsal: config, connectivity, the live pages. Writes nothing.
+# 4. A rehearsal: config, connectivity, the live pages.
 docker compose run --rm nightly --dry-run
 
-# 5. The timer.
-sudo cp systemd/starisk-nightly.service systemd/starisk-nightly.timer /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now starisk-nightly.timer
+# 5. Cron (the user must be in the docker group).
+crontab -e
 ```
 
-`ops/.env` is gitignored (`.env*`), so it never enters the repository.
+```cron
+30 3 * * * cd /srv/starisk/ops && mkdir -p /srv/starisk/logs && /usr/bin/docker compose run --rm nightly >> /srv/starisk/logs/nightly.log 2>&1
+```
+
+Cron does not catch up a run missed while the box was off, and it does not need
+to: the crawl is staleness-based, so the next run picks up whatever was skipped.
+`logs/nightly.log` grows by a page or so per run; rotate it or let it be.
 
 ## Day to day
 
@@ -49,7 +90,7 @@ sudo systemctl enable --now starisk-nightly.timer
 
 - **ntfy.** Silent when nothing changed, a digest when something did, high
   priority on failure. `last-run.json` is still written in the silent case, so a
-  dead timer looks different from a quiet week.
+  dead cron looks different from a quiet week.
 
 ## Exit codes
 
@@ -67,36 +108,25 @@ sudo systemctl enable --now starisk-nightly.timer
 ## Flags
 
 ```sh
-docker compose run --rm nightly                 # the real run
-docker compose run --rm nightly --dry-run       # config + smoke only
-docker compose run --rm nightly --limit 20      # smaller valve for one night
-docker compose run --rm nightly --limit 0       # uncapped
-docker compose run --rm nightly --no-push       # commit on the branch, stop
-docker compose run --rm nightly --offline       # re-parse the cache, no requests
+nightly                 # the real run
+nightly --dry-run       # config + smoke only, writes nothing
+nightly --no-git        # the pipeline on the current checkout, no commit
+nightly --limit 20      # smaller valve for one night
+nightly --limit 0       # uncapped
+nightly --no-push       # commit on the branch, stop before push/PR
+nightly --offline       # re-parse the cache, no requests
 ```
 
 `--offline` is for adapter fixes: after changing a selector, re-score the cached
 pages instead of re-fetching the corpus from the one residential IP.
 
-## Why systemd and not cron
+## First run on a fresh clone
 
-Both can run a command on a schedule; the differences that matter here are:
-
-- **Catch-up.** A cron job missed while the box was off is simply missed.
-  `Persistent=true` runs it once when the box comes back, which is what you want
-  for a crawl that tracks staleness.
-- **Logs.** `journalctl -u starisk-nightly` keeps a run's output, its exit code
-  and when it happened, without a `>>` redirect and a rotation rule.
-- **State.** `systemctl status` tells you the last result and the next run time.
-  With cron, "did it run?" is a grep through mail and syslog.
-- **Overlap.** `Type=oneshot` plus the job's own lock file means a slow night
-  cannot start a second copy.
-
-If you would rather keep cron, this is the equivalent line:
-
-```cron
-30 3 * * * cd /srv/starisk/ops && /usr/bin/docker compose run --rm nightly >/dev/null 2>&1
-```
+The page cache is gitignored, so a new box starts with none. The run fetches the
+program pages it needs back before rebuilding the index (`groupings --fetch`),
+which is why the first night makes ~25 extra requests and later nights make none.
+If the cache is ever incomplete, the index write is refused rather than replacing
+26 programs with a shorter list — that is the guard, not a failure to fix.
 
 ## When something goes wrong
 
@@ -107,9 +137,6 @@ branch alone rather than resolving data conflicts by guessing:
 ```sh
 cd /srv/starisk && git status && git stash   # or commit the edit properly
 ```
-
-If the rebase itself conflicts, the same applies: resolve it by hand once, then
-let the timer continue.
 
 **`20 refused`** — the run produced something it did not trust: courses
 disappeared, the scored count dropped by more than five, three or more records
