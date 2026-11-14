@@ -208,8 +208,13 @@ def execute(
         ]
         + [{"type": "close"}]
     }
+    base = http_base(url)
+    # A typo in TURSO_DATABASE_URL should read as a configuration error, not as a
+    # ValueError from deep inside urllib.
+    if not base.startswith(("http://", "https://")):
+        raise TursoError(f"the database URL has no http scheme: {url!r}")
     request = urllib.request.Request(
-        f"{http_base(url)}/v2/pipeline",
+        f"{base}/v2/pipeline",
         data=json.dumps(payload).encode("utf-8"),
         headers={
             "authorization": f"Bearer {token}",
