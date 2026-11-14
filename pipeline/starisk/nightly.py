@@ -231,41 +231,6 @@ def tracked_changes() -> list[str]:
     return _paths(git("status", "--porcelain", "--untracked-files=no").stdout)
 
 
-def prepare() -> str | None:
-    """Start the bot branch from current `develop`, without rewriting merged work.
-
-    Returns the branch the clone was on, so the run can put it back afterwards.
-    The mounted clone is the caller's repository, not a scratch copy.
-    """
-    if tracked_changes():
-        raise GitError("working tree has uncommitted changes; refusing to start")
-
-    current = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
-
-    git("fetch", "origin", BASE)
-    # Keep the remote-tracking ref current so --force-with-lease compares against
-    # what is really on the remote, not a ref from days ago.
-    git("fetch", "origin", f"+refs/heads/{BRANCH}:refs/remotes/origin/{BRANCH}", check=False)
-
-    if git("rev-parse", "--verify", "--quiet", BRANCH, check=False).returncode == 0:
-        git("switch", BRANCH)
-    elif git("rev-parse", "--verify", "--quiet", f"origin/{BRANCH}", check=False).returncode == 0:
-        # The branch exists upstream but not here (a fresh clone): continue it
-        # rather than discarding the runs it already holds.
-        git("switch", "--no-track", "-c", BRANCH, f"origin/{BRANCH}")
-    else:
-        # --no-track: the upstream is data/crawl, not develop, so `git status`
-        # on the box does not claim to be ahead of the release branch.
-        git("switch", "--no-track", "-c", BRANCH, f"origin/{BASE}")
-
-    rebased = git("rebase", f"origin/{BASE}", check=False)
-    if rebased.returncode != 0:
-        git("rebase", "--abort", check=False)
-        raise GitError(f"rebase of {BRANCH} onto origin/{BASE} conflicted")
-
-    return None if current in ("", "HEAD") else current
-
-
 def commit(paths: list[str], message: str, body: str) -> str:
     git("add", "--", *paths)
     # The author is the bot even when the run is a local rehearsal: the identity
@@ -535,10 +500,14 @@ def run(options) -> int:
 
         original = None
         if not options.no_git:
-            try:
-                original = prepare()
-            except GitError as error:
-                return finish(env, started, GIT, str(error))
+            branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
+            if branch != BRANCH:
+                return finish(
+                    env,
+                    started,
+                    GIT,
+                    f"not on {BRANCH} (on {branch}); run ops/entrypoint.sh, or use --no-git",
+                )
 
         before = load_scores()
         # Files already dirty when we started are not this run's doing: a stray
@@ -628,18 +597,6 @@ def run(options) -> int:
             for problem in report.site:
                 print(f"[nightly]   ! {problem}")
 
-        # Put the caller's clone back where it was. The commit lives on
-        # `data/crawl`; a run that refuses leaves the branch in place for
-        # inspection instead of hiding the evidence.
-        if commit_hash and original:
-            restored = git("switch", original, check=False)
-            if restored.returncode == 0:
-                print(f"[nightly] back on {original}")
-            else:
-                print(f"[nightly] left on {BRANCH}: {restored.stderr.strip()}")
-        elif not options.no_git:
-            print(f"[nightly] left on {BRANCH} for inspection")
-
         return finish(
             env,
             started,
@@ -676,7 +633,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--no-git",
         action="store_true",
-        help="rehearse on the current checkout: no branch, no commit, no push",
+        help="run on the current checkout without committing or pushing",
     )
     parser.add_argument(
         "--offline",
