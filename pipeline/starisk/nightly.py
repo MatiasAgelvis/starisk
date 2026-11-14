@@ -231,10 +231,16 @@ def tracked_changes() -> list[str]:
     return _paths(git("status", "--porcelain", "--untracked-files=no").stdout)
 
 
-def prepare() -> None:
-    """Start the bot branch from current `develop`, without rewriting merged work."""
+def prepare() -> str | None:
+    """Start the bot branch from current `develop`, without rewriting merged work.
+
+    Returns the branch the clone was on, so the run can put it back afterwards.
+    The mounted clone is the caller's repository, not a scratch copy.
+    """
     if tracked_changes():
         raise GitError("working tree has uncommitted changes; refusing to start")
+
+    current = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
 
     git("fetch", "origin", BASE)
     # Keep the remote-tracking ref current so --force-with-lease compares against
@@ -256,6 +262,8 @@ def prepare() -> None:
     if rebased.returncode != 0:
         git("rebase", "--abort", check=False)
         raise GitError(f"rebase of {BRANCH} onto origin/{BASE} conflicted")
+
+    return None if current in ("", "HEAD") else current
 
 
 def commit(paths: list[str], message: str, body: str) -> str:
@@ -525,9 +533,10 @@ def run(options) -> int:
         if options.dry_run:
             return dry_run(options)
 
+        original = None
         if not options.no_git:
             try:
-                prepare()
+                original = prepare()
             except GitError as error:
                 return finish(env, started, GIT, str(error))
 
@@ -618,6 +627,18 @@ def run(options) -> int:
             print("[nightly] the deployed data has a problem:")
             for problem in report.site:
                 print(f"[nightly]   ! {problem}")
+
+        # Put the caller's clone back where it was. The commit lives on
+        # `data/crawl`; a run that refuses leaves the branch in place for
+        # inspection instead of hiding the evidence.
+        if commit_hash and original:
+            restored = git("switch", original, check=False)
+            if restored.returncode == 0:
+                print(f"[nightly] back on {original}")
+            else:
+                print(f"[nightly] left on {BRANCH}: {restored.stderr.strip()}")
+        elif not options.no_git:
+            print(f"[nightly] left on {BRANCH} for inspection")
 
         return finish(
             env,
