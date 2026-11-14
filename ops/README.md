@@ -66,6 +66,20 @@ Cron does not catch up a run missed while the box was off, and it does not need
 to: the crawl is staleness-based, so the next run picks up whatever was skipped.
 `logs/nightly.log` grows by a page or so per run; rotate it or let it be.
 
+## What it does to the clone
+
+The container mounts a clone, so the bot branch is a branch in *that repository* —
+there is no separate copy inside the container. Two consequences:
+
+- A run that commits puts the clone back on the branch it found (`develop`),
+  leaving the commit on `data/crawl`.
+- A run that refuses leaves it on `data/crawl` with the data in the working tree,
+  so the evidence is inspectable. Undo with
+  `git checkout -- pipeline/data web/src/data && git switch -`.
+
+A local rehearsal that must not touch your checkout at all: `--no-git` never
+switches, and `STARISK_REPO=/tmp/starisk-test` points the run at a scratch clone.
+
 ## Day to day
 
 - **The pull request.** `Nightly crawl`, from `data/crawl` into `develop`. It is
