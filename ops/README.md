@@ -59,11 +59,15 @@ crontab -e
 ```
 
 ```cron
-30 3 * * * /srv/starisk/ops/run.sh >> /var/log/starisk.log 2>&1
+30 3 * * * /srv/starisk/ops/run.sh 2>&1 | logger -t starisk-nightly
 ```
 
-The redirect is the only host-side output; drop it and cron will mail the output
-instead. `logs/last-run.json` lives in the volume:
+Output goes to the journal, which already rotates: `journalctl -t starisk-nightly`.
+The pipe hands the exit status to `logger`, so cron never sees a failure — that is
+fine, `last-run.json` is the signal. If the box has no `logger`, redirect to a file
+and add a logrotate entry for it instead.
+
+`logs/last-run.json` lives in the volume:
 
 ```sh
 docker compose -f /srv/starisk/ops/compose.yml run --rm --entrypoint cat \
