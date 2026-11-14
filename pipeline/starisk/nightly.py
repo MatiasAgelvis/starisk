@@ -211,11 +211,9 @@ def git(*args: str, check: bool = True, env: dict | None = None) -> subprocess.C
     return completed
 
 
-def changed() -> list[str]:
-    """Tracked and untracked paths git would commit; ignored files stay invisible."""
-    out = git("status", "--porcelain", "--untracked-files=all").stdout
+def _paths(output: str) -> list[str]:
     paths = []
-    for line in out.splitlines():
+    for line in output.splitlines():
         path = line[3:].strip()
         if " -> " in path:
             path = path.split(" -> ", 1)[1]
@@ -223,10 +221,20 @@ def changed() -> list[str]:
     return [path for path in paths if path]
 
 
+def changed() -> list[str]:
+    """Tracked and untracked paths git would commit; ignored files stay invisible."""
+    return _paths(git("status", "--porcelain", "--untracked-files=all").stdout)
+
+
+def tracked_changes() -> list[str]:
+    """Modified tracked files only. Stray untracked files are not a reason to stop."""
+    return _paths(git("status", "--porcelain", "--untracked-files=no").stdout)
+
+
 def prepare() -> None:
     """Start the bot branch from current `develop`, without rewriting merged work."""
-    if changed():
-        raise GitError("working tree is not clean; refusing to start")
+    if tracked_changes():
+        raise GitError("working tree has uncommitted changes; refusing to start")
 
     git("fetch", "origin", BASE)
     # Keep the remote-tracking ref current so --force-with-lease compares against
@@ -235,16 +243,22 @@ def prepare() -> None:
 
     if git("rev-parse", "--verify", "--quiet", BRANCH, check=False).returncode == 0:
         git("switch", BRANCH)
-        rebased = git("rebase", f"origin/{BASE}", check=False)
-        if rebased.returncode != 0:
-            git("rebase", "--abort", check=False)
-            raise GitError(f"rebase of {BRANCH} onto origin/{BASE} conflicted")
+    elif git("rev-parse", "--verify", "--quiet", f"origin/{BRANCH}", check=False).returncode == 0:
+        # The branch exists upstream but not here (a fresh clone): continue it
+        # rather than discarding the runs it already holds.
+        git("switch", "--no-track", "-c", BRANCH, f"origin/{BRANCH}")
     else:
-        git("switch", "-c", BRANCH, f"origin/{BASE}")
+        # --no-track: the upstream is data/crawl, not develop, so `git status`
+        # on the box does not claim to be ahead of the release branch.
+        git("switch", "--no-track", "-c", BRANCH, f"origin/{BASE}")
+
+    rebased = git("rebase", f"origin/{BASE}", check=False)
+    if rebased.returncode != 0:
+        git("rebase", "--abort", check=False)
+        raise GitError(f"rebase of {BRANCH} onto origin/{BASE} conflicted")
 
 
-def commit(message: str, body: str) -> str:
-    paths = [path for path in changed() if allowed(path)]
+def commit(paths: list[str], message: str, body: str) -> str:
     git("add", "--", *paths)
     # The author is the bot even when the run is a local rehearsal: the identity
     # belongs to the job, not to whoever happens to own the clone.
@@ -360,7 +374,12 @@ def now() -> str:
 
 def missing_config(env: dict, options) -> list[str]:
     missing = [name for name in ("TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN") if not env.get(name)]
-    if not options.dry_run and not options.no_push and not env.get("GITHUB_TOKEN"):
+    if (
+        not options.dry_run
+        and not options.no_push
+        and not options.no_git
+        and not env.get("GITHUB_TOKEN")
+    ):
         missing.append("GITHUB_TOKEN")
     return missing
 
@@ -483,16 +502,24 @@ def run(options) -> int:
         if options.dry_run:
             return dry_run(options)
 
-        try:
-            prepare()
-        except GitError as error:
-            return finish(env, started, GIT, str(error))
+        if not options.no_git:
+            try:
+                prepare()
+            except GitError as error:
+                return finish(env, started, GIT, str(error))
 
         before = load_scores()
+        # Files already dirty when we started are not this run's doing: a stray
+        # note in a dev clone must not gate the commit.
+        baseline = set(changed())
 
-        queue_code = demand.main(["--write"] + (["--offline"] if options.offline else []))
+        try:
+            queue_code = demand.main(["--write"] + (["--offline"] if options.offline else []))
+        except Exception as error:  # noqa: BLE001 - the queue is an input, not a prerequisite
+            print(f"[nightly] the queue read failed: {error}")
+            queue_code = 1
         if queue_code != 0:
-            print("[nightly] the queue read failed; crawling the sources we already have")
+            print("[nightly] crawling the sources we already have")
 
         report = smoke.run()
         if not report.ok:
@@ -516,7 +543,10 @@ def run(options) -> int:
         # --fetch first: the index is derived from the page cache, and a fresh
         # clone has none. Without it the rebuild is empty and deletes every
         # program — the exact failure this guard now also refuses.
-        if groupings.main(["--fetch", "--write"]) != 0:
+        index_code = groupings.main(["--fetch", "--write"])
+        if index_code == 2:
+            print("[nightly] the program fetch was rate-limited; keeping the current index")
+        elif index_code != 0:
             return finish(env, started, FAILED, "the program index rebuild failed")
 
         synced = subprocess.run(("node", "web/scripts/sync-data.mjs"), cwd=REPO)
@@ -524,13 +554,22 @@ def run(options) -> int:
             return finish(env, started, FAILED, "copying the data into the site failed")
 
         after = load_scores()
+        new_paths = [path for path in changed() if path not in baseline]
         summary = diff_summary(before, after)
-        decision = decide(changed(), summary, crawl.summarize(before))
+        decision = decide(new_paths, summary, crawl.summarize(before))
 
         commit_hash = None
         pr_url = None
-        if decision.commit:
-            commit_hash = commit(commit_message(summary), commit_body(summary, decision))
+        if decision.commit and options.no_git:
+            # A rehearsal: the pipeline ran for real, but the data stays in the
+            # working tree so nothing is pushed from a clone being edited.
+            print("[nightly] rehearsal: the data is left uncommitted")
+        elif decision.commit:
+            commit_hash = commit(
+                [path for path in new_paths if allowed(path)],
+                commit_message(summary),
+                commit_body(summary, decision),
+            )
             if not options.no_push:
                 try:
                     push(env)
@@ -585,6 +624,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help=f"fetches per run (default {DEFAULT_LIMIT}; 0 means uncapped)",
     )
     parser.add_argument("--no-push", action="store_true", help="commit on the branch, do not push")
+    parser.add_argument(
+        "--no-git",
+        action="store_true",
+        help="rehearse on the current checkout: no branch, no commit, no push",
+    )
     parser.add_argument(
         "--offline",
         action="store_true",
