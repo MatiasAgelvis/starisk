@@ -14,23 +14,18 @@ one per runtime bump) and updating the job is `git pull`.
 ## Try it locally first
 
 Same image, same command, same behaviour — the mount just points at your clone.
+Everything goes through `ops/run.sh`, which changes into `ops/` first: Compose
+looks for its file in the current directory, and that is the difference between
+a working command and `no configuration file provided: not found` from the repo
+root or from cron.
 
 ```sh
-cd ops
+# Config, connectivity and the live pages. Writes nothing, needs no .env.
+ops/run.sh --dry-run
 
-# 1. Build once.
-docker compose build
-
-# 2. Config, connectivity and the live pages. Writes nothing, needs no .env.
-docker compose run --rm \
-  -e TURSO_DATABASE_URL=x -e TURSO_AUTH_TOKEN=y \
-  nightly --dry-run
-
-# 3. The whole pipeline on the current checkout: no branch, no commit, no push.
-#    It rewrites data/ in the working tree, so undo with git checkout afterwards.
-docker compose run --rm \
-  -e TURSO_DATABASE_URL=x -e TURSO_AUTH_TOKEN=y \
-  nightly --no-git --limit 1
+# The whole pipeline on the current checkout: no branch, no commit, no push.
+# It rewrites data/ in the working tree, so undo with git checkout afterwards.
+ops/run.sh --no-git --limit 1
 ```
 
 For a rehearsal of the real thing — branch prep, commit, push — use a scratch
@@ -38,11 +33,12 @@ clone and point `STARISK_REPO` at it, so the bot never touches your dev tree:
 
 ```sh
 git clone -b develop https://github.com/MatiasAgelvis/starisk.git /tmp/starisk-test
-STARISK_REPO=/tmp/starisk-test docker compose run --rm nightly --limit 1
+STARISK_REPO=/tmp/starisk-test ops/run.sh --limit 1
 ```
 
 `STARISK_REPO` defaults to the repo this compose file lives in, which is why the
-plain commands above need no path.
+plain commands above need no path. The image builds on first use; run
+`docker compose build` in `ops/` (or add `--build`) after changing the Dockerfile.
 
 ## Deploy
 
@@ -55,18 +51,15 @@ cd /srv/starisk/ops
 cp .env.example .env
 $EDITOR .env            # Turso, GitHub token, ntfy topic, PUID/PGID
 
-# 3. The image.
-docker compose build
+# 3. A rehearsal: config, connectivity, the live pages. Builds the image too.
+/srv/starisk/ops/run.sh --dry-run
 
-# 4. A rehearsal: config, connectivity, the live pages.
-docker compose run --rm nightly --dry-run
-
-# 5. Cron (the user must be in the docker group).
+# 4. Cron (the user must be in the docker group).
 crontab -e
 ```
 
 ```cron
-30 3 * * * cd /srv/starisk/ops && mkdir -p /srv/starisk/logs && /usr/bin/docker compose run --rm nightly >> /srv/starisk/logs/nightly.log 2>&1
+30 3 * * * mkdir -p /srv/starisk/logs && /srv/starisk/ops/run.sh >> /srv/starisk/logs/nightly.log 2>&1
 ```
 
 Cron does not catch up a run missed while the box was off, and it does not need
