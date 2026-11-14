@@ -58481,5 +58481,61 @@
     "enrollment": 2292,
     "slug": "learn/zos-rexx-programming",
     "scrapedAt": "2026-11-09T21:25:05.255085+00:00"
+  },
+  "learn/logic-introduction": {
+    "title": "Introduction to Logic",
+    "provider": "Stanford Online",
+    "description": "This course is an introduction to Logic from a computational perspective. It shows how to encode information in the form of logical sentences; it shows how to reason with information in this form; and it provides an overview of logic technology and its applications - in mathematics, science, engineering, business, law, and so forth.",
+    "image": "/logos/stanford-online.png",
+    "coursera": 4.4,
+    "starisk": 3.1,
+    "spread": 1.69,
+    "spread_weighted": 1.72,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 5,
+      "2.0": 1,
+      "3.0": 3,
+      "4.0": 1,
+      "5.0": 10
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "After I signed up and started the class, I was disappointed to see that there are only 2 video lectures for the entire program. After starting and going through the first week, I realized that I could just as well have checked a book out from the local library and gotten the same information. I was hoping for an instructor led course. I will look elsewhere - You Tube or EdX may have a more engaging course.",
+      "stars": 1.0,
+      "likes": 53
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 154,
+    "ratings_total": 657,
+    "rating_counts": {
+      "1": 39,
+      "2": 19,
+      "3": 40,
+      "4": 102,
+      "5": 457
+    },
+    "instructors": [
+      {
+        "name": "Michael Genesereth",
+        "slug": "~1460",
+        "url": "https://www.coursera.org/instructor/~1460",
+        "page": "michael-genesereth",
+        "id": "1460",
+        "role": "Associate Professor",
+        "department": "Computer Science Department",
+        "learners": 230497,
+        "courses_taught": 1,
+        "photo": null
+      }
+    ],
+    "categories": [
+      "Math and Logic",
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 230497,
+    "slug": "learn/logic-introduction",
+    "scrapedAt": "2026-11-14T19:48:51.349195+00:00"
   }
 }
