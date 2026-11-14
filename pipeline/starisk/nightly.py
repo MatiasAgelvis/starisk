@@ -383,6 +383,25 @@ def missing_config(env: dict, options) -> list[str]:
     return missing
 
 
+def apply_env_file(path_value: str, environ: dict | None = None) -> tuple[dict, str | None]:
+    """Merge a dotenv file into the environment, for host runs.
+
+    `demand` reads `os.environ` directly, so the values have to land there rather
+    than in a local dict. A relative path is looked up the same way `demand` does
+    it — the shell's directory, then the repo root — so `--env-file .env.prod`
+    works from `pipeline/` without copying the file.
+
+    The container does not need this: compose injects `ops/.env` as the
+    environment before the process starts.
+    """
+    environ = os.environ if environ is None else environ
+    path = demand.locate_env(path_value)
+    if path is None:
+        return dict(environ), f"env file not found: {path_value}"
+    environ.update(demand.parse_env(path.read_text(encoding="utf-8")))
+    return dict(environ), None
+
+
 def load_scores(path: Path = crawl.SCORES_PATH) -> dict:
     if not path.exists():
         return {}
@@ -487,8 +506,13 @@ def dry_run(options) -> int:
 
 
 def run(options) -> int:
-    env = dict(os.environ)
     started = now()
+    if options.env_file:
+        env, error = apply_env_file(options.env_file)
+        if error:
+            return finish(env, started, CONFIG, error)
+    else:
+        env = dict(os.environ)
 
     missing = missing_config(env, options)
     if missing:
@@ -615,6 +639,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--dry-run",
         action="store_true",
         help="check config, connectivity and the live pages; write nothing",
+    )
+    parser.add_argument(
+        "--env-file",
+        metavar="PATH",
+        help="read the dotenv file instead of exporting it (host runs only)",
     )
     parser.add_argument(
         "--limit",
