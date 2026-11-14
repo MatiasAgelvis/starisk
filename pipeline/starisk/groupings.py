@@ -110,18 +110,23 @@ def build_groupings(directory: Path = CACHE_DIR) -> dict[str, dict]:
     return groupings
 
 
-def load_seed_keys(path: Path = PROGRAMS_PATH) -> list[str]:
-    """Program keys to fetch when their pages are not cached yet."""
-    if not path.exists():
-        return []
+def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH) -> list[str]:
+    """Program keys to fetch when their pages are not cached yet.
 
-    data = json.loads(path.read_text(encoding="utf-8"))
+    `programs.json` holds the programs someone asked for; `groupings.json` holds
+    the ones already published. A fresh clone has an empty page cache, so without
+    the index a rebuild would only know about the seeds and drop every program it
+    already has.
+    """
     keys = []
-    for value in data:
-        key = str(value).strip()
-        kind = key.split("/", 1)[0] if "/" in key else ""
-        if kind in GROUPING_TYPES and key.count("/") == 1:
-            keys.append(key)
+    if path.exists():
+        data = json.loads(path.read_text(encoding="utf-8"))
+        for value in data:
+            key = str(value).strip()
+            kind = key.split("/", 1)[0] if "/" in key else ""
+            if kind in GROUPING_TYPES and key.count("/") == 1:
+                keys.append(key)
+    keys.extend(read_index(index_path))
     return list(dict.fromkeys(keys))
 
 
@@ -203,8 +208,9 @@ def main(argv: list[str]) -> int:
         try:
             fetched = fetch_missing(load_seed_keys(), delay=1.5)
         except RateLimited as error:
+            # 2, not 1: the index on disk is still valid, so a caller can carry on.
             print(f"Coursera rate limited the program fetch: {error}", file=sys.stderr)
-            return 1
+            return 2
         print(f"seeded {fetched} program page(s)")
 
     groupings = build_groupings()
