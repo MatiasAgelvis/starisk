@@ -121,7 +121,25 @@ class SeedTest(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            keys = load_seed_keys(path)
+            keys = load_seed_keys(path, index_path=Path(tmp) / "missing.json")
+
+        self.assertEqual(
+            keys,
+            ["professional-certificates/ibm-data-science", "specializations/algorithms"],
+        )
+
+    def test_published_programs_are_seeds_too(self):
+        """A fresh clone has no cache: the index says which pages to fetch back."""
+        with TemporaryDirectory() as tmp:
+            seeds = Path(tmp) / "programs.json"
+            seeds.write_text(json.dumps(["professional-certificates/ibm-data-science"]), encoding="utf-8")
+            index = Path(tmp) / "groupings.json"
+            index.write_text(
+                json.dumps({"specializations/algorithms": {"key": "specializations/algorithms"}}),
+                encoding="utf-8",
+            )
+
+            keys = load_seed_keys(seeds, index_path=index)
 
         self.assertEqual(
             keys,

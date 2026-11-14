@@ -120,6 +120,10 @@ class HttpTest(unittest.TestCase):
         self.assertEqual(http_base("https://db.turso.io"), "https://db.turso.io")
         self.assertEqual(http_base("http://127.0.0.1:8080"), "http://127.0.0.1:8080")
 
+    def test_a_url_without_a_scheme_is_a_configuration_error(self):
+        with self.assertRaises(TursoError):
+            execute("db.turso.io", "tok", [("SELECT 1", [])])
+
 
 class ReadRequestsTest(unittest.TestCase):
     def test_reads_the_queue_and_turns_integer_cells_back_into_ints(self):
