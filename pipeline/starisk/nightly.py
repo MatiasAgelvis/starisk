@@ -373,13 +373,12 @@ def now() -> str:
 
 
 def missing_config(env: dict, options) -> list[str]:
+    # A rehearsal must run with no secrets at all: neither mode below touches
+    # Turso or GitHub.
+    if options.dry_run or options.no_git:
+        return []
     missing = [name for name in ("TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN") if not env.get(name)]
-    if (
-        not options.dry_run
-        and not options.no_push
-        and not options.no_git
-        and not env.get("GITHUB_TOKEN")
-    ):
+    if not options.no_push and not env.get("GITHUB_TOKEN"):
         missing.append("GITHUB_TOKEN")
     return missing
 
