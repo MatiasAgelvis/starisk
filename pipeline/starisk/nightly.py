@@ -498,7 +498,6 @@ def run(options) -> int:
         if options.dry_run:
             return dry_run(options)
 
-        original = None
         if not options.no_git:
             branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
             if branch != BRANCH:
