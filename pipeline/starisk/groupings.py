@@ -110,18 +110,23 @@ def build_groupings(directory: Path = CACHE_DIR) -> dict[str, dict]:
     return groupings
 
 
-def load_seed_keys(path: Path = PROGRAMS_PATH) -> list[str]:
-    """Program keys to fetch when their pages are not cached yet."""
-    if not path.exists():
-        return []
+def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH) -> list[str]:
+    """Program keys to fetch when their pages are not cached yet.
 
-    data = json.loads(path.read_text(encoding="utf-8"))
+    `programs.json` holds the programs someone asked for; `groupings.json` holds
+    the ones already published. A fresh clone has an empty page cache, so without
+    the index a rebuild would only know about the seeds and drop every program it
+    already has.
+    """
     keys = []
-    for value in data:
-        key = str(value).strip()
-        kind = key.split("/", 1)[0] if "/" in key else ""
-        if kind in GROUPING_TYPES and key.count("/") == 1:
-            keys.append(key)
+    if path.exists():
+        data = json.loads(path.read_text(encoding="utf-8"))
+        for value in data:
+            key = str(value).strip()
+            kind = key.split("/", 1)[0] if "/" in key else ""
+            if kind in GROUPING_TYPES and key.count("/") == 1:
+                keys.append(key)
+    keys.extend(read_index(index_path))
     return list(dict.fromkeys(keys))
 
 
@@ -151,6 +156,33 @@ def fetch_missing(
     return fetched
 
 
+def read_index(path: Path = GROUPINGS_PATH) -> dict:
+    """The index currently on disk, or an empty one when it is missing or broken."""
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def refuse_reason(new: dict, previous: dict, force: bool = False) -> str | None:
+    """Why writing this index would be unsafe, or None when it is fine.
+
+    The index is derived from cached pages, so a smaller rebuild means the cache
+    is missing pages — not that Coursera removed programs. A fresh clone has an
+    empty cache and would otherwise delete the whole program directory on its
+    first run.
+    """
+    if force or len(new) >= len(previous):
+        return None
+    return (
+        f"refusing to write {len(new)} program(s) over {len(previous)}: the page cache "
+        "is incomplete. Re-run with --fetch, or --force if the drop is real."
+    )
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="python -m starisk.groupings",
@@ -162,13 +194,23 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="fetch seeded program pages that are not cached yet",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="write even when the index would lose programs",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str]) -> int:
     options = parse_args(argv)
     if options.fetch:
-        fetched = fetch_missing(load_seed_keys(), delay=1.5)
+        try:
+            fetched = fetch_missing(load_seed_keys(), delay=1.5)
+        except RateLimited as error:
+            # 2, not 1: the index on disk is still valid, so a caller can carry on.
+            print(f"Coursera rate limited the program fetch: {error}", file=sys.stderr)
+            return 2
         print(f"seeded {fetched} program page(s)")
 
     groupings = build_groupings()
@@ -178,6 +220,11 @@ def main(argv: list[str]) -> int:
     if not options.write:
         print("report only. re-run with --write to store the index.")
         return 0
+
+    reason = refuse_reason(groupings, read_index(), force=options.force)
+    if reason:
+        print(reason, file=sys.stderr)
+        return 1
 
     write_atomic(GROUPINGS_PATH, groupings)
     print(f"wrote {GROUPINGS_PATH}")

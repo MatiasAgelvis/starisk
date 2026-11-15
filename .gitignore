@@ -161,3 +161,7 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node
 .vercel
 .env*
+
+# The template is meant to be committed: a fresh clone needs it for
+# `cp .env.example .env`.
+!.env.example

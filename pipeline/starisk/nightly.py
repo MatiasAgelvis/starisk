@@ -211,11 +211,9 @@ def git(*args: str, check: bool = True, env: dict | None = None) -> subprocess.C
     return completed
 
 
-def changed() -> list[str]:
-    """Tracked and untracked paths git would commit; ignored files stay invisible."""
-    out = git("status", "--porcelain", "--untracked-files=all").stdout
+def _paths(output: str) -> list[str]:
     paths = []
-    for line in out.splitlines():
+    for line in output.splitlines():
         path = line[3:].strip()
         if " -> " in path:
             path = path.split(" -> ", 1)[1]
@@ -223,30 +221,31 @@ def changed() -> list[str]:
     return [path for path in paths if path]
 
 
-def prepare() -> None:
-    """Start the bot branch from current `develop`, without rewriting merged work."""
-    if changed():
-        raise GitError("working tree is not clean; refusing to start")
-
-    git("fetch", "origin", BASE)
-    # Keep the remote-tracking ref current so --force-with-lease compares against
-    # what is really on the remote, not a ref from days ago.
-    git("fetch", "origin", f"+refs/heads/{BRANCH}:refs/remotes/origin/{BRANCH}", check=False)
-
-    if git("rev-parse", "--verify", "--quiet", BRANCH, check=False).returncode == 0:
-        git("switch", BRANCH)
-        rebased = git("rebase", f"origin/{BASE}", check=False)
-        if rebased.returncode != 0:
-            git("rebase", "--abort", check=False)
-            raise GitError(f"rebase of {BRANCH} onto origin/{BASE} conflicted")
-    else:
-        git("switch", "-c", BRANCH, f"origin/{BASE}")
+def changed() -> list[str]:
+    """Tracked and untracked paths git would commit; ignored files stay invisible."""
+    return _paths(git("status", "--porcelain", "--untracked-files=all").stdout)
 
 
-def commit(message: str, body: str) -> str:
-    paths = [path for path in changed() if allowed(path)]
+def tracked_changes() -> list[str]:
+    """Modified tracked files only. Stray untracked files are not a reason to stop."""
+    return _paths(git("status", "--porcelain", "--untracked-files=no").stdout)
+
+
+def commit(paths: list[str], message: str, body: str) -> str:
     git("add", "--", *paths)
-    git("commit", "-m", message, "-m", body)
+    # The author is the bot even when the run is a local rehearsal: the identity
+    # belongs to the job, not to whoever happens to own the clone.
+    git(
+        "-c",
+        f"user.name={os.environ.get('GIT_AUTHOR_NAME', 'Starisk Bot')}",
+        "-c",
+        f"user.email={os.environ.get('GIT_AUTHOR_EMAIL', 'bot@matiasagelvis.com')}",
+        "commit",
+        "-m",
+        message,
+        "-m",
+        body,
+    )
     return git("rev-parse", "--short", "HEAD").stdout.strip()
 
 
@@ -347,10 +346,33 @@ def now() -> str:
 
 
 def missing_config(env: dict, options) -> list[str]:
+    # A rehearsal must run with no secrets at all: neither mode below touches
+    # Turso or GitHub.
+    if options.dry_run or options.no_git:
+        return []
     missing = [name for name in ("TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN") if not env.get(name)]
-    if not options.dry_run and not options.no_push and not env.get("GITHUB_TOKEN"):
+    if not options.no_push and not env.get("GITHUB_TOKEN"):
         missing.append("GITHUB_TOKEN")
     return missing
+
+
+def apply_env_file(path_value: str, environ: dict | None = None) -> tuple[dict, str | None]:
+    """Merge a dotenv file into the environment, for host runs.
+
+    `demand` reads `os.environ` directly, so the values have to land there rather
+    than in a local dict. A relative path is looked up the same way `demand` does
+    it — the shell's directory, then the repo root — so `--env-file .env.prod`
+    works from `pipeline/` without copying the file.
+
+    The container does not need this: compose injects `ops/.env` as the
+    environment before the process starts.
+    """
+    environ = os.environ if environ is None else environ
+    path = demand.locate_env(path_value)
+    if path is None:
+        return dict(environ), f"env file not found: {path_value}"
+    environ.update(demand.parse_env(path.read_text(encoding="utf-8")))
+    return dict(environ), None
 
 
 def load_scores(path: Path = crawl.SCORES_PATH) -> dict:
@@ -457,8 +479,13 @@ def dry_run(options) -> int:
 
 
 def run(options) -> int:
-    env = dict(os.environ)
     started = now()
+    if options.env_file:
+        env, error = apply_env_file(options.env_file)
+        if error:
+            return finish(env, started, CONFIG, error)
+    else:
+        env = dict(os.environ)
 
     missing = missing_config(env, options)
     if missing:
@@ -471,16 +498,28 @@ def run(options) -> int:
         if options.dry_run:
             return dry_run(options)
 
-        try:
-            prepare()
-        except GitError as error:
-            return finish(env, started, GIT, str(error))
+        if not options.no_git:
+            branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
+            if branch != BRANCH:
+                return finish(
+                    env,
+                    started,
+                    GIT,
+                    f"not on {BRANCH} (on {branch}); run ops/entrypoint.sh, or use --no-git",
+                )
 
         before = load_scores()
+        # Files already dirty when we started are not this run's doing: a stray
+        # note in a dev clone must not gate the commit.
+        baseline = set(changed())
 
-        queue_code = demand.main(["--write"] + (["--offline"] if options.offline else []))
+        try:
+            queue_code = demand.main(["--write"] + (["--offline"] if options.offline else []))
+        except Exception as error:  # noqa: BLE001 - the queue is an input, not a prerequisite
+            print(f"[nightly] the queue read failed: {error}")
+            queue_code = 1
         if queue_code != 0:
-            print("[nightly] the queue read failed; crawling the sources we already have")
+            print("[nightly] crawling the sources we already have")
 
         report = smoke.run()
         if not report.ok:
@@ -501,7 +540,13 @@ def run(options) -> int:
             if module.main([]) != 0:
                 return finish(env, started, FAILED, f"{module.__name__} exited non-zero")
 
-        if groupings.main(["--write"]) != 0:
+        # --fetch first: the index is derived from the page cache, and a fresh
+        # clone has none. Without it the rebuild is empty and deletes every
+        # program — the exact failure this guard now also refuses.
+        index_code = groupings.main(["--fetch", "--write"])
+        if index_code == 2:
+            print("[nightly] the program fetch was rate-limited; keeping the current index")
+        elif index_code != 0:
             return finish(env, started, FAILED, "the program index rebuild failed")
 
         synced = subprocess.run(("node", "web/scripts/sync-data.mjs"), cwd=REPO)
@@ -509,13 +554,22 @@ def run(options) -> int:
             return finish(env, started, FAILED, "copying the data into the site failed")
 
         after = load_scores()
+        new_paths = [path for path in changed() if path not in baseline]
         summary = diff_summary(before, after)
-        decision = decide(changed(), summary, crawl.summarize(before))
+        decision = decide(new_paths, summary, crawl.summarize(before))
 
         commit_hash = None
         pr_url = None
-        if decision.commit:
-            commit_hash = commit(commit_message(summary), commit_body(summary, decision))
+        if decision.commit and options.no_git:
+            # A rehearsal: the pipeline ran for real, but the data stays in the
+            # working tree so nothing is pushed from a clone being edited.
+            print("[nightly] rehearsal: the data is left uncommitted")
+        elif decision.commit:
+            commit_hash = commit(
+                [path for path in new_paths if allowed(path)],
+                commit_message(summary),
+                commit_body(summary, decision),
+            )
             if not options.no_push:
                 try:
                     push(env)
@@ -564,12 +618,22 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="check config, connectivity and the live pages; write nothing",
     )
     parser.add_argument(
+        "--env-file",
+        metavar="PATH",
+        help="read the dotenv file instead of exporting it (host runs only)",
+    )
+    parser.add_argument(
         "--limit",
         type=int,
         default=DEFAULT_LIMIT,
         help=f"fetches per run (default {DEFAULT_LIMIT}; 0 means uncapped)",
     )
     parser.add_argument("--no-push", action="store_true", help="commit on the branch, do not push")
+    parser.add_argument(
+        "--no-git",
+        action="store_true",
+        help="run on the current checkout without committing or pushing",
+    )
     parser.add_argument(
         "--offline",
         action="store_true",

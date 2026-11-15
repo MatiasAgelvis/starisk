@@ -1,5 +1,6 @@
-# The nightly job's only dependency is the repo, mounted at /srv/starisk, so this
-# image is just the two runtimes the pipeline and the data copy need.
+# The nightly job's dependencies are the repo, cloned into a volume at run time,
+# and the two runtimes it needs. Nothing is baked in: the image is upgraded by
+# changing the runtimes, the job by merging to `develop`.
 #
 # The pipeline has no third-party dependencies (see pipeline/pyproject.toml), so
 # there is no pip install here. Node comes from the official image because
@@ -24,8 +25,15 @@ RUN apt-get update \
 
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 
-WORKDIR /srv/starisk
+# Rebase rewrites commits and therefore needs a committer identity, which a bare
+# container has none of. System-wide so it applies to every git invocation.
+RUN git config --system user.name "Starisk Bot" \
+ && git config --system user.email "bot@matiasagelvis.com"
 
-# The script itself lives on the mount, like the code it runs. It is absent from
-# the image on purpose: updating the job is `git pull`, never a rebuild.
-ENTRYPOINT ["/srv/starisk/ops/entrypoint.sh"]
+# The launcher has to live in the image: on a fresh volume there is no clone yet,
+# so nothing can be read from /srv/starisk. It is the only script that is baked.
+COPY ops/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR /srv/starisk
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -1,4 +1,6 @@
+import tempfile
 import unittest
+from pathlib import Path
 
 from starisk import nightly
 
@@ -177,6 +179,32 @@ class MessageTest(unittest.TestCase):
 
         self.assertIn("2026-11-13", body)
         self.assertIn("committed", body)
+
+
+class EnvFileTest(unittest.TestCase):
+    def test_values_land_in_the_environment(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / ".env.prod"
+            path.write_text(
+                "TURSO_DATABASE_URL=libsql://db.turso.io\nexport GITHUB_TOKEN=abc\n",
+                encoding="utf-8",
+            )
+            environ = {"PATH": "/bin"}
+
+            env, error = nightly.apply_env_file(str(path), environ)
+
+        self.assertIsNone(error)
+        self.assertEqual(env["TURSO_DATABASE_URL"], "libsql://db.turso.io")
+        self.assertEqual(env["GITHUB_TOKEN"], "abc")
+        self.assertEqual(env["PATH"], "/bin")
+        # demand reads os.environ, so the merge has to be visible there too.
+        self.assertEqual(environ["GITHUB_TOKEN"], "abc")
+
+    def test_a_missing_file_is_reported(self):
+        env, error = nightly.apply_env_file("/does/not/exist/.env", {})
+
+        self.assertIn("not found", error)
+        self.assertEqual(env, {})
 
 
 if __name__ == "__main__":
