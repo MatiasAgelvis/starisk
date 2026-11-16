@@ -1,0 +1,161 @@
+---
+import Base from '../layouts/Base.astro';
+import BrandMark from '../components/BrandMark.astro';
+---
+
+<Base
+  title="Bookmarklet — Starisk"
+  description="Put the Starisk score next to Coursera's own rating, on Coursera's pages. A bookmarklet, not an extension."
+>
+  <article class="mx-auto max-w-2xl">
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-base-content/50">Tools</p>
+      <h1 class="mt-1 font-display text-3xl font-bold tracking-tight">
+        The Starisk bookmarklet
+      </h1>
+      <p class="mt-3 text-base-content/75">
+        The score next to the score, on Coursera's own pages. No extension, no account, no
+        permissions prompt — a bookmark you click.
+      </p>
+    </header>
+
+    <section class="mt-8 rounded-box border border-base-300 bg-base-200/50 p-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <a id="bookmarklet" class="btn btn-primary gap-2" href="#">
+          <BrandMark class="h-4 w-4" /> Starisk
+        </a>
+        <button id="copy" class="btn btn-ghost btn-sm" type="button">Copy the link</button>
+      </div>
+      <p class="mt-3 text-sm text-base-content/60">
+        Drag the button to your bookmarks bar. Or copy the link and paste it as the address of
+        a new bookmark — the name is yours to pick.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">What it does</h2>
+      <ul class="mt-3 space-y-2 text-base-content/80">
+        <li class="flex gap-2">
+          <span class="text-primary" aria-hidden="true">·</span>
+          <span>
+            On a course page it opens a small panel with Coursera's headline rating, the score
+            Starisk computes, and the gap between them.
+          </span>
+        </li>
+        <li class="flex gap-2">
+          <span class="text-primary" aria-hidden="true">·</span>
+          <span>
+            On a search or catalog page it adds a chip to every result we have read, and one line
+            with the honest count: <em>Starisk has read 5 of these 12</em>.
+          </span>
+        </li>
+        <li class="flex gap-2">
+          <span class="text-primary" aria-hidden="true">·</span>
+          <span>
+            On a course we have not read yet, it offers a button that asks for it. The request
+            lands in the same queue as the one on this site.
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">Where it works</h2>
+      <div class="mt-3 overflow-hidden rounded-box border border-base-300">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>What appears</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-xs">coursera.org/learn/…</td>
+              <td>Panel with both scores, the gap and the review count</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-xs">…/specializations/…<br />…/professional-certificates/…</td>
+              <td>Panel with the average of the courses we read</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-xs">coursera.org/search?query=…</td>
+              <td>A chip on each known result, plus the count line</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-xs">coursera.org/courses?query=…</td>
+              <td>The same, for programs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">What to know</h2>
+      <ul class="mt-3 space-y-2 text-base-content/80">
+        <li class="flex gap-2">
+          <span class="text-primary" aria-hidden="true">·</span>
+          <span>
+            Desktop only. iOS Safari cannot run a bookmarklet, and no mobile browser will.
+          </span>
+        </li>
+        <li class="flex gap-2">
+          <span class="text-primary" aria-hidden="true">·</span>
+          <span>
+            It reads our data and writes nothing to Coursera. The only request it makes is for{' '}
+            <a class="link" href="/data/badge.json">/data/badge.json</a> — 24 KB gzipped.
+          </span>
+        </li>
+        <li class="flex gap-2">
+          <span class="text-primary" aria-hidden="true">·</span>
+          <span>
+            If Coursera changes its markup, the badge stops appearing. It does not break the page:
+            every step is wrapped, and nothing is styled globally.
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <details class="mt-10 rounded-box border border-base-300 p-4">
+      <summary class="cursor-pointer text-sm font-medium">Read the source</summary>
+      <p class="mt-2 text-sm text-base-content/60">
+        This is what the link contains — readable, unminified, and with no network calls other
+        than the one above.
+      </p>
+      <pre class="mt-3 overflow-x-auto rounded-field bg-base-200 p-4 text-xs leading-relaxed"><code
+          data-bookmarklet-source></code
+        ></pre>
+    </details>
+  </article>
+
+  <script>
+    import { bookmarkletSource } from '../lib/bookmarklet.js';
+
+    // Built from this page's own origin, so the bookmark points at whatever host
+    // you are reading it on — localhost while testing, the public domain in
+    // production. The alternative, a hardcoded origin, is a value someone has to
+    // remember to change back before committing.
+    const source = bookmarkletSource(location.origin);
+    const code = `javascript:${encodeURIComponent(source)}`;
+
+    const link = document.getElementById('bookmarklet');
+    const copy = document.getElementById('copy');
+    const listing = document.querySelector('[data-bookmarklet-source]');
+
+    link.href = code;
+    if (listing) listing.textContent = source;
+
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code);
+        copy.textContent = 'Copied';
+      } catch {
+        copy.textContent = 'Copy blocked — drag it instead';
+      }
+      setTimeout(() => {
+        copy.textContent = 'Copy the link';
+      }, 2500);
+    });
+  </script>
+</Base>

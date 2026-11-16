@@ -7,11 +7,14 @@ import { courses } from '../lib/courses.js';
 interface Props {
   title?: string;
   description?: string;
+  /** Utility pages — a request landing, a redirect target — stay out of search. */
+  noindex?: boolean;
 }
 
 const {
   title = 'Starisk',
   description = 'What learners actually say about Coursera courses, weighted by the votes their reviews received.',
+  noindex = false,
 } = Astro.props;
 
 const canonical = Astro.site
@@ -60,6 +63,7 @@ const lastCrawlDate = lastCrawl
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/atom+xml" title="Starisk — wanted" href="/feed.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -259,6 +263,7 @@ const lastCrawlDate = lastCrawl
             </p>
             <ul class="space-y-1">
               <li><a class="link link-hover" href="/wanted">Wanted</a></li>
+              <li><a class="link link-hover" href="/bookmarklet">Bookmarklet</a></li>
               <li><a class="link link-hover" href="/feed.xml">RSS</a></li>
               <li><a class="link link-hover" href="/data/scores.json">Dataset</a></li>
               <li>

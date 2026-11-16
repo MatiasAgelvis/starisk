@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-11-09T21:02:40Z",
+  "generatedAt": "2026-11-14T19:48:48Z",
   "rows": [
+    {
+      "key": "learn/logic-introduction",
+      "type": "course",
+      "query": "learn/logic-introduction",
+      "requests": 1,
+      "first_seen": "2026-11-10T15:10:11Z",
+      "last_seen": "2026-11-10T15:10:11Z",
+      "title": "Introduction to Logic",
+      "added_at": "2026-11-14T19:48:48Z"
+    },
+    {
+      "key": "learn/automating-image-processing",
+      "type": "course",
+      "query": "https://www.coursera.org/learn/automating-image-processing?specialization=mathworks-computer-vision-engineer",
+      "requests": 1,
+      "first_seen": "2026-11-08T13:19:32Z",
+      "last_seen": "2026-11-08T13:19:32Z",
+      "title": "Automating Image Processing",
+      "added_at": "2026-11-14T19:48:48Z"
+    },
+    {
+      "key": "learn/ai-transformation-advisory-package",
+      "type": "course",
+      "query": "ai-transformation-advisory-package",
+      "requests": 1,
+      "first_seen": "2026-11-08T13:21:11Z",
+      "last_seen": "2026-11-08T13:21:11Z",
+      "title": "AI Transformation Advisory Package",
+      "added_at": "2026-11-14T19:48:48Z"
+    },
     {
       "key": "professional-certificates/ibm-enterprise-ai-transformation-and-consulting",
       "type": "professional-certificate",

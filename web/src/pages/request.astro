@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Request a score — Starisk"
+  description="Ask Starisk to read the reviews for a course or program."
+  noindex
+>
+  <article class="mx-auto max-w-xl py-6">
+    <p class="text-xs font-semibold uppercase tracking-wide text-base-content/50">Request</p>
+
+    <div aria-live="polite">
+      <h1 id="request-title" class="mt-1 font-display text-2xl font-bold">
+        Checking this one…
+      </h1>
+      <p id="request-note" class="mt-3 text-base-content/70">
+        One moment while the request goes in.
+      </p>
+    </div>
+
+    <p id="request-key" class="mt-3 font-mono text-xs text-base-content/50"></p>
+
+    <div class="mt-8 flex flex-wrap gap-2">
+      <a id="request-open" class="btn btn-sm" hidden>Open on Coursera ↗</a>
+      <a class="btn btn-sm btn-ghost" href="/wanted">What is waiting</a>
+      <a class="btn btn-sm btn-ghost" href="/">Find another</a>
+    </div>
+  </article>
+
+  <script>
+    // The bookmarklet cannot POST to `/api/course-request` itself: the function
+    // only answers its own origin, and a JSON body from another site needs a
+    // preflight it does not implement. So the badge opens this page instead, and
+    // the write happens here, same-origin, through the same validator the
+    // landing-page lookup uses.
+    import { REASON_MESSAGES, validateQuery } from '../lib/requests.js';
+
+    const title = document.getElementById('request-title');
+    const note = document.getElementById('request-note');
+    const keyLine = document.getElementById('request-key');
+    const open = document.getElementById('request-open');
+
+    const show = (heading, message) => {
+      title.textContent = heading;
+      note.textContent = message;
+    };
+
+    const params = new URLSearchParams(location.search);
+    const raw = params.get('key') ?? params.get('q') ?? '';
+    const validation = validateQuery(raw);
+
+    if (!validation.ok) {
+      show('That is not a course link', REASON_MESSAGES[validation.reason] ?? 'Try a course name or link.');
+      note.textContent = `${note.textContent} Ask from the search box on the home page.`;
+    } else {
+      keyLine.textContent = validation.key;
+      // A typed name has no Coursera page to link to; a slug, program or teacher
+      // key is the path on coursera.org.
+      if (validation.kind !== 'name') {
+        open.href = `https://www.coursera.org/${validation.key}`;
+        open.hidden = false;
+      }
+      send(validation.query);
+    }
+
+    async function send(query) {
+      show('Sending the request…', 'Nothing is lost if this page closes.');
+
+      try {
+        const response = await fetch('/api/course-request', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ query }),
+        });
+        const body = await response.json().catch(() => null);
+
+        if (response.ok && body?.ok) {
+          show(
+            'Queued.',
+            body.count <= 1
+              ? 'You are the first to ask for this one. Requests are checked nightly, and there is no ETA.'
+              : `${body.count} people have asked for this one. Requests are checked nightly, and there is no ETA.`,
+          );
+          return;
+        }
+
+        if (response.status === 429) {
+          show('Too many requests from this connection.', 'Try again in an hour.');
+          return;
+        }
+
+        show(
+          'The request list is unavailable right now.',
+          body?.message ?? 'Nothing was lost. Try again later.',
+        );
+      } catch {
+        show('The request list is unavailable right now.', 'Nothing was lost. Try again later.');
+      }
+    }
+  </script>
+</Base>
