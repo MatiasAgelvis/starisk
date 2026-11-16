@@ -79,6 +79,7 @@ async function run({ pathname, cards = [] }) {
   const document = {
     body: { appendChild: (node) => appended.push(node) },
     createElement: (tag) => makeNode(tag),
+    createElementNS: (namespace, tag) => makeNode(tag),
     querySelector: () => null,
     querySelectorAll: (selector) => (selector === 'a[href] > h3' ? cards.map((c) => c.h3) : []),
   };
@@ -177,6 +178,34 @@ test('a results page chips the cards we know and counts the page', async () => {
 
   assert.equal(appended.length, 1);
   assert.equal(textOf(appended[0]).includes('Starisk has read 2 of these 3'), true);
+});
+
+test('the mark is the site logo, drawn inline', async () => {
+  const { appended } = await run({ pathname: '/learn/known' });
+  const svg = appended[0].children[0].children[0];
+
+  assert.equal(svg.tag, 'svg');
+  assert.equal(svg.attributes.viewBox, '0 0 32 32');
+
+  const [plate, glyph] = svg.children;
+  assert.equal(plate.tag, 'rect');
+  assert.equal(plate.attributes.fill, '#111827');
+  assert.equal(glyph.children.length, 3, 'three strokes, the favicon glyph');
+  assert.equal(glyph.attributes.stroke, '#fbbf24');
+});
+
+test('a chip draws only the glyph, because it sits on navy already', async () => {
+  const cards = [card('/learn/known')];
+  await run({ pathname: '/search', cards });
+
+  const chip = cards[0].host.children.find(
+    (node) => node.attributes['data-starisk'] !== undefined,
+  );
+  const svg = chip.children[0];
+
+  assert.equal(svg.tag, 'svg');
+  assert.equal(svg.children.length, 1, 'no plate');
+  assert.equal(svg.children[0].tag, 'g');
 });
 
 test('a page with no product cards draws nothing at all', async () => {
