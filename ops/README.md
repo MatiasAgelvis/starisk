@@ -6,13 +6,13 @@ pull request open against `develop`. Production is untouched until you merge.
 
 **Everything happens inside the container.** The clone, the page cache, the logs
 and the commits live in a volume the container owns. The host supplies three
-things and nothing else: this directory (the launcher), `ops/.env`, and a cron
-line. There is no checkout to switch, no cache to keep and no branch to clean up
-on the host.
+things and nothing else: the image, `/etc/starisk/env`, and a cron line. The repo
+is only the build context — it is never mounted, checked out or executed. There is
+no checkout to switch, no cache to keep and no branch to clean up on the host.
 
 ```mermaid
 graph TD
-    A[cron 03:30] --> B[ops/run.sh]
+    A[cron 03:30] --> B[docker run]
     B --> C[container starts]
     C --> D{volume has a clone?}
     D -->|no| E[git clone into the volume]
@@ -24,8 +24,8 @@ graph TD
 
 ## Try it locally
 
-Same image, same volume, same behaviour. The first run clones into the volume,
-which takes a minute; after that it is incremental.
+Same image, same behaviour — only the trigger differs. The first run clones into
+the volume, which takes a minute; after that it is incremental.
 
 ```sh
 # Config, connectivity and the live pages. Writes nothing, needs no .env.
@@ -42,25 +42,32 @@ Your working copy is never mounted, so none of this touches it.
 
 ## Deploy
 
+The repo is the build context and nothing more — it is never mounted, checked out
+or executed by the schedule.
+
 ```sh
-# 1. The launcher. This directory is all the host needs; it is never mounted.
-git clone -b develop https://github.com/MatiasAgelvis/starisk.git /srv/starisk
+# 1. Somewhere to build from. A clone in your home is fine.
+git clone -b develop https://github.com/MatiasAgelvis/starisk.git ~/src/starisk
+cd ~/src/starisk
 
 # 2. The secrets.
-cd /srv/starisk/ops
-cp .env.example .env
-$EDITOR .env            # Turso, GitHub token, ntfy topic
+cp ops/.env.example ops/.env
+$EDITOR ops/.env          # Turso, GitHub token, ntfy topic
 
-# 3. A rehearsal. Builds the image and clones into the volume.
-/srv/starisk/ops/run.sh --dry-run
-
-# 4. Cron (the user must be in the docker group).
-crontab -e
+# 3. One command: build the image, install /etc/starisk/env at 600, and replace
+#    only its own cron line. --check also runs a dry run at the end.
+sudo ./ops/setup.sh --check
 ```
+
+That leaves three things on the host — the image, `/etc/starisk/env`, one cron
+line — and no compose file. The line it installs:
 
 ```cron
-30 3 * * * /srv/starisk/ops/run.sh 2>&1 | logger -t starisk-nightly
+30 3 * * * docker run --rm --env-file /etc/starisk/env -v starisk:/srv/starisk starisk-nightly 2>&1 | logger -t starisk-nightly # starisk-nightly
 ```
+
+Root is there for the Docker socket, nothing else: it runs that fixed command,
+the env file is root-owned `600`, and the image is immutable.
 
 Output goes to the journal, which already rotates: `journalctl -t starisk-nightly`.
 The pipe hands the exit status to `logger`, so cron never sees a failure — that is
@@ -70,8 +77,8 @@ and add a logrotate entry for it instead.
 `logs/last-run.json` lives in the volume:
 
 ```sh
-docker compose -f /srv/starisk/ops/compose.yml run --rm --entrypoint cat \
-  nightly /srv/starisk/logs/last-run.json
+docker run --rm -v starisk:/srv/starisk --entrypoint cat \
+  starisk-nightly /srv/starisk/logs/last-run.json
 ```
 
 Cron does not catch up a run missed while the box was off, and it does not need
@@ -89,7 +96,8 @@ to: the crawl is staleness-based, so the next run picks up whatever was skipped.
   dead cron looks different from a quiet week.
 - **Updating the job.** Merge to `develop`; the next run fetches and rebases onto
   it before starting Python, so the code that runs is the code just fetched.
-  Rebuild the image only when the runtimes change: `docker compose build`.
+  Rebuild the image only when the entrypoint or runtimes change: `sudo ./ops/setup.sh`
+  (it rebuilds), or `docker build -f ops/Dockerfile -t starisk-nightly .`.
 
 ## Exit codes
 
@@ -117,8 +125,9 @@ nightly --offline             # re-parse the cache, no requests
 nightly --env-file .env.prod  # host runs: read a dotenv instead of exporting it
 ```
 
-The container gets its environment from `ops/.env` through compose, so
-`--env-file` is for running the module directly on the host:
+The container gets its environment from `--env-file` — `/etc/starisk/env` on the
+box, `ops/.env` for the local compose path — so `--env-file` is for running the
+module directly on the host:
 
 ```sh
 mise run pipeline:nightly -- --env-file .env.prod --dry-run
@@ -137,7 +146,7 @@ back before rebuilding it — roughly 25 requests, once. Later nights make none.
 was rejected. The branch is left as it was. Reproduce inside the volume:
 
 ```sh
-docker compose -f /srv/starisk/ops/compose.yml run --rm --entrypoint sh nightly
+docker run --rm -it -v starisk:/srv/starisk --entrypoint sh starisk-nightly
 ```
 
 **`20 refused`** — the run produced something it did not trust: courses
