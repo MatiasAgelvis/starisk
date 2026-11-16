@@ -67,6 +67,11 @@ const lastCrawlDate = lastCrawl
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/atom+xml" title="Starisk — wanted" href="/feed.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Raster fallbacks: Safari has never supported SVG favicons, and a bookmark
+         created by pasting a URL has no icon to inherit — the browser falls back
+         to /favicon.ico. Both are drawn from `favicon.svg`. -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#111827" />
     <script is:inline>
       try {
