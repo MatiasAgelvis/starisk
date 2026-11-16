@@ -1,13 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { bookmarkletSource } from '../lib/bookmarklet.js';
-
-// The public origin, spelled out rather than read from `Astro.site`: SITE_URL is
-// not set in the Vercel project yet, so `Astro.site` still resolves to
-// starisk.pages.dev. The badge fetches its payload from here, so a wrong value
-// fails silently on someone else's site.
-const ORIGIN = 'https://starisk.matiasagelvis.com';
-const source = bookmarkletSource(ORIGIN);
+import BrandMark from '../components/BrandMark.astro';
 ---
 
 <Base
@@ -29,7 +22,7 @@ const source = bookmarkletSource(ORIGIN);
     <section class="mt-8 rounded-box border border-base-300 bg-base-200/50 p-6">
       <div class="flex flex-wrap items-center gap-3">
         <a id="bookmarklet" class="btn btn-primary gap-2" href="#">
-          <span aria-hidden="true">★</span> Starisk
+          <BrandMark class="h-4 w-4" /> Starisk
         </a>
         <button id="copy" class="btn btn-ghost btn-sm" type="button">Copy the link</button>
       </div>
@@ -131,17 +124,27 @@ const source = bookmarkletSource(ORIGIN);
         than the one above.
       </p>
       <pre class="mt-3 overflow-x-auto rounded-field bg-base-200 p-4 text-xs leading-relaxed"><code
-          >{source}</code
+          data-bookmarklet-source></code
         ></pre>
     </details>
   </article>
 
-  <script define:vars={{ source }}>
+  <script>
+    import { bookmarkletSource } from '../lib/bookmarklet.js';
+
+    // Built from this page's own origin, so the bookmark points at whatever host
+    // you are reading it on — localhost while testing, the public domain in
+    // production. The alternative, a hardcoded origin, is a value someone has to
+    // remember to change back before committing.
+    const source = bookmarkletSource(location.origin);
     const code = `javascript:${encodeURIComponent(source)}`;
+
     const link = document.getElementById('bookmarklet');
     const copy = document.getElementById('copy');
+    const listing = document.querySelector('[data-bookmarklet-source]');
 
     link.href = code;
+    if (listing) listing.textContent = source;
 
     copy.addEventListener('click', async () => {
       try {
