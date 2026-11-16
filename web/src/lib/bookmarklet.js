@@ -29,6 +29,7 @@ export function bookmarkletSource(origin) {
   var ATTR = 'data-starisk';
   var PRODUCT = /^\\/(learn|specializations|professional-certificates)\\/([a-z0-9][a-z0-9-]*)/;
   var FONT = '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+  var SVG_NS = 'http://www.w3.org/2000/svg';
   var NAVY = '#111827';
   var GOLD = '#fbbf24';
 
@@ -65,8 +66,40 @@ export function bookmarkletSource(origin) {
     return item && typeof item.c === 'number' ? item.c - item.s : null;
   }
 
-  function mark() {
-    return el('span', 'display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:4px;background:' + NAVY + ';color:' + GOLD + ';font:700 10px/1 ' + FONT, '\\u2605');
+  function mark(size, plate) {
+    // The favicon's mark, inlined: SVG in a page we do not own cannot come from a
+    // component, and an <img> would be a second request and a second CSP surface.
+    // plate false draws only the gold glyph, for places that are already navy.
+    var svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 32 32');
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('style', 'display:block;flex:none');
+
+    if (plate !== false) {
+      var rect = document.createElementNS(SVG_NS, 'rect');
+      rect.setAttribute('width', '32');
+      rect.setAttribute('height', '32');
+      rect.setAttribute('rx', '7');
+      rect.setAttribute('fill', NAVY);
+      svg.appendChild(rect);
+    }
+
+    var glyph = document.createElementNS(SVG_NS, 'g');
+    glyph.setAttribute('fill', 'none');
+    glyph.setAttribute('stroke', GOLD);
+    glyph.setAttribute('stroke-width', '3.2');
+    glyph.setAttribute('stroke-linecap', 'round');
+
+    ['M16 7.5v17', 'M8.6 11.7l14.8 8.6', 'M23.4 11.7l-14.8 8.6'].forEach(function (d) {
+      var path = document.createElementNS(SVG_NS, 'path');
+      path.setAttribute('d', d);
+      glyph.appendChild(path);
+    });
+
+    svg.appendChild(glyph);
+    return svg;
   }
 
   function chipFor(item, key) {
@@ -78,7 +111,7 @@ export function bookmarkletSource(origin) {
     chip.title = 'Starisk reads the upvoted reviews. ' +
       (gap == null ? 'No Coursera headline rating to compare.' : 'Coursera is ' + gap.toFixed(1) + ' higher.');
     chip.setAttribute(ATTR, '');
-    chip.appendChild(el('span', 'width:6px;height:6px;border-radius:999px;background:' + GOLD, null));
+    chip.appendChild(mark(12, false));
     chip.appendChild(el('span', null, 'Starisk ' + item.s.toFixed(1)));
     if (gap != null) chip.appendChild(el('span', 'color:' + tone(gap, true) + ';font-weight:700', 'gap ' + gap.toFixed(1)));
     return chip;
@@ -96,7 +129,7 @@ export function bookmarkletSource(origin) {
     box.setAttribute('data-starisk-panel', '');
 
     var head = el('div', 'display:flex;align-items:center;gap:6px', null);
-    head.appendChild(mark());
+    head.appendChild(mark(16));
     head.appendChild(el('span', 'font:700 12px/1 ' + FONT + ';letter-spacing:.02em', 'Starisk'));
     var close = el('button', 'margin-left:auto;border:0;background:none;padding:0 2px;color:#9ca3af;font:400 16px/1 ' + FONT + ';cursor:pointer', '\\u00d7');
     close.type = 'button';
@@ -175,7 +208,7 @@ export function bookmarkletSource(origin) {
 
     var bar = el('div', 'position:fixed;right:16px;bottom:16px;z-index:2147483000;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(17,24,39,.14);border-radius:999px;background:#fdfdfc;color:' + NAVY + ';font:600 12px/1 ' + FONT + ';box-shadow:0 12px 32px rgba(17,24,39,.2)', null);
     bar.setAttribute('data-starisk-summary', '');
-    bar.appendChild(mark());
+    bar.appendChild(mark(16));
 
     var text = el('span', null, countText(read, total));
     text.setAttribute('data-starisk-count', '');
