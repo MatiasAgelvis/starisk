@@ -48,12 +48,13 @@ from .groupings import (
     build_groupings,
     fetch_missing,
 )
+from .paths import DATA_DIR
 
 ENV_URL = "TURSO_DATABASE_URL"
 ENV_TOKEN = "TURSO_AUTH_TOKEN"
 PLACEHOLDER = "{SENSITIVE}"
 REPO_ROOT = Path(__file__).resolve().parents[2]
-REQUESTS_PATH = Path(__file__).resolve().parents[1] / "data" / "requests.json"
+REQUESTS_PATH = DATA_DIR / "requests.json"
 DEFAULT_LIMIT = 50
 CHECK_DELAY = 0.5
 FETCH_DELAY = 1.5
