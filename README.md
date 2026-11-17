@@ -71,6 +71,7 @@ mise run pipeline:lint        # ruff
 mise run pipeline:test        # python unit tests (stdlib only)
 mise run pipeline:groupings   # rebuild the program index
 mise run pipeline:seed-programs  # fetch seeded program pages, then rebuild
+mise run pipeline:all             # expand, crawl, localise, rebuild, sync
 mise run web:dev              # astro dev server
 mise run check                # lint + tests + a full site build
 ```
