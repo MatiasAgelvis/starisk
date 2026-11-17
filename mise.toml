@@ -28,8 +28,13 @@ run = "ruff check ."
 [tasks."pipeline:crawl"]
 description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
 dir = "pipeline"
+# The shebang matters: without it mise appends `mise run ... -- --limit 10` to
+# the last line, which feeds the flags to `groupings`. With it, mise executes
+# the script with the arguments as `"$@"`, so only the crawl sees them.
 run = """
-python -m starisk.crawl
+#!/bin/sh
+set -e
+python -m starisk.crawl "$@"
 python -m starisk.logos
 python -m starisk.logo_hires
 python -m starisk.groupings --write
