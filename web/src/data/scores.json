@@ -58537,5 +58537,685 @@
     "enrollment": 230497,
     "slug": "learn/logic-introduction",
     "scrapedAt": "2026-11-14T19:48:51.349195+00:00"
+  },
+  "learn/foundations-business-analysis": {
+    "title": "Foundations of Business Analysis",
+    "provider": "SAP",
+    "description": "Develop the foundational concepts and methodologies of business analysis, including the Business Analyst role, analysis techniques, and software development lifecycle, with practical exposure to SAP solutions commonly used in enterprise environments. Learn to evaluate business cases and develop strategic analysis skills while leveraging the SAP Activate methodology, alongside ChatGPT applications to enhance your business analysis capabilities.\n\nBy the end of this course, you will  learn skills to be able to:\n\n- Analyze the role and impact of business analysts within organizations, including enterprise environments using SAP systems\n\n- Evaluate different software development methodologies, including SAP Activate, to determine appropriate approaches for various project types\n\n- Apply strategic analysis techniques to align business analysis activities with organizational objectives using enterprise tools\n\n- Develop comprehensive stakeholder management strategies using both traditional methods and modern tools including ChatGPT",
+    "image": "/logos/sap.jpg",
+    "coursera": 4.5,
+    "starisk": 3.7,
+    "spread": 1.53,
+    "spread_weighted": 1.69,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 3,
+      "2.0": 1,
+      "3.0": 2,
+      "5.0": 14
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I have messaged multiple times about my inability to access course material and have not received a response. I cannot complete the assignments or the course as a whole.",
+      "stars": 1.0,
+      "likes": 3
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 36,
+    "ratings_total": 146,
+    "rating_counts": {
+      "1": 10,
+      "2": 3,
+      "3": 6,
+      "4": 16,
+      "5": 111
+    },
+    "instructors": [
+      {
+        "name": "SAP Career Certificates",
+        "slug": "~182707656",
+        "url": "https://www.coursera.org/instructor/~182707656",
+        "page": "sap-career-certificates",
+        "id": "182707656",
+        "role": null,
+        "department": null,
+        "learners": 54866,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/51/eaee57412148179ff84fd2211c1979/Knockout-Logo_universal.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Beginner",
+    "enrollment": 50183,
+    "slug": "learn/foundations-business-analysis",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/managing-emotions-uncertainty-stress": {
+    "title": "Managing Emotions in Times of Uncertainty & Stress",
+    "provider": "Yale University",
+    "description": "Developed by the Yale Center for Emotional Intelligence, Managing Emotions in Times of Uncertainty & Stress will provide participants with the knowledge, skills, and strategies to understand and manage their emotions and those of their students. The 10-hour online course is designed for school staff, including teachers, paraprofessionals, counselors, principals, and non-teaching staff in preK-12 schools.",
+    "image": "/logos/yale-university.jpg",
+    "coursera": 4.8,
+    "starisk": 4.5,
+    "spread": 0.73,
+    "spread_weighted": 0.83,
+    "reviews": 20,
+    "review_counts": {
+      "3.0": 3,
+      "4.0": 2,
+      "5.0": 15
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I was misled into thinking that this course was eligible for a free certificate. The course itself has valuable information but at the same time I felt like much of the quizzes etc. were designed as a research experiment where my input data was being gathered/used to benefit YALE Center for Emotional Intelligence and I still did not get a certificate. I am disappointed after working 10 plus hours on the course resulting in no certificate.",
+      "stars": 3.0,
+      "likes": 29
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 958,
+    "ratings_total": 4043,
+    "rating_counts": {
+      "1": 23,
+      "2": 25,
+      "3": 98,
+      "4": 588,
+      "5": 3309
+    },
+    "instructors": [
+      {
+        "name": "Marc Brackett",
+        "slug": "marc-brackett",
+        "url": "https://www.coursera.org/instructor/marc-brackett",
+        "page": "marc-brackett",
+        "id": "72112777",
+        "role": "Director",
+        "department": "Yale Center for Emotional Intelligence",
+        "learners": 354055,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/de/27903956134228b042566a43016c03/Mark_1.jpg"
+      }
+    ],
+    "categories": [
+      "Social Sciences",
+      "Health"
+    ],
+    "level": "Beginner",
+    "enrollment": 342848,
+    "slug": "learn/managing-emotions-uncertainty-stress",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/intro-common-law": {
+    "title": "Introduction to English Common Law",
+    "provider": "University of London",
+    "description": "The common law of England and Wales is one of the major global legal traditions.\n\nThis MOOC will give you an introduction to this influential legal system including its history, constitutional background, sources and institutions. You’ll learn about the different ways in which laws are made and interpreted, the English court system and the increasing importance of European Union and human rights law. Now is an especially exciting time to be learning about English common law, given the potential changes that lie ahead in today’s political, economic and social environment – all these pose challenges to and opportunities for the law.\n\nEach week we’ll focus on one aspect of English common law, using video lectures, readings, discussion questions and activities to enable you to learn about and evaluate key issues. Whether undertaken as a standalone course, or as preparation for the University of London’s world-class LLB degree, you will find this course interesting and stimulating.\n\nPlease note that participation in or completion of this online course will not confer academic credit for University of London programmes.",
+    "image": "/logos/university-of-london.jpg",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.22,
+    "spread_weighted": 0.2,
+    "reviews": 20,
+    "review_counts": {
+      "4.0": 1,
+      "5.0": 19
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "This course is a well designed one. It provides us a good comprehensive guide on the legal practice in England. I'm grateful to the designers of the course and 2 lecturers for presenting us this.",
+      "stars": 5.0,
+      "likes": 11
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 597,
+    "ratings_total": 2092,
+    "rating_counts": {
+      "1": 8,
+      "2": 9,
+      "3": 48,
+      "4": 235,
+      "5": 1792
+    },
+    "instructors": [
+      {
+        "name": "Charlotte Crilly",
+        "slug": "charlotte-crilly",
+        "url": "https://www.coursera.org/instructor/charlotte-crilly",
+        "page": "charlotte-crilly",
+        "id": "29071189",
+        "role": "Teaching Fellow",
+        "department": "University of London Undergraduate Laws",
+        "learners": 120419,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/dc/be3090899e11e8a9b59b0c46f3789e/Charlotte-profile.jpg"
+      },
+      {
+        "name": "Eloise Ellis",
+        "slug": "eloise-ellis",
+        "url": "https://www.coursera.org/instructor/eloise-ellis",
+        "page": "eloise-ellis",
+        "id": "32652232",
+        "role": "Senior Lecturer",
+        "department": "University of London",
+        "learners": 120419,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/79/56fef0899f11e8a9b59b0c46f3789e/E-Ellis-photo.jpg"
+      }
+    ],
+    "categories": [
+      "Social Sciences",
+      "Arts and Humanities"
+    ],
+    "level": "Beginner",
+    "enrollment": 120419,
+    "slug": "learn/intro-common-law",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/startup-valuation-methods": {
+    "title": "Startup Valuation Methods",
+    "provider": "Duke University",
+    "description": "How do different types of investors think about an investment opportunity? What kind of securities and contracts do they offer? How should a company decide what is a \"good deal\"? This course is designed to introduce you to the challenges and pitfalls of financing new enterprises. You will learn the basic tools for valuating companies, including using discounted cashflow analysis in Excel and understanding how to apply this model to your entrepreneurial venture. You will then learn how valuation works with different types of securities that investors use to finance startups, from bank loans to venture capital to angel investing.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.4,
+    "starisk": 3.0,
+    "spread": 1.34,
+    "spread_weighted": 1.26,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 3,
+      "2.0": 2,
+      "3.0": 7,
+      "4.0": 3,
+      "5.0": 5
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I'm only giving this course 3 stars because of the excellent teaching in weeks 1 and 2 by Manuel Adelino, who is an excellent and thorough instructor. David Robinson, who handles the \"meat\" of the course in weeks 3 and 4 was absolutely dreadful in every respect that matters in a mastery-oriented online course (in which there is no peer community with which to collectively cover for poor instruction). Specifically, Robinson talks around examples without working through any of them. He did not work through any of the key examples or formulae in Week 3, which is where most of the key concepts of startup valuation are introduced. Basically said, \"go figure it out yourself.\" Other examples: the “hurdle rate” is introduced without adequate definition or an example of how to use given information in the calculation, and Robinson uses this term interchangeably with \"cash-on-cash returns\" (incorrectly) including in equations, which are wrong as presented. On a quiz for the fourth week on Anti-Dilution presents a question without reference to a specific scenario, so it is impossible to complete without guessing. …",
+      "stars": 3.0,
+      "likes": 47
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 229,
+    "ratings_total": 772,
+    "rating_counts": {
+      "1": 14,
+      "2": 15,
+      "3": 66,
+      "4": 195,
+      "5": 482
+    },
+    "instructors": [
+      {
+        "name": "Manuel Adelino",
+        "slug": "~16034955",
+        "url": "https://www.coursera.org/instructor/~16034955",
+        "page": "manuel-adelino",
+        "id": "16034955",
+        "role": "Associate Professor, Finance",
+        "department": "Duke University’s Fuqua School of Business",
+        "learners": 54427,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/38/6fcb88674a446ab0bbfde2e95d18a4/Screen-Shot-2019-10-22-at-1.40.14-PM.jpg"
+      },
+      {
+        "name": "David Robinson",
+        "slug": "~46361139",
+        "url": "https://www.coursera.org/instructor/~46361139",
+        "page": "david-robinson",
+        "id": "46361139",
+        "role": "Professor of Finance and James and Gail Vander Weide Professor",
+        "department": "Duke University's Fuqua School of Business",
+        "learners": 61702,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/21/60de27a97943da8c4a2e911c5a762f/Screen-Shot-2019-10-31-at-1.40.44-PM.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Intermediate",
+    "enrollment": 54427,
+    "slug": "learn/startup-valuation-methods",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/financing-startup-businesses": {
+    "title": "Financing for Startup Businesses",
+    "provider": "Duke University",
+    "description": "This course will teach you how to manage a startup’s financing strategy, where you will learn how to build capitalization tables (or “cap tables”) in Excel. Cap tables will help you explore different financing strategies for your startup company and determine which financing decisions are best for your entrepreneurial venture. You will also learn about innovations in the digital space that allow new ways to finance entrepreneurial ventures. These include different forms of crowdfunding, and alternative credit scoring mechanisms based on web-based data.\n\nThis course concludes with a module featuring cutting edge research from Duke University’s Fuqua School of Business on the financial technology industry. In this module, you will learn how financial technology companies are disrupting the credit\nscoring industry by developing new methods for credit scoring using consumers’ digital footprints. In addition, you will explore how financial technology platforms have introduced new, experimental forms of financing, such as crowdfunding.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.5,
+    "starisk": 3.9,
+    "spread": 1.12,
+    "spread_weighted": 1.12,
+    "reviews": 20,
+    "review_counts": {
+      "2.0": 2,
+      "3.0": 6,
+      "4.0": 1,
+      "5.0": 11
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "The relevance of week 3 and 4 to Start-up financing was extremely limited. The course content could be improved significantly there.",
+      "stars": 3.0,
+      "likes": 6
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 55,
+    "ratings_total": 231,
+    "rating_counts": {
+      "1": 1,
+      "2": 7,
+      "3": 17,
+      "4": 49,
+      "5": 157
+    },
+    "instructors": [
+      {
+        "name": "Manju Puri",
+        "slug": "~46361102",
+        "url": "https://www.coursera.org/instructor/~46361102",
+        "page": "manju-puri",
+        "id": "46361102",
+        "role": "J. B. Fuqua Professor",
+        "department": "Duke University’s Fuqua School of Business",
+        "learners": 17777,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c2/b273c9248741748cf8807d3ce6c5dd/Screen-Shot-2019-10-31-at-1.33.26-PM.jpg"
+      },
+      {
+        "name": "David Robinson",
+        "slug": "~46361139",
+        "url": "https://www.coursera.org/instructor/~46361139",
+        "page": "david-robinson",
+        "id": "46361139",
+        "role": "Professor of Finance and James and Gail Vander Weide Professor",
+        "department": "Duke University's Fuqua School of Business",
+        "learners": 61702,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/21/60de27a97943da8c4a2e911c5a762f/Screen-Shot-2019-10-31-at-1.40.44-PM.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Social Sciences"
+    ],
+    "level": "Intermediate",
+    "enrollment": 17777,
+    "slug": "learn/financing-startup-businesses",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/blockchain-business-models": {
+    "title": "Blockchain Business Models",
+    "provider": "Duke University",
+    "description": "Blockchain is an emerging and highly disruptive technology that is poorly understood. In this course you will learn what blockchain is and how it can create value by tokenization in cryptocurrencies and in many other practical applications. The applications include: stablecoins (like Facebook’s Libra and JP Morgan’s JPMCoin), machine to machine payments, identity protection, supply chain management (Walmart, Maersk, IBM), secure voting, distributed exchanges, decentralized finance, property transfers, central bank fiat crypto (e.g., Fedcoin and China’s digital Renminbi), dispensing prescription drugs, private records, intellectual property, financial reporting, and media and advertising, to name a few.  The goals of the course are to: (i) provide an advanced understanding of the various blockchain technologies; (ii) determine the specific business situations where blockchain technology can be deployed to solve important problems; (iii) select the specific blockchain technology that has the best chance of success for a particular problem; and (iv) detail the risks presented by this new technology.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.7,
+    "starisk": 4.8,
+    "spread": 0.49,
+    "spread_weighted": 0.55,
+    "reviews": 19,
+    "review_counts": {
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 17
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This was supposed to be an intermediate course that focused on blockchain business models, but instead, focused mainly on such general blockchain information that was very unspecific to the subject it was supposed to be about. As someone already very knowledgeable about BTC, ETH, and how blockchain tech works, less than 20% of this course was new, useful information. I wanted to do a deep dive on the industry use cases but that was only a fraction of this course and did not go into real depth. Quite disappointed. The Duke courses on decentralized finance were way better.",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 140,
+    "ratings_total": 405,
+    "rating_counts": {
+      "1": 5,
+      "2": 4,
+      "3": 7,
+      "4": 72,
+      "5": 317
+    },
+    "instructors": [
+      {
+        "name": "Campbell R. Harvey",
+        "slug": "~46121307",
+        "url": "https://www.coursera.org/instructor/~46121307",
+        "page": "campbell-r-harvey",
+        "id": "46121307",
+        "role": null,
+        "department": null,
+        "learners": 92686,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/53/1550796d3d4bbb80a823011a0344c3/CRH_7172_cropped.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Intermediate",
+    "enrollment": 22048,
+    "slug": "learn/blockchain-business-models",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/financial-risk-management-with-r": {
+    "title": "Financial Risk Management with R",
+    "provider": "Duke University",
+    "description": "This course teaches you how to calculate the return of a portfolio of securities as well as quantify the market risk of that portfolio, an important skill for financial market analysts in banks, hedge funds, insurance companies, and other financial services and investment firms. Using the R programming language with Microsoft Open R and RStudio, you will use the two main tools for calculating the market risk of stock portfolios: Value-at-Risk (VaR) and Expected Shortfall (ES). You will need a beginner-level understanding of R programming to complete the assignments of this course.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.3,
+    "starisk": 2.7,
+    "spread": 1.77,
+    "spread_weighted": 1.7,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 8,
+      "2.0": 1,
+      "3.0": 2,
+      "4.0": 2,
+      "5.0": 7
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "These problems stem from the fact that the random number generator (RNG) default program changed in R version 3.6.0. Therefore, when using the set.seed() command to ensure our random samples matched those of the professor, I got slightly different results. This shouldn't have been a problem, but the professor arbitrarily decided that the answers to the quizzes and exercises should include six decimal places. If he asked for three or four decimals, this would not have been a problem and any version of R would be sufficient.",
+      "stars": 2.0,
+      "likes": 32
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 104,
+    "ratings_total": 265,
+    "rating_counts": {
+      "1": 21,
+      "2": 7,
+      "3": 12,
+      "4": 54,
+      "5": 171
+    },
+    "instructors": [
+      {
+        "name": "David Hsieh",
+        "slug": "~45241916",
+        "url": "https://www.coursera.org/instructor/~45241916",
+        "page": "david-hsieh",
+        "id": "45241916",
+        "role": "Bank of America Professor",
+        "department": "Finance",
+        "learners": 20009,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/15/98461aa5e24b958722007609d64aa7/Screen-Shot-2019-10-22-at-1.35.07-PM.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 20009,
+    "slug": "learn/financial-risk-management-with-r",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/generative-ai-for-legal-services-primer": {
+    "title": "Generative AI for Legal Services Primer",
+    "provider": "Vanderbilt University",
+    "description": "This course covers what Generative AI is and its applications to a variety of tasks in the legal field. The course will cover ethics and privacy, basic prompt engineering strategies for legal use cases, and how to leverage Generative AI to augment your legal expertise. This is a rapidly advancing area and a primary goal of this course is to prepare everyone for the pace of change that is taking place and to develop a mindset of continuous curiosity that will enable lawyers to adapt along with the technology",
+    "image": "/logos/vanderbilt-university.png",
+    "coursera": 4.8,
+    "starisk": 4.4,
+    "spread": 0.88,
+    "spread_weighted": 0.9,
+    "reviews": 15,
+    "review_counts": {
+      "3.0": 4,
+      "5.0": 11
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This course would have been more useful if it had been more about hands-on practice. Ironically, it is the discussion about the state of AI that quickly becomes obsolete, while the actual techniques of Prompt Engineering carry over as models develop. I would have been much more satisfied if the course had consisted of a series of practical applications, eg, let's create some legal instruments and documents using progressively more sophisticated Prompt Engineering. The general discussion was a bit redundant and not very useful. The instructor seemed very competent. But this course requires competence in Law, AI, *and*pedagogy, which is a pretty heavy lift. I would have like a precise continuation of the pattern of Prompt Engineering for ChatGPT course, but digging down into Law specifically.",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 15,
+    "ratings_total": 70,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 5,
+      "4": 7,
+      "5": 58
+    },
+    "instructors": [
+      {
+        "name": "Mark Williams",
+        "slug": "~130817893",
+        "url": "https://www.coursera.org/instructor/~130817893",
+        "page": "mark-williams",
+        "id": "130817893",
+        "role": "Co-Founder, Vanderbilt AI Law Lab (VAILL)",
+        "department": "Vanderbilt Law School",
+        "learners": 6977,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c3/44603166f04a5384139e9830a3cd37/williams.jpg"
+      }
+    ],
+    "categories": [
+      "Social Sciences",
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 6977,
+    "slug": "learn/generative-ai-for-legal-services-primer",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-words": {
+    "title": "Writing and Editing: Word Choice and Word Order",
+    "provider": "University of Michigan",
+    "description": "This course will teach you how to use your written words to become more persuasive. You’ll learn creative ways to use syntax, effective techniques for telling stories, and a clever method for arranging a complex series of information. You’ll also get a chance to both professionalize your use of punctuation and add a bit of style and sophistication to how you craft everything from sentences to slogans.  \n\nIn addition, you’ll get access to a wide range of books and other resources you can use even after you finish the course. These include (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email. Social media has only accelerated the ways in which we all must learn to use our writing to connect, compete, and create—sometimes all at once. So join us for this first course in a four-part series and experience the many benefits, both personal and professional, of becoming “good with words.”",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.7,
+    "starisk": 4.6,
+    "spread": 0.89,
+    "spread_weighted": 1.09,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "4.0": 1,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This is not well put together. For a course on writing, it certainly lacks structure.",
+      "stars": 1.0,
+      "likes": 16
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 504,
+    "ratings_total": 2038,
+    "rating_counts": {
+      "1": 31,
+      "2": 21,
+      "3": 56,
+      "4": 267,
+      "5": 1663
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 174799,
+    "slug": "learn/writing-editing-words",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-structure": {
+    "title": "Writing and Editing: Structure and Organization",
+    "provider": "University of Michigan",
+    "description": "This second course in the Good with Words: Writing and Editing series will help you become an effective architect of information, both with your sentences and with your paragraphs. You’ll learn that the traditional advice to “Show, don’t tell” is incomplete and that skilled writers actually switch back and forth between showing and telling.\n\nYou’ll also learn more about the menu of time management techniques introduced in the first course of the series, including “deep work,” “studio time,” and “the Animal Farm Principle.” And as with the other three courses in this series, you will get access to a wide range of books and other resources you can use even after you finish the course. These include: (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email.",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.7,
+    "starisk": 4.6,
+    "spread": 0.6,
+    "spread_weighted": 0.78,
+    "reviews": 20,
+    "review_counts": {
+      "3.0": 2,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I would have liked to have seen more practice offered. The quizzes weren’t terribly helpful because they seemed to test your ability to recall information such as author names; this wasn’t particularly helpful for reinforcing the ideas in the videos and reading and provided a source of frustration, rather than information.",
+      "stars": 3.0,
+      "likes": 11
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 116,
+    "ratings_total": 578,
+    "rating_counts": {
+      "1": 6,
+      "2": 6,
+      "3": 17,
+      "4": 76,
+      "5": 473
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 42817,
+    "slug": "learn/writing-editing-structure",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-drafting": {
+    "title": "Writing and Editing: Drafting",
+    "provider": "University of Michigan",
+    "description": "This third course in the “Good with Words: Writing and Editing” series will give you a number of strategies to help with what is often the most intimidating, even paralyzing part of the writing process: getting started.\n\nYou’ll learn about the “planning fallacy” and “temptation bundling.” You’ll get a chance to experiment with “freewriting” and “writing before you are ready.” And you’ll continue to benefit, through our ongoing “Good Sentences” and “Takeaways” segments, from the models and advice of a diverse set of writers. \n\nAs with the other three courses in this series, you will also get access to a wide range of books and other resources you can use even after you finish the course. These include: (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email.",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 20,
+    "review_counts": {
+      "5.0": 20
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "O curso é incrível. Conteúdo interessante, apresentado de forma didática e leve. O professor é didático e engajado. Apesar de ser dedicado a alunos do curso de Direito da Universidade de Michigan, pode ser aplicado a qualquer área do conhecimento. As dicas sobre o uso da língua inglesa são muito boas e proveitosas. Recomendo este curso para todos(as) que desejam escrever de forma persuasiva.",
+      "stars": 5.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 79,
+    "ratings_total": 374,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 11,
+      "4": 48,
+      "5": 312
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 34938,
+    "slug": "learn/writing-editing-drafting",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-revising": {
+    "title": "Writing and Editing: Revising",
+    "provider": "University of Michigan",
+    "description": "This fourth and final course in the “Good with Words: Writing and Editing” series will help you master perhaps the most important step in the writing process: revising. You’ll learn about the difference between editing and proofreading. You’ll practice “un-numbing the numbers” so that data and statistics you use are clear and compelling. And you’ll be introduced to a framework for giving and receiving feedback that helpfully systematizes what should be cut and what should be kept from each draft.\n\nAs with the other three courses in this series, you will also get access to a wide range of books and other resources you can use even after you finish the course. These include: (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email.",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 20,
+    "review_counts": {
+      "5.0": 20
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "Although the course was meant for law students, I enjoyed it greatly as an English learner, too. The course did not simply teach the participants which words or cunstructions are better for writing; it also covered concepts and ideas helping learn how to work more productively and effeciently, how to manage your time and writing process. I found this course, as well as the whole specialization, extremely useful.",
+      "stars": 5.0,
+      "likes": 6
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 98,
+    "ratings_total": 409,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 10,
+      "4": 53,
+      "5": 344
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 28608,
+    "slug": "learn/writing-editing-revising",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
   }
 }
