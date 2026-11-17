@@ -33,8 +33,14 @@ supplies the scores and titles the site derives from.
 
 Built: `pipeline/starisk/nightly.py` runs the sequence and gates the commit;
 `ops/` holds the code-less image, the compose service, the cron line and the
-setup notes (`ops/README.md`). The container commits on `data/crawl` and keeps
-one pull request open against `develop`.
+setup notes (`ops/README.md`).
+
+The container is stateless: it clones `develop` into its own filesystem, publishes
+a branch named after the run (`data/crawl-<stamp>`), opens a pull request and
+exits. Only the state volume survives — the JSON corpus and the page cache,
+pointed at by `STARISK_DATA` — so updating the crawler is just merging to
+`develop`. The push is a create, which is the one push git cannot reject: no
+rebase, no force, no lease, and nothing that depends on last night's branch.
 
 - **Nightly queue read.** Query `course_requests` and send one `ntfy` digest
   through the existing health check: new asks (`first_seen` since the last run),
@@ -53,8 +59,9 @@ one pull request open against `develop`.
   key for the push, and the `ntfy` topic. No repo secrets are needed.
 - **Never automate `name/*` rows.** They cannot be resolved to a slug without a
   human, so the run should count them and stop.
-- Keep the container's data volume on `pipeline/data/` and the cache directory so
-  freshness and `--offline` keep working across runs.
+- Keep the volume on the JSON corpus and the page cache (`STARISK_DATA`, plus
+  `STARISK_LOGS` for the run record and the lock) so freshness and `--offline`
+  keep working across runs. The checkout is disposable and never persisted.
 
 ## Front end
 - **Brand theme: navy + gold.** The logo is `#111827` with `#fbbf24`, and the

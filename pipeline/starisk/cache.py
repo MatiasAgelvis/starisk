@@ -15,7 +15,9 @@ import os
 import tempfile
 from pathlib import Path
 
-CACHE_DIR = Path(__file__).resolve().parents[1] / "data" / ".cache" / "pages"
+from .paths import CACHE_DIR as STATE_CACHE
+
+CACHE_DIR = STATE_CACHE / "pages"
 
 
 def path_for(key: str, directory: Path = CACHE_DIR) -> Path:

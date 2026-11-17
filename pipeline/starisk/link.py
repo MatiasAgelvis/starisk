@@ -27,11 +27,12 @@ from pathlib import Path
 from .adapter import LANGUAGE_SUFFIX as _LANGUAGE_SUFFIX
 from .crawl import SCORES_PATH, SOURCES_PATH, normalize_source, write_atomic
 from .fetch import fetch_page
+from .paths import CACHE_DIR
 from .sitemap import load_slugs as load_cached_slugs
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CALIBRATION_PATH = REPO_ROOT / "calibration" / "courses.json"
-CACHE_PATH = Path(__file__).resolve().parents[1] / "data" / ".cache" / "coursera-slugs.txt"
+CACHE_PATH = CACHE_DIR / "coursera-slugs.txt"
 
 SITEMAP_URL = "https://www.coursera.org/sitemap~www~courses.xml"
 REVIEWS_URL = "https://www.coursera.org/{key}/reviews"

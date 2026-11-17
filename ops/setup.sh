@@ -6,8 +6,9 @@
 #   sudo ./ops/setup.sh --force    # overwrite an existing /etc/starisk/env
 #
 # Idempotent: rebuilds the image, keeps an existing env file, and replaces only
-# its own cron line. Nothing else on the host is touched: the clone, cache,
-# logs and commits live in the volume.
+# its own cron line. Nothing else on the host is touched. The container clones
+# `develop`, crawls, publishes a branch and exits; the corpus and page cache
+# accumulate in the `starisk-state` volume.
 #
 # What root is for: the Docker socket. After this script, root runs one fixed
 # `docker run` at 03:30 and nothing user-writable is in that path — the env file
@@ -16,7 +17,7 @@ set -eu
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 IMAGE=starisk-nightly
-VOLUME=starisk
+VOLUME=starisk-state
 ENV_FILE=/etc/starisk/env
 MARK="# starisk-nightly"
 SCHEDULE=${STARISK_SCHEDULE:-"30 3 * * *"}
@@ -74,9 +75,14 @@ if [ -f "$ENV_FILE" ]; then
   for key in TURSO_DATABASE_URL TURSO_AUTH_TOKEN GITHUB_TOKEN; do
     grep -q "^$key=" "$ENV_FILE" || echo "[setup] warning: $key is missing from $ENV_FILE" >&2
   done
+  if ! grep -q '^NTFY_URL=' "$ENV_FILE"; then
+    echo "[setup] note: NTFY_URL is not set — notifications are off, so failures" >&2
+    echo "        will only appear in the journal (journalctl -t starisk-nightly)" >&2
+  fi
 fi
 
-LINE="$SCHEDULE docker run --rm --env-file $ENV_FILE -v $VOLUME:/srv/starisk $IMAGE 2>&1 | logger -t starisk-nightly $MARK"
+RUN="docker run --rm --init --env-file $ENV_FILE -v $VOLUME:/state -e STARISK_DATA=/state $IMAGE"
+LINE="$SCHEDULE $RUN 2>&1 | logger -t starisk-nightly $MARK"
 {
   crontab -l 2>/dev/null | grep -vF "$MARK" || true
   echo "$LINE"
@@ -86,7 +92,7 @@ echo "        $LINE"
 
 if [ "$check" -eq 1 ]; then
   echo "[setup] dry run"
-  docker run --rm --env-file "$ENV_FILE" -v "$VOLUME:/srv/starisk" "$IMAGE" --dry-run
+  $RUN --dry-run
 fi
 
 echo "[setup] done. Journal: journalctl -t starisk-nightly"

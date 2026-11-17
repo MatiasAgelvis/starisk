@@ -1,11 +1,16 @@
-# The nightly crawl.
+# Run one nightly job and exit.
 #
-# The clone lives in the `starisk` volume, owned by the container: the host has
-# no checkout to switch, no cache to keep and no branch to clean up. The host
-# provides this file, `ops/.env` and the cron line — nothing else.
+# The image carries the runtimes and the launcher; it carries no code and no
+# state. Every run clones `develop` into the container's own filesystem, crawls,
+# publishes a branch, and dies with the clone. What survives is `starisk-state`,
+# mounted at /state and pointed at by STARISK_DATA.
 #
-# Reset the clone (it will be cloned again on the next run):
-#   docker compose down -v
+#   ops/run.sh --dry-run
+#   ops/run.sh --no-git --limit 1
+#   ops/run.sh                      # the real run
+#
+# Reset the accumulated corpus (next run starts from an empty state):
+#   docker volume rm starisk-state
 
 services:
   nightly:
@@ -18,10 +23,15 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      STARISK_DATA: /state
+      STARISK_LOGS: /state/logs
+      # Branch under test: `STARISK_BRANCH=x ops/run.sh` runs the container
+      # against an unmerged branch without merging anything.
+      STARISK_BRANCH: ${STARISK_BRANCH:-develop}
     volumes:
-      - starisk:/srv/starisk
-    working_dir: /srv/starisk
+      - starisk-state:/state
     init: true
 
 volumes:
-  starisk:
+  starisk-state:

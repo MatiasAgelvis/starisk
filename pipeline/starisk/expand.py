@@ -34,12 +34,13 @@ from .cache import CACHE_DIR, load_page, store_page
 from .crawl import SCORES_PATH, SOURCES_PATH, normalize_source, write_atomic
 from .fetch import fetch_page
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
+from .paths import CACHE_DIR as STATE_CACHE
 from .sitemap import load_slugs as load_cached_slugs
 
 SITEMAP_URL = "https://www.coursera.org/sitemap~www~specializations.xml"
 SPECIALIZATION_URL = "https://www.coursera.org/specializations/{slug}"
 INSTRUCTOR_URL = "https://www.coursera.org/instructor/{slug}"
-SITEMAP_CACHE = Path(__file__).resolve().parents[1] / "data" / ".cache" / "coursera-specializations.txt"
+SITEMAP_CACHE = STATE_CACHE / "coursera-specializations.txt"
 
 DELAY = 1.5
 

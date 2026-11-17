@@ -1,18 +1,21 @@
-# The nightly job's dependencies are the repo, cloned into a volume at run time,
-# and the two runtimes it needs. Nothing is baked in: the image is upgraded by
-# changing the runtimes, the job by merging to `develop`.
+# One run of the nightly job.
+#
+# The image is runtimes plus the launcher: Python for the pipeline, git to clone
+# and publish, node for `web/scripts/sync-data.mjs`. No application code is baked
+# in — the container clones `develop` at run time, so merging a fix to the
+# crawler is all it takes to update the job.
 #
 # The pipeline has no third-party dependencies (see pipeline/pyproject.toml), so
-# there is no pip install here. Node comes from the official image because
-# web/scripts/sync-data.mjs is the only thing that needs it, and using the same
-# major the repo pins keeps the container and `mise` interchangeable.
+# there is no pip install here.
 
 FROM node:24-slim AS node
 
 FROM python:3.13-slim
 
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
+    PYTHONDONTWRITEBYTECODE=1 \
+    STARISK_DATA=/state \
+    STARISK_LOGS=/state/logs
 
 # libstdc++ / libatomic are what the copied node binary links against.
 RUN apt-get update \
@@ -25,15 +28,13 @@ RUN apt-get update \
 
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 
-# Rebase rewrites commits and therefore needs a committer identity, which a bare
-# container has none of. System-wide so it applies to every git invocation.
+# A commit needs a committer identity, which a bare container has none of.
+# System-wide so it applies to every git invocation.
 RUN git config --system user.name "Starisk Bot" \
  && git config --system user.email "bot@matiasagelvis.com"
 
-# The launcher has to live in the image: on a fresh volume there is no clone yet,
-# so nothing can be read from /srv/starisk. It is the only script that is baked.
 COPY ops/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-WORKDIR /srv/starisk
+WORKDIR /work
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
