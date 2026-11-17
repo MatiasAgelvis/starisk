@@ -261,6 +261,19 @@ def copy_state(source: Path, target: Path) -> None:
             shutil.copy2(path, target / name)
 
 
+def adopt(base: dict, state: dict) -> list[str]:
+    """Add records `develop` has that the state is missing.
+
+    The crawl starts from what everyone has published, plus what this box has
+    crawled — which is the rule a second machine makes obvious. `develop` only
+    wins on absence: where both have a course, the state's copy is newer.
+    """
+    added = [key for key in base if key not in state]
+    for key in added:
+        state[key] = base[key]
+    return added
+
+
 def removal_problem(published: dict) -> str | None:
     """Refuse a branch that would drop courses `develop` already has.
 
@@ -579,6 +592,14 @@ def run(options) -> int:
             return dry_run(options)
 
         before = load_scores()
+        # What the branch will be cut from: `develop`. Adopt anything it has that
+        # this box never saw (a merge, or a crawl published from elsewhere) before
+        # judging the run, so the two never diverge.
+        base = load_scores(REPO / "pipeline" / "data" / "scores.json")
+        adopted = adopt(base, before)
+        if adopted:
+            crawl.write_atomic(crawl.SCORES_PATH, before)
+            print(f"[nightly] adopted {len(adopted)} record(s) from {BASE}")
         # Files already dirty when we started are not this run's doing: a stray
         # note in a dev clone must not gate the commit.
         baseline = set(changed())
@@ -620,11 +641,9 @@ def run(options) -> int:
             return finish(env, started, FAILED, "the program index rebuild failed")
 
         # The branch is cut from `develop`, so what it will carry is the state
-        # against develop — not this run's own delta. Loaded before `copy_state`
-        # overwrites the checkout's copy, and used for the commit and the PR, so
-        # their numbers match the diff a reviewer sees. The gate above keeps
-        # judging the run by what the run changed.
-        base = load_scores(REPO / "pipeline" / "data" / "scores.json")
+        # against develop — not this run's own delta. Used for the commit and the
+        # PR, so their numbers match the diff a reviewer sees. The gate above
+        # keeps judging the run by what the run changed.
 
         # State may live outside the checkout (the container's volume), but the
         # commit has to carry it back into `pipeline/data` so `sync-data` and the
