@@ -47,7 +47,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from . import crawl, demand, groupings, logo_hires, logos, smoke
-from .paths import DATA_DIR, LOG_DIR
+from .paths import LOG_DIR
 
 REPO = Path(__file__).resolve().parents[2]
 LAST_RUN = LOG_DIR / "last-run.json"
@@ -92,14 +92,6 @@ DATA_PATHS = (
 )
 DATA_PREFIXES = ("web/public/logos/",)
 
-# The JSON that is published, as opposed to the page cache, which is state only.
-PUBLISHED = (
-    "scores.json",
-    "sources.json",
-    "requests.json",
-    "groupings.json",
-    "programs.json",
-)
 
 # Guards against a quietly broken adapter publishing itself.
 MAX_SCORED_DROP = 5
@@ -248,48 +240,116 @@ def tracked_changes() -> list[str]:
     return _paths(git("status", "--porcelain", "--untracked-files=no").stdout)
 
 
-def copy_state(source: Path, target: Path) -> None:
-    """Bring the published JSON from wherever state lives into the checkout.
-
-    The container points `STARISK_DATA` at a volume and clones fresh every run, so
-    the files the crawl wrote are not in `pipeline/data` — but the commit has to be.
-    """
-    target.mkdir(parents=True, exist_ok=True)
-    for name in PUBLISHED:
-        path = source / name
-        if path.exists():
-            shutil.copy2(path, target / name)
+def commit(self) -> bool:
+        return self.code in (OK, PARTIAL)
 
 
-def adopt(base: dict, state: dict) -> list[str]:
-    """Add records `develop` has that the state is missing.
+def decide(
+    changed_paths: list[str],
+    summary: dict,
+    before: dict,
+    adapter_ok: bool = True,
+) -> Decision:
+    if not adapter_ok:
+        return Decision(SMOKE, "the live adapter check failed")
 
-    The crawl starts from what everyone has published, plus what this box has
-    crawled — which is the rule a second machine makes obvious. `develop` only
-    wins on absence: where both have a course, the state's copy is newer.
-    """
-    added = [key for key in base if key not in state]
-    for key in added:
-        state[key] = base[key]
-    return added
+    stray = [path for path in changed_paths if not allowed(path)]
+    if stray:
+        return Decision(GATE, f"unexpected files changed: {', '.join(stray[:5])}")
+    if not changed_paths:
+        return Decision(NOTHING, "nothing changed")
+
+    if summary["removed"]:
+        return Decision(GATE, f"{len(summary['removed'])} record(s) disappeared")
+    drop = before["scored"] - summary["scored"]
+    if drop > MAX_SCORED_DROP:
+        return Decision(GATE, f"scored courses dropped by {drop}")
+    errors = summary["errors"] - before["errors"]
+    if errors > MAX_NEW_ERRORS:
+        return Decision(GATE, f"{errors} more records with errors")
+    if summary["rate_limited"]:
+        return Decision(PARTIAL, "Coursera rate-limited the crawl")
+    return Decision(OK, "committed")
 
 
-def removal_problem(published: dict) -> str | None:
-    """Refuse a branch that would drop courses `develop` already has.
+def _courses(count: int) -> str:
+    return f"{count} course" if count == 1 else f"{count} courses"
 
-    `published` is the state against the branch's base, so a non-empty `removed`
-    means the volume is behind `develop`: someone merged or pushed data the crawl
-    has never seen. Publishing would silently undo it, which is worse than the
-    conflict the old rebase used to produce.
-    """
-    removed = published.get("removed") or []
-    if not removed:
-        return None
+
+def commit_message(summary: dict) -> str:
+    added, updated = len(summary["added"]), len(summary["updated"])
+    if added and updated:
+        return f"data(crawl): add {_courses(added)}, rescore {updated}"
+    if added:
+        return f"data(crawl): add {_courses(added)}"
+    if updated:
+        return f"data(crawl): rescore {_courses(updated)}"
+    return "data(crawl): refresh course data"
+
+
+def commit_body(summary: dict, decision: Decision) -> str:
+    lines = []
+    if decision.code == PARTIAL:
+        lines.append(f"- Partial run: {decision.reason}")
+    delta = summary["scored"] - summary["scored_before"]
+    lines.append(f"- {summary['scored']} scored ({delta:+d}), {len(summary['updated'])} rescored")
+    lines.append(f"- {summary['errors']} record(s) with errors")
+    return "\n".join(lines)
+
+
+def pr_body(summary: dict, decision: Decision, day: str) -> str:
+    lines = [
+        f"Nightly crawl, {day}.",
+        "",
+        f"- {decision.reason}",
+        f"- {summary['scored']} scored, {len(summary['added'])} added, "
+        f"{len(summary['updated'])} rescored",
+        f"- {summary['errors']} record(s) with errors",
+        "",
+        "Merging this lands the data on `develop`; production still moves with the",
+        "`develop → main` release merge.",
+    ]
+    return "\n".join(lines)
+
+
+def summary_line(summary: dict, decision: Decision) -> str:
     return (
-        f"refusing to publish: this branch would remove {len(removed)} course(s) that "
-        f"{BASE} has, so the state volume is behind — merge the open pull request, "
-        "or reseed the volume from develop"
+        f"{decision.reason}: +{len(summary['added'])} added, "
+        f"{len(summary['updated'])} rescored, {summary['scored']} scored, "
+        f"{summary['errors']} with errors"
     )
+
+
+# --- git ------------------------------------------------------------------
+
+
+def git(*args: str, check: bool = True, env: dict | None = None) -> subprocess.CompletedProcess:
+    completed = subprocess.run(
+        ("git", *args), cwd=REPO, text=True, capture_output=True, env=env
+    )
+    if check and completed.returncode != 0:
+        raise GitError(completed.stderr.strip() or f"git {args[0]} failed")
+    return completed
+
+
+def _paths(output: str) -> list[str]:
+    paths = []
+    for line in output.splitlines():
+        path = line[3:].strip()
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        paths.append(path.strip('"'))
+    return [path for path in paths if path]
+
+
+def changed() -> list[str]:
+    """Tracked and untracked paths git would commit; ignored files stay invisible."""
+    return _paths(git("status", "--porcelain", "--untracked-files=all").stdout)
+
+
+def tracked_changes() -> list[str]:
+    """Modified tracked files only. Stray untracked files are not a reason to stop."""
+    return _paths(git("status", "--porcelain", "--untracked-files=no").stdout)
 
 
 def commit(paths: list[str], message: str, body: str) -> str:
@@ -592,14 +652,6 @@ def run(options) -> int:
             return dry_run(options)
 
         before = load_scores()
-        # What the branch will be cut from: `develop`. Adopt anything it has that
-        # this box never saw (a merge, or a crawl published from elsewhere) before
-        # judging the run, so the two never diverge.
-        base = load_scores(REPO / "pipeline" / "data" / "scores.json")
-        adopted = adopt(base, before)
-        if adopted:
-            crawl.write_atomic(crawl.SCORES_PATH, before)
-            print(f"[nightly] adopted {len(adopted)} record(s) from {BASE}")
         # Files already dirty when we started are not this run's doing: a stray
         # note in a dev clone must not gate the commit.
         baseline = set(changed())
@@ -645,12 +697,6 @@ def run(options) -> int:
         # PR, so their numbers match the diff a reviewer sees. The gate above
         # keeps judging the run by what the run changed.
 
-        # State may live outside the checkout (the container's volume), but the
-        # commit has to carry it back into `pipeline/data` so `sync-data` and the
-        # diff see it.
-        if DATA_DIR != REPO / "pipeline" / "data":
-            copy_state(DATA_DIR, REPO / "pipeline" / "data")
-
         synced = subprocess.run(("node", "web/scripts/sync-data.mjs"), cwd=REPO)
         if synced.returncode != 0:
             return finish(env, started, FAILED, "copying the data into the site failed")
@@ -658,12 +704,8 @@ def run(options) -> int:
         after = load_scores()
         new_paths = [path for path in changed() if path not in baseline]
         summary = diff_summary(before, after)
-        published = diff_summary(base, after)
         decision = decide(new_paths, summary, crawl.summarize(before))
 
-        problem = removal_problem(published)
-        if problem and decision.commit:
-            return finish(env, started, GATE, problem, summary=summary)
 
         commit_hash = None
         pr_url = None
@@ -677,8 +719,8 @@ def run(options) -> int:
                 git("switch", "-c", branch)
                 commit_hash = commit(
                     [path for path in new_paths if allowed(path)],
-                    commit_message(published),
-                    commit_body(published, decision),
+                    commit_message(summary),
+                    commit_body(summary, decision),
                 )
             except GitError as error:
                 return finish(env, started, GIT, f"commit failed: {error}", summary=summary)
@@ -701,7 +743,7 @@ def run(options) -> int:
                         env,
                         branch,
                         "Nightly crawl",
-                        pr_body(published, decision, started[:10]),
+                        pr_body(summary, decision, started[:10]),
                     )
                     for number in close_superseded(env, branch):
                         print(f"[nightly] closed #{number}, superseded by {branch}")
