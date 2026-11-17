@@ -24,5 +24,13 @@ if [ ! -d "$WORK/.git" ]; then
   git clone --depth 1 --branch "$BRANCH" "https://github.com/$REPO_SLUG.git" "$WORK"
 fi
 
+# A fresh volume adopts the corpus that shipped with the clone, so the job starts
+# from the current list rather than an empty one. The crawl is cumulative, so this
+# only ever runs once.
+if [ ! -f "$STARISK_DATA/sources.json" ]; then
+  echo "[entrypoint] seeding $STARISK_DATA from the checkout"
+  cp -a "$WORK/pipeline/data/." "$STARISK_DATA/"
+fi
+
 cd "$WORK/pipeline"
 exec python -m starisk.nightly "$@"
