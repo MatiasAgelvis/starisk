@@ -53,21 +53,19 @@ Your working copy is never mounted, so none of this touches it.
 git clone -b develop https://github.com/MatiasAgelvis/starisk.git ~/src/starisk
 cd ~/src/starisk
 
-# 2. The secrets.
-cp ops/.env.example ops/.env
-$EDITOR ops/.env          # Turso, GitHub token, ntfy topic
-
-# 3. Build the image, install /etc/starisk/env at 600, and replace only its own
-#    cron line. --check also runs a dry run at the end.
-sudo ./ops/setup.sh --check
+# 2. The secrets. Any path works; --env takes it relative to the repo or absolute.
+sudo ./ops/setup.sh --env .env --check
 ```
 
-That leaves three things on the host — the image, `/etc/starisk/env`, one cron
-line — and no compose file. The line it installs:
+That leaves four things on the host — the image, the `starisk-state` volume,
+`/etc/starisk/env`, one cron line — and no compose file. The line it installs:
 
 ```cron
-30 3 * * * docker run --rm --init --env-file /etc/starisk/env -v starisk-state:/state -e STARISK_DATA=/state starisk-nightly 2>&1 | logger -t starisk-nightly # starisk-nightly
+30 3 * * * docker run --rm --init --env-file /etc/starisk/env -v starisk-state:/state starisk-nightly 2>&1 | logger -t starisk-nightly # starisk-nightly
 ```
+
+`STARISK_DATA=/state` and `STARISK_LOGS=/state/logs` come from the image, so the
+cron line does not repeat them.
 
 Root is there for the Docker socket, nothing else: it runs that fixed command,
 the env file is root-owned `600`, and the image is immutable.
@@ -100,7 +98,7 @@ snapshot anyway.
   dead cron looks different from a quiet week.
 - **Updating the job.** Merge to `develop`. The next run clones it, so the code
   that runs is the code you merged. Rebuild the image only when the entrypoint or
-  runtimes change: `sudo ./ops/setup.sh`, or
+  runtimes change: `sudo ./ops/setup.sh --env .env`, or
   `docker build -f ops/Dockerfile -t starisk-nightly .`.
 
 ## Exit codes
@@ -126,7 +124,7 @@ nightly --limit 20            # smaller valve for one night
 nightly --limit 0             # uncapped
 nightly --no-push             # commit on the branch, stop before push/PR
 nightly --offline             # re-parse the cache, no requests
-nightly --env-file .env.prod  # host runs: read a dotenv instead of exporting it
+nightly --env-file .env         # host runs: read a dotenv instead of exporting it
 ```
 
 The container gets its environment from `--env-file` — `/etc/starisk/env` on the
@@ -134,14 +132,15 @@ box, `ops/.env` for the local compose path — so `--env-file` is for running th
 module directly on the host:
 
 ```sh
-mise run pipeline:nightly -- --env-file .env.prod --dry-run
+mise run pipeline:nightly -- --env-file .env --dry-run
 ```
 
 ## First run on a fresh volume
 
-The state volume starts empty, so the corpus is empty too: the run rebuilds the
-program index by fetching the pages it needs, roughly 25 requests, once. The clone
-is not reused at all — it is made and discarded every night.
+The entrypoint seeds the state volume from the clone when `/state/sources.json` is
+missing, so a fresh volume adopts the corpus committed to `develop` and the crawl
+starts from there instead of from nothing. The page cache is not in git, so the
+program index rebuilds by fetching the pages it needs — roughly 25 requests, once.
 
 ## When something goes wrong
 
@@ -180,12 +179,6 @@ docker volume rm starisk
 git push origin --delete data/crawl     # if it still exists
 ```
 
-The first run after that rebuilds the corpus from `sources.json` — which means
-crawling everything again, from an empty cache. Seed the state volume from your
-checkout instead, and the first run is incremental like any other:
-
-```sh
-docker volume create starisk-state
-docker run --rm -v starisk-state:/state -v "$PWD/pipeline/data":/seed:ro \
-  --entrypoint sh starisk-nightly -c 'cp -a /seed/. /state/'
-```
+Nothing has to be carried over by hand: the entrypoint seeds the new volume from
+the clone on its first run. The page cache is not in git, so the first crawl after
+the switch is slower than the ones that follow.
