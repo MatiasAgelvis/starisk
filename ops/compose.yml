@@ -3,7 +3,7 @@
 # The image carries the runtimes and the launcher; it carries no code and no
 # state. Every run clones `develop` into the container's own filesystem, crawls,
 # publishes a branch, and dies with the clone. What survives is `starisk-state`,
-# mounted at /state and pointed at by STARISK_DATA.
+# mounted at /state, holding the page cache and the run record.
 #
 #   ops/run.sh --dry-run
 #   ops/run.sh --no-git --limit 1
@@ -24,7 +24,7 @@ services:
       - path: .env
         required: false
     environment:
-      STARISK_DATA: /state
+      STARISK_CACHE: /state/cache
       STARISK_LOGS: /state/logs
       # Branch under test: `STARISK_BRANCH=x ops/run.sh` runs the container
       # against an unmerged branch without merging anything.

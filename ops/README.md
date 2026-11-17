@@ -25,9 +25,9 @@ and git has no non-fast-forward case to refuse. No rebase, no `--force`, no leas
 and nothing that depends on what happened to last night's branch. Merging,
 squashing or deleting it afterwards changes nothing for the next run.
 
-State is `pipeline/data` by default and the volume wherever `STARISK_DATA` points;
-the run record and the lock follow `STARISK_LOGS`. The corpus is cumulative, so the
-newest branch always carries everything.
+The corpus is not state: it comes from `develop` with the clone and goes back out
+as a branch. The volume holds only the page cache (`STARISK_CACHE`) and the run
+record (`STARISK_LOGS`), so losing it costs a night's worth of fetching, not data.
 
 ## Try it locally
 
@@ -64,8 +64,8 @@ That leaves four things on the host — the image, the `starisk-state` volume,
 30 3 * * * docker run --rm --init --env-file /etc/starisk/env -v starisk-state:/state starisk-nightly 2>&1 | logger -t starisk-nightly # starisk-nightly
 ```
 
-`STARISK_DATA=/state` and `STARISK_LOGS=/state/logs` come from the image, so the
-cron line does not repeat them.
+`STARISK_CACHE=/state/cache` and `STARISK_LOGS=/state/logs` come from the image, so
+the cron line does not repeat them.
 
 Root is there for the Docker socket, nothing else: it runs that fixed command,
 the env file is root-owned `600`, and the image is immutable.
@@ -148,10 +148,9 @@ mise run pipeline:nightly -- --env-file .env --dry-run
 
 ## First run on a fresh volume
 
-The entrypoint seeds the state volume from the clone when `/state/sources.json` is
-missing, so a fresh volume adopts the corpus committed to `develop` and the crawl
-starts from there instead of from nothing. The page cache is not in git, so the
-program index rebuilds by fetching the pages it needs — roughly 25 requests, once.
+Nothing to seed: the corpus comes from `develop` with the clone. Only the page
+cache is empty, so the first run refetches the program pages the index needs —
+roughly 25 requests, once.
 
 ## When something goes wrong
 
@@ -190,6 +189,5 @@ docker volume rm starisk
 git push origin --delete data/crawl     # if it still exists
 ```
 
-Nothing has to be carried over by hand: the entrypoint seeds the new volume from
-the clone on its first run. The page cache is not in git, so the first crawl after
-the switch is slower than the ones that follow.
+Nothing has to be carried over: the corpus is in git. The first crawl after the
+switch just refetches what it needs, because the cache is not.

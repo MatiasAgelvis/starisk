@@ -14,7 +14,7 @@ FROM python:3.13-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    STARISK_DATA=/state \
+    STARISK_CACHE=/state/cache \
     STARISK_LOGS=/state/logs
 
 # libstdc++ / libatomic are what the copied node binary links against.

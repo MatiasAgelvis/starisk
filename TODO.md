@@ -38,8 +38,9 @@ setup notes (`ops/README.md`).
 The container is stateless: it clones `develop` into its own filesystem, publishes
 a branch named after the run (`data/crawl-<stamp>`), opens a pull request and
 exits. Only the state volume survives — the JSON corpus and the page cache,
-pointed at by `STARISK_DATA` — so updating the crawler is just merging to
-`develop`. The push is a create, which is the one push git cannot reject: no
+`STARISK_CACHE` for the page cache, `STARISK_LOGS` for the run record — so updating
+the crawler is just merging to `develop`. The corpus itself is never carried: it
+comes from `develop` with the clone. The push is a create, which is the one push git cannot reject: no
 rebase, no force, no lease, and nothing that depends on last night's branch.
 
 - **Nightly queue read.** Query `course_requests` and send one `ntfy` digest
@@ -59,9 +60,8 @@ rebase, no force, no lease, and nothing that depends on last night's branch.
   key for the push, and the `ntfy` topic. No repo secrets are needed.
 - **Never automate `name/*` rows.** They cannot be resolved to a slug without a
   human, so the run should count them and stop.
-- Keep the volume on the JSON corpus and the page cache (`STARISK_DATA`, plus
-  `STARISK_LOGS` for the run record and the lock) so freshness and `--offline`
-  keep working across runs. The checkout is disposable and never persisted.
+- Keep the volume on the page cache and the run record only (`STARISK_CACHE`,
+  `STARISK_LOGS`). The corpus is in git, so a cold cache costs time, never data.
 
 ## Front end
 - **Brand theme: navy + gold.** The logo is `#111827` with `#fbbf24`, and the

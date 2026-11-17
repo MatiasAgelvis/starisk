@@ -1,7 +1,4 @@
-import json
-import tempfile
 import unittest
-from pathlib import Path
 from unittest import mock
 
 from starisk import nightly
@@ -81,61 +78,3 @@ class CloseSupersededTest(unittest.TestCase):
             closed = nightly.close_superseded({}, "data/crawl-20261117T0330")
 
         self.assertEqual(closed, [])
-
-
-class AdoptTest(unittest.TestCase):
-    def test_records_only_develop_has_are_adopted(self):
-        state = {"learn/a": {"starisk": 3.0}, "learn/mine": {"starisk": 4.0}}
-        base = {"learn/a": {"starisk": 1.0}, "learn/theirs": {"starisk": 5.0}}
-
-        added = nightly.adopt(base, state)
-
-        self.assertEqual(added, ["learn/theirs"])
-        # The state's copy of a shared course wins: it is the newer one.
-        self.assertEqual(state["learn/a"], {"starisk": 3.0})
-        self.assertEqual(state["learn/theirs"], {"starisk": 5.0})
-
-    def test_nothing_to_adopt_when_develop_is_a_subset(self):
-        state = {"learn/a": {"starisk": 3.0}}
-
-        self.assertEqual(nightly.adopt({"learn/a": {"starisk": 1.0}}, state), [])
-
-
-class RemovalGuardTest(unittest.TestCase):
-    def test_a_branch_that_would_drop_develop_courses_is_refused(self):
-        problem = nightly.removal_problem({"removed": ["learn/a", "learn/b"]})
-
-        self.assertIn("refusing", problem)
-        self.assertIn("2 course", problem)
-        self.assertIn("develop", problem)
-
-    def test_a_normal_run_has_nothing_to_refuse(self):
-        self.assertIsNone(nightly.removal_problem({"removed": []}))
-        self.assertIsNone(nightly.removal_problem({}))
-
-
-class CopyStateTest(unittest.TestCase):
-    def test_only_published_json_crosses_into_the_checkout(self):
-        with tempfile.TemporaryDirectory() as state_dir, tempfile.TemporaryDirectory() as checkout:
-            state = Path(state_dir)
-            for name in nightly.PUBLISHED:
-                (state / name).write_text(json.dumps({"name": name}), encoding="utf-8")
-            (state / "page-cache-file").write_text("cache", encoding="utf-8")
-
-            target = Path(checkout) / "data"
-            nightly.copy_state(state, target)
-
-            self.assertEqual(
-                sorted(path.name for path in target.iterdir()),
-                sorted(nightly.PUBLISHED),
-            )
-
-    def test_a_missing_file_is_skipped(self):
-        with tempfile.TemporaryDirectory() as state_dir, tempfile.TemporaryDirectory() as checkout:
-            state = Path(state_dir)
-            (state / "scores.json").write_text("{}", encoding="utf-8")
-
-            target = Path(checkout) / "data"
-            nightly.copy_state(state, target)
-
-            self.assertEqual([path.name for path in target.iterdir()], ["scores.json"])
