@@ -1,98 +1,93 @@
 #!/bin/sh
-# One-shot setup for the box. Run as root from the repo:
+# Install the nightly job on this box: image, state volume, secrets, cron.
 #
-#   sudo ./ops/setup.sh            # build the image, install env + cron
-#   sudo ./ops/setup.sh --check    # ...then run a dry run
-#   sudo ./ops/setup.sh --force    # overwrite an existing /etc/starisk/env
+#   sudo ./ops/setup.sh --env .env.prod            # install or update
+#   sudo ./ops/setup.sh --env .env.prod --check    # ...then run a dry run
+#   sudo ./ops/setup.sh --env .env.prod --force    # replace the installed env
 #
-# Idempotent: rebuilds the image, keeps an existing env file, and replaces only
-# its own cron line. Nothing else on the host is touched. The container clones
-# `develop`, crawls, publishes a branch and exits; the corpus and page cache
-# accumulate in the `starisk-state` volume.
+# Safe to re-run: the image is rebuilt, an existing corpus is kept, an existing
+# env file is kept unless --force, and only this script's cron line is replaced.
+# Root is needed for the Docker socket and nothing else.
 #
-# What root is for: the Docker socket. After this script, root runs one fixed
-# `docker run` at 03:30 and nothing user-writable is in that path — the env file
-# is root-owned 600 and the image is immutable.
+# Overrides: STARISK_ENV_FILE (installed path, default /etc/starisk/env),
+# STARISK_SCHEDULE (default "30 3 * * *").
 set -eu
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 IMAGE=starisk-nightly
 VOLUME=starisk-state
-ENV_FILE=/etc/starisk/env
-MARK="# starisk-nightly"
+ENV_FILE=${STARISK_ENV_FILE:-/etc/starisk/env}
 SCHEDULE=${STARISK_SCHEDULE:-"30 3 * * *"}
+MARK="# starisk-nightly"
 
 usage() {
-  sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
 }
 
 force=0
 check=0
-for arg in "$@"; do
-  case "$arg" in
+env_source=
+while [ $# -gt 0 ]; do
+  case "$1" in
     --force) force=1 ;;
     --check) check=1 ;;
+    --env)
+      shift
+      env_source=${1:?--env needs a path}
+      ;;
+    --env=*) env_source=${1#--env=} ;;
     -h | --help)
       usage
       exit 0
       ;;
     *)
-      echo "unknown option: $arg" >&2
+      echo "unknown option: $1" >&2
       exit 2
       ;;
   esac
+  shift
 done
 
-if [ "$(id -u)" -ne 0 ]; then
-  echo "run as root: sudo $0" >&2
-  exit 1
-fi
+[ "$(id -u)" -eq 0 ] || { echo "run as root: sudo $0 --env <path>" >&2; exit 1; }
+[ -n "$env_source" ] || { echo "missing --env: e.g. --env .env" >&2; exit 2; }
+case "$env_source" in
+  /*) ENV_SOURCE=$env_source ;;
+  *) ENV_SOURCE=$REPO/$env_source ;;
+esac
 
-command -v docker >/dev/null 2>&1 || {
-  echo "docker is not installed" >&2
-  exit 1
-}
+command -v docker >/dev/null 2>&1 || { echo "docker is not installed" >&2; exit 1; }
 command -v logger >/dev/null 2>&1 ||
-  echo "[setup] warning: logger not found; the cron line will fail to write its log" >&2
+  echo "[setup] warning: logger not found; cron will fail to write its log" >&2
 
-echo "[setup] building $IMAGE from $REPO"
+echo "[setup] building $IMAGE"
 docker build -f "$REPO/ops/Dockerfile" -t "$IMAGE" "$REPO"
+docker volume create "$VOLUME" >/dev/null
 
-mkdir -p /etc/starisk
-chmod 700 /etc/starisk
 if [ -f "$ENV_FILE" ] && [ "$force" -eq 0 ]; then
-  echo "[setup] keeping existing $ENV_FILE (--force to replace)"
-elif [ -f "$REPO/ops/.env" ]; then
-  cp "$REPO/ops/.env" "$ENV_FILE"
+  echo "[setup] keeping $ENV_FILE (--force to replace)"
+else
+  [ -f "$ENV_SOURCE" ] || { echo "[setup] no such env file: $ENV_SOURCE" >&2; exit 1; }
+  mkdir -p "$(dirname "$ENV_FILE")"
+  cp "$ENV_SOURCE" "$ENV_FILE"
   chown root:root "$ENV_FILE"
   chmod 600 "$ENV_FILE"
-  echo "[setup] installed $ENV_FILE"
-else
-  echo "[setup] no ops/.env to install; create $ENV_FILE by hand" >&2
+  echo "[setup] installed $ENV_FILE from $ENV_SOURCE"
 fi
 
-if [ -f "$ENV_FILE" ]; then
-  for key in TURSO_DATABASE_URL TURSO_AUTH_TOKEN GITHUB_TOKEN; do
-    grep -q "^$key=" "$ENV_FILE" || echo "[setup] warning: $key is missing from $ENV_FILE" >&2
-  done
-  if ! grep -q '^NTFY_URL=' "$ENV_FILE"; then
-    echo "[setup] note: NTFY_URL is not set — notifications are off, so failures" >&2
-    echo "        will only appear in the journal (journalctl -t starisk-nightly)" >&2
-  fi
-fi
+for key in TURSO_DATABASE_URL TURSO_AUTH_TOKEN GITHUB_TOKEN; do
+  grep -q "^$key=" "$ENV_FILE" || echo "[setup] warning: $key missing from $ENV_FILE" >&2
+done
+grep -q '^NTFY_URL=' "$ENV_FILE" ||
+  echo "[setup] note: no NTFY_URL, so failures only reach the journal" >&2
 
-RUN="docker run --rm --init --env-file $ENV_FILE -v $VOLUME:/state -e STARISK_DATA=/state $IMAGE"
-LINE="$SCHEDULE $RUN 2>&1 | logger -t starisk-nightly $MARK"
+LINE="$SCHEDULE docker run --rm --init --env-file $ENV_FILE -v $VOLUME:/state $IMAGE 2>&1 | logger -t starisk-nightly $MARK"
 {
   crontab -l 2>/dev/null | grep -vF "$MARK" || true
   echo "$LINE"
 } | crontab -
-echo "[setup] cron installed:"
-echo "        $LINE"
+echo "[setup] cron: $LINE"
 
 if [ "$check" -eq 1 ]; then
   echo "[setup] dry run"
-  $RUN --dry-run
+  docker run --rm --init --env-file "$ENV_FILE" -v "$VOLUME:/state" "$IMAGE" --dry-run
 fi
-
-echo "[setup] done. Journal: journalctl -t starisk-nightly"
