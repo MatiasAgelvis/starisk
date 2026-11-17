@@ -83,6 +83,24 @@ class CloseSupersededTest(unittest.TestCase):
         self.assertEqual(closed, [])
 
 
+class AdoptTest(unittest.TestCase):
+    def test_records_only_develop_has_are_adopted(self):
+        state = {"learn/a": {"starisk": 3.0}, "learn/mine": {"starisk": 4.0}}
+        base = {"learn/a": {"starisk": 1.0}, "learn/theirs": {"starisk": 5.0}}
+
+        added = nightly.adopt(base, state)
+
+        self.assertEqual(added, ["learn/theirs"])
+        # The state's copy of a shared course wins: it is the newer one.
+        self.assertEqual(state["learn/a"], {"starisk": 3.0})
+        self.assertEqual(state["learn/theirs"], {"starisk": 5.0})
+
+    def test_nothing_to_adopt_when_develop_is_a_subset(self):
+        state = {"learn/a": {"starisk": 3.0}}
+
+        self.assertEqual(nightly.adopt({"learn/a": {"starisk": 1.0}}, state), [])
+
+
 class RemovalGuardTest(unittest.TestCase):
     def test_a_branch_that_would_drop_develop_courses_is_refused(self):
         problem = nightly.removal_problem({"removed": ["learn/a", "learn/b"]})
