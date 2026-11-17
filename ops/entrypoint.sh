@@ -1,20 +1,27 @@
 #!/bin/sh
-# The container's whole job: own the clone, bring it up to date, then run.
+# One run of the nightly job, from nothing.
 #
-# Nothing on the host is checked out, switched or committed — the clone lives in
-# the volume at /srv/starisk. On the first run there is no code in the volume, so
-# the clone happens here; after that `starisk.checkout` does the git work, before
-# the nightly process starts, so the code it imports is the code just fetched.
+# The checkout is a build step: cloned here, used, and thrown away with the
+# container. The corpus is not carried anywhere either — it comes from `develop`
+# with the clone, and goes back out as a branch. Only two things survive, and
+# neither is authoritative: the page cache (best effort) and the run record.
 set -eu
 
-REPO_DIR=/srv/starisk
+WORK=${STARISK_WORK:-/work}
 REPO_SLUG=${GITHUB_REPO:-MatiasAgelvis/starisk}
+# The branch to crawl from. `develop` in production; override it to run the
+# container against an unmerged branch without merging anything.
+BRANCH=${STARISK_BRANCH:-develop}
 
-if [ ! -d "$REPO_DIR/.git" ]; then
-  echo "[entrypoint] cloning https://github.com/$REPO_SLUG.git"
-  git clone --branch develop "https://github.com/$REPO_SLUG.git" "$REPO_DIR"
+: "${STARISK_CACHE:=/state/cache}"
+: "${STARISK_LOGS:=/state/logs}"
+export STARISK_CACHE STARISK_LOGS
+mkdir -p "$STARISK_CACHE" "$STARISK_LOGS"
+
+if [ ! -d "$WORK/.git" ]; then
+  echo "[entrypoint] cloning https://github.com/$REPO_SLUG.git ($BRANCH)"
+  git clone --depth 1 --branch "$BRANCH" "https://github.com/$REPO_SLUG.git" "$WORK"
 fi
 
-cd "$REPO_DIR/pipeline"
-python -m starisk.checkout
+cd "$WORK/pipeline"
 exec python -m starisk.nightly "$@"

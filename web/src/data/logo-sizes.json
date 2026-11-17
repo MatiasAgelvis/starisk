@@ -170,5 +170,9 @@
   "fred-hutchinson-cancer-center": {
     "tile": "/logos/tile/fred-hutchinson-cancer-center.jpg",
     "full": "/logos/full/fred-hutchinson-cancer-center.jpg"
+  },
+  "sap": {
+    "tile": "/logos/tile/sap.jpg",
+    "full": "/logos/full/sap.jpg"
   }
 }

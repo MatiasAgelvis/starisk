@@ -58537,5 +58537,1806 @@
     "enrollment": 230497,
     "slug": "learn/logic-introduction",
     "scrapedAt": "2026-11-14T19:48:51.349195+00:00"
+  },
+  "learn/foundations-business-analysis": {
+    "title": "Foundations of Business Analysis",
+    "provider": "SAP",
+    "description": "Develop the foundational concepts and methodologies of business analysis, including the Business Analyst role, analysis techniques, and software development lifecycle, with practical exposure to SAP solutions commonly used in enterprise environments. Learn to evaluate business cases and develop strategic analysis skills while leveraging the SAP Activate methodology, alongside ChatGPT applications to enhance your business analysis capabilities.\n\nBy the end of this course, you will  learn skills to be able to:\n\n- Analyze the role and impact of business analysts within organizations, including enterprise environments using SAP systems\n\n- Evaluate different software development methodologies, including SAP Activate, to determine appropriate approaches for various project types\n\n- Apply strategic analysis techniques to align business analysis activities with organizational objectives using enterprise tools\n\n- Develop comprehensive stakeholder management strategies using both traditional methods and modern tools including ChatGPT",
+    "image": "/logos/sap.jpg",
+    "coursera": 4.5,
+    "starisk": 3.7,
+    "spread": 1.53,
+    "spread_weighted": 1.69,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 3,
+      "2.0": 1,
+      "3.0": 2,
+      "5.0": 14
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I have messaged multiple times about my inability to access course material and have not received a response. I cannot complete the assignments or the course as a whole.",
+      "stars": 1.0,
+      "likes": 3
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 36,
+    "ratings_total": 146,
+    "rating_counts": {
+      "1": 10,
+      "2": 3,
+      "3": 6,
+      "4": 16,
+      "5": 111
+    },
+    "instructors": [
+      {
+        "name": "SAP Career Certificates",
+        "slug": "~182707656",
+        "url": "https://www.coursera.org/instructor/~182707656",
+        "page": "sap-career-certificates",
+        "id": "182707656",
+        "role": null,
+        "department": null,
+        "learners": 54866,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/51/eaee57412148179ff84fd2211c1979/Knockout-Logo_universal.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Beginner",
+    "enrollment": 50183,
+    "slug": "learn/foundations-business-analysis",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/managing-emotions-uncertainty-stress": {
+    "title": "Managing Emotions in Times of Uncertainty & Stress",
+    "provider": "Yale University",
+    "description": "Developed by the Yale Center for Emotional Intelligence, Managing Emotions in Times of Uncertainty & Stress will provide participants with the knowledge, skills, and strategies to understand and manage their emotions and those of their students. The 10-hour online course is designed for school staff, including teachers, paraprofessionals, counselors, principals, and non-teaching staff in preK-12 schools.",
+    "image": "/logos/yale-university.jpg",
+    "coursera": 4.8,
+    "starisk": 4.5,
+    "spread": 0.73,
+    "spread_weighted": 0.83,
+    "reviews": 20,
+    "review_counts": {
+      "3.0": 3,
+      "4.0": 2,
+      "5.0": 15
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I was misled into thinking that this course was eligible for a free certificate. The course itself has valuable information but at the same time I felt like much of the quizzes etc. were designed as a research experiment where my input data was being gathered/used to benefit YALE Center for Emotional Intelligence and I still did not get a certificate. I am disappointed after working 10 plus hours on the course resulting in no certificate.",
+      "stars": 3.0,
+      "likes": 29
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 958,
+    "ratings_total": 4043,
+    "rating_counts": {
+      "1": 23,
+      "2": 25,
+      "3": 98,
+      "4": 588,
+      "5": 3309
+    },
+    "instructors": [
+      {
+        "name": "Marc Brackett",
+        "slug": "marc-brackett",
+        "url": "https://www.coursera.org/instructor/marc-brackett",
+        "page": "marc-brackett",
+        "id": "72112777",
+        "role": "Director",
+        "department": "Yale Center for Emotional Intelligence",
+        "learners": 354055,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/de/27903956134228b042566a43016c03/Mark_1.jpg"
+      }
+    ],
+    "categories": [
+      "Social Sciences",
+      "Health"
+    ],
+    "level": "Beginner",
+    "enrollment": 342848,
+    "slug": "learn/managing-emotions-uncertainty-stress",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/intro-common-law": {
+    "title": "Introduction to English Common Law",
+    "provider": "University of London",
+    "description": "The common law of England and Wales is one of the major global legal traditions.\n\nThis MOOC will give you an introduction to this influential legal system including its history, constitutional background, sources and institutions. You’ll learn about the different ways in which laws are made and interpreted, the English court system and the increasing importance of European Union and human rights law. Now is an especially exciting time to be learning about English common law, given the potential changes that lie ahead in today’s political, economic and social environment – all these pose challenges to and opportunities for the law.\n\nEach week we’ll focus on one aspect of English common law, using video lectures, readings, discussion questions and activities to enable you to learn about and evaluate key issues. Whether undertaken as a standalone course, or as preparation for the University of London’s world-class LLB degree, you will find this course interesting and stimulating.\n\nPlease note that participation in or completion of this online course will not confer academic credit for University of London programmes.",
+    "image": "/logos/university-of-london.jpg",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.22,
+    "spread_weighted": 0.2,
+    "reviews": 20,
+    "review_counts": {
+      "4.0": 1,
+      "5.0": 19
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "This course is a well designed one. It provides us a good comprehensive guide on the legal practice in England. I'm grateful to the designers of the course and 2 lecturers for presenting us this.",
+      "stars": 5.0,
+      "likes": 11
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 597,
+    "ratings_total": 2092,
+    "rating_counts": {
+      "1": 8,
+      "2": 9,
+      "3": 48,
+      "4": 235,
+      "5": 1792
+    },
+    "instructors": [
+      {
+        "name": "Charlotte Crilly",
+        "slug": "charlotte-crilly",
+        "url": "https://www.coursera.org/instructor/charlotte-crilly",
+        "page": "charlotte-crilly",
+        "id": "29071189",
+        "role": "Teaching Fellow",
+        "department": "University of London Undergraduate Laws",
+        "learners": 120419,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/dc/be3090899e11e8a9b59b0c46f3789e/Charlotte-profile.jpg"
+      },
+      {
+        "name": "Eloise Ellis",
+        "slug": "eloise-ellis",
+        "url": "https://www.coursera.org/instructor/eloise-ellis",
+        "page": "eloise-ellis",
+        "id": "32652232",
+        "role": "Senior Lecturer",
+        "department": "University of London",
+        "learners": 120419,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/79/56fef0899f11e8a9b59b0c46f3789e/E-Ellis-photo.jpg"
+      }
+    ],
+    "categories": [
+      "Social Sciences",
+      "Arts and Humanities"
+    ],
+    "level": "Beginner",
+    "enrollment": 120419,
+    "slug": "learn/intro-common-law",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/startup-valuation-methods": {
+    "title": "Startup Valuation Methods",
+    "provider": "Duke University",
+    "description": "How do different types of investors think about an investment opportunity? What kind of securities and contracts do they offer? How should a company decide what is a \"good deal\"? This course is designed to introduce you to the challenges and pitfalls of financing new enterprises. You will learn the basic tools for valuating companies, including using discounted cashflow analysis in Excel and understanding how to apply this model to your entrepreneurial venture. You will then learn how valuation works with different types of securities that investors use to finance startups, from bank loans to venture capital to angel investing.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.4,
+    "starisk": 3.0,
+    "spread": 1.34,
+    "spread_weighted": 1.26,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 3,
+      "2.0": 2,
+      "3.0": 7,
+      "4.0": 3,
+      "5.0": 5
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I'm only giving this course 3 stars because of the excellent teaching in weeks 1 and 2 by Manuel Adelino, who is an excellent and thorough instructor. David Robinson, who handles the \"meat\" of the course in weeks 3 and 4 was absolutely dreadful in every respect that matters in a mastery-oriented online course (in which there is no peer community with which to collectively cover for poor instruction). Specifically, Robinson talks around examples without working through any of them. He did not work through any of the key examples or formulae in Week 3, which is where most of the key concepts of startup valuation are introduced. Basically said, \"go figure it out yourself.\" Other examples: the “hurdle rate” is introduced without adequate definition or an example of how to use given information in the calculation, and Robinson uses this term interchangeably with \"cash-on-cash returns\" (incorrectly) including in equations, which are wrong as presented. On a quiz for the fourth week on Anti-Dilution presents a question without reference to a specific scenario, so it is impossible to complete without guessing. …",
+      "stars": 3.0,
+      "likes": 47
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 229,
+    "ratings_total": 772,
+    "rating_counts": {
+      "1": 14,
+      "2": 15,
+      "3": 66,
+      "4": 195,
+      "5": 482
+    },
+    "instructors": [
+      {
+        "name": "Manuel Adelino",
+        "slug": "~16034955",
+        "url": "https://www.coursera.org/instructor/~16034955",
+        "page": "manuel-adelino",
+        "id": "16034955",
+        "role": "Associate Professor, Finance",
+        "department": "Duke University’s Fuqua School of Business",
+        "learners": 54427,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/38/6fcb88674a446ab0bbfde2e95d18a4/Screen-Shot-2019-10-22-at-1.40.14-PM.jpg"
+      },
+      {
+        "name": "David Robinson",
+        "slug": "~46361139",
+        "url": "https://www.coursera.org/instructor/~46361139",
+        "page": "david-robinson",
+        "id": "46361139",
+        "role": "Professor of Finance and James and Gail Vander Weide Professor",
+        "department": "Duke University's Fuqua School of Business",
+        "learners": 61702,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/21/60de27a97943da8c4a2e911c5a762f/Screen-Shot-2019-10-31-at-1.40.44-PM.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Intermediate",
+    "enrollment": 54427,
+    "slug": "learn/startup-valuation-methods",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/financing-startup-businesses": {
+    "title": "Financing for Startup Businesses",
+    "provider": "Duke University",
+    "description": "This course will teach you how to manage a startup’s financing strategy, where you will learn how to build capitalization tables (or “cap tables”) in Excel. Cap tables will help you explore different financing strategies for your startup company and determine which financing decisions are best for your entrepreneurial venture. You will also learn about innovations in the digital space that allow new ways to finance entrepreneurial ventures. These include different forms of crowdfunding, and alternative credit scoring mechanisms based on web-based data.\n\nThis course concludes with a module featuring cutting edge research from Duke University’s Fuqua School of Business on the financial technology industry. In this module, you will learn how financial technology companies are disrupting the credit\nscoring industry by developing new methods for credit scoring using consumers’ digital footprints. In addition, you will explore how financial technology platforms have introduced new, experimental forms of financing, such as crowdfunding.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.5,
+    "starisk": 3.9,
+    "spread": 1.12,
+    "spread_weighted": 1.12,
+    "reviews": 20,
+    "review_counts": {
+      "2.0": 2,
+      "3.0": 6,
+      "4.0": 1,
+      "5.0": 11
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "The relevance of week 3 and 4 to Start-up financing was extremely limited. The course content could be improved significantly there.",
+      "stars": 3.0,
+      "likes": 6
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 55,
+    "ratings_total": 231,
+    "rating_counts": {
+      "1": 1,
+      "2": 7,
+      "3": 17,
+      "4": 49,
+      "5": 157
+    },
+    "instructors": [
+      {
+        "name": "Manju Puri",
+        "slug": "~46361102",
+        "url": "https://www.coursera.org/instructor/~46361102",
+        "page": "manju-puri",
+        "id": "46361102",
+        "role": "J. B. Fuqua Professor",
+        "department": "Duke University’s Fuqua School of Business",
+        "learners": 17777,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c2/b273c9248741748cf8807d3ce6c5dd/Screen-Shot-2019-10-31-at-1.33.26-PM.jpg"
+      },
+      {
+        "name": "David Robinson",
+        "slug": "~46361139",
+        "url": "https://www.coursera.org/instructor/~46361139",
+        "page": "david-robinson",
+        "id": "46361139",
+        "role": "Professor of Finance and James and Gail Vander Weide Professor",
+        "department": "Duke University's Fuqua School of Business",
+        "learners": 61702,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/21/60de27a97943da8c4a2e911c5a762f/Screen-Shot-2019-10-31-at-1.40.44-PM.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Social Sciences"
+    ],
+    "level": "Intermediate",
+    "enrollment": 17777,
+    "slug": "learn/financing-startup-businesses",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/blockchain-business-models": {
+    "title": "Blockchain Business Models",
+    "provider": "Duke University",
+    "description": "Blockchain is an emerging and highly disruptive technology that is poorly understood. In this course you will learn what blockchain is and how it can create value by tokenization in cryptocurrencies and in many other practical applications. The applications include: stablecoins (like Facebook’s Libra and JP Morgan’s JPMCoin), machine to machine payments, identity protection, supply chain management (Walmart, Maersk, IBM), secure voting, distributed exchanges, decentralized finance, property transfers, central bank fiat crypto (e.g., Fedcoin and China’s digital Renminbi), dispensing prescription drugs, private records, intellectual property, financial reporting, and media and advertising, to name a few.  The goals of the course are to: (i) provide an advanced understanding of the various blockchain technologies; (ii) determine the specific business situations where blockchain technology can be deployed to solve important problems; (iii) select the specific blockchain technology that has the best chance of success for a particular problem; and (iv) detail the risks presented by this new technology.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.7,
+    "starisk": 4.8,
+    "spread": 0.49,
+    "spread_weighted": 0.55,
+    "reviews": 19,
+    "review_counts": {
+      "3.0": 1,
+      "4.0": 1,
+      "5.0": 17
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This was supposed to be an intermediate course that focused on blockchain business models, but instead, focused mainly on such general blockchain information that was very unspecific to the subject it was supposed to be about. As someone already very knowledgeable about BTC, ETH, and how blockchain tech works, less than 20% of this course was new, useful information. I wanted to do a deep dive on the industry use cases but that was only a fraction of this course and did not go into real depth. Quite disappointed. The Duke courses on decentralized finance were way better.",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 140,
+    "ratings_total": 405,
+    "rating_counts": {
+      "1": 5,
+      "2": 4,
+      "3": 7,
+      "4": 72,
+      "5": 317
+    },
+    "instructors": [
+      {
+        "name": "Campbell R. Harvey",
+        "slug": "~46121307",
+        "url": "https://www.coursera.org/instructor/~46121307",
+        "page": "campbell-r-harvey",
+        "id": "46121307",
+        "role": null,
+        "department": null,
+        "learners": 92686,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/53/1550796d3d4bbb80a823011a0344c3/CRH_7172_cropped.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Intermediate",
+    "enrollment": 22048,
+    "slug": "learn/blockchain-business-models",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/financial-risk-management-with-r": {
+    "title": "Financial Risk Management with R",
+    "provider": "Duke University",
+    "description": "This course teaches you how to calculate the return of a portfolio of securities as well as quantify the market risk of that portfolio, an important skill for financial market analysts in banks, hedge funds, insurance companies, and other financial services and investment firms. Using the R programming language with Microsoft Open R and RStudio, you will use the two main tools for calculating the market risk of stock portfolios: Value-at-Risk (VaR) and Expected Shortfall (ES). You will need a beginner-level understanding of R programming to complete the assignments of this course.",
+    "image": "/logos/duke-university.jpg",
+    "coursera": 4.3,
+    "starisk": 2.7,
+    "spread": 1.77,
+    "spread_weighted": 1.7,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 8,
+      "2.0": 1,
+      "3.0": 2,
+      "4.0": 2,
+      "5.0": 7
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "These problems stem from the fact that the random number generator (RNG) default program changed in R version 3.6.0. Therefore, when using the set.seed() command to ensure our random samples matched those of the professor, I got slightly different results. This shouldn't have been a problem, but the professor arbitrarily decided that the answers to the quizzes and exercises should include six decimal places. If he asked for three or four decimals, this would not have been a problem and any version of R would be sufficient.",
+      "stars": 2.0,
+      "likes": 32
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 104,
+    "ratings_total": 265,
+    "rating_counts": {
+      "1": 21,
+      "2": 7,
+      "3": 12,
+      "4": 54,
+      "5": 171
+    },
+    "instructors": [
+      {
+        "name": "David Hsieh",
+        "slug": "~45241916",
+        "url": "https://www.coursera.org/instructor/~45241916",
+        "page": "david-hsieh",
+        "id": "45241916",
+        "role": "Bank of America Professor",
+        "department": "Finance",
+        "learners": 20009,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/15/98461aa5e24b958722007609d64aa7/Screen-Shot-2019-10-22-at-1.35.07-PM.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 20009,
+    "slug": "learn/financial-risk-management-with-r",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/generative-ai-for-legal-services-primer": {
+    "title": "Generative AI for Legal Services Primer",
+    "provider": "Vanderbilt University",
+    "description": "This course covers what Generative AI is and its applications to a variety of tasks in the legal field. The course will cover ethics and privacy, basic prompt engineering strategies for legal use cases, and how to leverage Generative AI to augment your legal expertise. This is a rapidly advancing area and a primary goal of this course is to prepare everyone for the pace of change that is taking place and to develop a mindset of continuous curiosity that will enable lawyers to adapt along with the technology",
+    "image": "/logos/vanderbilt-university.png",
+    "coursera": 4.8,
+    "starisk": 4.4,
+    "spread": 0.88,
+    "spread_weighted": 0.9,
+    "reviews": 15,
+    "review_counts": {
+      "3.0": 4,
+      "5.0": 11
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This course would have been more useful if it had been more about hands-on practice. Ironically, it is the discussion about the state of AI that quickly becomes obsolete, while the actual techniques of Prompt Engineering carry over as models develop. I would have been much more satisfied if the course had consisted of a series of practical applications, eg, let's create some legal instruments and documents using progressively more sophisticated Prompt Engineering. The general discussion was a bit redundant and not very useful. The instructor seemed very competent. But this course requires competence in Law, AI, *and*pedagogy, which is a pretty heavy lift. I would have like a precise continuation of the pattern of Prompt Engineering for ChatGPT course, but digging down into Law specifically.",
+      "stars": 3.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 15,
+    "ratings_total": 70,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 5,
+      "4": 7,
+      "5": 58
+    },
+    "instructors": [
+      {
+        "name": "Mark Williams",
+        "slug": "~130817893",
+        "url": "https://www.coursera.org/instructor/~130817893",
+        "page": "mark-williams",
+        "id": "130817893",
+        "role": "Co-Founder, Vanderbilt AI Law Lab (VAILL)",
+        "department": "Vanderbilt Law School",
+        "learners": 6977,
+        "courses_taught": 1,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c3/44603166f04a5384139e9830a3cd37/williams.jpg"
+      }
+    ],
+    "categories": [
+      "Social Sciences",
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 6977,
+    "slug": "learn/generative-ai-for-legal-services-primer",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-words": {
+    "title": "Writing and Editing: Word Choice and Word Order",
+    "provider": "University of Michigan",
+    "description": "This course will teach you how to use your written words to become more persuasive. You’ll learn creative ways to use syntax, effective techniques for telling stories, and a clever method for arranging a complex series of information. You’ll also get a chance to both professionalize your use of punctuation and add a bit of style and sophistication to how you craft everything from sentences to slogans.  \n\nIn addition, you’ll get access to a wide range of books and other resources you can use even after you finish the course. These include (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email. Social media has only accelerated the ways in which we all must learn to use our writing to connect, compete, and create—sometimes all at once. So join us for this first course in a four-part series and experience the many benefits, both personal and professional, of becoming “good with words.”",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.7,
+    "starisk": 4.6,
+    "spread": 0.89,
+    "spread_weighted": 1.09,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "4.0": 1,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This is not well put together. For a course on writing, it certainly lacks structure.",
+      "stars": 1.0,
+      "likes": 16
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 504,
+    "ratings_total": 2038,
+    "rating_counts": {
+      "1": 31,
+      "2": 21,
+      "3": 56,
+      "4": 267,
+      "5": 1663
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 174799,
+    "slug": "learn/writing-editing-words",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-structure": {
+    "title": "Writing and Editing: Structure and Organization",
+    "provider": "University of Michigan",
+    "description": "This second course in the Good with Words: Writing and Editing series will help you become an effective architect of information, both with your sentences and with your paragraphs. You’ll learn that the traditional advice to “Show, don’t tell” is incomplete and that skilled writers actually switch back and forth between showing and telling.\n\nYou’ll also learn more about the menu of time management techniques introduced in the first course of the series, including “deep work,” “studio time,” and “the Animal Farm Principle.” And as with the other three courses in this series, you will get access to a wide range of books and other resources you can use even after you finish the course. These include: (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email.",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.7,
+    "starisk": 4.6,
+    "spread": 0.6,
+    "spread_weighted": 0.78,
+    "reviews": 20,
+    "review_counts": {
+      "3.0": 2,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I would have liked to have seen more practice offered. The quizzes weren’t terribly helpful because they seemed to test your ability to recall information such as author names; this wasn’t particularly helpful for reinforcing the ideas in the videos and reading and provided a source of frustration, rather than information.",
+      "stars": 3.0,
+      "likes": 11
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 116,
+    "ratings_total": 578,
+    "rating_counts": {
+      "1": 6,
+      "2": 6,
+      "3": 17,
+      "4": 76,
+      "5": 473
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 42817,
+    "slug": "learn/writing-editing-structure",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-drafting": {
+    "title": "Writing and Editing: Drafting",
+    "provider": "University of Michigan",
+    "description": "This third course in the “Good with Words: Writing and Editing” series will give you a number of strategies to help with what is often the most intimidating, even paralyzing part of the writing process: getting started.\n\nYou’ll learn about the “planning fallacy” and “temptation bundling.” You’ll get a chance to experiment with “freewriting” and “writing before you are ready.” And you’ll continue to benefit, through our ongoing “Good Sentences” and “Takeaways” segments, from the models and advice of a diverse set of writers. \n\nAs with the other three courses in this series, you will also get access to a wide range of books and other resources you can use even after you finish the course. These include: (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email.",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 20,
+    "review_counts": {
+      "5.0": 20
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "O curso é incrível. Conteúdo interessante, apresentado de forma didática e leve. O professor é didático e engajado. Apesar de ser dedicado a alunos do curso de Direito da Universidade de Michigan, pode ser aplicado a qualquer área do conhecimento. As dicas sobre o uso da língua inglesa são muito boas e proveitosas. Recomendo este curso para todos(as) que desejam escrever de forma persuasiva.",
+      "stars": 5.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 79,
+    "ratings_total": 374,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 11,
+      "4": 48,
+      "5": 312
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 34938,
+    "slug": "learn/writing-editing-drafting",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/writing-editing-revising": {
+    "title": "Writing and Editing: Revising",
+    "provider": "University of Michigan",
+    "description": "This fourth and final course in the “Good with Words: Writing and Editing” series will help you master perhaps the most important step in the writing process: revising. You’ll learn about the difference between editing and proofreading. You’ll practice “un-numbing the numbers” so that data and statistics you use are clear and compelling. And you’ll be introduced to a framework for giving and receiving feedback that helpfully systematizes what should be cut and what should be kept from each draft.\n\nAs with the other three courses in this series, you will also get access to a wide range of books and other resources you can use even after you finish the course. These include: (1) the readings and exercises provided to the students who have taken the in-person version of this course at the University of Michigan and the University of Chicago; (2) two digital libraries of excellent writing from a diverse collection of journalists, scientists, novelists, poets, historians, and entrepreneurs; and (3) a monthly “Good Sentences” email.",
+    "image": "/logos/university-of-michigan.jpg",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 20,
+    "review_counts": {
+      "5.0": 20
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "Although the course was meant for law students, I enjoyed it greatly as an English learner, too. The course did not simply teach the participants which words or cunstructions are better for writing; it also covered concepts and ideas helping learn how to work more productively and effeciently, how to manage your time and writing process. I found this course, as well as the whole specialization, extremely useful.",
+      "stars": 5.0,
+      "likes": 6
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 98,
+    "ratings_total": 409,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 10,
+      "4": 53,
+      "5": 344
+    },
+    "instructors": [
+      {
+        "name": "Patrick Barry",
+        "slug": "patrick-barry",
+        "url": "https://www.coursera.org/instructor/patrick-barry",
+        "page": "patrick-barry",
+        "id": "14444833",
+        "role": "Director of Artificial Intelligence Initiatives",
+        "department": "University of Michigan Law School",
+        "learners": 277718,
+        "courses_taught": 16,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/92/c818e1de194a988840a65e63bb8e25/Barry.Patrick.jpg"
+      }
+    ],
+    "categories": [
+      "Personal Development",
+      "Social Sciences"
+    ],
+    "level": "Beginner",
+    "enrollment": 28608,
+    "slug": "learn/writing-editing-revising",
+    "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/3d-interaction-design-virtual-reality": {
+    "title": "3D Interaction Design in Virtual Reality",
+    "provider": "University of London",
+    "description": "This course will teach you about one of the most important aspects of VR, how you interact with a VR world. Virtual Reality is completely different from an on screen app or game. You are completely immersed in a VR world, so it doesn't make sense to interact only through buttons or menus. You will get the most out of VR if you can interact with the world just as you would with the real world: with your natural body movements. You will learn about the basic concepts and technologies of VR Interaction. You will then get hands on, learning about how to move around in VR and how to interact with the objects in your world. The course will finish with some advice from experts on VR interaction design and you will do a project where you will get real experience of developing VR Interaction.",
+    "image": "/logos/university-of-london.jpg",
+    "coursera": 4.6,
+    "starisk": 4.0,
+    "spread": 1.13,
+    "spread_weighted": 1.27,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "3.0": 5,
+      "4.0": 1,
+      "5.0": 13
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "It is a good course technically speaking but it is a pity that there are many resources that are no longer accessible or that they are discontinued and the worst thing is that the teachers are not accessible nor answer the questions",
+      "stars": 3.0,
+      "likes": 5
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 40,
+    "ratings_total": 137,
+    "rating_counts": {
+      "1": 3,
+      "2": 2,
+      "3": 9,
+      "4": 21,
+      "5": 102
+    },
+    "instructors": [
+      {
+        "name": "Prof Sylvia Xueni Pan",
+        "slug": "sylvia-xueni-pan",
+        "url": "https://www.coursera.org/instructor/sylvia-xueni-pan",
+        "page": "sylvia-xueni-pan",
+        "id": "24333271",
+        "role": "Professor, Department of Computing",
+        "department": "Goldsmiths, University of London",
+        "learners": 137879,
+        "courses_taught": 5,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/4e/425410fe7411e6a2aba5366b6a2112/PanXueni.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 19709,
+    "slug": "learn/3d-interaction-design-virtual-reality",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/3d-models-virtual-reality": {
+    "title": "3D Models for Virtual Reality",
+    "provider": "University of London",
+    "description": "This course will begin your journey to creating Virtual Reality experiences. A Virtual Reality experience is a new world that you step into and are entirely immersed in. Creating a VR experience means creating that world and all the objects in it. \n\nIn this course you will learn the basics of 3D graphics: how we create objects and how to lay them out to create an environment. You will learn techniques like materials and texturing that make your objects appear realistic. You will also learn about audio techniques to ensure that your experiences sound great as well as looking great. In all of these topics we will pay attention to the particular requirements of Virtual Reality, including pitfalls and performance issues: making sure your environment runs fast enough in VR. \n\nYou will learn all of this using the professional game and VR engine, Unity3D. Unity is one of the most used game engine and is a relatively easy, but fully featured, introduction to 3D development. \n\nThe course will culminate in a project in which you will create your own VR scene. VR development is something you can only learn by doing it yourself, so working on your project will be the best way to learn.",
+    "image": "/logos/university-of-london.jpg",
+    "coursera": 4.6,
+    "starisk": 3.4,
+    "spread": 1.82,
+    "spread_weighted": 1.88,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 6,
+      "3.0": 1,
+      "5.0": 13
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "The tutorials leave a lot to be desired, and I have some expertise on this because I'm a college instructor and have been producing video tutorials for years. Most of the videos are more like demonstrations, as opposed to instruction. The first couple of courses in this specialization are fine, because it doesn't get deeply into the meat of using Unity. If you already know how to use Unity3D, then you'll probably be able to complete the 5 classes without a problem. If you didn't know how to use Unity (or Unreal, etc.) when you started these classes, then I wouldn't recommend that you take the 5 course series. It just gets worse. The material gets more complex but the videos don't instruct. They provide a sort of general overview of what to do. Even when you are provided with some materials (such as scripts or Unity packages) they don't always work.Once you get past class 2, you better have A LOT of extra time in your life because you'll probably be spending many hours hunting down additional help online, watching loads of extra videos and doing a bunch of trial and error hours just to get to the point where you have a project you can upload to the course assignment page. …",
+      "stars": 1.0,
+      "likes": 14
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 111,
+    "ratings_total": 387,
+    "rating_counts": {
+      "1": 11,
+      "2": 8,
+      "3": 17,
+      "4": 62,
+      "5": 289
+    },
+    "instructors": [
+      {
+        "name": "Prof Sylvia Xueni Pan",
+        "slug": "sylvia-xueni-pan",
+        "url": "https://www.coursera.org/instructor/sylvia-xueni-pan",
+        "page": "sylvia-xueni-pan",
+        "id": "24333271",
+        "role": "Professor, Department of Computing",
+        "department": "Goldsmiths, University of London",
+        "learners": 137879,
+        "courses_taught": 5,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/4e/425410fe7411e6a2aba5366b6a2112/PanXueni.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 47627,
+    "slug": "learn/3d-models-virtual-reality",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/adv-reproducibility-cancer-informatics": {
+    "title": "Advanced Reproducibility in Cancer Informatics",
+    "provider": "Johns Hopkins University",
+    "description": "This course introduces tools that help enhance reproducibility and replicability in the context of cancer informatics. It uses hands-on exercises to demonstrate in practical terms how to get acquainted with these tools but is by no means meant to be a comprehensive dive into these tools.  The course introduces tools and their concepts such as git and GitHub, code review, Docker, and GitHub actions.\n\nTarget Audience  \n\nThe course is intended for students in the biomedical sciences and researchers who use informatics tools in their research. It is the follow up course to the Introduction to Reproducibility in Cancer Informatics course. Learners who take this course should: \n\n- Have some familiarity with R or Python\n- Have take the Introductory Reproducibility in Cancer Informatics course\n- Have some familiarity with GitHub\n\nMotivation\n\nData analyses are generally not reproducible without direct contact with the original researchers and a substantial amount of time and effort (BeaulieuJones, 2017). Reproducibility in cancer informatics (as with other fields) is still not monitored or incentivized despite that it is fundamental to the scientific method. Despite the lack of incentive, many researchers strive for reproducibility in their own work but often lack the skills or training to do so effectively.\n\nEquipping researchers with the skills to create reproducible data analyses increases the efficiency of everyone involved. Reproducible analyses are more likely to be understood, applied, and replicated by others. This helps expedite the scientific process by helping researchers avoid false positive dead ends. Open source clarity in reproducible methods also saves researchers' time so they don't have to reinvent the proverbial wheel for methods that everyone in the field is already performing.\n\nCurriculum  \n\nThe course includes hands-on exercises for how to apply reproducible code concepts to their code. Individuals who take this course are encouraged to complete these activities as they follow along with the course material to help increase the reproducibility of their analyses.\n\n**Goal of this course:**  \nTo equip learners with a deeper knowledge of the capabilities of reproducibility tools and how they can apply to their existing analyses scripts and projects.\n\n\n**What is NOT the goal of this course:**  \nTo be a comprehensive dive into each of the tools discussed. . \n\nHow to use the course\n\nEach chapter has associated exercises that you are encourage to complete in order to get the full benefit of the course\n\nThis course is designed with busy professional learners in mind -- who may have to pick up and put down the course when their schedule allows. In general, you are able to skip to chapters you find a most useful to (One incidence where a prior chapter is required is noted). \n\nEach chapter has associated exercises that you are encourage to complete in order to get the full benefit of the course",
+    "image": "/logos/johns-hopkins-university.jpg",
+    "coursera": null,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "5.0": 1
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "For those who have some learning experience, the problems are easy to solve.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Candace Savonen, MS",
+        "slug": "~39250299",
+        "url": "https://www.coursera.org/instructor/~39250299",
+        "page": "candace-savonen-ms",
+        "id": "39250299",
+        "role": "Data Scientist",
+        "department": "Department of Biostatistics",
+        "learners": 10498,
+        "courses_taught": 13,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/3d/20b2387e1f494290006afaddce852a/Candace_Savonen.jpg"
+      }
+    ],
+    "categories": [
+      "Health",
+      "Data Science",
+      "Physical Science and Engineering"
+    ],
+    "slug": "learn/adv-reproducibility-cancer-informatics",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/advanced-agile-for-product-managers-scaling-agile-teams": {
+    "title": "Advanced Agile for Product Managers: Scaling Agile Teams",
+    "provider": "Coursera",
+    "description": "The potential for Agile to drive innovation and efficiency is vast but scaling Agile successfully across multiple teams requires the right strategies, frameworks, and leadership. In today’s fast-paced digital landscape, scaling Agile teams is no longer optional—it’s essential for product managers who want to deliver faster, collaborate better, and innovate continuously.  \n\nAgile thrives in small teams, but scaling it introduces new challenges as misalignment, growing dependencies, and organizational complexity. \n\nIn this course, You’ll learn how to apply proven frameworks like SAFe and LeSS, tackle real-world scaling challenges, and foster a culture of alignment and continuous improvement. Through a mix of practical exercises, tools like Miro and Jira, and in-depth case studies, you’ll gain actionable skills in: \n\n- Adaptive planning and prioritization \n- Cross-team estimation and collaboration \n- Dependency mapping and coordination \n- Agile metrics and release synchronization \n\nThis course is tailored for professionals responsible for guiding Agile delivery at scale, including product managers, senior product owners, agile coaches, project managers, and team leads. Whether you're managing a single product across multiple teams or helping your organization embrace scaled Agile frameworks, this course provides practical insights and tools to elevate your leadership and execution capabilities in complex environments.\n\nTo get the most from this course, learners should have a foundational understanding of Agile methodologies and prior experience in product management or team leadership roles. Familiarity with tools like Jira or Miro is recommended, as they will be used throughout the course for hands-on exercises in planning, coordination, and performance tracking.\n\nBy the end of this course, learners will be able to apply frameworks like SAFe, LeSS, and Disciplined Agile to scale Agile practices effectively. They will master adaptive planning, cross-team estimation, and dependency management, while also learning to leverage Agile metrics and leadership strategies to drive continuous improvement and sustainable transformation across teams.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "5.0": 1
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "The course was very informative and well-structured. Concepts were explained clearly with examples. Got a really good idea of how Scrum differs from SAFe and other scaled agile approaches. Thank you for all the effort in preparing this course",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 2
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      },
+      {
+        "name": "Ahmed Hassan",
+        "slug": "~182311587",
+        "url": "https://www.coursera.org/instructor/~182311587",
+        "page": "ahmed-hassan",
+        "id": "182311587",
+        "role": "Projects and Change Management Consultant | Speaker | Coach",
+        "department": null,
+        "learners": 12139,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/9e/b3c252cd334b87b38c9e901c4c0527/66fc4914d5411f1bfd22bfc3-1517692626579-removebg-preview.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Information Technology"
+    ],
+    "slug": "learn/advanced-agile-for-product-managers-scaling-agile-teams",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/advanced-business-analysis-elicitation-analysis": {
+    "title": "Advanced Business Analysis: Elicitation & Analysis",
+    "provider": "STARWEAVER",
+    "description": "This advanced business analysis course is tailored for experienced professionals looking to deepen their skills in elicitation and requirements analysis. Learners will delve into the intricacies of gathering, documenting, and analyzing requirements, along with mastering advanced techniques such as interviews, use cases, process modeling, and financial analysis. Practical case studies and real-world scenarios will provide hands-on experience, ensuring participants are well-prepared to tackle complex business challenges. By the end of the course, learners will possess a comprehensive skill set in requirements elicitation and analysis, positioning them as invaluable assets in driving successful projects and solutions.\n\nThis course is designed for experienced business analysts, project managers, and professionals in related roles who aim to enhance their proficiency in elicitation and requirements analysis. It is ideal for those seeking to take their business analysis skills to an advanced level, equipping them to lead and contribute effectively to complex projects and initiatives.\n\nTo fully benefit from this course, learners should have a foundational understanding of business analysis concepts and techniques, as well as experience in business analysis or related roles. Familiarity with project management and basic business operations will be advantageous. This course is designed to cater to learners with varying levels of prior knowledge, but a fundamental understanding of business analysis is recommended.",
+    "image": "/logos/starweaver.png",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 11,
+    "review_counts": {
+      "5.0": 11
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "The Advanced Business Analysis: Elicitation & Analysis course was excellent in deepening my understanding of elicitation techniques and analysis processes. The content was well-organized, offering practical tools and methods that can be applied directly in real-world projects. The instructor’s clear explanations and insightful examples made complex concepts easy to grasp. Overall, it was a valuable learning experience that significantly enhanced my capabilities as a Business Analyst.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 11,
+    "ratings_total": 80,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 10,
+      "5": 69
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Igor Arkhipov",
+        "slug": "~133144243",
+        "url": "https://www.coursera.org/instructor/~133144243",
+        "page": "igor-arkhipov",
+        "id": "133144243",
+        "role": "Certified Business Analysis Professional (CBAP) & Coach",
+        "department": null,
+        "learners": 93002,
+        "courses_taught": 12,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/e0/e50077767b4647959c73f5534325c3/Igor-Arkhipov.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Intermediate",
+    "enrollment": 7631,
+    "slug": "learn/advanced-business-analysis-elicitation-analysis",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/advanced-cypress-testing": {
+    "title": "Advanced Cypress Testing",
+    "provider": "Coursera",
+    "description": "Hey there, QA engineers and full-stack developers! Are you ready to break out of the basic test scripts and build Cypress test systems that scale? \n\nIn this course, we’ll take you beyond the tutorial playground and into real-world workflows for Cypress. You’ll learn how to structure your tests like a pro, clean up messy test logic with custom commands and fixtures, and layer UI + API validations to simulate real user journeys. \n\nLet’s be honest—most Cypress tutorials stop at “click the button, assert the text.” That’s not enough when you're testing login flows, session tokens, flaky elements, or preparing your codebase for CI. Whether you’re joining a large engineering team or building fast, stable pipelines solo, this course will level up your automation strategy. \n\nAnd here's the best part: We keep it practical and efficient. No overcomplicated CI/CD setups. No third-party plugins to babysit. Just a clean local setup, reusable test code, and Cypress features that actually make testing enjoyable again. \n\nThis course is designed for QA engineers and automation testers familiar with Cypress who are looking to advance beyond basic test scripts. It's also ideal for front-end and full-stack developers who want to improve the reliability and stability of their tests and validate complex user flows in modern web applications. Software engineers seeking to integrate Cypress into local or team workflows without heavy reliance on CI/CD setups will find the content especially relevant. Technical leads and SDETs looking to establish standardized testing strategies across teams for faster feedback and higher code confidence will also benefit from this course.\n\nTo get the most out of this course, learners should have a basic understanding of JavaScript and modern web development. Familiarity with Cypress fundamentals, such as selectors, assertions, and the structure of basic tests, is essential. Additionally, learners should understand how web applications function, including routing and API interactions. Experience with using a code editor and running commands in the terminal will be helpful in executing the exercises and following along with the course material.\n\nBy the end of this course, learners will be able to design a scalable Cypress test architecture using modular folder structures, custom commands, and fixtures. They will apply Cypress features to reliably test real-world scenarios involving UI, APIs, and user authentication. Additionally, learners will be equipped to debug, stabilize, and speed up test execution using intercepts, sessions, retries, and other core Cypress tools. Finally, learners will generate and interpret actionable test reports to improve test visibility and confidence, all without relying on CI/CD platforms.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 3,
+    "review_counts": {
+      "5.0": 3
+    },
+    "top_review": null,
+    "model": "sqrt-likes",
+    "ratings_total": 7,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 5
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Karlis Zars",
+        "slug": "~149442492",
+        "url": "https://www.coursera.org/instructor/~149442492",
+        "page": "karlis-zars",
+        "id": "149442492",
+        "role": "Computer Science Ph.D., Trainer and Consultant",
+        "department": null,
+        "learners": 79969,
+        "courses_taught": 35,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c1/39195086ea4354b2afca00f0772610/karlis-Zars.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Information Technology",
+      "Computer Science"
+    ],
+    "slug": "learn/advanced-cypress-testing",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-data-visualization-with-tableau": {
+    "title": "Advanced Data Visualization with Tableau",
+    "provider": "SkillUp",
+    "description": "This advanced Tableau course covers a broad variety of topics to provide you with advanced analytics and data visualization skills. The course walks you through connecting Tableau to SQL databases, creating data linkages, and creating hierarchies for effective analysis, starting with data connectivity and modeling. \n\nYou will work with sophisticated modeling approaches, execute computations, and optimize data models for performance. The course has a strong emphasis on controlling data granularity, utilizing calculated fields, and investigating expressions for ‘Level of Detail’ in complicated analytics. \n\nTopics include effective data transfer, tooltips, hierarchical navigation, and creating user-friendly interfaces.  By incorporating interactivity through actions and linking between dashboards, you’ll create seamless data journeys that empower users to explore and analyze information effortlessly.\n\nThroughout the course, you will have opportunities to practice what you have learned. Hands-on labs and projects are inspired from real-world scenarios, to equip you with the advanced, practical Tableau skills that employers seek in today’s job market.",
+    "image": "/logos/skillup.png",
+    "coursera": 4.4,
+    "starisk": 4.2,
+    "spread": 1.36,
+    "spread_weighted": 1.31,
+    "reviews": 7,
+    "review_counts": {
+      "2.0": 2,
+      "5.0": 5
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This course covers some advanced material like LOD expressions and formatting, but it doesn't go into as much detail as I would have hoped. It appears to me that AI was used a little too heavily in the creation of course content - several of the assignments include calculations that would actually be wrong if implemented in a real-life dashboard; some of the videos mis-pronounce words ('Tableau' is even mis-pronounced in one!), and the quizzes include grammatical errors and silly, non-sensical questions. That being said, I did learn one or two things, and I got some practice reps in, so it wasn't a compete waste.",
+      "stars": 2.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 9,
+    "ratings_total": 26,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 2,
+      "4": 2,
+      "5": 19
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      },
+      {
+        "name": "Shubhra Das",
+        "slug": "shubhradas",
+        "url": "https://www.coursera.org/instructor/shubhradas",
+        "page": "shubhradas",
+        "id": "140809228",
+        "role": "Instructor and Subject Matter Expert",
+        "department": "SkillUp",
+        "learners": 10816,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b1/39a6c90a8f474386e16246333b0652/Shubhra-Das.jpg"
+      }
+    ],
+    "categories": [
+      "Information Technology",
+      "Data Science"
+    ],
+    "slug": "learn/advanced-data-visualization-with-tableau",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-financial-analysis-and-credit-risk-modeling": {
+    "title": "Advanced Financial Analysis and Credit Risk Modeling",
+    "provider": "STARWEAVER",
+    "description": "In this course, you'll gain a strategic introduction to credit analysis and fixed income investing, blending foundational principles with practical tools to assess financial health, creditworthiness, and investment potential. Designed for professionals in investment management, corporate finance, or credit evaluation, the course explores how credit decisions are made, how debt instruments function, and how financial and non-financial data inform risk assessment.\n\nThrough hands-on exercises and real-world case studies, you’ll apply analytical frameworks to real market scenarios. By the end of the course, you'll approach credit and fixed income analysis with greater precision, confidence, and strategic insight.\n\nThis course is designed for finance professionals aiming to deepen their expertise in credit risk assessment and fixed income investing. Whether you're a financial analyst, fixed income trader, portfolio manager, or credit risk specialist at a bank or rating agency, the content is tailored to equip you with practical, industry-relevant skills. Investors looking to better understand the bond market will also benefit from its structured approach and real-world applications.\n\nTo get the most out of this course, participants should have a basic understanding of financial concepts such as time value of money, interest rates, and financial statements. Familiarity with Excel and basic quantitative skills will be helpful for completing hands-on exercises. While no prior experience in credit analysis or fixed income markets is required, those with a background in finance, accounting, or investment will find the course especially rewarding.\n\nBy the end of this course, participants will be equipped to perform detailed ratio and cash flow analyses to evaluate creditworthiness and debt servicing ability. They will also be able to apply quantitative models to calculate probability of default and expected loss, and utilize both structural and reduced-form credit risk models to support sound investment decisions. These skills will enable them to make informed credit assessments and contribute effectively to financial decision-making in professional settings. Learners will also gain the confidence to apply analytical tools to real-world credit scenarios, enhancing their ability to manage risk in dynamic financial environments.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 2,
+      "4": 0,
+      "5": 4
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Michael McDonald",
+        "slug": "~187770041",
+        "url": "https://www.coursera.org/instructor/~187770041",
+        "page": "michael-mcdonald",
+        "id": "187770041",
+        "role": "Partner, Morning Investments",
+        "department": null,
+        "learners": 5589,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c1/2755528b50466f806fe1874e29a432/Michael-Mcdonald.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "slug": "learn/advanced-financial-analysis-and-credit-risk-modeling",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-healthcare-analytics": {
+    "title": "Advanced Healthcare Analytics",
+    "provider": "SkillUp",
+    "description": "Take your healthcare analytics and machine learning skills to the next level! Advanced Healthcare Analytics brings together neural networks, deep learning imaging models, and clinical natural language processing (NLP) to solve high-value problems in modern healthcare. You will explore architectures for clinical prediction, apply convolutional neural networks to medical imaging, and use domain-specific text models for clinical notes. The course also covers responsible AI for safe, ethical deployment, including chatbots and LLM-powered tools. \n\nUsing datasets representative of electronic health records, radiology studies, and provider documentation, you will build practical skills through labs in imaging and NLP. In the final project, you will build and evaluate a binary disease prediction model using structured clinical data and compare Logistic Regression with a neural network to interpret performance on the same dataset. You will also learn model evaluation, workflow-integrated decision support, privacy, and safety.",
+    "image": "/logos/skillup.png",
+    "coursera": null,
+    "starisk": 1.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "1.0": 1
+    },
+    "top_review": null,
+    "model": "sqrt-likes",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 2
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      },
+      {
+        "name": "Ramesh Sannareddy",
+        "slug": "~75088416",
+        "url": "https://www.coursera.org/instructor/~75088416",
+        "page": "ramesh-sannareddy",
+        "id": "75088416",
+        "role": "Data Engineering Subject Matter Expert",
+        "department": "SkillUp",
+        "learners": 189932,
+        "courses_taught": 13,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/49/4df941de044993a7530127686f06d1/Ramesh-Image.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Health"
+    ],
+    "slug": "learn/advanced-healthcare-analytics",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-modeling-visualization--storytelling": {
+    "title": "Financial Modeling, Data Visualization & Storytelling",
+    "provider": "STARWEAVER",
+    "description": "Advanced Modeling, Data Visualization & Storytelling develops the skills needed to build sophisticated financial models, create impactful dashboards, and transform complex data into actionable business insights. Learners will apply advanced financial modeling techniques to construct integrated 3-statement models, perform scenario and sensitivity analysis, and automate workflows using Excel, Power BI, and AI-enabled tools.\n\nThe course emphasizes model integrity, scalability, and decision support, helping learners establish best practices for financial analysis, forecasting, and performance management. Participants will also learn to design interactive dashboards, apply data visualization to key business and financial metrics, and communicate findings through structured data storytelling frameworks tailored to executive audiences.\n\nThrough a comprehensive, portfolio-ready business case, learners will integrate modeling, visualization, and strategic communication skills to evaluate opportunities, assess risks, and deliver evidence-based recommendations. By the end of the course, learners will be equipped to produce executive-ready financial reports, dashboards, and presentations that support data-driven decision-making in modern organizations.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Manish Gupta",
+        "slug": "~139904014",
+        "url": "https://www.coursera.org/instructor/~139904014",
+        "page": "manish-gupta",
+        "id": "139904014",
+        "role": "Finance Expert and Business Strategist",
+        "department": null,
+        "learners": 75852,
+        "courses_taught": 19,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2d/98570274e141ee815c81b9a4751456/Manish-Gupta.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "slug": "learn/advanced-modeling-visualization--storytelling",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-requirements-management-solution-evaluation": {
+    "title": "Advanced Requirements Management & Solution Evaluation",
+    "provider": "STARWEAVER",
+    "description": "\"Advanced Requirements Management & Solution Evaluation\" is an intensive course that equips learners with expertise in managing requirements throughout their lifecycle and evaluating solution performance. Delve into traceability, prioritization, and approval of requirements, with hands-on experience in techniques like prioritization and backlog management in tools like Jira. Module 7 focuses on solution evaluation, encompassing performance measurement, root cause analysis, and assessing limitations at both solution and enterprise levels. By the end of this course, you'll be adept at ensuring the success of business projects through effective requirements management and solution evaluation.\n\nThis course is tailored for experienced business analysts, project managers, and professionals responsible for requirements management and solution evaluation. It is designed to enhance the skills of those seeking to excel in these critical aspects of business analysis and make data-driven decisions to drive organizational success.\n\nParticipants should have a foundational understanding of business analysis principles and techniques. Prior experience in business analysis or related roles is highly beneficial. Familiarity with project management practices and basic business operations will enhance the learning experience. This course is suitable for individuals looking to advance their expertise in requirements management and solution evaluation, irrespective of their prior knowledge level.",
+    "image": "/logos/starweaver.png",
+    "coursera": 4.8,
+    "starisk": 4.9,
+    "spread": 0.27,
+    "spread_weighted": 0.26,
+    "reviews": 13,
+    "review_counts": {
+      "4.0": 1,
+      "5.0": 12
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "The Advanced Requirements Management & Solution Evaluation course was incredibly valuable in enhancing my expertise in managing complex requirements and evaluating solutions. The course offered practical insights, frameworks, and techniques that are essential for driving successful project outcomes. The instructor’s clear guidance and real-world examples made the learning process engaging and applicable. Overall, this course provided me with advanced skills to refine my approach as a Business Analyst.",
+      "stars": 5.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 13,
+    "ratings_total": 67,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 2,
+      "4": 7,
+      "5": 57
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Igor Arkhipov",
+        "slug": "~133144243",
+        "url": "https://www.coursera.org/instructor/~133144243",
+        "page": "igor-arkhipov",
+        "id": "133144243",
+        "role": "Certified Business Analysis Professional (CBAP) & Coach",
+        "department": null,
+        "learners": 93002,
+        "courses_taught": 12,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/e0/e50077767b4647959c73f5534325c3/Igor-Arkhipov.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Intermediate",
+    "enrollment": 5258,
+    "slug": "learn/advanced-requirements-management-solution-evaluation",
+    "scrapedAt": "2026-11-17T17:36:49.692182+00:00"
+  },
+  "learn/agile-hybrid-and-business-environment-in-pmp": {
+    "title": "Agile, Hybrid, and Business Environment in PMP®",
+    "provider": "SkillUp",
+    "description": "This course focuses on Agile and hybrid approaches within the Process domain and the Business Environment domain. Learners will explore the Agile mindset, Scrum and Kanban frameworks, and adaptive planning. You will also examine how projects align with organizational strategy, governance, compliance requirements, and sustainability considerations.\n\nYou will learn when and how to tailor the 40 non-prescriptive processes, manage value-driven backlogs, and apply adaptive planning and forecasting techniques. The course also explores governance as the “strategic glue,” the output-outcome-benefit chain, organizational change management, and benefits realization.\n\nThrough healthcare-based scenarios, interactive activities, practice exercises, and a hands-on final project, you will build the situational judgment needed to apply Agile, hybrid, and Business Environment concepts to healthcare project decisions and strengthen your preparation for the PMP® exam.",
+    "image": "/logos/skillup.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      },
+      {
+        "name": "Sambarta Chowdhury",
+        "slug": "~213960158",
+        "url": "https://www.coursera.org/instructor/~213960158",
+        "page": "sambarta-chowdhury",
+        "id": "213960158",
+        "role": "Sr Program Manager",
+        "department": null,
+        "learners": 195,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/32/af8d2d0e164b658c65553fa189fc62/Picture1.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "slug": "learn/agile-hybrid-and-business-environment-in-pmp",
+    "scrapedAt": "2026-11-17T17:36:49.692182+00:00"
+  },
+  "learn/ai-agents-for-cybersecurity": {
+    "title": "AI Agents for Cybersecurity: Threat Detection & SOC Ops",
+    "provider": "STARWEAVER",
+    "description": "The cybersecurity field is rapidly evolving, with AI agents for cybersecurity emerging as a critical force in defending against advanced cyber threats. This course explores the transformative shift from manual security methods to intelligent automation, highlighting how AI agents for cybersecurity, powered by Large Language Models, can reason, act autonomously, and integrate deeply within Security Operations Centres (SOCs).\n\nYou'll begin with foundational concepts in AI agent design and progress toward real-world AI agents for cybersecurity workflows including threat detection, vulnerability analysis, incident response, and proactive threat hunting. Alongside technical implementation, the course addresses essential topics in security governance, operational risk, and the ethical deployment of autonomous AI tools for cybersecurity systems.\n\nAligned with the latest advancements in AI agents for cybersecurity, this course offers SOC analysts, managers, and cybersecurity professionals actionable insights into using AI for cybersecurity to improve speed, precision, and scalability in cyber defence. Whether you're exploring AI in cyber security, enhancing current operations, or preparing for the AI-driven future of cybersecurity, you'll gain the knowledge and confidence to deploy AI cybersecurity systems responsibly and effectively.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "5.0": 1
+    },
+    "top_review": null,
+    "model": "sqrt-likes",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 3
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Gleb Marchenko",
+        "slug": "~182325966",
+        "url": "https://www.coursera.org/instructor/~182325966",
+        "page": "gleb-marchenko",
+        "id": "182325966",
+        "role": "5G/6G technical trainer and advisor",
+        "department": null,
+        "learners": 6109,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/87/0fa05cc5d943d9b5226df9118c5322/SME-Original-Images.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Information Technology"
+    ],
+    "slug": "learn/ai-agents-for-cybersecurity",
+    "scrapedAt": "2026-11-17T17:36:49.692182+00:00"
+  },
+  "learn/ai-agents-multi-agent-design--governance": {
+    "title": "AI Agents: Multi-Agent Design & Governance",
+    "provider": "Coursera",
+    "description": "This course explores the design and governance aspects of multi-agent AI systems - autonomous agents that collaborate, compete, and coordinate to achieve complex goals. Learners will gain a deep understanding of how to design, build, and govern multi-agent ecosystems, from defining core agent capabilities to orchestrating interactions at scale. The course emphasizes real-world applications, exploring how leading companies like LinkedIn, Anthropic, and Amazon deploy agentic AI to solve enterprise problems. Learners will explore the principles of coordination, communication protocols, and governance models, along with ethical and regulatory considerations for safe deployment.\n\nThis course is ideal for AI enthusiasts, software developers, data scientists, and product managers who want to understand how multi-agent systems work in real-world environments. It’s also valuable for professionals working on AI governance, system design, or scalable automation projects.\n\nLearners should have a basic understanding of AI concepts and general computer science principles. No advanced AI or governance experience is required, making this course accessible to anyone eager to explore multi-agent systems and their design.\n\nBy the end of the course, learners will have a practical foundation to design multi-agent workflows, evaluate performance trade-offs, and implement governance strategies that ensure responsible and efficient agent collaboration in business and research environments.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "starisk": 4.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "4.0": 1
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "Useful examples, good knowledge. I would like it with a bit more of \"coding\", but I liked this course.",
+      "stars": 4.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 1
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Gleb Marchenko",
+        "slug": "~182325966",
+        "url": "https://www.coursera.org/instructor/~182325966",
+        "page": "gleb-marchenko",
+        "id": "182325966",
+        "role": "5G/6G technical trainer and advisor",
+        "department": null,
+        "learners": 6109,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/87/0fa05cc5d943d9b5226df9118c5322/SME-Original-Images.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Computer Science"
+    ],
+    "slug": "learn/ai-agents-multi-agent-design--governance",
+    "scrapedAt": "2026-11-17T17:36:49.692182+00:00"
+  },
+  "learn/ai-and-european-union-law-navigating-regulatory-compliance": {
+    "title": "AI and European Union Law: Navigating Regulatory Compliance",
+    "provider": "Coursera",
+    "description": "As the legal landscape evolves, efficiency, accuracy, and flexibility have become critical qualities for maintaining a competitive edge. This course is intended for EU attorneys who want to remain ahead of the curve by understanding the interplay between AI and European regulatory compliance. \n\nThis course covers AI's transformational influence on legal practice, focusing on its applications in document review, research, and compliance, as well as critical ethical issues and regulatory frameworks such as GDPR and the EU AI Act. Hands-on exercises will teach you how to automate tedious operations, create AI-driven workflows, and establish strategies for responsible AI governance, giving you a competitive advantage in the ever-changing legal landscape. \n\nThis course is designed for legal professionals who want to leverage AI to enhance efficiency and streamline workflows. Lawyers, legal counsels, and litigators will gain insights into using AI for case analysis, document automation, and legal research. Compliance officers and risk managers will learn how AI can aid in regulatory adherence, while law firm partners and legal operations leaders will explore AI-driven strategies for improving firm-wide productivity and competitiveness.\n\nParticipants should have a basic understanding of legal processes and workflows. Familiarity with data protection regulations such as GDPR is beneficial but not mandatory. While prior knowledge of AI or machine learning concepts can be helpful, it is not a requirement, as the course will introduce essential AI applications in the legal domain.\n\nBy the end of this course, learners will be able to examine AI’s role in legal processes and identify automation opportunities to enhance efficiency. They will implement AI-powered tools to ensure compliance with European regulations, such as the GDPR and AI Act. Additionally, participants will assess the ethical implications of AI in legal practice and develop strategies to mitigate risks while using AI for legal research, document review, and case analysis.",
+    "image": "/logos/coursera.png",
+    "coursera": 4.2,
+    "starisk": 3.0,
+    "spread": 1.41,
+    "spread_weighted": 1.41,
+    "reviews": 3,
+    "review_counts": {
+      "2.0": 2,
+      "5.0": 1
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I've taken many courses on Coursera and came to this one with a background in data and AI. The main thing I'd flag is that the course moves between two quite different subjects without signalling it: compliance *of* AI systems, and using AI tools *for* compliance work more generally. Both are worth covering, but I spent a while unsure which one I was being discussed. Relatedly, several lessons describe \"automating\" a process, where what's demonstrated is prompting ChatGPT to produce a checklist or an outline. A useful thing, but a different one. One example where both issues met: a quiz treats connecting an AI tool to internal data sources as an essential first step. Coming from a compliance mindset, that's close to the last step I'd take: the deployment of the tool is itself part of the compliance question. I'd also have liked more grounding for the terminology. A lot of technical and data concepts are named rather than worked through, and clearer examples and connections to real business situations would have made the material land better. I appreciate the effort behind a course like this, and for a legal audience new to AI there's a reasonable orientation here. …",
+      "stars": 2.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 3,
+    "ratings_total": 13,
+    "rating_counts": {
+      "1": 0,
+      "2": 3,
+      "3": 0,
+      "4": 2,
+      "5": 8
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Paweł Mielniczek",
+        "slug": "~139311893",
+        "url": "https://www.coursera.org/instructor/~139311893",
+        "page": "pawe-mielniczek",
+        "id": "139311893",
+        "role": "Advocate, PhD, gclawyers.eu: international legal service",
+        "department": null,
+        "learners": 39872,
+        "courses_taught": 20,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ac/46d68477b0450a883a8d590b45a0da/Pawel.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Social Sciences",
+      "Business",
+      "Data Science",
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 2319,
+    "slug": "learn/ai-and-european-union-law-navigating-regulatory-compliance",
+    "scrapedAt": "2026-11-17T17:36:49.692182+00:00"
+  },
+  "learn/ai-assisted-market-research": {
+    "title": "AI-Assisted Market Research",
+    "provider": "SkillUp",
+    "description": "AI can draft a market overview in seconds. It can also invent a statistic, cite a report that does not exist, and sound completely sure of both.\n\nThis course will teach you to use generative AI to speed up secondary market research while keeping every claim traceable to a credible source. The rule is simple: AI output is a lead to check, not evidence to cite.\n\nYou will learn what ChatGPT, Gemini, Perplexity, and NotebookLM are each good for, write structured prompts for discovery, comparison, and analysis, and use AI to extract information from long reports. You will then learn why hallucinations occur, spot warning signs such as unverifiable citations, verify claims against original sources, and apply responsible practice on citation, confidentiality, copyright, and transparency.\n\nPractice labs, scenario activities, and a role-play let you apply these skills to realistic market research tasks.\n\nDesigned for marketing, insights, competitive intelligence, and business professionals, this course will help you research faster, avoid costly AI errors, and deliver AI-assisted research you can confidently defend.",
+    "image": "/logos/skillup.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      },
+      {
+        "name": "Rajesh Menon",
+        "slug": "~169429738",
+        "url": "https://www.coursera.org/instructor/~169429738",
+        "page": "rajesh-menon",
+        "id": "169429738",
+        "role": null,
+        "department": null,
+        "learners": 20516,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/0d/70d20265a34eeab8523a23f5d94e5a/RajeshMenon.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "slug": "learn/ai-assisted-market-research",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-augmented-decision-making-for-business-leaders": {
+    "title": "AI-Augmented Decision-Making for Business Leaders",
+    "provider": "Coursera",
+    "description": "In this course, you'll gain foundational knowledge, practical tools, and actionable frameworks for integrating AI into your executive decision-making. You’ll explore AI-powered forecasting, strategic planning, risk assessment, and ethical considerations through engaging case studies and hands-on activities. You'll also discover how to build an AI-ready culture, communicate AI-driven insights effectively, and strategically position your organization for the future. \n\nThis course is tailored for a broad spectrum of business professionals who influence or make strategic decisions. Executives, senior leaders, managers, consultants, and entrepreneurs will benefit from practical tools and insights to apply AI in real-world business contexts. It also welcomes aspiring AI champions and HR professionals eager to build AI-ready cultures and lead technological transformation across their organizations.\n\nNo prior knowledge of AI, data science, or advanced technology is required to take this course. It is designed to be fully accessible to business leaders with curiosity and a willingness to explore how AI can inform strategic decision-making. Access to AI tools like ChatGPT is recommended for learners who want to experiment and apply concepts hands-on during the course.\n\nBy the end of this course, learners will understand foundational AI concepts and how data fuels intelligent decision-making. They will be able to evaluate ethical concerns related to AI, apply tools for forecasting and risk analysis, and lead AI integration across teams. Ultimately, participants will be equipped to communicate AI insights effectively and guide their organizations confidently into an AI-powered future.",
+    "image": "/logos/coursera.png",
+    "coursera": 4.7,
+    "starisk": 4.8,
+    "spread": 0.4,
+    "spread_weighted": 0.4,
+    "reviews": 5,
+    "review_counts": {
+      "4.0": 1,
+      "5.0": 4
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "This instructor was very engaging and I enjoyed both of his courses. He knew what he was talking about and was never redundant. He explained AI concepts clearly and helped me understand the course material.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 5,
+    "ratings_total": 25,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 6,
+      "5": 18
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Eric Zackrison",
+        "slug": "~150807435",
+        "url": "https://www.coursera.org/instructor/~150807435",
+        "page": "eric-zackrison",
+        "id": "150807435",
+        "role": "Educator, Consultant, Speaker, and Trainer focused on building better leaders, better teams and better organizations",
+        "department": null,
+        "learners": 60612,
+        "courses_taught": 24,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/51/c04c94793148aa9abde06d3231547d/Eric-Zackrison-2-.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Computer Science",
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 1796,
+    "slug": "learn/ai-augmented-decision-making-for-business-leaders",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-content-creation-for-professional-writers": {
+    "title": "AI Content Creation for Professional Writers",
+    "provider": "STARWEAVER",
+    "description": "In today's fast-paced digital world, content writing is evolving through AI content creation. To stay competitive, writers must transition into \"AI-Augmented Creators.\" This course teaches you how to move beyond basic AI interactions and turn Generative AI into a powerful partner that handles the heavy lifting without losing your unique human touch. You will master the art of prompt engineering, learning how to use AI for content creation by giving AI precise instructions that produce high-quality, on-brand results every time. We dive deep into building smart workflows that automate tedious research, brainstorming, and multi-format content creation with AI.\n\nCrucially, you will learn a \"Human-in-the-Loop\" framework. This ensures every piece of content you produce is fact-checked, SEO-optimized, and reflects a consistent brand voice. Whether you're a freelancer looking to take on more clients or a manager scaling a team, this course provides the blueprints to double your creative output while maintaining elite quality.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      },
+      {
+        "name": "Basant Pathak",
+        "slug": "~203448698",
+        "url": "https://www.coursera.org/instructor/~203448698",
+        "page": "basant-pathak",
+        "id": "203448698",
+        "role": "Developer & Content Creator",
+        "department": null,
+        "learners": 443,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/83/0741cc51e04a49be8a50a969f0e59c/image-removebg-preview-1-.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "slug": "learn/ai-content-creation-for-professional-writers",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-fluency": {
+    "title": "AI Fluency",
+    "provider": "SkillUp",
+    "description": "Build essential AI fluency and gain the foundational knowledge and practical skills to use AI tools in the workplace effectively. This course helps you understand core artificial intelligence concepts, explore common workplace applications, and apply responsible AI practices with confidence.\nThrough real-world scenarios and interactive activities, you’ll learn how to collaborate with AI tools, evaluate AI-generated content, and apply organizational AI guidelines to ensure safe, accurate, and effective outcomes. You’ll also explore key AI safety protocols, limitations, and best practices for working responsibly with AI in everyday workflows.\n\nDesigned for immediate workplace impact, this course empowers you to boost productivity, make informed decisions, and avoid common AI pitfalls. By the end, you’ll be equipped to confidently leverage AI for productivity, enhance your work, and contribute in an AI-driven environment.\n\nEnroll now to build future-ready skills and work smarter with AI.",
+    "image": "/logos/skillup.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Kriti Kamra",
+        "slug": "~184574774",
+        "url": "https://www.coursera.org/instructor/~184574774",
+        "page": "kriti-kamra",
+        "id": "184574774",
+        "role": "Training Leader",
+        "department": "SkillUp",
+        "learners": 17694,
+        "courses_taught": 47,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/86/03468508f24c1ebbac93eab77bc5f3/IMG_6666-1.jpg"
+      },
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      }
+    ],
+    "categories": [
+      "Information Technology",
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/ai-fluency",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-for-application-development-end-to-end-ai-workflow": {
+    "title": "AI for Application Development: End-to-End AI Workflow",
+    "provider": "STARWEAVER",
+    "description": "Generative AI is transforming how software is designed, built, tested, and deployed, becoming an essential tool for developers, engineers, architects, and technology leaders. Rather than replacing human expertise, AI for application development enhances productivity by accelerating workflows, improving code quality, and automating repetitive tasks. This course provides a practical, end-to-end journey through the software development lifecycle, showing how AI can be integrated into coding, documentation, testing, DevOps, and deployment.\n\nLearners begin with AI-assisted coding using AI tools for app development such as GitHub Copilot, along with prompt engineering and code generation, before exploring AI-powered requirements analysis, API development, database design, and documentation. The course then covers AI-driven testing, bug detection, performance optimization, and security, followed by DevOps automation, Infrastructure as Code, CI/CD, monitoring, and incident response. Through hands-on labs, quizzes, discussions, and a capstone project, learners gain practical experience building AI apps and applying AI across real development workflows. Designed for developers, QA engineers, DevOps professionals, and architects with basic programming knowledge, this four-hour AI for application development course equips learners to confidently integrate generative AI into software engineering while balancing innovation with responsible human oversight.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      },
+      {
+        "name": "Scott Cosentino",
+        "slug": "~180467741",
+        "url": "https://www.coursera.org/instructor/~180467741",
+        "page": "scott-cosentino",
+        "id": "180467741",
+        "role": "Software Engineer",
+        "department": null,
+        "learners": 3094,
+        "courses_taught": 11,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a9/c83b5a979f4810905199fa14f9f4bf/SME-Original-Images.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/ai-for-application-development-end-to-end-ai-workflow",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
   }
 }

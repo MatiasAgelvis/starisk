@@ -28,8 +28,13 @@ run = "ruff check ."
 [tasks."pipeline:crawl"]
 description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
 dir = "pipeline"
+# The shebang matters: without it mise appends `mise run ... -- --limit 10` to
+# the last line, which feeds the flags to `groupings`. With it, mise executes
+# the script with the arguments as `"$@"`, so only the crawl sees them.
 run = """
-python -m starisk.crawl
+#!/bin/sh
+set -e
+python -m starisk.crawl "$@"
 python -m starisk.logos
 python -m starisk.logo_hires
 python -m starisk.groupings --write
@@ -110,3 +115,40 @@ run = "./build.sh"
 [tasks.check]
 description = "Lint and test the pipeline, then build the site"
 depends = ["pipeline:lint", "pipeline:test", "site:build"]
+
+# --- the box -------------------------------------------------------------
+#
+# The nightly container, where it actually lives. These need root (the Docker
+# socket) and an env file; STARISK_ENV_FILE overrides the default. Extra
+# arguments are appended: `mise run ops:rehearse -- --limit 20`.
+
+[tasks."ops:build"]
+description = "Build the nightly image"
+run = "sudo docker build -f ops/Dockerfile -t starisk-nightly ."
+
+[tasks."ops:stats"]
+description = "What the state volume holds"
+run = """
+sudo docker run --rm -v starisk-state:/state --entrypoint sh starisk-nightly \
+  -c 'du -sh /state; wc -c /state/sources.json /state/scores.json; ls /state/.cache/pages | wc -l'
+"""
+
+[tasks."ops:dry"]
+description = "Config and live checks; writes nothing, crawls nothing"
+run = "sudo docker run --rm --init --env-file ${STARISK_ENV_FILE:-/etc/starisk/env} -v starisk-state:/state starisk-nightly --dry-run"
+
+[tasks."ops:rehearse"]
+description = "Crawl for real, publish nothing (append -- --limit 20)"
+run = "sudo docker run --rm --init --env-file ${STARISK_ENV_FILE:-/etc/starisk/env} -v starisk-state:/state starisk-nightly --no-git"
+
+[tasks."ops:run"]
+description = "The real run: commit, push, pull request"
+run = "sudo docker run --rm --init --env-file ${STARISK_ENV_FILE:-/etc/starisk/env} -v starisk-state:/state starisk-nightly"
+
+[tasks."ops:last"]
+description = "The last run's record"
+run = "sudo docker run --rm -v starisk-state:/state --entrypoint cat starisk-nightly /state/logs/last-run.json"
+
+[tasks."ops:log"]
+description = "The last day of journal entries"
+run = "sudo journalctl -t starisk-nightly --since -24h --no-pager"

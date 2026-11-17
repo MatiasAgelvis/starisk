@@ -49,8 +49,8 @@ from .cache import CACHE_DIR, load_page, store_page
 from .engine import CALIBRATED, course_score, peer_spread, review_spread
 from .fetch import RateLimited, fetch_page
 from .naming import IMAGE_PREFIX, stem
+from .paths import DATA_DIR
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 SOURCES_PATH = DATA_DIR / "sources.json"
 SCORES_PATH = DATA_DIR / "scores.json"
 
