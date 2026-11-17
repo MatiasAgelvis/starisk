@@ -1,14 +1,17 @@
-"""Where the pipeline keeps state, and where the code lives.
+"""Where the pipeline keeps its things, and what each of them is.
 
-The JSON corpus and the page cache are *state*: they accumulate across runs and
-must survive a fresh checkout. Everything else — provider logos, the derived
-logo sizes, `web/src/data` — is repo content, rebuilt or committed like any other
-file.
+Three locations, three different jobs:
 
-By default state is `pipeline/data` inside the checkout, which is what `mise run`
-and the tests expect. The nightly container points `STARISK_DATA` at a volume
-instead, so it can throw away its clone every run and still start from the corpus
-it built last night.
+- `pipeline/data` — the corpus. **Not state**: it lives in the checkout, is
+  published through git like any other file, and the crawl reads and writes it
+  there. Any machine's checkout is a valid starting point, because it comes from
+  `develop`.
+- the page cache — bytes fetched from Coursera. Expensive to rebuild, worthless
+  to commit. Per machine, best effort: use it if it's there, fetch if it isn't.
+  `STARISK_CACHE` moves it, which is what lets a container throw its checkout
+  away without throwing the cache away.
+- the logs — the run record and the lock. `STARISK_LOGS` moves them, because the
+  nightly's checkout does not survive the process.
 
 Read once, at import.
 """
@@ -27,8 +30,6 @@ def _directory(variable: str, default: Path) -> Path:
     return Path(value).expanduser().resolve() if value else default
 
 
-DATA_DIR = _directory("STARISK_DATA", PIPELINE_DIR / "data")
-CACHE_DIR = DATA_DIR / ".cache"
-# The run record and the lock are state as well: the nightly's checkout is thrown
-# away, so anything worth keeping after the process exits lives here.
+DATA_DIR = PIPELINE_DIR / "data"
+CACHE_DIR = _directory("STARISK_CACHE", DATA_DIR / ".cache")
 LOG_DIR = _directory("STARISK_LOGS", REPO_DIR / "logs")
