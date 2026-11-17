@@ -9,9 +9,15 @@ inside a shell script:
 3. Crawl, localise logos, rebuild the program index, copy the data into the site.
 4. Gate the result. A run that lost scores, grew errors or touched code does not
    become a commit — it becomes a notification.
-5. Commit on `data/crawl`, push, and keep one pull request open against `develop`.
+5. Publish: a new branch for this run, one commit, a plain push, one pull request.
 
-The run never touches `main`; publishing is still a human merge.
+Publishing is a **create**. The branch is named after the run, so the ref does not
+ exist on the remote yet, which is the one push git cannot reject — no rebase, no
+force, no lease, and no dependency on what happened to last night's branch.
+
+The run never touches `main`; publishing is still a human merge. Merge the PR any
+way you like, including squash, and delete the branch afterwards: nothing depends
+on it.
 
     python -m starisk.nightly --dry-run     # config, connectivity, smoke; no writes
     python -m starisk.nightly --limit 60
@@ -21,7 +27,7 @@ Exit codes are the interface to the timer and the health check:
 
     0   ok, committed             20  gate refused             50  smoke failed
     10  nothing changed           30  partial (rate limited)   60  missing config
-    40  git conflict/divergence   70  unexpected failure
+    40  git trouble               70  unexpected failure
 """
 
 from __future__ import annotations
@@ -30,6 +36,7 @@ import argparse
 import fcntl
 import json
 import os
+import shutil
 import subprocess
 import sys
 import urllib.request
@@ -39,13 +46,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from . import crawl, demand, groupings, logo_hires, logos, smoke
+from .paths import DATA_DIR, LOG_DIR
 
 REPO = Path(__file__).resolve().parents[2]
-LOG_DIR = REPO / "logs"
 LAST_RUN = LOG_DIR / "last-run.json"
 LOCK = LOG_DIR / "nightly.lock"
 
-BRANCH = "data/crawl"
+BRANCH_PREFIX = "data/crawl-"
 BASE = "develop"
 DEFAULT_LIMIT = 60
 
@@ -83,6 +90,15 @@ DATA_PATHS = (
     "web/src/data/logo-sizes.json",
 )
 DATA_PREFIXES = ("web/public/logos/",)
+
+# The JSON that is published, as opposed to the page cache, which is state only.
+PUBLISHED = (
+    "scores.json",
+    "sources.json",
+    "requests.json",
+    "groupings.json",
+    "programs.json",
+)
 
 # Guards against a quietly broken adapter publishing itself.
 MAX_SCORED_DROP = 5
@@ -231,6 +247,19 @@ def tracked_changes() -> list[str]:
     return _paths(git("status", "--porcelain", "--untracked-files=no").stdout)
 
 
+def copy_state(source: Path, target: Path) -> None:
+    """Bring the published JSON from wherever state lives into the checkout.
+
+    The container points `STARISK_DATA` at a volume and clones fresh every run, so
+    the files the crawl wrote are not in `pipeline/data` — but the commit has to be.
+    """
+    target.mkdir(parents=True, exist_ok=True)
+    for name in PUBLISHED:
+        path = source / name
+        if path.exists():
+            shutil.copy2(path, target / name)
+
+
 def commit(paths: list[str], message: str, body: str) -> str:
     git("add", "--", *paths)
     # The author is the bot even when the run is a local rehearsal: the identity
@@ -249,8 +278,12 @@ def commit(paths: list[str], message: str, body: str) -> str:
     return git("rev-parse", "--short", "HEAD").stdout.strip()
 
 
-def push(env: dict) -> None:
-    """Push without writing the token anywhere git can keep it.
+def push(env: dict, branch: str) -> None:
+    """Publish this run's branch as a new ref.
+
+    A create is the one push git cannot reject: the remote has no value for the
+    ref, so there is no non-fast-forward to refuse and no lease to keep in sync.
+    That is the whole reason the branch is named after the run.
 
     The credential helper runs inside git with the token in its environment, so
     the token is absent from argv, from `.git/config` and from the reflog.
@@ -261,9 +294,8 @@ def push(env: dict) -> None:
     )
     git(
         "push",
-        "--force-with-lease",
         "origin",
-        f"{BRANCH}:{BRANCH}",
+        f"HEAD:refs/heads/{branch}",
         env={
             **os.environ,
             "GITHUB_TOKEN": env["GITHUB_TOKEN"],
@@ -300,22 +332,43 @@ def github(env: dict, method: str, path: str, payload: dict | None = None) -> ob
     return json.loads(body) if body else {}
 
 
-def open_pull_request(env: dict, title: str, body: str) -> str | None:
-    """Keep one open PR per merge cycle; reuse it until it is merged."""
-    owner = repo_slug(env).split("/")[0]
-    open_prs = github(env, "GET", f"/pulls?state=open&head={owner}:{BRANCH}")
-    if isinstance(open_prs, list) and open_prs:
-        number = open_prs[0]["number"]
-        updated = github(env, "PATCH", f"/pulls/{number}", {"title": title, "body": body})
-        return updated.get("html_url") if isinstance(updated, dict) else None
-
+def open_pull_request(env: dict, branch: str, title: str, body: str) -> str | None:
+    """One PR per run. The previous one is closed by `close_superseded`."""
     created = github(
         env,
         "POST",
         "/pulls",
-        {"title": title, "head": BRANCH, "base": BASE, "body": body},
+        {"title": title, "head": branch, "base": BASE, "body": body},
     )
     return created.get("html_url") if isinstance(created, dict) else None
+
+
+def close_superseded(env: dict, keep: str) -> list[int]:
+    """Close earlier nightly PRs and drop their branches.
+
+    The newest branch carries the whole snapshot — the crawl is cumulative — so an
+    older one has nothing it lacks. Best effort: the run has already published, and
+    a tidy-up failure must not turn that into a bad night.
+    """
+    closed: list[int] = []
+    pulls = github(env, "GET", "/pulls?state=open&per_page=100")
+    if not isinstance(pulls, list):
+        return closed
+
+    for pull in pulls:
+        head = (pull.get("head") or {}).get("ref") or ""
+        if head == keep or not head.startswith(BRANCH_PREFIX):
+            continue
+        number = pull.get("number")
+        try:
+            github(env, "POST", f"/pulls/{number}/comments", {"body": f"Superseded by `{keep}`."})
+            github(env, "PATCH", f"/pulls/{number}", {"state": "closed"})
+            github(env, "DELETE", f"/git/refs/heads/{head}")
+        except Exception as error:  # noqa: BLE001 - tidying must not fail the run
+            print(f"[nightly] could not retire {head}: {error}")
+            continue
+        closed.append(number)
+    return closed
 
 
 def notify(env: dict, title: str, message: str, priority: str = "default") -> None:
@@ -452,7 +505,7 @@ def finish(
 def dry_run(options) -> int:
     """Config, connectivity and the live checks. No crawl, no writes, no commit."""
     print("[nightly] dry run: no crawl, no commit, no push")
-    print(f"[nightly] branch {BRANCH} → {BASE}, limit {options.limit or 'uncapped'}")
+    print(f"[nightly] publishing to a {BRANCH_PREFIX}<stamp> branch off {BASE}")
 
     scores = load_scores()
     stats = crawl.summarize(scores)
@@ -498,16 +551,6 @@ def run(options) -> int:
         if options.dry_run:
             return dry_run(options)
 
-        if not options.no_git:
-            branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
-            if branch != BRANCH:
-                return finish(
-                    env,
-                    started,
-                    GIT,
-                    f"not on {BRANCH} (on {branch}); run ops/entrypoint.sh, or use --no-git",
-                )
-
         before = load_scores()
         # Files already dirty when we started are not this run's doing: a stray
         # note in a dev clone must not gate the commit.
@@ -549,6 +592,12 @@ def run(options) -> int:
         elif index_code != 0:
             return finish(env, started, FAILED, "the program index rebuild failed")
 
+        # State may live outside the checkout (the container's volume), but the
+        # commit has to carry it back into `pipeline/data` so `sync-data` and the
+        # diff see it.
+        if DATA_DIR != REPO / "pipeline" / "data":
+            copy_state(DATA_DIR, REPO / "pipeline" / "data")
+
         synced = subprocess.run(("node", "web/scripts/sync-data.mjs"), cwd=REPO)
         if synced.returncode != 0:
             return finish(env, started, FAILED, "copying the data into the site failed")
@@ -565,31 +614,41 @@ def run(options) -> int:
             # working tree so nothing is pushed from a clone being edited.
             print("[nightly] rehearsal: the data is left uncommitted")
         elif decision.commit:
-            commit_hash = commit(
-                [path for path in new_paths if allowed(path)],
-                commit_message(summary),
-                commit_body(summary, decision),
-            )
+            branch = f"{BRANCH_PREFIX}{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M')}"
+            try:
+                git("switch", "-c", branch)
+                commit_hash = commit(
+                    [path for path in new_paths if allowed(path)],
+                    commit_message(summary),
+                    commit_body(summary, decision),
+                )
+            except GitError as error:
+                return finish(env, started, GIT, f"commit failed: {error}", summary=summary)
             if not options.no_push:
                 try:
-                    push(env)
+                    push(env, branch)
                 except (GitError, KeyError) as error:
+                    # The crawl's output is already in the state volume, so this is
+                    # not a lost night: the next run publishes it. Partial, not git.
                     return finish(
                         env,
                         started,
-                        GIT,
-                        f"push failed: {error}",
+                        PARTIAL,
+                        f"crawl kept, publish pending: {error}",
                         summary=summary,
                         commit_hash=commit_hash,
                     )
                 try:
                     pr_url = open_pull_request(
                         env,
+                        branch,
                         "Nightly crawl",
                         pr_body(summary, decision, started[:10]),
                     )
+                    for number in close_superseded(env, branch):
+                        print(f"[nightly] closed #{number}, superseded by {branch}")
                 except Exception as error:  # noqa: BLE001 - the push already landed
-                    print(f"[nightly] the pull request was not updated: {error}")
+                    print(f"[nightly] the pull request was not opened: {error}")
 
         if report.site:
             print("[nightly] the deployed data has a problem:")
