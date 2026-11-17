@@ -60075,5 +60075,268 @@
     "enrollment": 2319,
     "slug": "learn/ai-and-european-union-law-navigating-regulatory-compliance",
     "scrapedAt": "2026-11-17T17:36:49.692182+00:00"
+  },
+  "learn/ai-assisted-market-research": {
+    "title": "AI-Assisted Market Research",
+    "provider": "SkillUp",
+    "description": "AI can draft a market overview in seconds. It can also invent a statistic, cite a report that does not exist, and sound completely sure of both.\n\nThis course will teach you to use generative AI to speed up secondary market research while keeping every claim traceable to a credible source. The rule is simple: AI output is a lead to check, not evidence to cite.\n\nYou will learn what ChatGPT, Gemini, Perplexity, and NotebookLM are each good for, write structured prompts for discovery, comparison, and analysis, and use AI to extract information from long reports. You will then learn why hallucinations occur, spot warning signs such as unverifiable citations, verify claims against original sources, and apply responsible practice on citation, confidentiality, copyright, and transparency.\n\nPractice labs, scenario activities, and a role-play let you apply these skills to realistic market research tasks.\n\nDesigned for marketing, insights, competitive intelligence, and business professionals, this course will help you research faster, avoid costly AI errors, and deliver AI-assisted research you can confidently defend.",
+    "image": "/logos/skillup.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      },
+      {
+        "name": "Rajesh Menon",
+        "slug": "~169429738",
+        "url": "https://www.coursera.org/instructor/~169429738",
+        "page": "rajesh-menon",
+        "id": "169429738",
+        "role": null,
+        "department": null,
+        "learners": 20516,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/0d/70d20265a34eeab8523a23f5d94e5a/RajeshMenon.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "slug": "learn/ai-assisted-market-research",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-augmented-decision-making-for-business-leaders": {
+    "title": "AI-Augmented Decision-Making for Business Leaders",
+    "provider": "Coursera",
+    "description": "In this course, you'll gain foundational knowledge, practical tools, and actionable frameworks for integrating AI into your executive decision-making. You’ll explore AI-powered forecasting, strategic planning, risk assessment, and ethical considerations through engaging case studies and hands-on activities. You'll also discover how to build an AI-ready culture, communicate AI-driven insights effectively, and strategically position your organization for the future. \n\nThis course is tailored for a broad spectrum of business professionals who influence or make strategic decisions. Executives, senior leaders, managers, consultants, and entrepreneurs will benefit from practical tools and insights to apply AI in real-world business contexts. It also welcomes aspiring AI champions and HR professionals eager to build AI-ready cultures and lead technological transformation across their organizations.\n\nNo prior knowledge of AI, data science, or advanced technology is required to take this course. It is designed to be fully accessible to business leaders with curiosity and a willingness to explore how AI can inform strategic decision-making. Access to AI tools like ChatGPT is recommended for learners who want to experiment and apply concepts hands-on during the course.\n\nBy the end of this course, learners will understand foundational AI concepts and how data fuels intelligent decision-making. They will be able to evaluate ethical concerns related to AI, apply tools for forecasting and risk analysis, and lead AI integration across teams. Ultimately, participants will be equipped to communicate AI insights effectively and guide their organizations confidently into an AI-powered future.",
+    "image": "/logos/coursera.png",
+    "coursera": 4.7,
+    "starisk": 4.8,
+    "spread": 0.4,
+    "spread_weighted": 0.4,
+    "reviews": 5,
+    "review_counts": {
+      "4.0": 1,
+      "5.0": 4
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "This instructor was very engaging and I enjoyed both of his courses. He knew what he was talking about and was never redundant. He explained AI concepts clearly and helped me understand the course material.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 5,
+    "ratings_total": 25,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 6,
+      "5": 18
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Eric Zackrison",
+        "slug": "~150807435",
+        "url": "https://www.coursera.org/instructor/~150807435",
+        "page": "eric-zackrison",
+        "id": "150807435",
+        "role": "Educator, Consultant, Speaker, and Trainer focused on building better leaders, better teams and better organizations",
+        "department": null,
+        "learners": 60612,
+        "courses_taught": 24,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/51/c04c94793148aa9abde06d3231547d/Eric-Zackrison-2-.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Computer Science",
+      "Data Science"
+    ],
+    "level": "Beginner",
+    "enrollment": 1796,
+    "slug": "learn/ai-augmented-decision-making-for-business-leaders",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-content-creation-for-professional-writers": {
+    "title": "AI Content Creation for Professional Writers",
+    "provider": "STARWEAVER",
+    "description": "In today's fast-paced digital world, content writing is evolving through AI content creation. To stay competitive, writers must transition into \"AI-Augmented Creators.\" This course teaches you how to move beyond basic AI interactions and turn Generative AI into a powerful partner that handles the heavy lifting without losing your unique human touch. You will master the art of prompt engineering, learning how to use AI for content creation by giving AI precise instructions that produce high-quality, on-brand results every time. We dive deep into building smart workflows that automate tedious research, brainstorming, and multi-format content creation with AI.\n\nCrucially, you will learn a \"Human-in-the-Loop\" framework. This ensures every piece of content you produce is fact-checked, SEO-optimized, and reflects a consistent brand voice. Whether you're a freelancer looking to take on more clients or a manager scaling a team, this course provides the blueprints to double your creative output while maintaining elite quality.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      },
+      {
+        "name": "Basant Pathak",
+        "slug": "~203448698",
+        "url": "https://www.coursera.org/instructor/~203448698",
+        "page": "basant-pathak",
+        "id": "203448698",
+        "role": "Developer & Content Creator",
+        "department": null,
+        "learners": 443,
+        "courses_taught": 2,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/83/0741cc51e04a49be8a50a969f0e59c/image-removebg-preview-1-.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "slug": "learn/ai-content-creation-for-professional-writers",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-fluency": {
+    "title": "AI Fluency",
+    "provider": "SkillUp",
+    "description": "Build essential AI fluency and gain the foundational knowledge and practical skills to use AI tools in the workplace effectively. This course helps you understand core artificial intelligence concepts, explore common workplace applications, and apply responsible AI practices with confidence.\nThrough real-world scenarios and interactive activities, you’ll learn how to collaborate with AI tools, evaluate AI-generated content, and apply organizational AI guidelines to ensure safe, accurate, and effective outcomes. You’ll also explore key AI safety protocols, limitations, and best practices for working responsibly with AI in everyday workflows.\n\nDesigned for immediate workplace impact, this course empowers you to boost productivity, make informed decisions, and avoid common AI pitfalls. By the end, you’ll be equipped to confidently leverage AI for productivity, enhance your work, and contribute in an AI-driven environment.\n\nEnroll now to build future-ready skills and work smarter with AI.",
+    "image": "/logos/skillup.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Kriti Kamra",
+        "slug": "~184574774",
+        "url": "https://www.coursera.org/instructor/~184574774",
+        "page": "kriti-kamra",
+        "id": "184574774",
+        "role": "Training Leader",
+        "department": "SkillUp",
+        "learners": 17694,
+        "courses_taught": 47,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/86/03468508f24c1ebbac93eab77bc5f3/IMG_6666-1.jpg"
+      },
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      }
+    ],
+    "categories": [
+      "Information Technology",
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/ai-fluency",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
+  },
+  "learn/ai-for-application-development-end-to-end-ai-workflow": {
+    "title": "AI for Application Development: End-to-End AI Workflow",
+    "provider": "STARWEAVER",
+    "description": "Generative AI is transforming how software is designed, built, tested, and deployed, becoming an essential tool for developers, engineers, architects, and technology leaders. Rather than replacing human expertise, AI for application development enhances productivity by accelerating workflows, improving code quality, and automating repetitive tasks. This course provides a practical, end-to-end journey through the software development lifecycle, showing how AI can be integrated into coding, documentation, testing, DevOps, and deployment.\n\nLearners begin with AI-assisted coding using AI tools for app development such as GitHub Copilot, along with prompt engineering and code generation, before exploring AI-powered requirements analysis, API development, database design, and documentation. The course then covers AI-driven testing, bug detection, performance optimization, and security, followed by DevOps automation, Infrastructure as Code, CI/CD, monitoring, and incident response. Through hands-on labs, quizzes, discussions, and a capstone project, learners gain practical experience building AI apps and applying AI across real development workflows. Designed for developers, QA engineers, DevOps professionals, and architects with basic programming knowledge, this four-hour AI for application development course equips learners to confidently integrate generative AI into software engineering while balancing innovation with responsible human oversight.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      },
+      {
+        "name": "Scott Cosentino",
+        "slug": "~180467741",
+        "url": "https://www.coursera.org/instructor/~180467741",
+        "page": "scott-cosentino",
+        "id": "180467741",
+        "role": "Software Engineer",
+        "department": null,
+        "learners": 3094,
+        "courses_taught": 11,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a9/c83b5a979f4810905199fa14f9f4bf/SME-Original-Images.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/ai-for-application-development-end-to-end-ai-workflow",
+    "scrapedAt": "2026-11-17T18:33:05.873801+00:00"
   }
 }
