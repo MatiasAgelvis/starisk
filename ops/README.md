@@ -70,6 +70,17 @@ cron line does not repeat them.
 Root is there for the Docker socket, nothing else: it runs that fixed command,
 the env file is root-owned `600`, and the image is immutable.
 
+With mise on the box, the same commands are tasks:
+
+```sh
+mise run ops:stats                  # what /state holds
+mise run ops:dry                    # config + live checks, nothing written
+mise run ops:rehearse -- --limit 20 # crawl for real, publish nothing
+mise run ops:run                    # the real run: commit, push, PR
+mise run ops:last                   # the last run's record
+mise run ops:log                    # the last day of journal output
+```
+
 Output goes to the journal, which already rotates: `journalctl -t starisk-nightly`.
 The pipe hands the exit status to `logger`, so cron never sees a failure — that is
 fine, `last-run.json` is the signal. If the box has no `logger`, redirect to a file
