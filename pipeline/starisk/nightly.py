@@ -39,6 +39,7 @@ import os
 import shutil
 import subprocess
 import sys
+import urllib.error
 import urllib.request
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -327,8 +328,14 @@ def github(env: dict, method: str, path: str, payload: dict | None = None) -> ob
             "User-Agent": "starisk-nightly",
         },
     )
-    with urllib.request.urlopen(request, timeout=25) as response:
-        body = response.read()
+    try:
+        with urllib.request.urlopen(request, timeout=25) as response:
+            body = response.read()
+    except urllib.error.HTTPError as error:
+        # GitHub's status alone is useless (422 from which call, why?). The body
+        # carries the validation message, so it belongs in the failure.
+        detail = error.read().decode("utf-8", "replace").strip()[:300]
+        raise GitError(f"GitHub {error.code} on {method} {path}: {detail}") from error
     return json.loads(body) if body else {}
 
 
@@ -361,7 +368,9 @@ def close_superseded(env: dict, keep: str) -> list[int]:
             continue
         number = pull.get("number")
         try:
-            github(env, "POST", f"/pulls/{number}/comments", {"body": f"Superseded by `{keep}`."})
+            # A conversation comment, so `/issues/`; `/pulls/{n}/comments` is the
+            # review-comment endpoint and rejects a bare body with 422.
+            github(env, "POST", f"/issues/{number}/comments", {"body": f"Superseded by `{keep}`."})
             github(env, "PATCH", f"/pulls/{number}", {"state": "closed"})
             github(env, "DELETE", f"/git/refs/heads/{head}")
         except Exception as error:  # noqa: BLE001 - tidying must not fail the run

@@ -65,7 +65,7 @@ class CloseSupersededTest(unittest.TestCase):
 
         self.assertEqual(closed, [7])
         touched = [path for _, path, _ in calls]
-        self.assertIn("/pulls/7/comments", touched)
+        self.assertIn("/issues/7/comments", touched)
         self.assertIn("/pulls/7", touched)
         self.assertIn("/git/refs/heads/data/crawl-20261116T0330", touched)
         self.assertNotIn("/pulls/8", touched)
