@@ -59217,5 +59217,564 @@
     "enrollment": 28608,
     "slug": "learn/writing-editing-revising",
     "scrapedAt": "2026-11-17T03:31:17.443914+00:00"
+  },
+  "learn/3d-interaction-design-virtual-reality": {
+    "title": "3D Interaction Design in Virtual Reality",
+    "provider": "University of London",
+    "description": "This course will teach you about one of the most important aspects of VR, how you interact with a VR world. Virtual Reality is completely different from an on screen app or game. You are completely immersed in a VR world, so it doesn't make sense to interact only through buttons or menus. You will get the most out of VR if you can interact with the world just as you would with the real world: with your natural body movements. You will learn about the basic concepts and technologies of VR Interaction. You will then get hands on, learning about how to move around in VR and how to interact with the objects in your world. The course will finish with some advice from experts on VR interaction design and you will do a project where you will get real experience of developing VR Interaction.",
+    "image": "/logos/university-of-london.jpg",
+    "coursera": 4.6,
+    "starisk": 4.0,
+    "spread": 1.13,
+    "spread_weighted": 1.27,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 1,
+      "3.0": 5,
+      "4.0": 1,
+      "5.0": 13
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "It is a good course technically speaking but it is a pity that there are many resources that are no longer accessible or that they are discontinued and the worst thing is that the teachers are not accessible nor answer the questions",
+      "stars": 3.0,
+      "likes": 5
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 40,
+    "ratings_total": 137,
+    "rating_counts": {
+      "1": 3,
+      "2": 2,
+      "3": 9,
+      "4": 21,
+      "5": 102
+    },
+    "instructors": [
+      {
+        "name": "Prof Sylvia Xueni Pan",
+        "slug": "sylvia-xueni-pan",
+        "url": "https://www.coursera.org/instructor/sylvia-xueni-pan",
+        "page": "sylvia-xueni-pan",
+        "id": "24333271",
+        "role": "Professor, Department of Computing",
+        "department": "Goldsmiths, University of London",
+        "learners": 137879,
+        "courses_taught": 5,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/4e/425410fe7411e6a2aba5366b6a2112/PanXueni.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 19709,
+    "slug": "learn/3d-interaction-design-virtual-reality",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/3d-models-virtual-reality": {
+    "title": "3D Models for Virtual Reality",
+    "provider": "University of London",
+    "description": "This course will begin your journey to creating Virtual Reality experiences. A Virtual Reality experience is a new world that you step into and are entirely immersed in. Creating a VR experience means creating that world and all the objects in it. \n\nIn this course you will learn the basics of 3D graphics: how we create objects and how to lay them out to create an environment. You will learn techniques like materials and texturing that make your objects appear realistic. You will also learn about audio techniques to ensure that your experiences sound great as well as looking great. In all of these topics we will pay attention to the particular requirements of Virtual Reality, including pitfalls and performance issues: making sure your environment runs fast enough in VR. \n\nYou will learn all of this using the professional game and VR engine, Unity3D. Unity is one of the most used game engine and is a relatively easy, but fully featured, introduction to 3D development. \n\nThe course will culminate in a project in which you will create your own VR scene. VR development is something you can only learn by doing it yourself, so working on your project will be the best way to learn.",
+    "image": "/logos/university-of-london.jpg",
+    "coursera": 4.6,
+    "starisk": 3.4,
+    "spread": 1.82,
+    "spread_weighted": 1.88,
+    "reviews": 20,
+    "review_counts": {
+      "1.0": 6,
+      "3.0": 1,
+      "5.0": 13
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "The tutorials leave a lot to be desired, and I have some expertise on this because I'm a college instructor and have been producing video tutorials for years. Most of the videos are more like demonstrations, as opposed to instruction. The first couple of courses in this specialization are fine, because it doesn't get deeply into the meat of using Unity. If you already know how to use Unity3D, then you'll probably be able to complete the 5 classes without a problem. If you didn't know how to use Unity (or Unreal, etc.) when you started these classes, then I wouldn't recommend that you take the 5 course series. It just gets worse. The material gets more complex but the videos don't instruct. They provide a sort of general overview of what to do. Even when you are provided with some materials (such as scripts or Unity packages) they don't always work.Once you get past class 2, you better have A LOT of extra time in your life because you'll probably be spending many hours hunting down additional help online, watching loads of extra videos and doing a bunch of trial and error hours just to get to the point where you have a project you can upload to the course assignment page. …",
+      "stars": 1.0,
+      "likes": 14
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 111,
+    "ratings_total": 387,
+    "rating_counts": {
+      "1": 11,
+      "2": 8,
+      "3": 17,
+      "4": 62,
+      "5": 289
+    },
+    "instructors": [
+      {
+        "name": "Prof Sylvia Xueni Pan",
+        "slug": "sylvia-xueni-pan",
+        "url": "https://www.coursera.org/instructor/sylvia-xueni-pan",
+        "page": "sylvia-xueni-pan",
+        "id": "24333271",
+        "role": "Professor, Department of Computing",
+        "department": "Goldsmiths, University of London",
+        "learners": 137879,
+        "courses_taught": 5,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/4e/425410fe7411e6a2aba5366b6a2112/PanXueni.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "enrollment": 47627,
+    "slug": "learn/3d-models-virtual-reality",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/adv-reproducibility-cancer-informatics": {
+    "title": "Advanced Reproducibility in Cancer Informatics",
+    "provider": "Johns Hopkins University",
+    "description": "This course introduces tools that help enhance reproducibility and replicability in the context of cancer informatics. It uses hands-on exercises to demonstrate in practical terms how to get acquainted with these tools but is by no means meant to be a comprehensive dive into these tools.  The course introduces tools and their concepts such as git and GitHub, code review, Docker, and GitHub actions.\n\nTarget Audience  \n\nThe course is intended for students in the biomedical sciences and researchers who use informatics tools in their research. It is the follow up course to the Introduction to Reproducibility in Cancer Informatics course. Learners who take this course should: \n\n- Have some familiarity with R or Python\n- Have take the Introductory Reproducibility in Cancer Informatics course\n- Have some familiarity with GitHub\n\nMotivation\n\nData analyses are generally not reproducible without direct contact with the original researchers and a substantial amount of time and effort (BeaulieuJones, 2017). Reproducibility in cancer informatics (as with other fields) is still not monitored or incentivized despite that it is fundamental to the scientific method. Despite the lack of incentive, many researchers strive for reproducibility in their own work but often lack the skills or training to do so effectively.\n\nEquipping researchers with the skills to create reproducible data analyses increases the efficiency of everyone involved. Reproducible analyses are more likely to be understood, applied, and replicated by others. This helps expedite the scientific process by helping researchers avoid false positive dead ends. Open source clarity in reproducible methods also saves researchers' time so they don't have to reinvent the proverbial wheel for methods that everyone in the field is already performing.\n\nCurriculum  \n\nThe course includes hands-on exercises for how to apply reproducible code concepts to their code. Individuals who take this course are encouraged to complete these activities as they follow along with the course material to help increase the reproducibility of their analyses.\n\n**Goal of this course:**  \nTo equip learners with a deeper knowledge of the capabilities of reproducibility tools and how they can apply to their existing analyses scripts and projects.\n\n\n**What is NOT the goal of this course:**  \nTo be a comprehensive dive into each of the tools discussed. . \n\nHow to use the course\n\nEach chapter has associated exercises that you are encourage to complete in order to get the full benefit of the course\n\nThis course is designed with busy professional learners in mind -- who may have to pick up and put down the course when their schedule allows. In general, you are able to skip to chapters you find a most useful to (One incidence where a prior chapter is required is noted). \n\nEach chapter has associated exercises that you are encourage to complete in order to get the full benefit of the course",
+    "image": "/logos/johns-hopkins-university.jpg",
+    "coursera": null,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "5.0": 1
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "For those who have some learning experience, the problems are easy to solve.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Candace Savonen, MS",
+        "slug": "~39250299",
+        "url": "https://www.coursera.org/instructor/~39250299",
+        "page": "candace-savonen-ms",
+        "id": "39250299",
+        "role": "Data Scientist",
+        "department": "Department of Biostatistics",
+        "learners": 10498,
+        "courses_taught": 13,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/3d/20b2387e1f494290006afaddce852a/Candace_Savonen.jpg"
+      }
+    ],
+    "categories": [
+      "Health",
+      "Data Science",
+      "Physical Science and Engineering"
+    ],
+    "slug": "learn/adv-reproducibility-cancer-informatics",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/advanced-agile-for-product-managers-scaling-agile-teams": {
+    "title": "Advanced Agile for Product Managers: Scaling Agile Teams",
+    "provider": "Coursera",
+    "description": "The potential for Agile to drive innovation and efficiency is vast but scaling Agile successfully across multiple teams requires the right strategies, frameworks, and leadership. In today’s fast-paced digital landscape, scaling Agile teams is no longer optional—it’s essential for product managers who want to deliver faster, collaborate better, and innovate continuously.  \n\nAgile thrives in small teams, but scaling it introduces new challenges as misalignment, growing dependencies, and organizational complexity. \n\nIn this course, You’ll learn how to apply proven frameworks like SAFe and LeSS, tackle real-world scaling challenges, and foster a culture of alignment and continuous improvement. Through a mix of practical exercises, tools like Miro and Jira, and in-depth case studies, you’ll gain actionable skills in: \n\n- Adaptive planning and prioritization \n- Cross-team estimation and collaboration \n- Dependency mapping and coordination \n- Agile metrics and release synchronization \n\nThis course is tailored for professionals responsible for guiding Agile delivery at scale, including product managers, senior product owners, agile coaches, project managers, and team leads. Whether you're managing a single product across multiple teams or helping your organization embrace scaled Agile frameworks, this course provides practical insights and tools to elevate your leadership and execution capabilities in complex environments.\n\nTo get the most from this course, learners should have a foundational understanding of Agile methodologies and prior experience in product management or team leadership roles. Familiarity with tools like Jira or Miro is recommended, as they will be used throughout the course for hands-on exercises in planning, coordination, and performance tracking.\n\nBy the end of this course, learners will be able to apply frameworks like SAFe, LeSS, and Disciplined Agile to scale Agile practices effectively. They will master adaptive planning, cross-team estimation, and dependency management, while also learning to leverage Agile metrics and leadership strategies to drive continuous improvement and sustainable transformation across teams.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "5.0": 1
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "The course was very informative and well-structured. Concepts were explained clearly with examples. Got a really good idea of how Scrum differs from SAFe and other scaled agile approaches. Thank you for all the effort in preparing this course",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 2
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      },
+      {
+        "name": "Ahmed Hassan",
+        "slug": "~182311587",
+        "url": "https://www.coursera.org/instructor/~182311587",
+        "page": "ahmed-hassan",
+        "id": "182311587",
+        "role": "Projects and Change Management Consultant | Speaker | Coach",
+        "department": null,
+        "learners": 12139,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/9e/b3c252cd334b87b38c9e901c4c0527/66fc4914d5411f1bfd22bfc3-1517692626579-removebg-preview.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Information Technology"
+    ],
+    "slug": "learn/advanced-agile-for-product-managers-scaling-agile-teams",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/advanced-business-analysis-elicitation-analysis": {
+    "title": "Advanced Business Analysis: Elicitation & Analysis",
+    "provider": "STARWEAVER",
+    "description": "This advanced business analysis course is tailored for experienced professionals looking to deepen their skills in elicitation and requirements analysis. Learners will delve into the intricacies of gathering, documenting, and analyzing requirements, along with mastering advanced techniques such as interviews, use cases, process modeling, and financial analysis. Practical case studies and real-world scenarios will provide hands-on experience, ensuring participants are well-prepared to tackle complex business challenges. By the end of the course, learners will possess a comprehensive skill set in requirements elicitation and analysis, positioning them as invaluable assets in driving successful projects and solutions.\n\nThis course is designed for experienced business analysts, project managers, and professionals in related roles who aim to enhance their proficiency in elicitation and requirements analysis. It is ideal for those seeking to take their business analysis skills to an advanced level, equipping them to lead and contribute effectively to complex projects and initiatives.\n\nTo fully benefit from this course, learners should have a foundational understanding of business analysis concepts and techniques, as well as experience in business analysis or related roles. Familiarity with project management and basic business operations will be advantageous. This course is designed to cater to learners with varying levels of prior knowledge, but a fundamental understanding of business analysis is recommended.",
+    "image": "/logos/starweaver.png",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 11,
+    "review_counts": {
+      "5.0": 11
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "The Advanced Business Analysis: Elicitation & Analysis course was excellent in deepening my understanding of elicitation techniques and analysis processes. The content was well-organized, offering practical tools and methods that can be applied directly in real-world projects. The instructor’s clear explanations and insightful examples made complex concepts easy to grasp. Overall, it was a valuable learning experience that significantly enhanced my capabilities as a Business Analyst.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 11,
+    "ratings_total": 80,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 10,
+      "5": 69
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Igor Arkhipov",
+        "slug": "~133144243",
+        "url": "https://www.coursera.org/instructor/~133144243",
+        "page": "igor-arkhipov",
+        "id": "133144243",
+        "role": "Certified Business Analysis Professional (CBAP) & Coach",
+        "department": null,
+        "learners": 93002,
+        "courses_taught": 12,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/e0/e50077767b4647959c73f5534325c3/Igor-Arkhipov.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "level": "Intermediate",
+    "enrollment": 7631,
+    "slug": "learn/advanced-business-analysis-elicitation-analysis",
+    "scrapedAt": "2026-11-17T17:18:58.692989+00:00"
+  },
+  "learn/advanced-cypress-testing": {
+    "title": "Advanced Cypress Testing",
+    "provider": "Coursera",
+    "description": "Hey there, QA engineers and full-stack developers! Are you ready to break out of the basic test scripts and build Cypress test systems that scale? \n\nIn this course, we’ll take you beyond the tutorial playground and into real-world workflows for Cypress. You’ll learn how to structure your tests like a pro, clean up messy test logic with custom commands and fixtures, and layer UI + API validations to simulate real user journeys. \n\nLet’s be honest—most Cypress tutorials stop at “click the button, assert the text.” That’s not enough when you're testing login flows, session tokens, flaky elements, or preparing your codebase for CI. Whether you’re joining a large engineering team or building fast, stable pipelines solo, this course will level up your automation strategy. \n\nAnd here's the best part: We keep it practical and efficient. No overcomplicated CI/CD setups. No third-party plugins to babysit. Just a clean local setup, reusable test code, and Cypress features that actually make testing enjoyable again. \n\nThis course is designed for QA engineers and automation testers familiar with Cypress who are looking to advance beyond basic test scripts. It's also ideal for front-end and full-stack developers who want to improve the reliability and stability of their tests and validate complex user flows in modern web applications. Software engineers seeking to integrate Cypress into local or team workflows without heavy reliance on CI/CD setups will find the content especially relevant. Technical leads and SDETs looking to establish standardized testing strategies across teams for faster feedback and higher code confidence will also benefit from this course.\n\nTo get the most out of this course, learners should have a basic understanding of JavaScript and modern web development. Familiarity with Cypress fundamentals, such as selectors, assertions, and the structure of basic tests, is essential. Additionally, learners should understand how web applications function, including routing and API interactions. Experience with using a code editor and running commands in the terminal will be helpful in executing the exercises and following along with the course material.\n\nBy the end of this course, learners will be able to design a scalable Cypress test architecture using modular folder structures, custom commands, and fixtures. They will apply Cypress features to reliably test real-world scenarios involving UI, APIs, and user authentication. Additionally, learners will be equipped to debug, stabilize, and speed up test execution using intercepts, sessions, retries, and other core Cypress tools. Finally, learners will generate and interpret actionable test reports to improve test visibility and confidence, all without relying on CI/CD platforms.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 3,
+    "review_counts": {
+      "5.0": 3
+    },
+    "top_review": null,
+    "model": "sqrt-likes",
+    "ratings_total": 7,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 5
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Karlis Zars",
+        "slug": "~149442492",
+        "url": "https://www.coursera.org/instructor/~149442492",
+        "page": "karlis-zars",
+        "id": "149442492",
+        "role": "Computer Science Ph.D., Trainer and Consultant",
+        "department": null,
+        "learners": 79969,
+        "courses_taught": 35,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c1/39195086ea4354b2afca00f0772610/karlis-Zars.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Information Technology",
+      "Computer Science"
+    ],
+    "slug": "learn/advanced-cypress-testing",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-data-visualization-with-tableau": {
+    "title": "Advanced Data Visualization with Tableau",
+    "provider": "SkillUp",
+    "description": "This advanced Tableau course covers a broad variety of topics to provide you with advanced analytics and data visualization skills. The course walks you through connecting Tableau to SQL databases, creating data linkages, and creating hierarchies for effective analysis, starting with data connectivity and modeling. \n\nYou will work with sophisticated modeling approaches, execute computations, and optimize data models for performance. The course has a strong emphasis on controlling data granularity, utilizing calculated fields, and investigating expressions for ‘Level of Detail’ in complicated analytics. \n\nTopics include effective data transfer, tooltips, hierarchical navigation, and creating user-friendly interfaces.  By incorporating interactivity through actions and linking between dashboards, you’ll create seamless data journeys that empower users to explore and analyze information effortlessly.\n\nThroughout the course, you will have opportunities to practice what you have learned. Hands-on labs and projects are inspired from real-world scenarios, to equip you with the advanced, practical Tableau skills that employers seek in today’s job market.",
+    "image": "/logos/skillup.png",
+    "coursera": 4.4,
+    "starisk": 4.2,
+    "spread": 1.36,
+    "spread_weighted": 1.31,
+    "reviews": 7,
+    "review_counts": {
+      "2.0": 2,
+      "5.0": 5
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "This course covers some advanced material like LOD expressions and formatting, but it doesn't go into as much detail as I would have hoped. It appears to me that AI was used a little too heavily in the creation of course content - several of the assignments include calculations that would actually be wrong if implemented in a real-life dashboard; some of the videos mis-pronounce words ('Tableau' is even mis-pronounced in one!), and the quizzes include grammatical errors and silly, non-sensical questions. That being said, I did learn one or two things, and I got some practice reps in, so it wasn't a compete waste.",
+      "stars": 2.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 9,
+    "ratings_total": 26,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 2,
+      "4": 2,
+      "5": 19
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      },
+      {
+        "name": "Shubhra Das",
+        "slug": "shubhradas",
+        "url": "https://www.coursera.org/instructor/shubhradas",
+        "page": "shubhradas",
+        "id": "140809228",
+        "role": "Instructor and Subject Matter Expert",
+        "department": "SkillUp",
+        "learners": 10816,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/b1/39a6c90a8f474386e16246333b0652/Shubhra-Das.jpg"
+      }
+    ],
+    "categories": [
+      "Information Technology",
+      "Data Science"
+    ],
+    "slug": "learn/advanced-data-visualization-with-tableau",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-financial-analysis-and-credit-risk-modeling": {
+    "title": "Advanced Financial Analysis and Credit Risk Modeling",
+    "provider": "STARWEAVER",
+    "description": "In this course, you'll gain a strategic introduction to credit analysis and fixed income investing, blending foundational principles with practical tools to assess financial health, creditworthiness, and investment potential. Designed for professionals in investment management, corporate finance, or credit evaluation, the course explores how credit decisions are made, how debt instruments function, and how financial and non-financial data inform risk assessment.\n\nThrough hands-on exercises and real-world case studies, you’ll apply analytical frameworks to real market scenarios. By the end of the course, you'll approach credit and fixed income analysis with greater precision, confidence, and strategic insight.\n\nThis course is designed for finance professionals aiming to deepen their expertise in credit risk assessment and fixed income investing. Whether you're a financial analyst, fixed income trader, portfolio manager, or credit risk specialist at a bank or rating agency, the content is tailored to equip you with practical, industry-relevant skills. Investors looking to better understand the bond market will also benefit from its structured approach and real-world applications.\n\nTo get the most out of this course, participants should have a basic understanding of financial concepts such as time value of money, interest rates, and financial statements. Familiarity with Excel and basic quantitative skills will be helpful for completing hands-on exercises. While no prior experience in credit analysis or fixed income markets is required, those with a background in finance, accounting, or investment will find the course especially rewarding.\n\nBy the end of this course, participants will be equipped to perform detailed ratio and cash flow analyses to evaluate creditworthiness and debt servicing ability. They will also be able to apply quantitative models to calculate probability of default and expected loss, and utilize both structural and reduced-form credit risk models to support sound investment decisions. These skills will enable them to make informed credit assessments and contribute effectively to financial decision-making in professional settings. Learners will also gain the confidence to apply analytical tools to real-world credit scenarios, enhancing their ability to manage risk in dynamic financial environments.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 2,
+      "4": 0,
+      "5": 4
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Michael McDonald",
+        "slug": "~187770041",
+        "url": "https://www.coursera.org/instructor/~187770041",
+        "page": "michael-mcdonald",
+        "id": "187770041",
+        "role": "Partner, Morning Investments",
+        "department": null,
+        "learners": 5589,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c1/2755528b50466f806fe1874e29a432/Michael-Mcdonald.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "slug": "learn/advanced-financial-analysis-and-credit-risk-modeling",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-healthcare-analytics": {
+    "title": "Advanced Healthcare Analytics",
+    "provider": "SkillUp",
+    "description": "Take your healthcare analytics and machine learning skills to the next level! Advanced Healthcare Analytics brings together neural networks, deep learning imaging models, and clinical natural language processing (NLP) to solve high-value problems in modern healthcare. You will explore architectures for clinical prediction, apply convolutional neural networks to medical imaging, and use domain-specific text models for clinical notes. The course also covers responsible AI for safe, ethical deployment, including chatbots and LLM-powered tools. \n\nUsing datasets representative of electronic health records, radiology studies, and provider documentation, you will build practical skills through labs in imaging and NLP. In the final project, you will build and evaluate a binary disease prediction model using structured clinical data and compare Logistic Regression with a neural network to interpret performance on the same dataset. You will also learn model evaluation, workflow-integrated decision support, privacy, and safety.",
+    "image": "/logos/skillup.png",
+    "coursera": null,
+    "starisk": 1.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "1.0": 1
+    },
+    "top_review": null,
+    "model": "sqrt-likes",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 2
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "SkillUp",
+        "slug": "skillup",
+        "url": "https://www.coursera.org/instructor/skillup",
+        "page": "skillup",
+        "id": "143632558",
+        "role": null,
+        "department": null,
+        "learners": 597108,
+        "courses_taught": 186,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/6aa688a2774e9ba999ce144e26dfd4/Skillup-logo-296-X-296.jpg"
+      },
+      {
+        "name": "Ramesh Sannareddy",
+        "slug": "~75088416",
+        "url": "https://www.coursera.org/instructor/~75088416",
+        "page": "ramesh-sannareddy",
+        "id": "75088416",
+        "role": "Data Engineering Subject Matter Expert",
+        "department": "SkillUp",
+        "learners": 189932,
+        "courses_taught": 13,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/49/4df941de044993a7530127686f06d1/Ramesh-Image.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Health"
+    ],
+    "slug": "learn/advanced-healthcare-analytics",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
+  },
+  "learn/advanced-modeling-visualization--storytelling": {
+    "title": "Financial Modeling, Data Visualization & Storytelling",
+    "provider": "STARWEAVER",
+    "description": "Advanced Modeling, Data Visualization & Storytelling develops the skills needed to build sophisticated financial models, create impactful dashboards, and transform complex data into actionable business insights. Learners will apply advanced financial modeling techniques to construct integrated 3-statement models, perform scenario and sensitivity analysis, and automate workflows using Excel, Power BI, and AI-enabled tools.\n\nThe course emphasizes model integrity, scalability, and decision support, helping learners establish best practices for financial analysis, forecasting, and performance management. Participants will also learn to design interactive dashboards, apply data visualization to key business and financial metrics, and communicate findings through structured data storytelling frameworks tailored to executive audiences.\n\nThrough a comprehensive, portfolio-ready business case, learners will integrate modeling, visualization, and strategic communication skills to evaluate opportunities, assess risks, and deliver evidence-based recommendations. By the end of the course, learners will be equipped to produce executive-ready financial reports, dashboards, and presentations that support data-driven decision-making in modern organizations.",
+    "image": "/logos/starweaver.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Manish Gupta",
+        "slug": "~139904014",
+        "url": "https://www.coursera.org/instructor/~139904014",
+        "page": "manish-gupta",
+        "id": "139904014",
+        "role": "Finance Expert and Business Strategist",
+        "department": null,
+        "learners": 75852,
+        "courses_taught": 19,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/2d/98570274e141ee815c81b9a4751456/Manish-Gupta.jpg"
+      },
+      {
+        "name": "Starweaver",
+        "slug": "~141793623",
+        "url": "https://www.coursera.org/instructor/~141793623",
+        "page": "starweaver",
+        "id": "141793623",
+        "role": "Global Leaders in Professional & Technology Education",
+        "department": null,
+        "learners": 1344157,
+        "courses_taught": 648,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/f6/26431e032743168ec60acf7acac92f/Logo-Starweaver-AI-1.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "slug": "learn/advanced-modeling-visualization--storytelling",
+    "scrapedAt": "2026-11-17T17:33:23.063805+00:00"
   }
 }
