@@ -25,6 +25,10 @@ services:
         required: false
     environment:
       STARISK_DATA: /state
+      STARISK_LOGS: /state/logs
+      # Branch under test: `STARISK_BRANCH=x ops/run.sh` runs the container
+      # against an unmerged branch without merging anything.
+      STARISK_BRANCH: ${STARISK_BRANCH:-develop}
     volumes:
       - starisk-state:/state
     init: true

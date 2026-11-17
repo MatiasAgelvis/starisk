@@ -10,6 +10,9 @@ set -eu
 
 WORK=${STARISK_WORK:-/work}
 REPO_SLUG=${GITHUB_REPO:-MatiasAgelvis/starisk}
+# The branch under test. `develop` in production; override it to run the container
+# against an unmerged branch without merging anything.
+BRANCH=${STARISK_BRANCH:-develop}
 
 : "${STARISK_DATA:=/state}"
 : "${STARISK_LOGS:=/state/logs}"
@@ -17,8 +20,8 @@ export STARISK_DATA STARISK_LOGS
 mkdir -p "$STARISK_DATA" "$STARISK_LOGS"
 
 if [ ! -d "$WORK/.git" ]; then
-  echo "[entrypoint] cloning https://github.com/$REPO_SLUG.git (develop)"
-  git clone --depth 1 --branch develop "https://github.com/$REPO_SLUG.git" "$WORK"
+  echo "[entrypoint] cloning https://github.com/$REPO_SLUG.git ($BRANCH)"
+  git clone --depth 1 --branch "$BRANCH" "https://github.com/$REPO_SLUG.git" "$WORK"
 fi
 
 cd "$WORK/pipeline"
