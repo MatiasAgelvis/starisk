@@ -27,10 +27,20 @@ def ensure() -> None:
     if tracked_changes():
         raise GitError("the working copy has uncommitted changes")
 
-    git("fetch", "origin", BASE)
-    # Keep the remote-tracking ref current so --force-with-lease compares against
-    # what is really on the remote, not a ref from days ago.
-    git("fetch", "origin", f"+refs/heads/{BRANCH}:refs/remotes/origin/{BRANCH}", check=False)
+    # One fetch for every branch, and it must succeed. The remote-tracking ref for
+    # the bot branch is what `--force-with-lease` compares against when the run
+    # pushes minutes later, so swallowing a failure here turns a network blip into
+    # "(stale info)" at the very last step — a rejection that looks like a
+    # conflict and is not one. --prune keeps a deleted branch from lingering as an
+    # expectation the remote can no longer satisfy.
+    #
+    # The bare refspec relies on the clone's default `+refs/heads/*:refs/remotes/
+    # origin/*`, which is what `ops/entrypoint.sh`'s `git clone --branch develop`
+    # creates. A single-branch clone would not fetch the bot branch at all.
+    try:
+        git("fetch", "origin", "--prune")
+    except GitError as error:
+        raise GitError(f"could not fetch from origin: {error}") from error
 
     if git("rev-parse", "--verify", "--quiet", BRANCH, check=False).returncode == 0:
         git("switch", BRANCH)
