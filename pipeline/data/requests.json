@@ -1,6 +1,66 @@
 {
-  "generatedAt": "2026-11-14T19:48:48Z",
+  "generatedAt": "2026-11-17T03:30:57Z",
   "rows": [
+    {
+      "key": "specializations/prompt-engineering-for-law",
+      "type": "specialization",
+      "query": "specializations/prompt-engineering-for-law",
+      "requests": 1,
+      "first_seen": "2026-11-16T20:27:28Z",
+      "last_seen": "2026-11-16T20:27:28Z",
+      "title": "Prompt Engineering for Law",
+      "added_at": "2026-11-17T03:30:57Z"
+    },
+    {
+      "key": "specializations/good-with-words",
+      "type": "specialization",
+      "query": "specializations/good-with-words",
+      "requests": 1,
+      "first_seen": "2026-11-16T20:27:05Z",
+      "last_seen": "2026-11-16T20:27:05Z",
+      "title": "Good with Words: Writing and Editing",
+      "added_at": "2026-11-17T03:30:57Z"
+    },
+    {
+      "key": "specializations/entrepreneurial-finance",
+      "type": "specialization",
+      "query": "specializations/entrepreneurial-finance",
+      "requests": 1,
+      "first_seen": "2026-11-16T20:36:16Z",
+      "last_seen": "2026-11-16T20:36:16Z",
+      "title": "Entrepreneurial Finance: Strategy and Innovation",
+      "added_at": "2026-11-17T03:30:57Z"
+    },
+    {
+      "key": "learn/managing-emotions-uncertainty-stress",
+      "type": "course",
+      "query": "learn/managing-emotions-uncertainty-stress",
+      "requests": 1,
+      "first_seen": "2026-11-16T20:28:01Z",
+      "last_seen": "2026-11-16T20:28:01Z",
+      "title": "Managing Emotions in Times of Uncertainty & Stress",
+      "added_at": "2026-11-17T03:30:57Z"
+    },
+    {
+      "key": "learn/intro-common-law",
+      "type": "course",
+      "query": "learn/intro-common-law",
+      "requests": 1,
+      "first_seen": "2026-11-16T20:19:41Z",
+      "last_seen": "2026-11-16T20:19:41Z",
+      "title": "Introduction to English Common Law",
+      "added_at": "2026-11-17T03:30:57Z"
+    },
+    {
+      "key": "learn/foundations-business-analysis",
+      "type": "course",
+      "query": "learn/foundations-business-analysis",
+      "requests": 1,
+      "first_seen": "2026-11-16T20:41:06Z",
+      "last_seen": "2026-11-16T20:41:06Z",
+      "title": "Foundations of Business Analysis",
+      "added_at": "2026-11-17T03:30:57Z"
+    },
     {
       "key": "learn/logic-introduction",
       "type": "course",

@@ -145,6 +145,19 @@
     ],
     "provider": "28DIGITAL"
   },
+  "specializations/entrepreneurial-finance": {
+    "key": "specializations/entrepreneurial-finance",
+    "type": "specialization",
+    "title": "Entrepreneurial Finance: Strategy and Innovation",
+    "url": "https://www.coursera.org/specializations/entrepreneurial-finance",
+    "courses": [
+      "learn/startup-valuation-methods",
+      "learn/financing-startup-businesses",
+      "learn/blockchain-business-models",
+      "learn/financial-risk-management-with-r"
+    ],
+    "provider": "Duke University"
+  },
   "specializations/essential-mathematics-for-computer-science-odc": {
     "key": "specializations/essential-mathematics-for-computer-science-odc",
     "type": "specialization",
@@ -186,6 +199,19 @@
       "learn/statistical-genomics"
     ],
     "provider": "Johns Hopkins University"
+  },
+  "specializations/good-with-words": {
+    "key": "specializations/good-with-words",
+    "type": "specialization",
+    "title": "Good with Words: Writing and Editing",
+    "url": "https://www.coursera.org/specializations/good-with-words",
+    "courses": [
+      "learn/writing-editing-words",
+      "learn/writing-editing-structure",
+      "learn/writing-editing-drafting",
+      "learn/writing-editing-revising"
+    ],
+    "provider": "University of Michigan"
   },
   "specializations/improve-english": {
     "key": "specializations/improve-english",
@@ -303,6 +329,18 @@
       "learn/people-soft-skills-assessment"
     ],
     "provider": "IBM"
+  },
+  "specializations/prompt-engineering-for-law": {
+    "key": "specializations/prompt-engineering-for-law",
+    "type": "specialization",
+    "title": "Prompt Engineering for Law",
+    "url": "https://www.coursera.org/specializations/prompt-engineering-for-law",
+    "courses": [
+      "learn/prompt-engineering",
+      "learn/generative-ai-for-legal-services-primer",
+      "learn/openai-custom-gpts"
+    ],
+    "provider": "Vanderbilt University"
   },
   "specializations/public-speaking": {
     "key": "specializations/public-speaking",
