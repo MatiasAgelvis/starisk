@@ -37,7 +37,27 @@ set -e
 python -m starisk.crawl "$@"
 python -m starisk.logos
 python -m starisk.logo_hires
-python -m starisk.groupings --write
+# --fetch only pays for pages missing from this machine's cache, so a fresh
+# checkout rebuilds the index instead of refusing to shrink it. Exit 2 is a
+# rate-limited fetch: the index on disk is still valid, so the chain carries on.
+python -m starisk.groupings --fetch --write || [ $? -eq 2 ]
+"""
+
+[tasks."pipeline:all"]
+description = "Read the queue, expand the list, crawl and localise, rebuild the index, then sync the site"
+dir = "pipeline"
+# Composed rather than copied, so the order and the derived steps live in one
+# place. The shebang keeps `-- --limit 20` flowing to `pipeline:crawl`.
+run = """
+#!/bin/sh
+set -e
+# The queue is an input, not a prerequisite: an unreachable database must not
+# stop a run that already has sources. STARISK_ENV_FILE picks the database.
+mise run pipeline:demand -- --env-file "${STARISK_ENV_FILE:-.env.prod}" --write \\
+  || echo "[all] the queue read failed; crawling the sources we already have"
+mise run pipeline:expand -- --write
+mise run pipeline:crawl -- "$@"
+mise run web:sync
 """
 
 [tasks."pipeline:add"]
@@ -55,6 +75,11 @@ run = "python -m starisk.demand"
 description = "Grow sources.json from specializations and instructor profiles"
 dir = "pipeline"
 run = "python -m starisk.expand"
+
+[tasks."pipeline:smoke"]
+description = "Live adapter and site checks; non-zero when Coursera stopped parsing"
+dir = "pipeline"
+run = "python -m starisk.smoke"
 
 [tasks."pipeline:nightly"]
 description = "One unattended run; try it with `-- --dry-run` (see ops/README.md)"
