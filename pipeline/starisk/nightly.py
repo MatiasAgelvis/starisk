@@ -261,6 +261,24 @@ def copy_state(source: Path, target: Path) -> None:
             shutil.copy2(path, target / name)
 
 
+def removal_problem(published: dict) -> str | None:
+    """Refuse a branch that would drop courses `develop` already has.
+
+    `published` is the state against the branch's base, so a non-empty `removed`
+    means the volume is behind `develop`: someone merged or pushed data the crawl
+    has never seen. Publishing would silently undo it, which is worse than the
+    conflict the old rebase used to produce.
+    """
+    removed = published.get("removed") or []
+    if not removed:
+        return None
+    return (
+        f"refusing to publish: this branch would remove {len(removed)} course(s) that "
+        f"{BASE} has, so the state volume is behind — merge the open pull request, "
+        "or reseed the volume from develop"
+    )
+
+
 def commit(paths: list[str], message: str, body: str) -> str:
     git("add", "--", *paths)
     # The author is the bot even when the run is a local rehearsal: the identity
@@ -601,6 +619,13 @@ def run(options) -> int:
         elif index_code != 0:
             return finish(env, started, FAILED, "the program index rebuild failed")
 
+        # The branch is cut from `develop`, so what it will carry is the state
+        # against develop — not this run's own delta. Loaded before `copy_state`
+        # overwrites the checkout's copy, and used for the commit and the PR, so
+        # their numbers match the diff a reviewer sees. The gate above keeps
+        # judging the run by what the run changed.
+        base = load_scores(REPO / "pipeline" / "data" / "scores.json")
+
         # State may live outside the checkout (the container's volume), but the
         # commit has to carry it back into `pipeline/data` so `sync-data` and the
         # diff see it.
@@ -614,7 +639,12 @@ def run(options) -> int:
         after = load_scores()
         new_paths = [path for path in changed() if path not in baseline]
         summary = diff_summary(before, after)
+        published = diff_summary(base, after)
         decision = decide(new_paths, summary, crawl.summarize(before))
+
+        problem = removal_problem(published)
+        if problem and decision.commit:
+            return finish(env, started, GATE, problem, summary=summary)
 
         commit_hash = None
         pr_url = None
@@ -628,8 +658,8 @@ def run(options) -> int:
                 git("switch", "-c", branch)
                 commit_hash = commit(
                     [path for path in new_paths if allowed(path)],
-                    commit_message(summary),
-                    commit_body(summary, decision),
+                    commit_message(published),
+                    commit_body(published, decision),
                 )
             except GitError as error:
                 return finish(env, started, GIT, f"commit failed: {error}", summary=summary)
@@ -652,7 +682,7 @@ def run(options) -> int:
                         env,
                         branch,
                         "Nightly crawl",
-                        pr_body(summary, decision, started[:10]),
+                        pr_body(published, decision, started[:10]),
                     )
                     for number in close_superseded(env, branch):
                         print(f"[nightly] closed #{number}, superseded by {branch}")
