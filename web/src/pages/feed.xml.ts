@@ -5,12 +5,13 @@ import scores from '../data/scores.json';
 import groupings from '../data/groupings.json';
 import { buildWanted } from '../lib/wanted.js';
 import { buildFeed } from '../lib/feed.js';
+import { DEFAULT_SITE } from '../lib/site.js';
 
 export const GET: APIRoute = ({ site }) => {
   const { fulfilled } = buildWanted(requests, scores, groupings);
   const xml = buildFeed(
     fulfilled,
-    site?.href ?? 'https://starisk.pages.dev',
+    site?.href ?? DEFAULT_SITE,
     requests.generatedAt,
   );
 

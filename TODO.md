@@ -9,10 +9,6 @@ programs, 354 instructors, 12 requests.**
 
 ## Next
 
-- **`SITE_URL` in Vercel.** `astro.config.mjs` and `feed.xml.ts` still fall back to
-  `https://starisk.pages.dev`, which doesn't resolve, so canonical URLs, OG tags and
-  the feed point at a dead host. One environment variable; the fallback stays as the
-  local default.
 - **Low-sample shrinkage needs labels, not code.** `w = 1 - e^(-n/k)` with `k = 5`
   moves 89/728 courses and only low-sample ones, but calibration can't judge it: 29
   labelled courses, 2 of them low-sample. Needed: ~10 blind labels on low-sample

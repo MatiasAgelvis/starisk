@@ -10,7 +10,7 @@ const env = {
 };
 
 const post = (body, headers = {}) =>
-  new Request('https://starisk.pages.dev/api/course-request', {
+  new Request('https://starisk.matiasagelvis.com/api/course-request', {
     method: 'POST',
     headers: { 'content-type': 'application/json', ...headers },
     body: JSON.stringify(body),
