@@ -35,3 +35,7 @@ services:
 
 volumes:
   starisk-state:
+    # Pinned: Compose otherwise prefixes the project directory
+    # (`ops_starisk-state`), so a `run.sh` rehearsal would start from an empty
+    # page cache while the cron line keeps using the plain `starisk-state`.
+    name: starisk-state

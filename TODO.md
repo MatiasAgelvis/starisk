@@ -13,11 +13,6 @@ programs, 354 instructors, 12 requests.**
   `https://starisk.pages.dev`, which doesn't resolve, so canonical URLs, OG tags and
   the feed point at a dead host. One environment variable; the fallback stays as the
   local default.
-- **Pin the compose volume name.** `ops/compose.yml` declares `starisk-state`, but
-  Compose prefixes it with the project directory, so `ops/run.sh` (rehearsal) would
-  write to `ops_starisk-state` while the cron line uses `starisk-state`. One line:
-  `volumes: { starisk-state: { name: starisk-state } }`. Otherwise the first
-  rehearsal starts from an empty page cache and re-fetches Coursera.
 - **Low-sample shrinkage needs labels, not code.** `w = 1 - e^(-n/k)` with `k = 5`
   moves 89/728 courses and only low-sample ones, but calibration can't judge it: 29
   labelled courses, 2 of them low-sample. Needed: ~10 blind labels on low-sample
