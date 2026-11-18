@@ -567,8 +567,10 @@ def run(options) -> int:
             # Expansion only fetches. Offline means the page cache is all there is.
             print("[nightly] offline: skipping the source expansion")
         else:
+            # --refresh re-downloads the program sitemap. Without it the cached
+            # copy is reused forever, so programs created later are never found.
             try:
-                grown = expand.main(["--write"])
+                grown = expand.main(["--refresh", "--write"])
             except Exception as error:  # noqa: BLE001 - discovery is an input, not a prerequisite
                 print(f"[nightly] the expansion failed: {error}")
                 grown = 1
