@@ -2,9 +2,10 @@
 
 The unit suite runs on fixtures, and a fixture cannot tell you the one thing that
 matters here: whether the page on the other side still looks like the fixture.
-These checks make five requests, so they are opt-in (`STARISK_LIVE=1`) and they
-run *before* the nightly crawl — when a selector changes, the run should stop
-before it caches an hour of pages it cannot read.
+These checks make five requests, so nothing calls them implicitly: the nightly
+runs them *before* crawling — when a selector changes, the run should stop
+before it caches an hour of pages it cannot read — and `python -m starisk.smoke`
+runs them on demand. The live tests are the opt-in part (`STARISK_LIVE=1`).
 
 Two kinds of problem, deliberately different:
 
@@ -19,6 +20,7 @@ Every check asserts what must hold, never an exact number: a rating stays in
 from __future__ import annotations
 
 import os
+import sys
 import urllib.request
 from dataclasses import dataclass, field
 
@@ -146,3 +148,25 @@ def run(fetch=fetch_page, site: str = SITE, opener=urllib.request.urlopen) -> Re
         *check_program(PROGRAM_KEY, fetch),
     ]
     return Report(adapter=adapter, site=check_site(site, opener))
+
+
+def main() -> int:
+    """`python -m starisk.smoke`: the checks the nightly gates on, on demand.
+
+    Non-zero only for adapter problems, the same rule the nightly applies: a
+    broken deploy says nothing about whether Coursera still parses.
+    """
+    report = run()
+    for problem in report.adapter:
+        print(f"adapter: {problem}", file=sys.stderr)
+    for problem in report.site:
+        print(f"site (warning): {problem}", file=sys.stderr)
+    if report.ok and not report.site:
+        print("adapter and site look right")
+    elif report.ok:
+        print("adapter looks right; the site has warnings")
+    return 0 if report.ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

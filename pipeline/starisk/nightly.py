@@ -45,7 +45,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import crawl, demand, groupings, logo_hires, logos, smoke
+from . import crawl, demand, expand, groupings, logo_hires, logos, smoke
 from .paths import LOG_DIR
 
 REPO = Path(__file__).resolve().parents[2]
@@ -510,10 +510,14 @@ def dry_run(options) -> int:
         return SMOKE
 
     # Deliberately does not touch last-run.json: a rehearsal must not look like a run.
+    if options.offline:
+        print("[nightly] would read the queue without link checks, then crawl the cache")
+    else:
+        print("[nightly] would read the queue, expand the list, then crawl")
     if report.site:
         print("[nightly] would commit and warn about the site")
     else:
-        print("[nightly] would crawl, gate and commit if anything changed")
+        print("[nightly] would gate and commit if anything changed")
     return OK
 
 
@@ -558,6 +562,18 @@ def run(options) -> int:
                 SMOKE,
                 "; ".join(str(problem) for problem in report.adapter),
             )
+
+        if options.offline:
+            # Expansion only fetches. Offline means the page cache is all there is.
+            print("[nightly] offline: skipping the source expansion")
+        else:
+            try:
+                grown = expand.main(["--write"])
+            except Exception as error:  # noqa: BLE001 - discovery is an input, not a prerequisite
+                print(f"[nightly] the expansion failed: {error}")
+                grown = 1
+            if grown != 0:
+                print("[nightly] crawling the sources we already have")
 
         argv = ["--offline"] if options.offline else []
         if options.limit:
