@@ -8,299 +8,264 @@ attached so future-me doesn't have to re-derive it.
 - **accepted** — I want this; it's a matter of when.
 - **parked** — deliberately not now. The reason is written down; revisit if the
   reason stops being true.
+- **shipped** — done. Kept for the reasoning, and for what it left unfinished.
 - **rejected** — no. Kept here so it doesn't get re-proposed.
 
-The one thing that makes all of this more interesting is **corpus size**. At six
-courses the site is a demo; the patterns below (scatter, quadrants) only earn
-their space at ~40+. See I5, which is also the corpus the calibration needs.
+The thing that makes all of this interesting is **corpus size**: 1064 courses
+indexed, 881 scored, 29 programs, 354 instructors. The patterns below — quadrants,
+per-instructor signal, per-subject posts — only earn their space at this scale; at
+six courses they were a demo.
 
 ## Registry
 
-| # | Idea | Status | Cost | Depends on |
-|---|------|--------|------|------------|
-| I1 | Bookmarklet badge | accepted | hours | `scores.json` served as a static file |
-| I2 | Polarization + quadrants | accepted | hours | one new pipeline field |
-| I3 | Grievance vs. quality split | parked | — | — |
-| I4 | The scatter (Coursera vs. Starisk) | accepted | a weekend | I5 |
-| I5 | My 84 courses as the corpus + `/transcript` | accepted | a weekend | slug mapping |
-| I6 | Publish the dataset | accepted | hours | I5 |
-| I7 | SQLite as the pipeline store | parked (long-term) | — | dataset growth |
-| I11 | Request queue: Turso + local drain | accepted (gated) | a weekend | a second requestor |
-| I8 | Embeddable SVG badges | accepted | hours | — |
-| I9 | Compare two courses | accepted | hours | — |
-| I10 | Rot index | accepted (later) | — | score history |
+| # | Idea | Status | Note |
+|---|------|--------|------|
+| I1 | Bookmarklet badge | shipped | live; batch asks still capped at 6/h |
+| I2 | Polarization + quadrants | accepted | the data ships, the surface doesn't |
+| I3 | Grievance vs. quality split | parked | the honest escape hatch |
+| I4 | The scatter | shipped | `/findings` |
+| I5 | Transcript + calibration corpus | partial | `/background` ships, labels stuck at 29 |
+| I6 | Publish the dataset | accepted | the part that outlives the site |
+| I7 | SQLite as the pipeline store | parked | JSON is correct until it isn't |
+| I8 | Embeddable SVG badges | accepted | one file, no JS |
+| I9 | Compare two courses | accepted | client-side over scores.json |
+| I10 | Rot index | parked | needs I7 |
+| I11 | Request queue | shipped | Turso inbox → nightly drain |
+| I12 | Course thumbnails | rejected | replaced by provider marks |
 
 ---
 
 ## A. Where people already are
 
-### I1 — The bookmarklet badge (the extension's ghost)
+### I1 — The bookmarklet badge — **shipped**
 
-A draggable `javascript:` link. On a Coursera course page, clicking it reads
-`location.pathname`, fetches `scores.json` from the deployed site, and injects a
-small badge next to Coursera's headline rating.
+A draggable `javascript:` link. On a Coursera page, clicking it reads
+`location.pathname`, fetches the compact lookup, and injects a badge next to
+Coursera's headline rating.
 
-**Why:** this is the original product, with the MV3 tax removed. No store, no
-manifest, no permissions prompt, no publish cycle. A bookmarklet is the only
-distribution channel that requires zero trust from a stranger.
+**Why it was the right first product:** no store, no manifest, no permissions
+prompt, no publish cycle. A bookmarklet is the only distribution channel that
+requires zero trust from a stranger, and it survives the MV3 tax entirely.
 
-**Sketch**
+**What shipped:** `/data/badge.json` — five fields per course instead of the whole
+record, 881 courses and 26 programs in **105 KB raw / 26 KB gzipped**, against
+3.45 MB (800 KB gzipped) for `scores.json`, which stays the dataset download.
+`/request` is the same-origin write path (the edge function only answers its own
+origin, and a JSON body from another site needs a preflight it doesn't implement),
+and `/bookmarklet` keeps its source in `lib/` percent-encoded into the drag target,
+exercised by `scripts/bookmarklet.test.mjs` against a stubbed DOM.
 
-```js
-// ~40 lines: match /learn/<slug>, fetch, insert a div, done.
-const m = location.pathname.match(/^\/(learn|specializations)\/([^/]+)/);
-```
+**Why it was viable at all:** Coursera sends `content-security-policy:
+frame-ancestors 'self'` and nothing else — no `script-src`, no `connect-src`, no meta
+CSP — so neither the `javascript:` URL nor a cross-origin fetch is restricted, and
+both of our data endpoints answer `access-control-allow-origin: *`.
 
-**Requires**
+**Still open**
 
-- `scores.json` at a **stable URL**. Today it's imported at build time from
-  `web/src/data/scores.json`, so it is *not* fetchable. `build.sh` must also copy
-  it to `web/public/data/scores.json` (and the page can then be generated from
-  the same file).
-- CORS: **already solved on both hosts.** GitHub Pages and Cloudflare Pages
-  both send `access-control-allow-origin: *` (verified with `curl -I`), so no
-  `_headers` file is needed. The remaining blocker is Coursera's CSP.
-- **A 5-minute CSP spike.** If Coursera's `connect-src` blocks a cross-origin
-  fetch from a bookmarklet, this idea is dead on arrival. Test before building.
-
-**Risk:** bookmarklets are niche and iOS Safari can't run them. Fine — this is a
-love letter to the one power user who was ever going to install the extension.
+- **Batch asks.** `PER_HOUR = 6` per visitor, so "ask for these 7" from a results
+  page would 429 on the seventh. Per-card asking is what ships.
+- **Discovery.** It lives in the footer as *"The score, on Coursera's own pages."*
+  Deliberately quiet: the site's tone is academic, and anything louder reads as
+  SaaS. Revisit only if someone says they couldn't find it.
 
 ---
 
 ## B. Making the score honest
 
-### I2 — Polarization, and the honest tierlist
+### I2 — Polarization, and the honest tierlist — **accepted, half shipped**
 
-Compute the **weighted standard deviation** of stars at crawl time, store it next
-to the score, and plot courses on two axes: score (x), disagreement (y).
+`spread` and `spread_weighted` ship in every record now; `/findings` plots the two
+star distributions and the same scale side by side. The **quadrant view** — score
+on x, disagreement on y, four named cells — is the part that isn't built.
 
-|  | low disagreement | high disagreement |
-|---|---|---|
-| **high score** | Beloved | Hype vs. backlash |
-| **low score** | Everyone agrees it's mediocre | **Contested** |
+**Why:** it turns the model's worst weakness (one upvoted review owning a score)
+into a measured quantity instead of a hidden failure. The "contested" cell is
+precisely the phenomenon that started all of this.
 
-**Why:** this is the tierlist the original project wanted, done in a way that
-can be defended. It turns the model's worst weakness — one 663-like review
-owning a score — into a measured quantity instead of a hidden failure. The
-"contested" quadrant is precisely the 5★-course-with-a-lynched-top-review
-phenomenon that started all of this.
+**Caveats, measured**
 
-**Sketch:** `weighted_variance = Σ w·(stars − score)² / Σ w`, reported as a
-standard deviation in stars. Then a quadrant label derived from two thresholds.
-
-**Caveats (measured, not guessed)**
-
-- Noisy at 20 reviews. Label it as a vibe, not a statistic.
+- Noisy at 20 reviews. Label it a vibe, not a statistic.
 - **The weighted spread is a trap.** Weighting by likes drags the mean onto the
-  dominant review, so the weighted std-dev *shrinks* when one review owns the
-  score (measured: 1.63 → 0.44 sd after giving a 1★ review 100 likes). A bitterly
+  dominant review, so weighted std-dev *shrinks* when one review owns the score
+  (measured: 1.63 → 0.44 sd after giving a 1★ review 100 likes). A bitterly
   contested course would look unanimous. Use the **unweighted** `spread` as the
-  contention axis; keep `spread_weighted` only as a curiosity.
-- **We now have the population, not just the sample.** Every course page carries
-  `ratingCountsByStar` (all ratings ever) and the true average. Financial Markets:
-  32,334 ratings, of which **1.2%** are 1–2★ — while the 20 reviews we read
-  scatter with a 1.84 sd. That gap *is* the product's thesis, quantified: the
-  upvoted minority is ~1% of the population. Worth plotting sample against
-  population before drawing quadrants.
+  contention axis; keep `spread_weighted` as a curiosity.
+- **The population confirms the thesis.** Every course page carries
+  `rating_counts` (all ratings ever). Financial Markets: 32,334 ratings, of which
+  **1.2%** are 1–2★, while the 20 reviews we read scatter with 1.84 sd. The
+  upvoted minority really is ~1% of the population.
 
 ### I3 — Grievance vs. quality split — **parked**
 
 Two numbers per course: the course, and the platform (access, pricing,
-certificates, refunds). Would directly answer "your score measures complaints
-about the paywall, not the teaching" — the strongest critique of this project.
+certificates, refunds). It would answer "your score measures complaints about the
+paywall, not the teaching" — the strongest critique of this project.
 
-**Why parked:** too much complication for now (a lexicon, a validation set, a
-second column, a second story). Revisit the moment the premise gets challenged
-in public, or if calibration comes out weak. It's the honest escape hatch, not
-the next feature.
+**Why parked:** a lexicon, a validation set, a second column and a second story.
+Revisit the moment the premise gets challenged in public, or if calibration comes
+out weak. It's the honest escape hatch, not the next feature.
 
-**Concrete use case that appeared later:** 5 of the first 34 courses had no
-critical review *with text* — every 1–3★ review was a bare rating — so the page
-had to fall back to a 5★ review (`kind: consensus`). Some of those 5★ reviews
-contain real criticism after a "but". Finding that sentence inside praise is
-exactly what this idea would buy, and it is now measured rather than imagined.
+**Concrete use case, measured:** 5 of the first 34 courses had no critical review
+*with text* — every 1–3★ review was a bare rating — so the page fell back to a 5★
+review (`kind: consensus`). Some of those contain real criticism after a "but".
+Finding that sentence inside praise is exactly what this would buy.
 
 ---
 
 ## C. The corpus and the story
 
-### I4 — The scatter
+### I4 — The scatter — **shipped**
 
-Coursera rating on x, Starisk on y, one dot per course, biggest gaps labeled.
-*"The 5-star illusion, in one chart."*
+`/findings` is the finding: the histogram of both distributions on one axis
+(with the empty low-rated zone boxed, and the share Starisk disagrees on), then
+every course plotted on the same scale. That replaced a table of numbers with an
+argument, which was the point.
 
-**Why:** a portfolio piece needs a **finding**, not a feature. This is the
-finding: at N courses, the official rating barely separates the courses the
-reviews love from the ones they don't.
+### I5 — My courses as the corpus, `/background`, and calibration — **partial**
 
-**Note:** a scatter of six points proves nothing. This lands at 40+.
+**Shipped:** `/background` lists the credentials (74 entries, 59 Coursera) and
+`about` links to it. The corpus exists.
 
-### I5 — My 84 courses as the corpus + `/transcript`
+**Data:** `calibration/courses.json` holds 74 entries with a `label` each, **29
+labelled**. That's the calibration set, and it is the thing blocking the
+low-sample fix.
 
-Crawl **my own** courses instead of "popular" ones, and publish a page:
-*"I took 84 courses in 18 months. Here's what my own tool says about them now —
-and where I disagree with it."*
+**Why it still matters:** it solves corpus *and* narrative in one move — the
+leaderboard stops being a generic Coursera list and becomes a personal dataset
+nobody else has — and the same crawl feeds the Spearman verdict on the premise.
 
-**Why:** solves corpus *and* narrative in one move. The leaderboard stops being
-a generic Coursera list and becomes a personal dataset nobody else has. It is
-also the calibration corpus — `calibration/courses.json` already holds the
-credential list and an empty `label` per entry, so the same crawl feeds
-**both** the site and the Spearman verdict on the premise.
-
-**Friction (real)**
-
-- Certificates are **credential** URLs, not course URLs. Slugs must be mapped.
-  Test cheaply whether a credential page exposes the course link (or an
-  `og:url`) before assuming this is a weekend.
-- `calibration/courses.json`: 74 entries — 59 Coursera (52 single courses,
-  7 specializations), 15 non-Coursera (SoloLearn 6, Santa Fe 5, Udemy 1, Stepik
-  1, edX 1). Only the Coursera singles are crawlable today (D17).
-- Specializations are the gap between 52 and the ~84 I actually took. Their
-  constituent courses are the SPEC's open question; the `sdp-course-list-link`
-  hook is the way in.
-
-**Measured (2026-10).** The specialization lever was smaller than expected: 6 of
-my 7 specializations resolved, and only **8** of their 25 constituent courses were
-new (the rest were already crawled). The lever that actually grew the corpus was
-the **teacher graph**: 30 instructor profiles linked **108** courses, **74** of
-them new. So the corpus doubled by following the people, not the umbrellas. Worth
-remembering when deciding what to crawl next: people cluster courses, parent
-products do not (Coursera recycles them constantly).
+**Measured (2026-10), still the most useful lesson here:** the specialization
+lever was smaller than expected — 6 of 7 specializations resolved and only 8 of
+their 25 constituent courses were new. The lever that grew the corpus was the
+**teacher graph**: instructor profiles linked courses that the umbrellas didn't.
+People cluster courses; parent products don't, because Coursera recycles them.
 
 ---
 
 ## D. The data asset
 
-### I6 — Publish the dataset
+### I6 — Publish the dataset — **accepted**
 
-A page for `scores.json` + aggregates, with a "cite this" line and a CSV dump.
+A page for `scores.json` plus aggregates, a "cite this" line, and a CSV dump.
 
 **Why:** nobody else has upvote-weighted Coursera review data. This is the one
 thing here that outlives the website, and it costs almost nothing.
 
-**Constraint:** **excerpts only** for review text. Other people's words, and
-the risk/benefit is bad. Aggregates and the single most-upvoted critical
-excerpt are enough.
+**Constraint:** **excerpts only** for review text. Other people's words, and the
+risk/benefit is bad. Aggregates and the single most-upvoted critical excerpt are
+enough.
 
 ### I7 — SQLite as the pipeline store — **parked (long-term)**
 
-`sqlite3` is in the Python stdlib, so this costs no dependency: courses,
-reviews, crawl runs, score history. Later Turso, if it ever needs to be remote.
+`sqlite3` is stdlib, so this costs no dependency: courses, reviews, crawl runs,
+score history. Turso later, if it ever needs to be remote — which it now partly is
+(the request inbox).
 
-**Why parked:** the dataset is six courses. JSON is correct until it isn't.
+**Why parked:** JSON plus git is correct until it isn't. The corpus is 1064
+records and the diffs are still readable.
 
 **Constraint that must not drift:** SQLite stays a **pipeline-internal store**;
-`scores.json` remains the published artifact and the seam (D7/D8). The front
-never reads a database — the build reads the exported JSON. If SQLite starts
-leaking into the site build, the seam is gone and the static property with it.
+`scores.json` remains the published artifact and the seam. The front never reads a
+database — the build reads the exported JSON. If SQLite leaks into the site build,
+the static property goes with it.
 
-**Payoff when it's worth it:** score history becomes per-crawl rows instead of
-git archaeology, and "courses that moved most" becomes one query.
+**Payoff when it's worth it:** score history becomes rows instead of git
+archaeology, and "courses that moved most" becomes one query (see I10).
 
-### I11 — The request queue: Turso + local drain — **accepted, gated**
+### I8 — Embeddable SVG badges — **accepted**
 
-A visitor asks for a course that isn't indexed. The row is a **job**; the local
-crawler drains it on its next run. Nothing scrapes from a server, ever.
+`/badge/learn/machine-learning.svg`, generated at build: a course's score, one
+file, no JS. Distinct from the bookmarklet's JSON lookup — this is for other
+people's pages.
 
-**Why:** it's the only version of "live lookup" that survives D6 — a Worker (or
-the browser) enqueues, the laptop crawls. A request is also the one piece of
-state a static site provably cannot hold.
-
-**Shape**
-
-Turso is only the inbox:
-
-```
-course_requests(key, query, kind, requests, first_seen, last_seen)
-```
-
-The local drain reads N rows per run, verifies the link, adds it to
-`data/sources.json`, and merges the ask into `data/requests.json` with `added_at`.
-That file is the durable list the site builds from; the inbox stays read-only from
-the pipeline's side.
-
-`/wanted` and the feed derive their state by joining the ask list against
-`scores.json` / `groupings.json`. There is no status machine and no `crawled_at`:
-if the key has a score, it is fulfilled; otherwise it is still waiting.
-
-**Gates before building any of it**
-
-1. **Cheapest is a mailto or a form, not an issue tracker.** A GitHub issue
- tracker is developer-speak for someone browsing Coursera, and it needs a
- **public, unarchived** repo — this one was archived, so the link 404'd. A
- `mailto:` with a prefilled subject/body costs nothing; Tally/Formspree have
- free tiers and work for anyone. One setting lives in `web/src/lib/config.js`,
- and with it null the page simply says the course isn't indexed.
-2. **A public write needs a Worker in front.** A token held in the browser can't
- be rate-limited or validated, so: URL-shape check (`^/(learn|specializations)/`),
- dedupe by slug, per-IP cap. Otherwise the queue is someone else's spam cannon.
-3. **Email notification is the expensive part — legally, not technically.** In
- the EU, collecting an address means a legal basis, a privacy notice, a deletion
- path, and a processor (Resend/Postmark) plus another secret. A public
- `/requests` page saying "queued 3 days ago" needs none of that. **Skip email
- until someone asks for it.**
-
-**Trigger:** a second person requesting a course. Not before. Until then the
-queue is a table with one row in it, which is I7's problem, not this one.
-
----
-
-## E. Cheap wins, any time
-
-### I8 — Embeddable SVG badges
-
-`/badge/learn/machine-learning.svg`, generated at build. A course's score, one
-file, no JS. Drop straight into my certificate mural.
-
-### I9 — Compare two courses
+### I9 — Compare two courses — **accepted**
 
 Client-side over `scores.json`: pick two, see scores and dissents side by side.
 No build explosion, no new data.
 
-### I10 — Rot index
+### I10 — Rot index — **parked**
 
-Courses that vanished or stopped updating. `error` records already hint at it,
-and "most of my 2020 courses didn't survive" is a real observation from the
-last crawl. Needs history (I7) to be a trend rather than a snapshot.
+Courses that vanished or stopped updating. `error` records hint at it, and "most
+of my 2020 courses didn't survive" is a real observation from a crawl. Needs I7 to
+be a trend rather than a snapshot.
+
+### I11 — The request queue — **shipped**
+
+A visitor asks for a course that isn't indexed; the row is a job; the nightly
+drain resolves it. Nothing scrapes from a server, ever.
+
+**Shape, as built:** Turso holds only the inbox, and the pipeline never writes back
+to it. `pipeline:demand` reads pending rows, verifies each link against Coursera,
+resolves instructors to their course lists and programs to their members, appends
+new keys to `sources.json` / `programs.json`, and merges the ask into
+`data/requests.json` with `added_at`. `/wanted` and `/feed.xml` derive state by
+joining that list against `scores.json` / `groupings.json`: a score means
+fulfilled, no score means waiting. No status machine, no `crawled_at`.
+
+**Decisions worth keeping**
+
+- **No email.** Collecting an address means a legal basis, a privacy notice, a
+  deletion path and a processor. `/wanted` plus a feed needs none of that.
+- **No moderation, so no realtime.** The queue is a nightly batch for exactly this
+  reason.
+- **The ask list lives in the repo, not the database.** 12 rows today; if it
+  outgrows git, that's I7's problem.
+
+### I12 — Real course thumbnails — **rejected**
+
+Coursera's JSON-LD `image` is the *provider* logo, `og:image` is a generic
+placeholder, and the real thumbnails are stock photography with text legible only
+at full size. The provider marks (`tile` for tables, `full` for course pages)
+carry the identity better, are self-hosted, and cost one download per provider.
+For descriptions, we take what `syllabus-description-content` shows before its
+"read more".
 
 ---
 
-**LLM Q&A over the reviews.** : maybe with a small local sllm? A lightweight LLM could parse
-review text to answer questions like "Why did this course get 5 stars?" or "What do people
-complain about the platform?" without exposing raw excerpts. This would add
-intelligence to the dataset while keeping the privacy constraint (excerpts only)
-intact.
+## E. Design notes worth keeping
 
-**Track course teachers.** ✅ **Shipped** — `/instructors` lists every teacher in
-  the index with their catalogue average and range; `/instructors/<slug>` shows the
-  courses they teach. Built entirely from the landing-page blob, so it cost no new
-  requests (SPEC D22–D24). The next step here is the corpus, not the code: 17 of 30
-  teachers have exactly one course.
+### The dissent as a pull quote
+
+The course page renders the most-upvoted critical review as a plain `blockquote`.
+The upgrade is typographic, not structural: hanging gold quotation mark, thin gold
+rule, review text larger than body copy, source and upvotes under it. Unique to
+Starisk in a way a theme colour cannot be.
+
+### Chart identity
+
+Keep the slate/gold series, standardize the language: thin axes, mono labels, no
+default chart chrome, annotate "the gap" on the scatter. `/findings` is the
+reference implementation — the rest of the site should look like it was drawn by
+the same hand.
+
+---
+
+**LLM Q&A over the reviews — parked.** A small local model answering "why did this
+course get 5 stars" or "what do people complain about" without exposing excerpts.
+Interesting, and still the wrong order: it needs the dataset (I6) to be worth
+anything.
 
 ---
 
 ## Order of work
 
-1. **CSP spike** for I1 (5 minutes, kills or greenlights the bookmarklet).
-2. **I1** — copy `scores.json` to `public/`, `_headers`, bookmarklet. Small, and
-   it makes the site feel alive.
-3. **I2** — polarization in the pipeline, quadrants on the landing page.
-4. **I5 spike** — do credential pages give up course slugs? This decides whether
-   the corpus is a weekend or a grind.
-5. **I5** — crawl, `/transcript`.
-6. **I4** — the scatter, once there are 40+ courses.
-7. **I6, I8, I9** — the cheap ones, whenever.
-
+1. **I2 quadrants** — the data is already in `scores.json`; only the surface is
+   missing, and it pairs with the low-sample story.
+2. **Low-sample labels** — ~10 blind labels on low-sample courses, then `k` stops
+   being a guess. Same set as I5's calibration.
+3. **I6** — publish the dataset. Outlives the site, costs hours.
+4. **I8, I9** — the cheap ones, whenever.
+5. **I10** — only after I7.
 
 ---
 
 ## Blog
 
-- Write short posts about groups of courses about the same subject,  
-  such as 'Best R courses in coursera', 'Top Python courses for data science', etc.
-- If I took some of the courses, compare my own experience with the official ratings — "What I learned vs. What the stars say"
-- Highlight the most contested courses (high spread, low score) and analyze why they get mixed reviews
-- Profile standout instructors based on the `/instructors` data — who consistently teaches high-quality courses?
-- Discuss the limitations of weighted reviews and how to interpret them when making course decisions
-- Feature the most popular courses (high score, high volume) and analyze what makes them stand out
+- Short posts about groups of courses on one subject: "best R courses on
+  Coursera", "Python for data science".
+- Where I took the course, compare my experience with the official rating —
+  "what I learned vs. what the stars say".
+- Highlight the most contested courses (high spread, low score) and analyse why.
+- Profile instructors off `/instructors`: who consistently teaches well?
+- Discuss the limits of upvote-weighted reviews and how to read them.
+- Feature the popular-and-well-rated courses and say what makes them stand out.
