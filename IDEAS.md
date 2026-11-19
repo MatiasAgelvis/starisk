@@ -172,6 +172,25 @@ the static property goes with it.
 **Payoff when it's worth it:** score history becomes rows instead of git
 archaeology, and "courses that moved most" becomes one query (see I10).
 
+**The migration also pays for the one field `scores.json` never stored.** Arrival
+time is already in git: the file is append-only, so the first commit in which a key
+appears *is* its arrival date.
+
+- Walk `git log --format=%H -- pipeline/data/scores.json` **oldest → newest**, parse
+  each blob with `git show <sha>:pipeline/data/scores.json`, and assign a date only
+  when the key is still unset. First appearance wins, and the walk can stop as soon
+  as every key is assigned. (Newest → oldest, overwriting while the key is present,
+  gives the same answer with more writes.)
+- Cost: ~50–100 commits × 3.4 MB parses. Seconds, once.
+- **Call it `added_at`, meaning "indexed at".** Nothing exists before the first
+  commit, so the earliest cohort all share that date. Nothing may claim to be a
+  crawl date.
+- **Abort on a rewrite.** A commit whose key count is unchanged but whose keys
+  changed is a reordering, not an append — every date would collapse onto it.
+- **Prefer the request rows where they overlap:** `data/requests.json` already
+  carries a real `added_at` from the moment a request was validated.
+- The same pass yields `last_seen` per key, which is I10's other column.
+
 ### I8 — Embeddable SVG badges — **accepted**
 
 `/badge/learn/machine-learning.svg`, generated at build: a course's score, one
@@ -187,7 +206,8 @@ No build explosion, no new data.
 
 Courses that vanished or stopped updating. `error` records hint at it, and "most
 of my 2020 courses didn't survive" is a real observation from a crawl. Needs I7 to
-be a trend rather than a snapshot.
+be a trend rather than a snapshot — the same git walk that backfills `added_at`
+yields `last_seen` per key, which is the other column this needs.
 
 ### I11 — The request queue — **shipped**
 
