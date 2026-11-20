@@ -1,129 +1,72 @@
 # TODO
 
-Ideas and deferred work. Not commitments — just a place so they stop living in my head.
+Small, near-term work. The bigger threads — polarization, the dataset, calibration,
+the transcript — live in [`IDEAS.md`](IDEAS.md) with their reasoning and an order of
+work. This file is the list I actually open.
 
-Bigger threads (the bookmarklet, polarization, the corpus, the dataset) live in
-[`IDEAS.md`](IDEAS.md) with their reasoning and an order of work. This file is
-for the small, near-term stuff.
+Current shape: **1064 courses indexed, 881 scored, 372 low-sample, 0 errors, 29
+programs, 354 instructors, 12 requests.**
 
 ## Next
-- **I1 — bookmarklet.** First: the 5-minute CSP spike (CORS is already fine —
-  both GH Pages and CF Pages send `Access-Control-Allow-Origin: *`). Then copy
-  `scores.json` to `web/public/data/`: it is only imported at build time today, so
-  it isn't fetchable.
-- **I2 — polarization.** Add the weighted standard deviation to the crawl output,
-  then the quadrant view.
-- **I5 spike.** Do Coursera credential pages expose the course slug? Decides how
-  expensive the personal corpus is.
-- **Course requests.** Shipped: the landing page's miss state writes to Turso
-  through `web/src/lib/course-requests.js` (served by `web/api/course-request.js`).
-  `pipeline:demand` reads that inbox, verifies new keys and merges them into
-  `sources.json` plus the local `requests.json`; `/wanted` and `/feed.xml` derive
-  waiting/fulfilled by joining that list against `scores.json` / `groupings.json`.
-  Open: the nightly homelab run below.
 
-## Homelab
-
-A clone of the repo in a container, on a schedule. The box has the residential
-IP the crawl wants and the notification channel the repo cannot own. With the
-repo checked out and `.env.prod` mounted (not baked into the image):
-`python -m starisk.demand --env-file .env.prod --write`, then `pipeline:crawl`.
-The write step verifies links and updates `data/requests.json`; the crawl
-supplies the scores and titles the site derives from.
-
-Built: `pipeline/starisk/nightly.py` runs the sequence and gates the commit;
-`ops/` holds the code-less image, the compose service, the cron line and the
-setup notes (`ops/README.md`).
-
-The container is stateless: it clones `develop` into its own filesystem, publishes
-a branch named after the run (`data/crawl-<stamp>`), opens a pull request and
-exits. Only the state volume survives — the JSON corpus and the page cache,
-`STARISK_CACHE` for the page cache, `STARISK_LOGS` for the run record — so updating
-the crawler is just merging to `develop`. The corpus itself is never carried: it
-comes from `develop` with the clone. The push is a create, which is the one push git cannot reject: no
-rebase, no force, no lease, and nothing that depends on last night's branch.
-
-- **Nightly queue read.** Query `course_requests` and send one `ntfy` digest
-  through the existing health check: new asks (`first_seen` since the last run),
-  what was added today, and anything left for a human (`name/*` rows, gone
-  links, failed program/instructor pages). Silent when nothing changed. A local
-  watermark file is enough for one box; a `notified_at` column only if a second
-  consumer appears.
-- **Gate before crawling.** `pipeline:demand --dry-run` is the test: if every
-  row reports `add`, run `--write` then `pipeline:crawl --limit N`. Anything
-  `manual` / `gone` / `waiting` goes into the notification instead of the run.
-- **Close the loop.** After the crawl, run `mise run web:sync`, commit and push
-  so the site and feed rebuild. Non-zero exit and 403/429 are high-priority
-  alerts; send a heartbeat on success so the existing health check catches a dead
-  cron.
-- **Secrets live on the box:** `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, a deploy
-  key for the push, and the `ntfy` topic. No repo secrets are needed.
-- **Never automate `name/*` rows.** They cannot be resolved to a slug without a
-  human, so the run should count them and stop.
-- Keep the volume on the page cache and the run record only (`STARISK_CACHE`,
-  `STARISK_LOGS`). The corpus is in git, so a cold cache costs time, never data.
+- **Low-sample shrinkage needs labels, not code.** `w = 1 - e^(-n/k)` with `k = 5`
+  moves 89/728 courses and only low-sample ones, but calibration can't judge it: 29
+  labelled courses, 2 of them low-sample. Needed: ~10 blind labels on low-sample
+  courses. Then `k` stops being a guess.
+- **Bookmarklet batch asks.** `PER_HOUR = 6` per visitor, so a results page asking
+  for seven courses 429s on the seventh. Per-card asking is what ships today.
+- **I2 quadrants.** `spread` / `spread_weighted` are already in every record; only
+  the surface is missing.
 
 ## Front end
-- **Brand theme: navy + gold.** The logo is `#111827` with `#fbbf24`, and the
-  `theme-color` meta already matches the navy, but the site still runs on daisyUI's
-  stock `light` / `dark`. Not in scope for `feat/findings` — it deserves its own
-  branch, since it changes every page at once. Sketch: a `@plugin "daisyui/theme"`
-  block in `global.css` defining both schemes, using `--color-neutral: #111827`
-  and `--color-primary: #fbbf24`.
-  - **Gold is a bad text colour** — `#fbbf24` on white is ~1.9:1. Keep it for fills
-    and highlights, and use a darker amber (~`#b45309`) for `text-primary` links,
-    or every link on the site becomes unreadable.
-  - The logo chips in `Logo.astro` and `ScoreTable.svelte` are literal `bg-white`
-    on purpose: the marks are dark artwork drawn for light backgrounds. A dark
-    theme should keep those chips light rather than tokenising them.
-  - The charts already fit: grey for Coursera, `primary` for Starisk. Under a
-    gold theme our bars turn gold without touching either page.
-  - Everything else uses semantic tokens (`bg-base-200`, `text-primary`,
-    `fill-primary/80`, `stroke-base-content/25`), so expect one file plus a
-    contrast pass, not a rewrite.
-- **Logo polarity.** White-on-transparent marks are handled by the shared logo tile +
-  alpha drop-shadow in `Logo.astro`. If more edge cases show up, consider a checkerboard
-  backing or per-provider overrides.
-- **Real course thumbnails.** The JSON-LD `image` is the *provider* logo; `og:image` is a
-  generic Coursera placeholder. A real course thumbnail needs another source.
-- **OG image.** Shared links render a bare text card. Needs a raster (satori/resvg at
-  build, or one hand-made PNG) — the pipeline can draw SVG, but social platforms
-  don't accept SVG.
 
-- **Teacher photos** are remote and lazy, like course thumbnails (SPEC D24). If
-  hotlinking becomes a privacy or breakage problem, localize them the way provider
-  logos are: one file per person, downloaded during the crawl.
-- Find where to add the copy '5 stars... would not reccomend'
+- **OG image.** Shared links render a bare text card. Needs a raster (satori/resvg
+  at build, or one hand-made PNG) — social platforms don't accept SVG.
+- **Teacher photos** are remote and lazy. If hotlinking becomes a privacy or
+  breakage problem, localize them the way provider logos are: one file per person,
+  downloaded during the crawl.
+- **The dissent as a pull quote.** Typographic upgrade to the course page's
+  blockquote: hanging gold quotation mark, thin rule, review larger than body copy,
+  source and upvotes under it. See `IDEAS.md`, design notes.
+- **Search** is the newest surface and the least settled: partial matching shows top
+  results as you type, but the ranking is plain substring plus sort order. Worth a
+  pass once there's evidence people use it.
 
 ## Pipeline
-- Optional pagination (`?page=N`) if we ever want more than the first reviews page.
-- Alert when a crawl produces several `error` records in a row (markup changed).
-- Score history over time — git commits of `scores.json` already form a timeline.
-- **Low-sample shrinkage (open).** `learn/introduction-test-driven-development`
-  exposes the failure mode: 2 written 5★ reviews (0 likes), while the star-only
-  ratings are 5×1★, 1×2★ and 11×5★ (Coursera 3.6). Because `peer_weight = 1`,
-  Starisk reports 5.0. `low_sample` hides it by default but does not fix the
-  number. Trial: `w = 1 - e^(-n/k)` with `k=5` gives 4.06 and only moves 89/728
-  courses, all low-sample. Calibration is inconclusive (29 labelled, only 2
-  low-sample), so label a few low-sample courses before choosing `k`.
+
+- **Alert on repeated `error` records.** Zero today; a run that produces several in
+  a row means the markup moved. The nightly already notifies on failure, so this is
+  a threshold inside the existing gate, not a new channel.
+- **Cache stats and verify.** `python -m starisk.cache stats|verify`: counts by kind,
+  size, staleness, then gunzip and re-parse every cached page with the current
+  adapter. Zero requests, and it answers "how much of my cache can today's code
+  still read" after a selector change. Copying the cache between machines stays
+  plain `rsync` — the files are key-named and written atomically, so last write
+  wins and nothing needs merging.
+- **Optional pagination** (`?page=N`) if we ever want more than the first reviews
+  page.
+- **Score history over time** — git commits of `scores.json` already form a timeline.
+  A query, once I7 exists.
 
 ## Coverage
-- Professional Certificates / specializations: score their constituent courses and aggregate
-  (landing pages expose `data-e2e="sdp-course-list-link"`). The **expansion** side is done
-  (D25); aggregate *scoring* of the program is still open.
-- Grow the crawl list along the two existing edges (`mise run pipeline:expand`), not by
-  sampling the sitemap. 454 sources as of the latest pass.
-- **Teacher pages are only as good as the corpus.** 49 of 151 teachers have exactly one
-  course; the surface gets interesting at 3+ per person, which is a crawl problem, not a
-  code one.
+
+Grow along the two existing edges (`mise run pipeline:expand`), not by sampling the
+sitemap: the teacher graph has been the productive one, the specialization lever
+much less so. 1537 sources listed against 1064 records — the gap is courses that
+were listed but never scored (90 have no reviews at all).
+
+- **Teacher pages are only as good as the corpus.** 121 of 354 teachers have exactly
+  one course; the surface gets interesting at 3+ per person, which is a crawl
+  problem, not a code one.
+- Program aggregate *scoring* is done (groupings + the gap mark); what's missing is
+  nothing at this level — see `IDEAS.md` I5 for what a program-level claim would
+  need to be defensible.
 
 ## V2 / later
-- **Classify reviews** (quality vs policy vs praise) — **parked**, see `IDEAS.md` I3.
-  Too much complication for now; it is the honest escape hatch if the premise gets
-  challenged, and needs validation on ~50 hand-labeled reviews before any trust.
-- **Live lookup** is a contradiction — a Worker can't scrape (datacenter IP, D6).
-  Enqueue instead: `IDEAS.md` I11.
-- **"Request this course"** — shipped as the Turso queue behind `/wanted` and
-  `/feed.xml`. Remaining work is operational (homelab nightly), not the write
-  path; design sketch in `IDEAS.md` I11.
-- **Calibration** against the 74 labeled courses in `calibration/courses.json`.
+
+- **Classify reviews** (quality vs policy vs praise) — **parked**, `IDEAS.md` I3.
+- **SQLite as the pipeline store** — **parked**, `IDEAS.md` I7.
+- **Publish the dataset**, **SVG badges**, **compare two courses** — accepted,
+  `IDEAS.md` I6, I8, I9.
+- **Live lookup is a contradiction** — a Worker can't scrape. The queue is the
+  answer, and it shipped: `IDEAS.md` I11.

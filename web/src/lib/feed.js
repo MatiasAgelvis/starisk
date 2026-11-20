@@ -10,7 +10,7 @@ export function escapeXml(value) {
 /**
  * @param {Array<{ title: string, added_at: string, anchor: string, href: string,
  *   external?: boolean, summary?: string }>} rows newest first
- * @param {string} site absolute origin, e.g. `https://starisk.pages.dev`
+ * @param {string} site absolute origin, e.g. `https://starisk.matiasagelvis.com`
  * @param {string | null} [snapshotAt] fallback `updated` for an empty feed
  */
 export function buildFeed(rows, site, snapshotAt) {

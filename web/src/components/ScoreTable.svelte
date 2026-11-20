@@ -85,6 +85,9 @@
   function value(row, key) {
     if (key === 'title') return (row.title ?? idOf(row)).toLowerCase();
     if (key === 'inflation' || key === 'verdict') return inflationOf(row);
+    // Not a column: arrival order is a rank, not something to print. Rows carry it
+    // from the page — importing the corpus here would ship it to the browser.
+    if (key === 'added') return row.added ?? null;
     return row[key] ?? null;
   }
 
@@ -96,6 +99,19 @@
     const next = toggleSort(key, sortKey, sortDir, 'title');
     sortKey = next.key;
     sortDir = next.direction;
+    page = 1;
+  }
+
+  // Newest first, then back to the page's default on the second click — a button
+  // that could only be pressed is a trap. Sorting by any column header exits.
+  function sortNewest() {
+    if (sortKey === 'added') {
+      sortKey = defaultSortKey;
+      sortDir = defaultSortDir;
+    } else {
+      sortKey = 'added';
+      sortDir = 'desc';
+    }
     page = 1;
   }
 
@@ -132,6 +148,8 @@
   }
 
   const lowCount = $derived(rows.filter((row) => row.low).length);
+  // Only pages whose rows carry an arrival rank get the "Newest" sort.
+  const hasArrival = $derived(rows.some((row) => row.added != null));
 
   // Topics come from the data, ordered by how many courses each one covers.
   // Counts are shown because they also say how much of the corpus a filter keeps.
@@ -189,6 +207,16 @@
         >
           Hide small samples{#if lowCount} <span class="opacity-50">{lowCount}</span>{/if}
         </button>
+        {#if hasArrival}
+          <button
+            class="btn btn-sm whitespace-nowrap {sortKey === 'added' ? 'btn-neutral' : 'btn-ghost'}"
+            aria-pressed={sortKey === 'added'}
+            title="Courses added to the index most recently"
+            onclick={sortNewest}
+          >
+            Newest
+          </button>
+        {/if}
       </div>
 
       <input

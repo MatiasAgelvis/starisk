@@ -10,8 +10,7 @@ import { courses } from '../lib/courses.js';
 import groupings from '../data/groupings.json';
 
 const rows = Object.entries(courses)
-  .filter(([, record]) => typeof record.starisk === 'number')
-  .map(([slug, record]) => ({
+  .map(([slug, record], index) => ({
     slug,
     title: record.title,
     provider: record.provider,
@@ -20,7 +19,12 @@ const rows = Object.entries(courses)
     low: record.low_sample === true,
     coursera: record.coursera,
     starisk: record.starisk,
-  }));
+    // Position in `scores.json`, which is append-only: the crawl adds new keys at
+    // the end and never reorders. It is the only arrival signal there is, so the
+    // table can offer "newest first" without shipping the corpus to the browser.
+    added: index,
+  }))
+  .filter((row) => typeof row.starisk === 'number');
 
 // The lookup island only needs the numbers. Passing the whole records would ship
 // every description and review body to the browser with the homepage. Failed
@@ -63,7 +67,8 @@ const topShare = (bins) => `${Math.round(bins[bins.length - 1].share * 100)}%`;
       Opens on Coursera's rating, highest first. <strong>Inflation</strong> is that rating minus
       Starisk's — how many stars the headline sits above what the most-upvoted reviews say.{' '}
       <strong>Inflated</strong> ≥ 1.5, <strong>padded</strong> ≥ 0.5, otherwise it{' '}
-      <strong>holds up</strong>. Sort by any column.
+      <strong>holds up</strong>. Sort by any column, or use <strong>Newest</strong> to see the last
+      courses added to the index first.
     </p>
   </section>
 
