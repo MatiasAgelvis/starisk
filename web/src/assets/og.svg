@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Source for web/public/og.png; social platforms do not read SVG, so after
+       editing this file regenerate the raster from web/ with:
+       node -e "import('sharp').then(({default: sharp}) => sharp('src/assets/og.svg').removeAlpha().png({compressionLevel: 9}).toFile('public/og.png'))" -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- The mark, oversized and bled off the right edge: decoration, not a logo -->
+  <g stroke="#fbbf24" stroke-width="2.6" stroke-linecap="round" opacity="0.09"
+     transform="translate(1100 315) scale(22) translate(-16 -16)">
+    <path d="M16 7.5v17"/>
+    <path d="M8.6 11.7l14.8 8.6"/>
+    <path d="M23.4 11.7l-14.8 8.6"/>
+  </g>
+
+  <!-- Mark, small and solid, above the wordmark -->
+  <g stroke="#fbbf24" stroke-width="3.2" stroke-linecap="round"
+     transform="translate(96 92) scale(2.5)">
+    <path d="M16 7.5v17"/>
+    <path d="M8.6 11.7l14.8 8.6"/>
+    <path d="M23.4 11.7l-14.8 8.6"/>
+  </g>
+
+  <text x="94" y="332" font-family="Avenir Next" font-size="132" font-weight="600"
+        letter-spacing="-3" fill="#f9fafb">Starisk</text>
+
+  <text x="96" y="404" font-family="Avenir Next" font-size="42" font-weight="600"
+        fill="#fbbf24">The true signal, under the rating.</text>
+
+  <text x="96" y="468" font-family="Avenir Next" font-size="27" font-weight="400"
+        fill="#94a3b8">What learners actually say about Coursera courses,</text>
+  <text x="96" y="506" font-family="Avenir Next" font-size="27" font-weight="400"
+        fill="#94a3b8">weighted by the votes their reviews received.</text>
+
+  <line x1="96" y1="552" x2="1104" y2="552" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="96" y="590" font-family="Avenir Next" font-size="22" font-weight="500"
+        fill="#64748b">starisk.matiasagelvis.com</text>
+  <text x="1104" y="590" font-family="Avenir Next" font-size="22" font-weight="500"
+        fill="#64748b" text-anchor="end">Open data, no accounts</text>
+</svg>
