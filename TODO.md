@@ -20,8 +20,6 @@ programs, 354 instructors, 12 requests.**
 
 ## Front end
 
-- **OG image.** Shared links render a bare text card. Needs a raster (satori/resvg
-  at build, or one hand-made PNG) — social platforms don't accept SVG.
 - **Teacher photos** are remote and lazy. If hotlinking becomes a privacy or
   breakage problem, localize them the way provider logos are: one file per person,
   downloaded during the crawl.
