@@ -21,6 +21,11 @@ const canonical = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).href
   : Astro.url.pathname;
 
+// One card for the whole site; `src/assets/og.svg` is its source, rasterised once
+// into `public/og.png` because social platforms do not accept SVG.
+const ogImage = new URL('/og.png', Astro.site ?? Astro.url).href;
+const ogAlt = 'Starisk — the true signal, under the rating.';
+
 // Three sections plus one grouped pair, not five tabs on one page: the URL is
 // what people share. The leaderboard is the home page, so "Courses" points at
 // `/`. Findings and Method are the same argument at two depths — what the corpus
@@ -87,7 +92,14 @@ const lastCrawlDate = lastCrawl
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
 
     <!-- Counter.dev: cookieless, ~1 KB, no personal data. Only in production so
          `astro dev` doesn't pollute the stats. See the privacy note in the footer. -->
