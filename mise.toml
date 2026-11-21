@@ -141,6 +141,12 @@ run = "./build.sh"
 description = "Lint and test the pipeline, then build the site"
 depends = ["pipeline:lint", "pipeline:test", "site:build"]
 
+[tasks."pr:release"]
+description = "Open the develop → main release PR with today's title"
+# The title is the only thing that changes run to run, so it is generated. The
+# body is left empty; the template in `.github/` is for PRs opened from the web.
+run = 'gh pr create --base main --head develop --title "release: merge develop into main ($(date +%F))" --body ""'
+
 # --- the box -------------------------------------------------------------
 #
 # The nightly container, where it actually lives. These need root (the Docker

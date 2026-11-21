@@ -74,6 +74,7 @@ mise run pipeline:seed-programs  # fetch seeded program pages, then rebuild
 mise run pipeline:all             # expand, crawl, localise, rebuild, sync
 mise run web:dev              # astro dev server
 mise run check                # lint + tests + a full site build
+mise run pr:release          # open the develop → main PR, dated
 ```
 
 Without mise, it's still plain: `python -m unittest discover -s pipeline/tests`
