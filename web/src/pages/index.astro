@@ -21,6 +21,7 @@ const rows = Object.entries(courses)
     starisk: record.starisk,
     spread: record.spread ?? null,
     reviews: record.reviews ?? 0,
+    ratings: record.ratings_total ?? null,
     // Position in `scores.json`, which is append-only: the crawl adds new keys at
     // the end and never reorders. It is the only arrival signal there is, so the
     // table can offer "newest first" without shipping the corpus to the browser.
