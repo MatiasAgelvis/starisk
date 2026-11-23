@@ -75,8 +75,10 @@ both of our data endpoints answer `access-control-allow-origin: *`.
 ### I2 — Polarization, and the honest tierlist — **shipped**
 
 `spread` and `spread_weighted` ship in every record now; `/findings` plots the two
-star distributions and the same scale side by side. `/contested` is the quadrant
-view: score on x, spread on y, four named cells at fixed 3.5 / 1.2 splits.
+star distributions and the same scale side by side, and carries the quadrant view
+(score on x, spread on y, four named cells at fixed 3.5 / 1.2 splits, with courses
+under 15 readable reviews left unlabelled). The leaderboard filters by the same
+cells, and each course page says where it lands.
 
 **Why:** it turns the model's worst weakness (one upvoted review owning a score)
 into a measured quantity instead of a hidden failure. The "contested" cell is
