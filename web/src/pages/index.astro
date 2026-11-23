@@ -19,6 +19,8 @@ const rows = Object.entries(courses)
     low: record.low_sample === true,
     coursera: record.coursera,
     starisk: record.starisk,
+    spread: record.spread ?? null,
+    reviews: record.reviews ?? 0,
     // Position in `scores.json`, which is append-only: the crawl adds new keys at
     // the end and never reorders. It is the only arrival signal there is, so the
     // table can offer "newest first" without shipping the corpus to the browser.
@@ -61,11 +63,14 @@ const topShare = (bins) => `${Math.round(bins[bins.length - 1].share * 100)}%`;
   </section>
 
   <section class="mt-8">
-    <h2 class="font-display mb-4 text-2xl font-bold">Where the headline rating is inflated</h2>
-    <ScoreTable client:visible rows={rows} defaultSortKey="coursera" />
+    <h2 class="font-display mb-4 text-2xl font-bold">Every course, ranked</h2>
+    <ScoreTable client:visible rows={rows} defaultSortKey="starisk" />
     <p class="mt-3 text-sm text-base-content/60">
-      Opens on Coursera's rating, highest first. <strong>Inflation</strong> is that rating minus
-      Starisk's — how many stars the headline sits above what the most-upvoted reviews say.{' '}
+      Opens on Starisk's score, highest first. <strong>Spread</strong> says whether the sampled
+      reviews agree — <strong>consensus good</strong> is a high score the reviews back up,{' '}
+      <strong>divisive</strong> is one they split on; under 15 readable reviews there is no
+      consensus label. <strong>Inflation</strong> is Coursera's rating
+      minus Starisk's: how far the headline sits above what the most-upvoted reviews say.{' '}
       <strong>Inflated</strong> ≥ 1.5, <strong>padded</strong> ≥ 0.5, otherwise it{' '}
       <strong>holds up</strong>. Sort by any column, or use <strong>Newest</strong> to see the last
       courses added to the index first.
@@ -82,7 +87,7 @@ const topShare = (bins) => `${Math.round(bins[bins.length - 1].share * 100)}%`;
         <span class="mt-1 block text-sm text-base-content/70">
           {topShare(findings.theirs)} of Coursera's ratings are 4.5 or higher. Ours: {topShare(
             findings.ours,
-          )}. All {findings.rated.length} courses, on two charts.
+          )}. All {findings.rated.length} courses, plus where the reviews disagree.
         </span>
       </span>
       <span class="shrink-0 text-sm font-medium text-primary group-hover:underline">
