@@ -27,6 +27,13 @@ programs, 354 instructors, 12 requests.**
 - **Search** is the newest surface and the least settled: partial matching shows top
   results as you type, but the ranking is plain substring plus sort order. Worth a
   pass once there's evidence people use it.
+- **Programs page needs another pass.** The list and the program pages are the
+  least settled surfaces. Decide what the aggregate should say beyond the course
+  average, and which parts belong on the list versus the detail page.
+- **The wanted page looks dead when there are no asks.** Add a “Recently added”
+  section with the last 10 courses appended to `scores.json` — the file is
+  append-only, so the end is the newest — so the page shows movement even when the
+  queue is empty. It is distinct from “Recently fulfilled”, which needs a request.
 
 ## Pipeline
 
