@@ -15,8 +15,6 @@ programs, 354 instructors, 12 requests.**
   courses. Then `k` stops being a guess.
 - **Bookmarklet batch asks.** `PER_HOUR = 6` per visitor, so a results page asking
   for seven courses 429s on the seventh. Per-card asking is what ships today.
-- **I2 quadrants.** `spread` / `spread_weighted` are already in every record; only
-  the surface is missing.
 
 ## Front end
 

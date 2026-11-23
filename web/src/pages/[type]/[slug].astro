@@ -6,6 +6,7 @@ import ScoreGap from '../../components/ScoreGap.astro';
 import Logo from '../../components/Logo.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import { courses, isScoredEntry } from '../../lib/courses.js';
+import { CELLS, TOO_FEW, cellOf, spreadShareBelow } from '../../lib/contested.js';
 
 export function getStaticPaths() {
   return Object.entries(courses)
@@ -20,6 +21,21 @@ const { record, key } = Astro.props;
 const inflation = record.coursera == null ? null : record.coursera - record.starisk;
 const top = record.top_review;
 const title = record.title ?? key;
+
+// Where this course sits on the score-vs-disagreement plot. The share is of
+// courses with a lower spread, so a high value means the reviews scatter more.
+const spread = typeof record.spread === 'number' ? record.spread : null;
+const spreadCell = spread == null ? null : cellOf(record.starisk, spread, record.reviews ?? 0);
+const tooFew = spreadCell === 'tooFew';
+const spreadLabel = spreadCell
+  ? tooFew
+    ? TOO_FEW.label
+    : (CELLS.find((cell) => cell.id === spreadCell)?.label ?? null)
+  : null;
+const spreadTop =
+  spread == null || tooFew
+    ? null
+    : Math.max(1, Math.round((1 - spreadShareBelow(spread)) * 100));
 
 const description =
   record.coursera == null
@@ -132,17 +148,35 @@ const about = splitDescription(aboutText);
 
     <div class="mt-6">
       <ScoreGap
-        coursera={record.coursera}
+        coursera={record.coursera ?? null}
         starisk={record.starisk}
         verdict={verdictText()}
       />
     </div>
 
     {
+      spread != null && spreadLabel && (
+        <p class="mt-3 flex flex-wrap items-center gap-2 text-sm text-base-content/60">
+          <span class="badge badge-ghost badge-sm">
+            {spreadLabel} · spread {spread.toFixed(1)}
+          </span>
+          <span>
+            {tooFew
+              ? `Only ${record.reviews} readable ${record.reviews === 1 ? 'review' : 'reviews'}, so there is no consensus label.`
+              : `Top ${spreadTop}% by disagreement across ${record.reviews} reviews.`}{' '}
+            <a class="link link-hover" href="/findings#contested">What this means</a>
+          </span>
+        </p>
+      )
+    }
+
+    {
       record.low_sample && (
         <div class="alert alert-warning mt-6 text-sm">
           <span>
-            <strong>Small sample.</strong> Only {record.reviews} reviews were readable
+            <strong>Small sample.</strong> Only {record.reviews}{
+              record.reviews === 1 ? ' review was' : ' reviews were'
+            } readable
             {record.source === 'jsonld' ? ' and they carry no upvotes' : ''}, so this score
             is a hint, not a verdict. Every other course page reads about 20 of the
             most-helpful reviews.
