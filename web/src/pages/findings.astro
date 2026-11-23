@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import BackLink from '../components/BackLink.astro';
+import ContestedSection from '../components/ContestedSection.astro';
 import { MAX, MIN, buildFindings } from '../lib/findings.js';
 
 const { theirs, ours, rated, scored, differentStars, topGaps, inflated, padded, holdsUp } =
@@ -409,6 +410,8 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
         </figcaption>
       </figure>
     </section>
+
+    <ContestedSection />
 
     <section class="mt-12">
       <h2 class="font-display text-xl font-bold">Where the gap is widest</h2>
