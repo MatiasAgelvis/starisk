@@ -4,6 +4,7 @@
   import logoTones from '../data/logo-tones.json';
   import { logoTile } from '../lib/logos.js';
   import { verdictOf, VERDICT } from '../lib/verdict.js';
+  import { CELLS, TOO_FEW, cellOf } from '../lib/contested.js';
   import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
 
   let {
@@ -18,6 +19,7 @@
 
   let query = $state('');
   let verdict = $state('all');
+  let spread = $state('all');
   let topic = $state('all');
   // A ranking whose second row has one review is noise, so tiny samples are
   // hidden by default — but the count below always says how many are hidden, and
@@ -30,7 +32,7 @@
   let page = $state(1);
 
   const VERDICTS = [
-    { id: 'all', label: 'All' },
+    { id: 'all', label: 'Any' },
     { id: 'inflated', label: 'Inflated' },
     { id: 'padded', label: 'Padded' },
     { id: 'holds-up', label: 'Holds up' },
@@ -41,7 +43,7 @@
     { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[13%]', hide: true },
     { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[22%] sm:w-[13%]' },
     { key: 'inflation', label: 'Inflation', align: 'text-right', width: 'w-[22%] sm:w-[12%]', compactHide: true },
-    { key: 'verdict', label: 'Verdict', align: 'text-left', width: 'w-[12%]', hide: true },
+    { key: 'verdict', label: 'Gap', align: 'text-left', width: 'w-[12%]', hide: true },
   ];
 
   // Percentages work on the wide leaderboard, but the detail pages are max-w-3xl:
@@ -82,6 +84,13 @@
     return verdictOf(row.coursera, row.starisk);
   }
 
+  /** Quadrant id for a row, or null when the table is not carrying spread. */
+  function spreadOf(row) {
+    return typeof row.spread === 'number' && typeof row.starisk === 'number'
+      ? cellOf(row.starisk, row.spread, row.reviews ?? 0)
+      : null;
+  }
+
   function value(row, key) {
     if (key === 'title') return (row.title ?? idOf(row)).toLowerCase();
     if (key === 'inflation' || key === 'verdict') return inflationOf(row);
@@ -120,6 +129,11 @@
     page = 1;
   }
 
+  function pickSpread(id) {
+    spread = id;
+    page = 1;
+  }
+
   function pickTopic(id) {
     topic = id;
     page = 1;
@@ -138,6 +152,7 @@
   function clearFilters() {
     query = '';
     verdict = 'all';
+    spread = 'all';
     topic = 'all';
     hideLow = true;
     page = 1;
@@ -150,12 +165,44 @@
   const lowCount = $derived(rows.filter((row) => row.low).length);
   // Only pages whose rows carry an arrival rank get the "Newest" sort.
   const hasArrival = $derived(rows.some((row) => row.added != null));
+  // Only the leaderboard rows carry spread; instructor and program tables do not.
+  const hasSpread = $derived(rows.some((row) => typeof row.spread === 'number'));
 
-  // Topics come from the data, ordered by how many courses each one covers.
-  // Counts are shown because they also say how much of the corpus a filter keeps.
+  // The catalogue is everything the global filters (small samples, verdict,
+  // search) allow. Both chip rows count from here, so their numbers describe the
+  // same population and neither lane changes the other's counts.
+  const catalogue = $derived.by(() => {
+    const needle = query.trim().toLowerCase();
+    return rows.filter((row) => {
+      if (showFilters) {
+        if (hideLow && row.low) return false;
+        if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
+      }
+      if (!needle) return true;
+      return `${row.title ?? ''} ${row.provider ?? ''} ${idOf(row)}`.toLowerCase().includes(needle);
+    });
+  });
+
+  const spreadCounts = $derived.by(() => {
+    const counts = {
+      contested: 0,
+      divisive: 0,
+      consensusGood: 0,
+      consensusPoor: 0,
+      tooFew: 0,
+    };
+    for (const row of catalogue) {
+      const cell = spreadOf(row);
+      if (cell) counts[cell] += 1;
+    }
+    return counts;
+  });
+
+  // Topics come from the data, ordered by coverage. Counts are over the same
+  // catalogue as the Spread row, so the two lanes agree on how many are in view.
   const topics = $derived.by(() => {
     const counts = new Map();
-    for (const row of rows) {
+    for (const row of catalogue) {
       for (const name of row.categories ?? []) {
         counts.set(name, (counts.get(name) ?? 0) + 1);
       }
@@ -163,18 +210,13 @@
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   });
 
-  const filtered = $derived.by(() => {
-    const needle = query.trim().toLowerCase();
-    return rows.filter((row) => {
-      if (showFilters) {
-        if (hideLow && row.low) return false;
-        if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
-        if (topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
-      }
-      if (!needle) return true;
-      return `${row.title ?? ''} ${row.provider ?? ''} ${idOf(row)}`.toLowerCase().includes(needle);
-    });
-  });
+  const filtered = $derived.by(() =>
+    catalogue.filter((row) => {
+      if (topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
+      if (spread !== 'all' && spreadOf(row) !== spread) return false;
+      return true;
+    }),
+  );
 
   const ordered = $derived.by(() => [...filtered].sort(compare));
   const paging = $derived(paginate(ordered, page, pageSize));
@@ -200,13 +242,6 @@
             {option.label}
           </button>
         {/each}
-        <button
-          class="btn btn-sm whitespace-nowrap {hideLow ? 'btn-neutral' : 'btn-ghost'}"
-          aria-pressed={hideLow}
-          onclick={toggleLow}
-        >
-          Hide small samples{#if lowCount} <span class="opacity-50">{lowCount}</span>{/if}
-        </button>
         {#if hasArrival}
           <button
             class="btn btn-sm whitespace-nowrap {sortKey === 'added' ? 'btn-neutral' : 'btn-ghost'}"
@@ -228,6 +263,32 @@
       />
     </div>
 
+    {#if hasSpread}
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="mr-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+          Spread
+        </span>
+        <button
+          class="btn btn-xs whitespace-nowrap {spread === 'all' ? 'btn-neutral' : 'btn-ghost'}"
+          aria-pressed={spread === 'all'}
+          onclick={() => pickSpread('all')}
+        >
+          Any
+        </button>
+        {#each [...CELLS, TOO_FEW] as cell (cell.id)}
+          {#if cell.id !== 'tooFew' || spreadCounts.tooFew > 0}
+            <button
+              class="btn btn-xs whitespace-nowrap {spread === cell.id ? 'btn-neutral' : 'btn-ghost'}"
+              aria-pressed={spread === cell.id}
+              onclick={() => pickSpread(cell.id)}
+            >
+              {cell.label} <span class="opacity-50">{spreadCounts[cell.id]}</span>
+            </button>
+          {/if}
+        {/each}
+      </div>
+    {/if}
+
     <div class="flex flex-wrap items-center gap-1.5">
       <span class="mr-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
         Topic
@@ -237,7 +298,7 @@
         aria-pressed={topic === 'all'}
         onclick={() => pickTopic('all')}
       >
-        All <span class="opacity-50">{rows.length}</span>
+        Any
       </button>
       {#each topics as [name, count] (name)}
         <button
@@ -248,6 +309,22 @@
           {name} <span class="opacity-50">{count}</span>
         </button>
       {/each}
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <label class="label cursor-pointer gap-2 p-0 text-xs text-base-content/60">
+        <input
+          type="checkbox"
+          class="checkbox checkbox-sm"
+          checked={hideLow}
+          onchange={toggleLow}
+        />
+        Hide courses with fewer than 15 reviews
+        <span class="text-base-content/40">{lowCount}</span>
+      </label>
+      <p class="text-xs text-base-content/60" aria-live="polite">
+        Showing {ordered.length} of {rows.length} scored courses
+      </p>
     </div>
   </div>
 {/if}
@@ -374,7 +451,7 @@
   {:else if narrowed || pageCount > 1}
     <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
       <p class="text-xs text-base-content/60" aria-live="polite">
-        Showing {first}–{last} of {ordered.length}{narrowed ? ` (${rows.length} total)` : ''}
+        {first}–{last} of {ordered.length}
       </p>
       {#if pageCount > 1}
         <div class="join">
