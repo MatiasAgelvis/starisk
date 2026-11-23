@@ -4,6 +4,7 @@
   import logoTones from '../data/logo-tones.json';
   import { logoTile } from '../lib/logos.js';
   import { verdictOf, VERDICT } from '../lib/verdict.js';
+  import { CELLS, TOO_FEW, cellOf } from '../lib/contested.js';
   import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
 
   let {
@@ -18,6 +19,7 @@
 
   let query = $state('');
   let verdict = $state('all');
+  let spread = $state('all');
   let topic = $state('all');
   // A ranking whose second row has one review is noise, so tiny samples are
   // hidden by default — but the count below always says how many are hidden, and
@@ -30,19 +32,37 @@
   let page = $state(1);
 
   const VERDICTS = [
-    { id: 'all', label: 'All' },
+    { id: 'all', label: 'Any' },
     { id: 'inflated', label: 'Inflated' },
     { id: 'padded', label: 'Padded' },
     { id: 'holds-up', label: 'Holds up' },
   ];
 
   const COLUMNS = [
-    { key: 'title', label: 'Course', align: 'text-left', width: 'w-[56%] sm:w-[50%]' },
-    { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[13%]', hide: true },
-    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[22%] sm:w-[13%]' },
-    { key: 'inflation', label: 'Inflation', align: 'text-right', width: 'w-[22%] sm:w-[12%]', compactHide: true },
-    { key: 'verdict', label: 'Verdict', align: 'text-left', width: 'w-[12%]', hide: true },
+    { key: 'title', label: 'Course', align: 'text-left', width: 'w-[56%]' },
+    { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[14%]', hide: true },
+    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[18%] sm:w-[14%]' },
+    { key: 'verdict', label: 'Gap', align: 'text-left', width: 'w-[26%] sm:w-[16%]', sortKey: 'inflation' },
   ];
+
+  // Every sort the dropdown offers. Column headers are shortcuts into the same
+  // keys, so the select always shows the current order. "Most rated" uses the
+  // Coursera population, not our ~20-review sample.
+  const SORTS = [
+    { value: 'starisk:desc', label: 'Score: high → low' },
+    { value: 'starisk:asc', label: 'Score: low → high' },
+    { value: 'coursera:desc', label: 'Coursera: high → low' },
+    { value: 'coursera:asc', label: 'Coursera: low → high' },
+    { value: 'inflation:desc', label: 'Gap: biggest first' },
+    { value: 'inflation:asc', label: 'Gap: smallest first' },
+    { value: 'ratings:desc', label: 'Most rated' },
+    { value: 'spread:desc', label: 'Most contested' },
+    { value: 'added:desc', label: 'Newest' },
+    { value: 'title:asc', label: 'Title: A → Z' },
+    { value: 'title:desc', label: 'Title: Z → A' },
+  ];
+
+  const sortKeyOf = (column) => column.sortKey ?? column.key;
 
   // Percentages work on the wide leaderboard, but the detail pages are max-w-3xl:
   // there the numeric columns would be starved and their contents would spill
@@ -54,7 +74,6 @@
     title: 'w-auto',
     coursera: 'w-[6.5rem]',
     starisk: 'w-[6.5rem]',
-    inflation: 'w-[7rem]',
     verdict: 'w-[7rem]',
   };
 
@@ -82,6 +101,13 @@
     return verdictOf(row.coursera, row.starisk);
   }
 
+  /** Quadrant id for a row, or null when the table is not carrying spread. */
+  function spreadOf(row) {
+    return typeof row.spread === 'number' && typeof row.starisk === 'number'
+      ? cellOf(row.starisk, row.spread, row.reviews ?? 0)
+      : null;
+  }
+
   function value(row, key) {
     if (key === 'title') return (row.title ?? idOf(row)).toLowerCase();
     if (key === 'inflation' || key === 'verdict') return inflationOf(row);
@@ -102,21 +128,22 @@
     page = 1;
   }
 
-  // Newest first, then back to the page's default on the second click — a button
-  // that could only be pressed is a trap. Sorting by any column header exits.
-  function sortNewest() {
-    if (sortKey === 'added') {
-      sortKey = defaultSortKey;
-      sortDir = defaultSortDir;
-    } else {
-      sortKey = 'added';
-      sortDir = 'desc';
-    }
+  // The sort dropdown and the column headers both write `sortKey`/`sortDir`, so
+  // the select's value is simply the pair.
+  function pickSort(event) {
+    const [key, direction] = event.currentTarget.value.split(':');
+    sortKey = key;
+    sortDir = direction;
     page = 1;
   }
 
   function pickVerdict(id) {
     verdict = id;
+    page = 1;
+  }
+
+  function pickSpread(id) {
+    spread = id;
     page = 1;
   }
 
@@ -138,6 +165,7 @@
   function clearFilters() {
     query = '';
     verdict = 'all';
+    spread = 'all';
     topic = 'all';
     hideLow = true;
     page = 1;
@@ -147,33 +175,61 @@
     return ariaSortFor(key, sortKey, sortDir);
   }
 
+  const sortMode = $derived(`${sortKey}:${sortDir}`);
+
   const lowCount = $derived(rows.filter((row) => row.low).length);
   // Only pages whose rows carry an arrival rank get the "Newest" sort.
   const hasArrival = $derived(rows.some((row) => row.added != null));
+  // Only the leaderboard rows carry spread; instructor and program tables do not.
+  const hasSpread = $derived(rows.some((row) => typeof row.spread === 'number'));
 
-  // Topics come from the data, ordered by how many courses each one covers.
-  // Counts are shown because they also say how much of the corpus a filter keeps.
+  const needle = $derived(query.trim().toLowerCase());
+
+  /**
+   * Faceted filtering: each lane leaves its own selection out, so its counts show
+   * the alternatives under the other filters. With ~1,080 rows this is a few cheap
+   * passes, recomputed only when a filter changes.
+   */
+  function matches(row, { ignoreTopic = false, ignoreSpread = false } = {}) {
+    if (showFilters) {
+      if (hideLow && row.low) return false;
+      if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
+      if (!ignoreTopic && topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
+      if (!ignoreSpread && spread !== 'all' && spreadOf(row) !== spread) return false;
+    }
+    if (!needle) return true;
+    return `${row.title ?? ''} ${row.provider ?? ''} ${idOf(row)}`.toLowerCase().includes(needle);
+  }
+
+  const spreadRows = $derived.by(() => rows.filter((row) => matches(row, { ignoreSpread: true })));
+  const topicRows = $derived.by(() => rows.filter((row) => matches(row, { ignoreTopic: true })));
+  const filtered = $derived.by(() => rows.filter((row) => matches(row)));
+
+  const spreadCounts = $derived.by(() => {
+    const counts = {
+      contested: 0,
+      divisive: 0,
+      consensusGood: 0,
+      consensusPoor: 0,
+      tooFew: 0,
+    };
+    for (const row of spreadRows) {
+      const cell = spreadOf(row);
+      if (cell) counts[cell] += 1;
+    }
+    return counts;
+  });
+
+  // Topics come from the data, ordered by coverage. Counts follow the other
+  // filters (including Spread) but ignore the Topic selection itself.
   const topics = $derived.by(() => {
     const counts = new Map();
-    for (const row of rows) {
+    for (const row of topicRows) {
       for (const name of row.categories ?? []) {
         counts.set(name, (counts.get(name) ?? 0) + 1);
       }
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  });
-
-  const filtered = $derived.by(() => {
-    const needle = query.trim().toLowerCase();
-    return rows.filter((row) => {
-      if (showFilters) {
-        if (hideLow && row.low) return false;
-        if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
-        if (topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
-      }
-      if (!needle) return true;
-      return `${row.title ?? ''} ${row.provider ?? ''} ${idOf(row)}`.toLowerCase().includes(needle);
-    });
   });
 
   const ordered = $derived.by(() => [...filtered].sort(compare));
@@ -191,6 +247,9 @@
   <div class="mb-4 flex flex-col gap-3">
     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div class="flex flex-wrap gap-2">
+        <span class="mr-0.5 self-center text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+          Gap
+        </span>
         {#each VERDICTS as option (option.id)}
           <button
             class="btn btn-sm whitespace-nowrap {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
@@ -200,23 +259,6 @@
             {option.label}
           </button>
         {/each}
-        <button
-          class="btn btn-sm whitespace-nowrap {hideLow ? 'btn-neutral' : 'btn-ghost'}"
-          aria-pressed={hideLow}
-          onclick={toggleLow}
-        >
-          Hide small samples{#if lowCount} <span class="opacity-50">{lowCount}</span>{/if}
-        </button>
-        {#if hasArrival}
-          <button
-            class="btn btn-sm whitespace-nowrap {sortKey === 'added' ? 'btn-neutral' : 'btn-ghost'}"
-            aria-pressed={sortKey === 'added'}
-            title="Courses added to the index most recently"
-            onclick={sortNewest}
-          >
-            Newest
-          </button>
-        {/if}
       </div>
 
       <input
@@ -228,6 +270,32 @@
       />
     </div>
 
+    {#if hasSpread}
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="mr-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+          Spread
+        </span>
+        <button
+          class="btn btn-xs whitespace-nowrap {spread === 'all' ? 'btn-neutral' : 'btn-ghost'}"
+          aria-pressed={spread === 'all'}
+          onclick={() => pickSpread('all')}
+        >
+          Any
+        </button>
+        {#each [...CELLS, TOO_FEW] as cell (cell.id)}
+          {#if cell.id !== 'tooFew' || spreadCounts.tooFew > 0}
+            <button
+              class="btn btn-xs whitespace-nowrap {spread === cell.id ? 'btn-neutral' : 'btn-ghost'}"
+              aria-pressed={spread === cell.id}
+              onclick={() => pickSpread(cell.id)}
+            >
+              {cell.label} <span class="opacity-50">{spreadCounts[cell.id]}</span>
+            </button>
+          {/if}
+        {/each}
+      </div>
+    {/if}
+
     <div class="flex flex-wrap items-center gap-1.5">
       <span class="mr-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
         Topic
@@ -237,7 +305,7 @@
         aria-pressed={topic === 'all'}
         onclick={() => pickTopic('all')}
       >
-        All <span class="opacity-50">{rows.length}</span>
+        Any
       </button>
       {#each topics as [name, count] (name)}
         <button
@@ -248,6 +316,42 @@
           {name} <span class="opacity-50">{count}</span>
         </button>
       {/each}
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <div class="flex flex-wrap items-center gap-3">
+        <label class="label cursor-pointer gap-2 p-0 text-xs text-base-content/60">
+          <input
+            type="checkbox"
+            class="toggle toggle-sm"
+            checked={hideLow}
+            onchange={toggleLow}
+          />
+          Hide courses with fewer than 15 reviews
+          <span class="badge badge-ghost badge-sm">{lowCount}</span>
+        </label>
+        <span class="hidden h-4 w-px bg-base-300 sm:inline-block" aria-hidden="true"></span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+            Sort
+          </span>
+          <select
+            class="select select-xs"
+            aria-label="Sort courses"
+            value={sortMode}
+            onchange={pickSort}
+          >
+            {#each SORTS as option (option.value)}
+              {#if option.value !== 'added:desc' || hasArrival}
+                <option value={option.value}>{option.label}</option>
+              {/if}
+            {/each}
+          </select>
+        </div>
+      </div>
+      <p class="text-xs text-base-content/60" aria-live="polite">
+        Showing {ordered.length} of {rows.length} scored courses
+      </p>
     </div>
   </div>
 {/if}
@@ -262,15 +366,15 @@
         {#each COLUMNS as column (column.key)}
           <th
             class="{column.align} {widthOf(column)} {hiddenClass(column)}"
-            aria-sort={ariaSort(column.key)}
+            aria-sort={ariaSort(sortKeyOf(column))}
           >
             <button
               class="inline-flex items-center gap-1 font-semibold hover:underline"
-              onclick={() => sortBy(column.key)}
+              onclick={() => sortBy(sortKeyOf(column))}
             >
               {column.label}
               <span class="text-[0.6rem] text-base-content/50" aria-hidden="true">
-                {sortKey === column.key ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {sortKey === sortKeyOf(column) ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </span>
             </button>
           </th>
@@ -279,7 +383,6 @@
     </thead>
     <tbody>
       {#each visible as row (idOf(row))}
-        {@const inflation = inflationOf(row)}
         {@const style = VERDICT[verdictKey(row)]}
         {@const scored = typeof row.starisk === 'number'}
         {@const logoSrc = logoTile(row.image) ?? '/coursera-logo.png'}
@@ -346,19 +449,7 @@
               <span class="badge badge-ghost badge-sm whitespace-nowrap">No score</span>
             {/if}
           </td>
-          <td class="text-right {compact ? 'hidden sm:table-cell' : ''}">
-            <div class="flex items-center justify-end gap-2">
-              <span class="font-mono text-sm">
-                {inflation == null ? '—' : inflation.toFixed(1)}
-              </span>
-              <span
-                class="hidden h-1.5 rounded-full sm:inline-block {style.bar}"
-                style={`width:${inflation == null ? 0 : Math.min(Math.max(inflation, 0) / 3, 1) * 44}px`}
-                aria-hidden="true"
-              ></span>
-            </div>
-          </td>
-          <td class="hidden sm:table-cell">
+          <td>
             <span class="badge whitespace-nowrap {style.badge}">{style.label}</span>
           </td>
         </tr>
@@ -374,7 +465,7 @@
   {:else if narrowed || pageCount > 1}
     <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
       <p class="text-xs text-base-content/60" aria-live="polite">
-        Showing {first}–{last} of {ordered.length}{narrowed ? ` (${rows.length} total)` : ''}
+        {first}–{last} of {ordered.length}
       </p>
       {#if pageCount > 1}
         <div class="join">
