@@ -43,8 +43,27 @@
     { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[13%]', hide: true },
     { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[22%] sm:w-[13%]' },
     { key: 'inflation', label: 'Inflation', align: 'text-right', width: 'w-[22%] sm:w-[12%]', compactHide: true },
-    { key: 'verdict', label: 'Gap', align: 'text-left', width: 'w-[12%]', hide: true },
+    { key: 'verdict', label: 'Gap', align: 'text-left', width: 'w-[12%]', hide: true, sortKey: 'inflation' },
   ];
+
+  // Every sort the dropdown offers. Column headers are shortcuts into the same
+  // keys, so the select always shows the current order. "Most rated" uses the
+  // Coursera population, not our ~20-review sample.
+  const SORTS = [
+    { value: 'starisk:desc', label: 'Score: high → low' },
+    { value: 'starisk:asc', label: 'Score: low → high' },
+    { value: 'coursera:desc', label: 'Coursera: high → low' },
+    { value: 'coursera:asc', label: 'Coursera: low → high' },
+    { value: 'inflation:desc', label: 'Gap: biggest first' },
+    { value: 'inflation:asc', label: 'Gap: smallest first' },
+    { value: 'ratings:desc', label: 'Most rated' },
+    { value: 'spread:desc', label: 'Most contested' },
+    { value: 'added:desc', label: 'Newest' },
+    { value: 'title:asc', label: 'Title: A → Z' },
+    { value: 'title:desc', label: 'Title: Z → A' },
+  ];
+
+  const sortKeyOf = (column) => column.sortKey ?? column.key;
 
   // Percentages work on the wide leaderboard, but the detail pages are max-w-3xl:
   // there the numeric columns would be starved and their contents would spill
@@ -111,16 +130,12 @@
     page = 1;
   }
 
-  // Newest first, then back to the page's default on the second click — a button
-  // that could only be pressed is a trap. Sorting by any column header exits.
-  function sortNewest() {
-    if (sortKey === 'added') {
-      sortKey = defaultSortKey;
-      sortDir = defaultSortDir;
-    } else {
-      sortKey = 'added';
-      sortDir = 'desc';
-    }
+  // The sort dropdown and the column headers both write `sortKey`/`sortDir`, so
+  // the select's value is simply the pair.
+  function pickSort(event) {
+    const [key, direction] = event.currentTarget.value.split(':');
+    sortKey = key;
+    sortDir = direction;
     page = 1;
   }
 
@@ -161,6 +176,8 @@
   function ariaSort(key) {
     return ariaSortFor(key, sortKey, sortDir);
   }
+
+  const sortMode = $derived(`${sortKey}:${sortDir}`);
 
   const lowCount = $derived(rows.filter((row) => row.low).length);
   // Only pages whose rows carry an arrival rank get the "Newest" sort.
@@ -315,26 +332,24 @@
           Hide courses with fewer than 15 reviews
           <span class="badge badge-ghost badge-sm">{lowCount}</span>
         </label>
-        {#if hasArrival}
-          <span class="hidden h-4 w-px bg-base-300 sm:inline-block" aria-hidden="true"></span>
-          <div class="flex items-center gap-1.5">
-            <span
-              class="text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40"
-            >
-              Sort
-            </span>
-            <button
-              class="btn btn-xs whitespace-nowrap {sortKey === 'added'
-                ? 'btn-neutral'
-                : 'btn-ghost'}"
-              aria-pressed={sortKey === 'added'}
-              title="Courses added to the index most recently"
-              onclick={sortNewest}
-            >
-              Newest
-            </button>
-          </div>
-        {/if}
+        <span class="hidden h-4 w-px bg-base-300 sm:inline-block" aria-hidden="true"></span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+            Sort
+          </span>
+          <select
+            class="select select-xs"
+            aria-label="Sort courses"
+            value={sortMode}
+            onchange={pickSort}
+          >
+            {#each SORTS as option (option.value)}
+              {#if option.value !== 'added:desc' || hasArrival}
+                <option value={option.value}>{option.label}</option>
+              {/if}
+            {/each}
+          </select>
+        </div>
       </div>
       <p class="text-xs text-base-content/60" aria-live="polite">
         Showing {ordered.length} of {rows.length} scored courses
@@ -353,15 +368,15 @@
         {#each COLUMNS as column (column.key)}
           <th
             class="{column.align} {widthOf(column)} {hiddenClass(column)}"
-            aria-sort={ariaSort(column.key)}
+            aria-sort={ariaSort(sortKeyOf(column))}
           >
             <button
               class="inline-flex items-center gap-1 font-semibold hover:underline"
-              onclick={() => sortBy(column.key)}
+              onclick={() => sortBy(sortKeyOf(column))}
             >
               {column.label}
               <span class="text-[0.6rem] text-base-content/50" aria-hidden="true">
-                {sortKey === column.key ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {sortKey === sortKeyOf(column) ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </span>
             </button>
           </th>
