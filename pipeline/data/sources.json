@@ -1543,5 +1543,13 @@
   "learn/dental-assisting-essentials",
   "learn/explore-healthcare-systems-delivery-administration",
   "learn/infection-control-in-dental-settings",
-  "learn/radiation-health-and-safety-in-dental-settings"
+  "learn/radiation-health-and-safety-in-dental-settings",
+  "learn/cobol-programming-vscode",
+  "learn/introduction-enterprise-computing",
+  "learn/system-programming",
+  "learn/z-commands-and-panels",
+  "learn/zarchitecture-assembler-language-part-1-the-basics",
+  "learn/zarchitecture-assembler-language-pt-2-machine-instructions",
+  "learn/zarchitecture-assembler-language-pt3-working-programs",
+  "learn/zos-system-services-structure"
 ]
