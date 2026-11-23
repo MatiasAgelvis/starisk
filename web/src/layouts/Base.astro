@@ -38,9 +38,8 @@ const isCourses = path === '/' || /^\/(learn|specializations|professional-certif
 const isPrograms = path.startsWith('/programs');
 const isTeachers = path.startsWith('/instructors');
 const isFindings = path.startsWith('/findings');
-const isContested = path.startsWith('/contested');
 const isMethod = path.startsWith('/method');
-const isEvidence = isFindings || isContested || isMethod;
+const isEvidence = isFindings || isMethod;
 
 // The footer's freshness line comes from the data itself: the newest
 // `scrapedAt` in the corpus. A build with stale data should say so rather than
@@ -187,18 +186,6 @@ const lastCrawlDate = lastCrawl
             </li>
             <li>
               <a
-                href="/contested"
-                class={`gap-2 py-2 pr-3${isContested ? ' font-medium' : ''}`}
-                aria-current={isContested ? 'page' : undefined}
-              >
-                <span class="flex flex-col gap-0.5">
-                  <span>Contested</span>
-                  <span class="text-xs font-normal opacity-60">Where reviewers disagree</span>
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
                 href="/method"
                 class={`gap-2 py-2 pr-3${isMethod ? ' font-medium' : ''}`}
                 aria-current={isMethod ? 'page' : undefined}
@@ -281,7 +268,6 @@ const lastCrawlDate = lastCrawl
             </p>
             <ul class="space-y-1">
               <li><a class="link link-hover" href="/findings">Findings</a></li>
-              <li><a class="link link-hover" href="/contested">Contested</a></li>
               <li><a class="link link-hover" href="/method">Method</a></li>
               <li><a class="link link-hover" href="/background">Background</a></li>
               <li><a class="link link-hover" href="/about">About</a></li>
