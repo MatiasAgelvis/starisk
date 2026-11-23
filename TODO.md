@@ -27,9 +27,12 @@ programs, 354 instructors, 12 requests.**
 - **Search** is the newest surface and the least settled: partial matching shows top
   results as you type, but the ranking is plain substring plus sort order. Worth a
   pass once there's evidence people use it.
-- **Programs page needs another pass.** The list and the program pages are the
-  least settled surfaces. Decide what the aggregate should say beyond the course
-  average, and which parts belong on the list versus the detail page.
+- **Programs page needs another pass.** The index is seed-driven, not derived from
+  the course corpus: 15 programs are committed, a cache-only rebuild produces 29,
+  and the sitemap holds 3,399 specialization slugs. A program only appears if its
+  page was cached, so the directory depends on which machine built it. Add a
+  committed seed/discovery strategy (batched sitemap, demand, or a reliable
+  course→program hook) before judging the page.
 - **The wanted page looks dead when there are no asks.** Add a “Recently added”
   section with the last 10 courses appended to `scores.json` — the file is
   append-only, so the end is the newest — so the page shows movement even when the
