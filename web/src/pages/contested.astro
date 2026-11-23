@@ -1,0 +1,291 @@
+---
+import Base from '../layouts/Base.astro';
+import BackLink from '../components/BackLink.astro';
+import {
+  CELLS,
+  SCORE_SPLIT,
+  SPREAD_MAX,
+  SPREAD_SPLIT,
+  buildContested,
+} from '../lib/contested.js';
+
+const { rows, counts, contested, total } = buildContested();
+
+const pct = (count: number) => Math.round((count / Math.max(1, total)) * 100);
+const round = (value: number) => Math.round(value * 10) / 10;
+
+// --- plot ------------------------------------------------------------------
+// x is the score (1–5); y is the unweighted spread, fixed to 0–2.2 so a rebuild
+// does not rescale the axes when one outlier appears.
+const W = 620;
+const PAD = { left: 46, right: 18, top: 22, bottom: 44 };
+const H = 420;
+const plotW = W - PAD.left - PAD.right;
+const plotH = H - PAD.top - PAD.bottom;
+
+const px = (score: number) => PAD.left + ((score - 1) / 4) * plotW;
+const py = (spread: number) => PAD.top + ((SPREAD_MAX - spread) / SPREAD_MAX) * plotH;
+
+// Same deterministic jitter as /findings: equal pairs should not stack into one
+// dot, and a rebuild must draw the same picture.
+const JITTER = 0.07;
+const nudge = (value: number, seed: number, lo: number, hi: number) =>
+  Math.min(hi, Math.max(lo, value + (seed - 0.5) * JITTER));
+
+const points = rows.map((row) => ({
+  key: row.key,
+  cx: round(px(nudge(row.score, row.jx, 1, 5))),
+  cy: round(py(nudge(row.spread, row.jy, 0, SPREAD_MAX))),
+  contested: row.cell === 'contested',
+}));
+
+const xTicks = [1, 2, 3, 4, 5];
+const yTicks = [0, 0.5, 1, 1.5, 2];
+const top = contested.slice(0, 8);
+
+const description = `${total} course scores plotted against the spread of their sampled reviews. ${counts.contested} are contested: a poor score the reviews do not agree on.`;
+---
+
+<Base title="Contested — Starisk" description={description}>
+  <article class="mx-auto max-w-4xl">
+    <BackLink fallback="/" />
+
+    <header class="mt-4">
+      <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+        Where the reviews disagree
+      </h1>
+      <p class="mt-3 max-w-2xl text-base-content/75">
+        The score says how a course reads on average; the spread says whether the reviews agree.
+        This is Starisk's own measure — no Coursera comparison — plotted for {total} courses.
+      </p>
+    </header>
+
+    <div class="stats stats-vertical mt-6 w-full shadow sm:stats-horizontal">
+      <div class="stat">
+        <div class="stat-title">Courses plotted</div>
+        <div class="stat-value text-2xl">{total}</div>
+        <div class="stat-desc">scored, with a readable spread</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Contested</div>
+        <div class="stat-value text-2xl">{counts.contested}</div>
+        <div class="stat-desc">{pct(counts.contested)}% — poor score, reviews scatter</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Divisive</div>
+        <div class="stat-value text-2xl">{counts.divisive}</div>
+        <div class="stat-desc">{pct(counts.divisive)}% — good score, reviews scatter</div>
+      </div>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">Score against disagreement</h2>
+      <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+        One dot per course. The vertical line is a {SCORE_SPLIT.toFixed(1)} score; the horizontal one
+        is a {SPREAD_SPLIT.toFixed(1)} spread. The top-left cell is the one this page is named for.
+      </p>
+
+      <figure class="mt-4">
+        <p class="mb-2 flex flex-wrap items-center gap-4 text-[11px] text-base-content/60">
+          <span class="inline-flex items-center gap-1.5">
+            <span class="inline-block h-2.5 w-2.5 rounded-full bg-[var(--chart-ours)]"></span> Contested
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="inline-block h-2.5 w-2.5 rounded-full bg-base-content/25"></span> Everything else
+          </span>
+        </p>
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          class="mx-auto h-auto w-full max-w-[620px]"
+          role="img"
+          aria-label={`Scatter of ${total} courses: Starisk score against the spread of their sampled reviews. ${counts.contested} are contested and ${counts.divisive} divisive.`}
+        >
+          <!-- The contested cell gets a tint; the rest of the plot stays quiet. -->
+          <rect
+            x={PAD.left}
+            y={PAD.top}
+            width={px(SCORE_SPLIT) - PAD.left}
+            height={py(SPREAD_SPLIT) - PAD.top}
+            class="fill-[var(--chart-ours)] opacity-[0.05]"
+          />
+
+          {
+            xTicks.map((tick) => (
+              <g>
+                <line
+                  x1={px(tick)}
+                  x2={px(tick)}
+                  y1={PAD.top}
+                  y2={PAD.top + plotH}
+                  class="stroke-base-content/10"
+                />
+                <text
+                  x={px(tick)}
+                  y={PAD.top + plotH + 16}
+                  text-anchor="middle"
+                  class="fill-base-content/40 text-[10px]"
+                >
+                  {tick}
+                </text>
+              </g>
+            ))
+          }
+
+          {
+            yTicks.map((tick) => (
+              <g>
+                <line
+                  x1={PAD.left}
+                  x2={PAD.left + plotW}
+                  y1={py(tick)}
+                  y2={py(tick)}
+                  class="stroke-base-content/10"
+                />
+                <text
+                  x={PAD.left - 8}
+                  y={py(tick) + 3}
+                  text-anchor="end"
+                  class="fill-base-content/40 text-[10px]"
+                >
+                  {tick.toFixed(1)}
+                </text>
+              </g>
+            ))
+          }
+
+          <!-- Fixed splits, not medians: the score axis is skewed high. -->
+          <line
+            x1={px(SCORE_SPLIT)}
+            x2={px(SCORE_SPLIT)}
+            y1={PAD.top}
+            y2={PAD.top + plotH}
+            class="stroke-base-content/30"
+            stroke-dasharray="4 4"
+          />
+          <line
+            x1={PAD.left}
+            x2={PAD.left + plotW}
+            y1={py(SPREAD_SPLIT)}
+            y2={py(SPREAD_SPLIT)}
+            class="stroke-base-content/30"
+            stroke-dasharray="4 4"
+          />
+
+          {
+            CELLS.map((cell) => {
+              const left = cell.id === 'divisive' || cell.id === 'consensusGood';
+              const bottom = cell.id === 'consensusGood' || cell.id === 'consensusPoor';
+              const tx = left ? px(SCORE_SPLIT) + 8 : PAD.left + 8;
+              const ty = bottom ? PAD.top + plotH - 26 : PAD.top + 16;
+              return (
+                <g>
+                  <text
+                    x={tx}
+                    y={ty}
+                    class={
+                      cell.id === 'contested'
+                        ? 'fill-[var(--chart-ours)] text-[11px] font-bold'
+                        : 'fill-base-content/55 text-[11px] font-semibold'
+                    }
+                  >
+                    {cell.label}
+                  </text>
+                  <text x={tx} y={ty + 14} class="fill-base-content/35 text-[10px]">
+                    {counts[cell.id as keyof typeof counts]} courses
+                  </text>
+                </g>
+              );
+            })
+          }
+
+          {
+            points.map((point) => (
+              <circle
+                cx={point.cx}
+                cy={point.cy}
+                r="3"
+                class={
+                  point.contested
+                    ? 'chart-dot fill-[var(--chart-ours)]'
+                    : 'chart-dot fill-base-content/25'
+                }
+              />
+            ))
+          }
+
+          <text
+            x={PAD.left + plotW}
+            y={H - 6}
+            text-anchor="end"
+            class="fill-base-content/50 text-[10px]"
+          >
+            Starisk score →
+          </text>
+          <text x={10} y={PAD.top - 6} class="fill-base-content/50 text-[10px]">
+            ↑ spread (disagreement)
+          </text>
+        </svg>
+        <figcaption class="mt-2 text-sm text-base-content/60">
+          {counts.contested} of {total} courses are contested — a poor score the reviews do not
+          agree on. {counts.divisive} are divisive: a good score that still splits the room.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="font-display text-xl font-bold">The four cells</h2>
+      <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+        Fixed splits at a {SCORE_SPLIT.toFixed(1)} score and a {SPREAD_SPLIT.toFixed(1)} spread.
+      </p>
+      <dl class="mt-4 grid gap-3 sm:grid-cols-2">
+        {
+          CELLS.map((cell) => (
+            <div class="rounded-box border border-base-300/70 p-4">
+              <dt class="font-display font-semibold">
+                {cell.label}
+                <span class="ml-2 font-mono text-xs font-normal text-base-content/40">
+                  {counts[cell.id as keyof typeof counts]}
+                </span>
+              </dt>
+              <dd class="mt-1 text-sm text-base-content/60">{cell.note}.</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="font-display text-xl font-bold">Most contested</h2>
+      <p class="mt-2 text-sm text-base-content/60">
+        The eight widest spreads among courses that score below {SCORE_SPLIT.toFixed(1)}.
+      </p>
+      <ol class="mt-4 divide-y divide-base-300/60">
+        {
+          top.map((course) => (
+            <li class="flex items-baseline justify-between gap-4 py-3">
+              <a class="link link-hover min-w-0 font-medium" href={`/${course.key}`}>
+                {course.title}
+              </a>
+              <span class="shrink-0 whitespace-nowrap font-mono text-sm text-base-content/60">
+                {course.score.toFixed(1)}
+                <span class="ml-2 text-base-content/40">spread {course.spread.toFixed(2)}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="mt-10 space-y-3 text-sm text-base-content/60">
+      <p>
+        Spread is the unweighted standard deviation of the stars we read — about twenty reviews per
+        course. It is a vibe, not a statistic; treat the cells as labels, not verdicts.
+      </p>
+      <p>
+        The weighted spread is deliberately not the axis: likes drag the mean onto the review with
+        the most votes, so a course owned by one review would look unanimous. See
+        <a class="link link-hover" href="/method">the method</a>.
+      </p>
+    </section>
+  </article>
+</Base>
