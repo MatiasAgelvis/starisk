@@ -70,11 +70,9 @@ const topShare = (bins) => `${Math.round(bins[bins.length - 1].share * 100)}%`;
       Opens on Starisk's score, highest first. <strong>Spread</strong> says whether the sampled
       reviews agree — <strong>consensus good</strong> is a high score the reviews back up,{' '}
       <strong>divisive</strong> is one they split on; under 15 readable reviews there is no
-      consensus label. <strong>Inflation</strong> is Coursera's rating
-      minus Starisk's: how far the headline sits above what the most-upvoted reviews say.{' '}
-      <strong>Inflated</strong> ≥ 1.5, <strong>padded</strong> ≥ 0.5, otherwise it{' '}
-      <strong>holds up</strong>. Sort by any column, or use <strong>Newest</strong> to see the last
-      courses added to the index first.
+      consensus label. <strong>Gap</strong> is Coursera's rating minus Starisk's, and the badge
+      marks it <strong>inflated</strong> at ≥ 1.5, <strong>padded</strong> at ≥ 0.5, otherwise{' '}
+      <strong>holds up</strong>. Sort by any column, or use the sort menu for the presets.
     </p>
   </section>
 

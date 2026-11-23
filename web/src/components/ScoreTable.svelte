@@ -39,11 +39,10 @@
   ];
 
   const COLUMNS = [
-    { key: 'title', label: 'Course', align: 'text-left', width: 'w-[56%] sm:w-[50%]' },
-    { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[13%]', hide: true },
-    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[22%] sm:w-[13%]' },
-    { key: 'inflation', label: 'Inflation', align: 'text-right', width: 'w-[22%] sm:w-[12%]', compactHide: true },
-    { key: 'verdict', label: 'Gap', align: 'text-left', width: 'w-[12%]', hide: true, sortKey: 'inflation' },
+    { key: 'title', label: 'Course', align: 'text-left', width: 'w-[56%]' },
+    { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[14%]', hide: true },
+    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[18%] sm:w-[14%]' },
+    { key: 'verdict', label: 'Gap', align: 'text-left', width: 'w-[26%] sm:w-[16%]', sortKey: 'inflation' },
   ];
 
   // Every sort the dropdown offers. Column headers are shortcuts into the same
@@ -75,7 +74,6 @@
     title: 'w-auto',
     coursera: 'w-[6.5rem]',
     starisk: 'w-[6.5rem]',
-    inflation: 'w-[7rem]',
     verdict: 'w-[7rem]',
   };
 
@@ -385,7 +383,6 @@
     </thead>
     <tbody>
       {#each visible as row (idOf(row))}
-        {@const inflation = inflationOf(row)}
         {@const style = VERDICT[verdictKey(row)]}
         {@const scored = typeof row.starisk === 'number'}
         {@const logoSrc = logoTile(row.image) ?? '/coursera-logo.png'}
@@ -452,19 +449,7 @@
               <span class="badge badge-ghost badge-sm whitespace-nowrap">No score</span>
             {/if}
           </td>
-          <td class="text-right {compact ? 'hidden sm:table-cell' : ''}">
-            <div class="flex items-center justify-end gap-2">
-              <span class="font-mono text-sm">
-                {inflation == null ? '—' : inflation.toFixed(1)}
-              </span>
-              <span
-                class="hidden h-1.5 rounded-full sm:inline-block {style.bar}"
-                style={`width:${inflation == null ? 0 : Math.min(Math.max(inflation, 0) / 3, 1) * 44}px`}
-                aria-hidden="true"
-              ></span>
-            </div>
-          </td>
-          <td class="hidden sm:table-cell">
+          <td>
             <span class="badge whitespace-nowrap {style.badge}">{style.label}</span>
           </td>
         </tr>
