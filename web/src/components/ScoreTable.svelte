@@ -168,20 +168,27 @@
   // Only the leaderboard rows carry spread; instructor and program tables do not.
   const hasSpread = $derived(rows.some((row) => typeof row.spread === 'number'));
 
-  // The catalogue is everything the global filters (small samples, verdict,
-  // search) allow. Both chip rows count from here, so their numbers describe the
-  // same population and neither lane changes the other's counts.
-  const catalogue = $derived.by(() => {
-    const needle = query.trim().toLowerCase();
-    return rows.filter((row) => {
-      if (showFilters) {
-        if (hideLow && row.low) return false;
-        if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
-      }
-      if (!needle) return true;
-      return `${row.title ?? ''} ${row.provider ?? ''} ${idOf(row)}`.toLowerCase().includes(needle);
-    });
-  });
+  const needle = $derived(query.trim().toLowerCase());
+
+  /**
+   * Faceted filtering: each lane leaves its own selection out, so its counts show
+   * the alternatives under the other filters. With ~1,080 rows this is a few cheap
+   * passes, recomputed only when a filter changes.
+   */
+  function matches(row, { ignoreTopic = false, ignoreSpread = false } = {}) {
+    if (showFilters) {
+      if (hideLow && row.low) return false;
+      if (verdict !== 'all' && verdictKey(row) !== verdict) return false;
+      if (!ignoreTopic && topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
+      if (!ignoreSpread && spread !== 'all' && spreadOf(row) !== spread) return false;
+    }
+    if (!needle) return true;
+    return `${row.title ?? ''} ${row.provider ?? ''} ${idOf(row)}`.toLowerCase().includes(needle);
+  }
+
+  const spreadRows = $derived.by(() => rows.filter((row) => matches(row, { ignoreSpread: true })));
+  const topicRows = $derived.by(() => rows.filter((row) => matches(row, { ignoreTopic: true })));
+  const filtered = $derived.by(() => rows.filter((row) => matches(row)));
 
   const spreadCounts = $derived.by(() => {
     const counts = {
@@ -191,32 +198,24 @@
       consensusPoor: 0,
       tooFew: 0,
     };
-    for (const row of catalogue) {
+    for (const row of spreadRows) {
       const cell = spreadOf(row);
       if (cell) counts[cell] += 1;
     }
     return counts;
   });
 
-  // Topics come from the data, ordered by coverage. Counts are over the same
-  // catalogue as the Spread row, so the two lanes agree on how many are in view.
+  // Topics come from the data, ordered by coverage. Counts follow the other
+  // filters (including Spread) but ignore the Topic selection itself.
   const topics = $derived.by(() => {
     const counts = new Map();
-    for (const row of catalogue) {
+    for (const row of topicRows) {
       for (const name of row.categories ?? []) {
         counts.set(name, (counts.get(name) ?? 0) + 1);
       }
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   });
-
-  const filtered = $derived.by(() =>
-    catalogue.filter((row) => {
-      if (topic !== 'all' && !(row.categories ?? []).includes(topic)) return false;
-      if (spread !== 'all' && spreadOf(row) !== spread) return false;
-      return true;
-    }),
-  );
 
   const ordered = $derived.by(() => [...filtered].sort(compare));
   const paging = $derived(paginate(ordered, page, pageSize));
