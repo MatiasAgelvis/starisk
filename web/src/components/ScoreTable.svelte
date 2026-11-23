@@ -232,6 +232,9 @@
   <div class="mb-4 flex flex-col gap-3">
     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div class="flex flex-wrap gap-2">
+        <span class="mr-0.5 self-center text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+          Gap
+        </span>
         {#each VERDICTS as option (option.id)}
           <button
             class="btn btn-sm whitespace-nowrap {verdict === option.id ? 'btn-neutral' : 'btn-ghost'}"
@@ -241,16 +244,6 @@
             {option.label}
           </button>
         {/each}
-        {#if hasArrival}
-          <button
-            class="btn btn-sm whitespace-nowrap {sortKey === 'added' ? 'btn-neutral' : 'btn-ghost'}"
-            aria-pressed={sortKey === 'added'}
-            title="Courses added to the index most recently"
-            onclick={sortNewest}
-          >
-            Newest
-          </button>
-        {/if}
       </div>
 
       <input
@@ -311,16 +304,38 @@
     </div>
 
     <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-      <label class="label cursor-pointer gap-2 p-0 text-xs text-base-content/60">
-        <input
-          type="checkbox"
-          class="checkbox checkbox-sm"
-          checked={hideLow}
-          onchange={toggleLow}
-        />
-        Hide courses with fewer than 15 reviews
-        <span class="text-base-content/40">{lowCount}</span>
-      </label>
+      <div class="flex flex-wrap items-center gap-3">
+        <label class="label cursor-pointer gap-2 p-0 text-xs text-base-content/60">
+          <input
+            type="checkbox"
+            class="toggle toggle-sm"
+            checked={hideLow}
+            onchange={toggleLow}
+          />
+          Hide courses with fewer than 15 reviews
+          <span class="badge badge-ghost badge-sm">{lowCount}</span>
+        </label>
+        {#if hasArrival}
+          <span class="hidden h-4 w-px bg-base-300 sm:inline-block" aria-hidden="true"></span>
+          <div class="flex items-center gap-1.5">
+            <span
+              class="text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40"
+            >
+              Sort
+            </span>
+            <button
+              class="btn btn-xs whitespace-nowrap {sortKey === 'added'
+                ? 'btn-neutral'
+                : 'btn-ghost'}"
+              aria-pressed={sortKey === 'added'}
+              title="Courses added to the index most recently"
+              onclick={sortNewest}
+            >
+              Newest
+            </button>
+          </div>
+        {/if}
+      </div>
       <p class="text-xs text-base-content/60" aria-live="polite">
         Showing {ordered.length} of {rows.length} scored courses
       </p>
