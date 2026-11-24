@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import BackLink from '../../components/BackLink.astro';
 import Stars from '../../components/Stars.astro';
 import ScoreGap from '../../components/ScoreGap.astro';
+import RatingBar from '../../components/RatingBar.astro';
 import Logo from '../../components/Logo.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import { buildMemberships } from '../../lib/groupings.js';
@@ -71,10 +72,6 @@ const sampleCritical = Object.entries(sampleCounts)
 const counts = record.rating_counts ?? null;
 const ratingsTotal =
   record.ratings_total ?? (counts ? Object.values(counts).reduce((a, b) => a + b, 0) : null);
-const lowShare =
-  counts && ratingsTotal
-    ? (((counts['1'] ?? 0) + (counts['2'] ?? 0)) / ratingsTotal) * 100
-    : null;
 
 function verdictText() {
   if (inflation == null) return 'No headline rating to compare';
@@ -176,6 +173,8 @@ const about = splitDescription(aboutText);
       />
     </div>
 
+    {counts != null && <RatingBar counts={counts} ratings={ratingsTotal} class="mt-3" />}
+
     {
       spread != null && spreadLabel && (
         <p class="mt-3 flex flex-wrap items-center gap-2 text-sm text-base-content/60">
@@ -254,16 +253,6 @@ const about = splitDescription(aboutText);
             >
           </p>
         </section>
-      )
-    }
-
-    {
-      lowShare != null && ratingsTotal != null && record.coursera != null && (
-        <p class="mt-4 text-sm text-base-content/70">
-          Coursera's {record.coursera.toFixed(1)} comes from{' '}
-          <strong>{ratingsTotal.toLocaleString('en-GB')} ratings</strong>. Of those,{' '}
-          <strong>{lowShare.toFixed(1)}%</strong> are 1–2★.
-        </p>
       )
     }
 
