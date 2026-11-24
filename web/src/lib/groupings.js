@@ -20,6 +20,11 @@ export function typeLabel(type) {
  * The average weights each course by the reviews we actually read, matching the
  * teacher directory. Courses with no written reviews stay in the list but do not
  * pull on the average.
+ *
+ * The program's own number is Coursera's pooled rating for the bundle, which the
+ * pipeline stores on the grouping entry. It is deliberately not a score: a
+ * program page has no written reviews of its own — its review widget belongs to
+ * whichever course is selected — so nothing here may come from `scores[key]`.
  */
 export function buildGroupings(groupings, scores) {
   const programs = [];
@@ -49,6 +54,10 @@ export function buildGroupings(groupings, scores) {
       type: group.type ?? 'specialization',
       provider: group.provider ?? null,
       url: group.url ?? `https://www.coursera.org/${key}`,
+      // The program page's own mark when there is a record; otherwise any member
+      // course's, which is the same provider's logo. Programs have no image of
+      // their own, so this is what a directory row can draw.
+      image: scores[key]?.image ?? members.find((course) => course.image)?.image ?? null,
       courses: members.sort(
         (a, b) =>
           (b.starisk ?? -1) - (a.starisk ?? -1) ||
@@ -61,8 +70,8 @@ export function buildGroupings(groupings, scores) {
       average,
       low: scored.length ? Math.min(...scored.map((course) => course.starisk)) : null,
       high: scored.length ? Math.max(...scored.map((course) => course.starisk)) : null,
-      programRating: typeof scores[key]?.starisk === 'number' ? scores[key].starisk : null,
-      programCoursera: typeof scores[key]?.coursera === 'number' ? scores[key].coursera : null,
+      coursera: typeof group.coursera === 'number' ? group.coursera : null,
+      ratings: typeof group.ratings_total === 'number' ? group.ratings_total : null,
     });
   }
 
@@ -72,6 +81,27 @@ export function buildGroupings(groupings, scores) {
       b.scored - a.scored ||
       a.title.localeCompare(b.title),
   );
+}
+
+/**
+ * The other direction: which programs contain each course.
+ *
+ * Built once at build time and passed to the course page, so the relationship is
+ * navigable both ways without shipping `groupings.json` to the browser. The
+ * hash links back into the directory's drawer (`/programs#<program key>`).
+ */
+export function buildMemberships(groupings, scores) {
+  const byCourse = new Map();
+
+  for (const program of buildGroupings(groupings, scores)) {
+    for (const course of program.courses) {
+      const memberships = byCourse.get(course.key) ?? [];
+      memberships.push({ key: program.key, title: program.title, type: program.type });
+      byCourse.set(course.key, memberships);
+    }
+  }
+
+  return byCourse;
 }
 
 /**
