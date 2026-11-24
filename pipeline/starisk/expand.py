@@ -15,6 +15,10 @@ publish, not everything a publisher ever taught.
 Neither lever is "crawl Coursera": the sitemap has ~23k courses and this stays
 explicit and small.
 
+The nightly runs **specializations** and **programs** only. Instructor profiles are
+a catalogue rather than a curriculum — one scored course hands over everything the
+person teaches — so that lever stays manual (`--instructors`).
+
     cd pipeline
     python3 -m starisk.expand                 # report every lever, write nothing
     python3 -m starisk.expand --write         # extend data/sources.json
@@ -38,12 +42,11 @@ from .fetch import fetch_page
 from .groupings import read_index
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
 from .paths import CACHE_DIR as STATE_CACHE
-from .sitemap import load_slugs as load_cached_slugs
+from .sitemap import PROGRAM_SITEMAP_CACHE, program_slugs
 
-SITEMAP_URL = "https://www.coursera.org/sitemap~www~specializations.xml"
 SPECIALIZATION_URL = "https://www.coursera.org/specializations/{slug}"
 INSTRUCTOR_URL = "https://www.coursera.org/instructor/{slug}"
-SITEMAP_CACHE = STATE_CACHE / "coursera-specializations.txt"
+SITEMAP_CACHE = PROGRAM_SITEMAP_CACHE
 
 DELAY = 1.5
 
@@ -61,13 +64,7 @@ def load_slugs(
     cache_path: Path = SITEMAP_CACHE,
 ) -> list[str]:
     """Specialization slugs from Coursera's sitemap, cached to disk."""
-    return load_cached_slugs(
-        SITEMAP_URL,
-        "/specializations/",
-        cache_path,
-        fetch=fetch,
-        refresh=refresh,
-    )
+    return program_slugs(fetch=fetch, refresh=refresh, cache_path=cache_path)
 
 
 def _page(key: str, url: str, fetch, delay, sleep, cache_dir) -> str | None:
