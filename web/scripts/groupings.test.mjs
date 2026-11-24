@@ -56,6 +56,46 @@ test('maps each course to the programs that contain it', () => {
   assert.equal(memberships.has('learn/nope'), false);
 });
 
+test('inherits the teaching team from its courses, deduped', () => {
+  const [program] = buildGroupings(
+    { 'specializations/a': { title: 'A', courses: ['learn/one', 'learn/two'] } },
+    {
+      'learn/one': { starisk: 4, instructors: [{ name: 'Ada', page: 'ada' }] },
+      'learn/two': {
+        starisk: 3,
+        instructors: [
+          { name: 'Ada', page: 'ada' },
+          { name: 'Alan', page: 'alan' },
+        ],
+      },
+    },
+  );
+
+  assert.deepEqual(program.instructors, [
+    { name: 'Ada', page: 'ada' },
+    { name: 'Alan', page: 'alan' },
+  ]);
+});
+
+test('separates never-read courses from ones with no written reviews', () => {
+  const [program] = buildGroupings(
+    {
+      'specializations/a': {
+        title: 'A',
+        courses: ['learn/one', 'learn/empty', 'learn/missing'],
+      },
+    },
+    {
+      'learn/one': { starisk: 4, reviews: 10 },
+      'learn/empty': { no_reviews: true, reviews: 0 },
+    },
+  );
+
+  assert.equal(program.scored, 1);
+  assert.equal(program.noReviews, 1);
+  assert.equal(program.unread, 1);
+});
+
 test('a course can belong to more than one program', () => {
   const memberships = buildMemberships(
     {
