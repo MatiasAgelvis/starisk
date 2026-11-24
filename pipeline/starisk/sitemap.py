@@ -12,6 +12,10 @@ import re
 from pathlib import Path
 
 from .fetch import fetch_page
+from .paths import CACHE_DIR
+
+PROGRAM_SITEMAP_URL = "https://www.coursera.org/sitemap~www~specializations.xml"
+PROGRAM_SITEMAP_CACHE = CACHE_DIR / "coursera-specializations.txt"
 
 _LOC = re.compile(r"<loc>([^<]+)</loc>")
 
@@ -47,3 +51,22 @@ def load_slugs(
         for line in cache_path.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
+
+
+def program_slugs(
+    fetch=fetch_page,
+    refresh: bool = False,
+    cache_path: Path = PROGRAM_SITEMAP_CACHE,
+) -> list[str]:
+    """Specialization slugs: the list programs are discovered from.
+
+    Expansion resolves certificates against it; discovery walks it in order to
+    find bundles nobody has fetched yet. One cache file, one download.
+    """
+    return load_slugs(
+        PROGRAM_SITEMAP_URL,
+        "/specializations/",
+        cache_path,
+        fetch=fetch,
+        refresh=refresh,
+    )

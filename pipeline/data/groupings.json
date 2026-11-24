@@ -54,6 +54,472 @@
       "5": 8
     }
   },
+  "specializations/-finance": {
+    "key": "specializations/-finance",
+    "type": "specialization",
+    "title": "Finance",
+    "url": "https://www.coursera.org/specializations/-finance",
+    "courses": [
+      "learn/market-microstructure",
+      "learn/asset-pricing-fundamentals",
+      "learn/asset-pricing-models"
+    ],
+    "provider": "Università di Napoli Federico II",
+    "coursera": 4.4,
+    "ratings_total": 15,
+    "rating_counts": {
+      "1": 0,
+      "2": 2,
+      "3": 1,
+      "4": 0,
+      "5": 12
+    }
+  },
+  "specializations/3d-printing-additive-manufacturing": {
+    "key": "specializations/3d-printing-additive-manufacturing",
+    "type": "specialization",
+    "title": "3D Printing and Additive Manufacturing",
+    "url": "https://www.coursera.org/specializations/3d-printing-additive-manufacturing",
+    "courses": [
+      "learn/3d-printing-revolution",
+      "learn/3d-printing-applications",
+      "learn/3d-printing-software",
+      "learn/3d-print-hardware"
+    ],
+    "provider": "University of Illinois Urbana-Champaign",
+    "coursera": 4.6,
+    "ratings_total": 3083,
+    "rating_counts": {
+      "1": 57,
+      "2": 46,
+      "3": 116,
+      "4": 571,
+      "5": 2293
+    }
+  },
+  "specializations/3ds-max-architectural-rendering-masterclass": {
+    "key": "specializations/3ds-max-architectural-rendering-masterclass",
+    "type": "specialization",
+    "title": "3ds Max Architectural Rendering Masterclass",
+    "url": "https://www.coursera.org/specializations/3ds-max-architectural-rendering-masterclass",
+    "courses": [
+      "learn/3ds-max-architecture-model-refine-create",
+      "learn/3ds-max-interior-design-model-create-spaces",
+      "learn/3ds-max-interior-design-model-arrange-refine",
+      "learn/3ds-max-architecture-model-texture-light"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 73,
+    "rating_counts": {
+      "1": 3,
+      "2": 0,
+      "3": 0,
+      "4": 3,
+      "5": 67
+    }
+  },
+  "specializations/3ds-max-mastery-character-modeling-animation": {
+    "key": "specializations/3ds-max-mastery-character-modeling-animation",
+    "type": "specialization",
+    "title": "3DS Max Mastery: Character Modeling & Animation",
+    "url": "https://www.coursera.org/specializations/3ds-max-mastery-character-modeling-animation",
+    "courses": [
+      "learn/3ds-max-character-modeling-build-refine",
+      "learn/3ds-max-hand-shoelace-modeling-refine-skills",
+      "learn/3ds-max-character-outfit-design-build-refine-apply",
+      "learn/3ds-max-uv-unwrapping-analyze-create-render",
+      "learn/3ds-max-texturing-apply-create-refine",
+      "learn/v-ray-lighting-rendering-3ds-max"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 5.0,
+    "ratings_total": 28,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 27
+    }
+  },
+  "specializations/4as": {
+    "key": "specializations/4as",
+    "type": "specialization",
+    "title": "The 4 A's of Marketing with Jagdish Sheth",
+    "url": "https://www.coursera.org/specializations/4as",
+    "courses": [
+      "learn/what-are-the-4-as-of-marketing",
+      "learn/social-media--marketing",
+      "learn/emerging-markets",
+      "learn/the-good-bad-and-ugly-of-marketing"
+    ],
+    "provider": "Kennesaw State University",
+    "coursera": 4.7,
+    "ratings_total": 15,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 3,
+      "5": 11
+    }
+  },
+  "specializations/5g-mobile-networks-technology-architecture-and-protocols": {
+    "key": "specializations/5g-mobile-networks-technology-architecture-and-protocols",
+    "type": "specialization",
+    "title": "5G Mobile Networks",
+    "url": "https://www.coursera.org/specializations/5g-mobile-networks-technology-architecture-and-protocols",
+    "courses": [
+      "learn/5g-mobile-networks-technology-architecture-and-protocols-first-course-1",
+      "learn/5g-mobile-networks-course-2",
+      "learn/5g-mobile-networks-course-3"
+    ],
+    "provider": "LearnQuest",
+    "coursera": 4.6,
+    "ratings_total": 86,
+    "rating_counts": {
+      "1": 3,
+      "2": 0,
+      "3": 3,
+      "4": 12,
+      "5": 68
+    }
+  },
+  "specializations/6g-for-a-connected-future": {
+    "key": "specializations/6g-for-a-connected-future",
+    "type": "specialization",
+    "title": "6G for a Connected Future",
+    "url": "https://www.coursera.org/specializations/6g-for-a-connected-future",
+    "courses": [
+      "learn/6g-vision-ml-intelligent-surfaces-and-optical-networks",
+      "learn/6g-evolution-blockchain-semantic-communications-and-radar",
+      "learn/6g-deployment-testbeds-antenna-systems-and-digital-twins"
+    ],
+    "provider": "University of Glasgow",
+    "coursera": 4.6,
+    "ratings_total": 18,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 3,
+      "5": 14
+    }
+  },
+  "specializations/a-clinicians-guide-soft-skills-for-better-patient-outcomes": {
+    "key": "specializations/a-clinicians-guide-soft-skills-for-better-patient-outcomes",
+    "type": "specialization",
+    "title": "A Clinician's Guide: Soft Skills for Better Patient Outcomes",
+    "url": "https://www.coursera.org/specializations/a-clinicians-guide-soft-skills-for-better-patient-outcomes",
+    "courses": [
+      "learn/respectful-communication-improve-patient-outcomes",
+      "learn/patient-communication-and-education",
+      "learn/patient-outcomes-communicate-with-clarity",
+      "learn/telemedicine-evaluate-guide-and-train",
+      "learn/evaluate--document-patient-outcome-improvements",
+      "learn/analyze--create-empathic-patient-outcomes",
+      "learn/evaluate-and-create-your-emotional-toolkit",
+      "learn/compassion-enhance-patient-outcomes",
+      "learn/boost-staff-morale-analyze--create-engagement",
+      "learn/resilience-grow-through-collaboration-and-reflection",
+      "learn/empower-patients-autonomy-through-simulation--role-play"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.5,
+    "ratings_total": 15,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 13
+    }
+  },
+  "specializations/a-masterclass-in-animation": {
+    "key": "specializations/a-masterclass-in-animation",
+    "type": "specialization",
+    "title": "A Masterclass in Animation",
+    "url": "https://www.coursera.org/specializations/a-masterclass-in-animation",
+    "courses": [
+      "learn/complete-beginners-guide-to-blender-3d",
+      "learn/blender-3d-for-beginners-create-a-3d-vaporwave-animation",
+      "learn/introduction-to-3d-with-nomad-sculpt",
+      "learn/3d-character-design-workshop-with-nomad-sculpt",
+      "learn/get-started-with-procreate-dreams-animation-for-everyone",
+      "learn/premium-logo-animation-in-adobe-after-effects-fundamentals",
+      "learn/premium-logo-animation-in-adobe-after-effects-2d-projects",
+      "learn/premium-logo-animation-in-adobe-after-effects-3d--fx",
+      "learn/3d-animation-in-unreal-engine-create-an-original-character",
+      "learn/advanced-3d-animation-in-unreal-engine-character-movement"
+    ],
+    "provider": "Skillshare",
+    "coursera": 4.2,
+    "ratings_total": 66,
+    "rating_counts": {
+      "1": 9,
+      "2": 3,
+      "3": 5,
+      "4": 7,
+      "5": 42
+    }
+  },
+  "specializations/abnormal-psychology": {
+    "key": "specializations/abnormal-psychology",
+    "type": "specialization",
+    "title": "Abnormal Psychology",
+    "url": "https://www.coursera.org/specializations/abnormal-psychology",
+    "courses": [
+      "learn/intro-abnormal-psych",
+      "learn/history-mental-illness",
+      "learn/behavioral-change"
+    ],
+    "provider": "Wesleyan University",
+    "coursera": 4.8,
+    "ratings_total": 881,
+    "rating_counts": {
+      "1": 9,
+      "2": 3,
+      "3": 13,
+      "4": 110,
+      "5": 746
+    }
+  },
+  "specializations/academic-english": {
+    "key": "specializations/academic-english",
+    "type": "specialization",
+    "title": "Academic English: Writing",
+    "url": "https://www.coursera.org/specializations/academic-english",
+    "courses": [
+      "learn/grammar-punctuation",
+      "learn/getting-started-with-essay-writing",
+      "learn/advanced-writing",
+      "learn/introduction-to-research-for-essay-writing",
+      "learn/academic-writing-capstone"
+    ],
+    "provider": "University of California, Irvine",
+    "coursera": 4.7,
+    "ratings_total": 26625,
+    "rating_counts": {
+      "1": 227,
+      "2": 160,
+      "3": 764,
+      "4": 4495,
+      "5": 20979
+    }
+  },
+  "specializations/academic-skills": {
+    "key": "specializations/academic-skills",
+    "type": "specialization",
+    "title": "Academic Skills for University Success",
+    "url": "https://www.coursera.org/specializations/academic-skills",
+    "courses": [
+      "learn/digital-literacy",
+      "learn/problem-solving-skills",
+      "learn/critical-thinking-skills",
+      "learn/communication-skills",
+      "learn/academic-skills-project"
+    ],
+    "provider": "The University of Sydney",
+    "coursera": 4.9,
+    "ratings_total": 10653,
+    "rating_counts": {
+      "1": 141,
+      "2": 28,
+      "3": 109,
+      "4": 606,
+      "5": 9769
+    }
+  },
+  "specializations/academy": {
+    "key": "specializations/academy",
+    "type": "specialization",
+    "title": "Intel® Telco Cloud Academy",
+    "url": "https://www.coursera.org/specializations/academy",
+    "courses": [
+      "learn/intel-telco-cloud-transformation",
+      "learn/intel-telco-cloud-technologies",
+      "learn/intel-network-platform-capabilities-and-best-practices"
+    ],
+    "provider": "Intel",
+    "coursera": 4.8,
+    "ratings_total": 15,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 1,
+      "5": 13
+    }
+  },
+  "specializations/accelerate": {
+    "key": "specializations/accelerate",
+    "type": "specialization",
+    "title": "Accelerate: Professional Development with an Advanced Degree",
+    "url": "https://www.coursera.org/specializations/accelerate",
+    "courses": [
+      "learn/idp",
+      "learn/transferable-skills",
+      "learn/networking-with-accelerate",
+      "learn/communicating-to-diverse-audiences"
+    ],
+    "provider": "University of Minnesota",
+    "coursera": 4.8,
+    "ratings_total": 11,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 3,
+      "5": 7
+    }
+  },
+  "specializations/accounting-and-financial-modelling-bootcamp": {
+    "key": "specializations/accounting-and-financial-modelling-bootcamp",
+    "type": "specialization",
+    "title": "Accounting and Financial Modelling Bootcamp",
+    "url": "https://www.coursera.org/specializations/accounting-and-financial-modelling-bootcamp",
+    "courses": [
+      "learn/foundations-of-financial-statement",
+      "learn/financial-analysis-and-ratio-interpretation",
+      "learn/financial-modeling-fundamentals",
+      "learn/valuation-and-investment-analysis"
+    ],
+    "provider": "STARWEAVER",
+    "coursera": 4.4,
+    "ratings_total": 7,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 1,
+      "5": 5
+    }
+  },
+  "specializations/accounting-data-analytics": {
+    "key": "specializations/accounting-data-analytics",
+    "type": "specialization",
+    "title": "Accounting Data Analytics",
+    "url": "https://www.coursera.org/specializations/accounting-data-analytics",
+    "courses": [
+      "learn/intro-accounting-data-analytics-visual",
+      "learn/accounting-data-analytics-python",
+      "learn/machine-learning-accounting-python"
+    ],
+    "provider": "University of Illinois Urbana-Champaign",
+    "coursera": 4.7,
+    "ratings_total": 627,
+    "rating_counts": {
+      "1": 9,
+      "2": 10,
+      "3": 10,
+      "4": 95,
+      "5": 503
+    }
+  },
+  "specializations/accounting-fundamentals": {
+    "key": "specializations/accounting-fundamentals",
+    "type": "specialization",
+    "title": "Fundamentals of Accounting",
+    "url": "https://www.coursera.org/specializations/accounting-fundamentals",
+    "courses": [
+      "learn/financial-statements",
+      "learn/income-statement",
+      "learn/business-accounting",
+      "learn/business-assessment"
+    ],
+    "provider": "University of Illinois Urbana-Champaign",
+    "coursera": 4.6,
+    "ratings_total": 2516,
+    "rating_counts": {
+      "1": 60,
+      "2": 32,
+      "3": 78,
+      "4": 455,
+      "5": 1891
+    }
+  },
+  "specializations/accounting-operations-automation": {
+    "key": "specializations/accounting-operations-automation",
+    "type": "specialization",
+    "title": "Accounting Operations & Automation",
+    "url": "https://www.coursera.org/specializations/accounting-operations-automation",
+    "courses": [
+      "learn/audit-evidence--document-control",
+      "learn/accounting-spreadsheets-formulas-validation-formatting",
+      "learn/accounting-balance-books--beyond",
+      "learn/accounting-balance-ledgers--adjust-entries",
+      "learn/analyze-and-transform-data-with-spreadsheets",
+      "learn/analyze-financials-balance-budget-and-beyond",
+      "learn/audit--index-records-fast--flawless",
+      "learn/automate-and-resolve-invoicing-disputes-fast",
+      "learn/automate-invoice-data-entry-with-ai",
+      "learn/automate-analyze-and-evaluate-accounting-with-ai",
+      "learn/double-entry-bookkeeping-record--balance",
+      "learn/excel-validate-and-format-data-fast",
+      "learn/forecast-cash-liquidity--deficits",
+      "learn/invoices-tax-data--spreadsheets",
+      "learn/optimize-accounting-streamline-processes-boost-efficiency",
+      "learn/reconcile-accounts--quickbooks-integrity",
+      "learn/sap-post-invoices-track-payments",
+      "learn/transform-raw-data-into-financial-insights",
+      "learn/verify-compliance-improve-accounting-audits"
+    ],
+    "provider": "Coursera",
+    "coursera": 3.8,
+    "ratings_total": 44,
+    "rating_counts": {
+      "1": 8,
+      "2": 4,
+      "3": 1,
+      "4": 5,
+      "5": 26
+    }
+  },
+  "specializations/accounting-software-mastery-modern-businesses": {
+    "key": "specializations/accounting-software-mastery-modern-businesses",
+    "type": "specialization",
+    "title": "Accounting Software Mastery for Modern Businesses",
+    "url": "https://www.coursera.org/specializations/accounting-software-mastery-modern-businesses",
+    "courses": [
+      "learn/master-accounting-analyze-manage-optimize-finances",
+      "learn/master-bean-balance-apply-manage-analyze-accounting",
+      "learn/master-quickbooks-pro-manage-optimize-finances",
+      "learn/master-cloud-accounting-wave-apps-analyze-manage",
+      "learn/master-zoho-books-analyze-manage-automate-accounting"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.5,
+    "ratings_total": 153,
+    "rating_counts": {
+      "1": 14,
+      "2": 1,
+      "3": 1,
+      "4": 10,
+      "5": 127
+    }
+  },
+  "specializations/accounting": {
+    "key": "specializations/accounting",
+    "type": "specialization",
+    "title": "Introduction to Financial Accounting: The Accounting Cycle",
+    "url": "https://www.coursera.org/specializations/accounting",
+    "courses": [
+      "learn/financialaccounting",
+      "learn/recording-business-transactions",
+      "learn/accounting-cycle"
+    ],
+    "provider": "University of California, Irvine",
+    "coursera": 4.7,
+    "ratings_total": 906,
+    "rating_counts": {
+      "1": 5,
+      "2": 10,
+      "3": 32,
+      "4": 131,
+      "5": 728
+    }
+  },
   "specializations/ai-agents-mode-context-protocol": {
     "key": "specializations/ai-agents-mode-context-protocol",
     "type": "specialization",

@@ -4,13 +4,16 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from starisk.cache import load_page, store_page
+from starisk.fetch import Retired
 from starisk.groupings import (
     build_groupings,
+    discover_candidates,
     extract_grouping,
     fetch_missing,
     grouping_key,
     load_seed_keys,
     read_index,
+    read_seeds,
     refuse_reason,
 )
 
@@ -229,7 +232,61 @@ class RefuseReasonTest(unittest.TestCase):
         self.assertIsNone(refuse_reason({}, {"a": {}}, force=True))
 
 
-class ReadIndexTest(unittest.TestCase):
+class DiscoverTest(unittest.TestCase):
+    def test_walks_the_sitemap_and_skips_what_is_known(self):
+        candidates = discover_candidates(
+            {"specializations/known": {}},
+            ["specializations/seeded"],
+            {"specializations/dead": {}},
+            ["known", "seeded", "dead", "fresh-a", "fresh-b"],
+            limit=1,
+        )
+
+        self.assertEqual(candidates, ["specializations/fresh-a"])
+
+    def test_an_exhausted_sitemap_yields_nothing(self):
+        self.assertEqual(
+            discover_candidates({"specializations/done": {}}, [], {}, ["done"], limit=5),
+            [],
+        )
+
+    def test_reads_the_seed_list(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "programs.json"
+            path.write_text('["specializations/a", " ", "professional-certificates/b"]')
+
+            self.assertEqual(
+                read_seeds(path),
+                ["specializations/a", "professional-certificates/b"],
+            )
+
+    def test_a_missing_seed_file_is_empty_not_a_crash(self):
+        self.assertEqual(read_seeds(Path("/nonexistent/programs.json")), [])
+
+
+class FetchMissingTest(unittest.TestCase):
+    def test_a_dead_program_page_is_tombstoned_once(self):
+        calls = []
+        retired = {}
+
+        def fetch(url):
+            calls.append(url)
+            raise Retired(f"HTTP 404 for {url}")
+
+        with TemporaryDirectory() as tmp:
+            fetched = fetch_missing(
+                ["specializations/dead", "specializations/dead"],
+                fetch=fetch,
+                cache_dir=Path(tmp) / "pages",
+                retired=retired,
+            )
+
+        self.assertEqual(fetched, 0)
+        self.assertIn("specializations/dead", retired)
+        self.assertEqual(len(calls), 1)
+
+
+class LoadSlugsTest(unittest.TestCase):
     def test_a_missing_file_is_an_empty_index(self):
         with TemporaryDirectory() as tmp:
             self.assertEqual(read_index(Path(tmp) / "groupings.json"), {})
