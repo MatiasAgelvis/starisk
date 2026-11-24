@@ -3,7 +3,8 @@ import Base from '../layouts/Base.astro';
 import requests from '../data/requests.json';
 import scores from '../data/scores.json';
 import groupings from '../data/groupings.json';
-import { buildWanted } from '../lib/wanted.js';
+import crawl from '../data/stats.json';
+import { buildCrawlStats, buildRecent, buildWanted } from '../lib/wanted.js';
 
 type WantedRow = {
   anchor: string;
@@ -26,6 +27,8 @@ const { waiting, fulfilled } = buildWanted(requests, scores, groupings) as {
   fulfilled: WantedRow[];
 };
 const recent = fulfilled.slice(0, 12);
+const newest = buildRecent(scores, 10);
+const stats = buildCrawlStats(crawl);
 
 const date = (value?: string | null) =>
   value
@@ -50,6 +53,40 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
       <p class="mt-3 max-w-2xl text-base-content/75">
         Courses and programs people asked Starisk to score — and what came of it.
       </p>
+      <div class="stats stats-vertical sm:stats-horizontal mt-6 w-full border border-base-300">
+        <div class="stat">
+          <div class="stat-title">Last crawl</div>
+          <div class="stat-value text-lg">{stats.lastRead ? date(stats.lastRead) : '—'}</div>
+          <div class="stat-desc">
+            {stats.mode === 'offline' ? 'cache re-parse' : 'newest read in the corpus'}
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Added</div>
+          <div class="stat-value text-lg">
+            {stats.added == null ? '—' : stats.added.toLocaleString('en-GB')}
+          </div>
+          <div class="stat-desc">
+            {stats.rescored ? `${stats.rescored.toLocaleString('en-GB')} rescored` : 'nothing rescored'}
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Scored</div>
+          <div class="stat-value text-lg">
+            {stats.scored == null ? '—' : stats.scored.toLocaleString('en-GB')}
+          </div>
+          <div class="stat-desc">
+            {stats.read == null ? 'never crawled' : `of ${stats.read.toLocaleString('en-GB')} read`}
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Still to read</div>
+          <div class="stat-value text-lg">
+            {stats.queued == null ? '—' : stats.queued.toLocaleString('en-GB')}
+          </div>
+          <div class="stat-desc">in the crawl queue</div>
+        </div>
+      </div>
       <p class="mt-2 text-sm text-base-content/60">
         Checked nightly. Requests appear here after the check; there is no ETA. For the courses we
         have already read, <a class="link link-hover" href="/bookmarklet">the score is also on
@@ -57,14 +94,14 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
       </p>
     </header>
 
-    <section class="mt-10">
-      <div class="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 class="font-display text-xl font-bold">Waiting</h2>
-        <p class="text-sm text-base-content/60">{waiting.length} in the crawl list</p>
-      </div>
+    {
+      waiting.length > 0 ? (
+        <section class="mt-10">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 class="font-display text-xl font-bold">Waiting</h2>
+            <p class="text-sm text-base-content/60">{waiting.length} in the crawl list</p>
+          </div>
 
-      {
-        waiting.length > 0 ? (
           <ul class="mt-4 divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
             {waiting.map((row) => (
               <li
@@ -91,14 +128,41 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
               </li>
             ))}
           </ul>
-        ) : (
-          <p class="mt-4 rounded-box border border-base-300 p-4 text-sm text-base-content/60">
-            Nothing waiting. The lookup on the <a class="link link-hover" href="/">home page</a> is
-            the way in.
-          </p>
-        )
-      }
-    </section>
+        </section>
+      ) : (
+        <p class="mt-8 text-sm text-base-content/60">
+          Nothing waiting right now. Paste a Coursera link on the{' '}
+          <a class="link link-hover" href="/">home page</a> to ask for a course — it lands here
+          after the next nightly check.
+        </p>
+      )
+    }
+
+    {
+      newest.length > 0 && (
+        <section class="mt-12">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 class="font-display text-xl font-bold">Recently added</h2>
+            <p class="text-sm text-base-content/60">Newest scores in the corpus</p>
+          </div>
+
+          <ul class="mt-4 divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
+            {newest.map((row) => (
+              <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 p-4">
+                <a class="link link-hover font-medium" href={row.href}>{row.title}</a>
+                {row.provider ? (
+                  <span class="text-sm text-base-content/50">{row.provider}</span>
+                ) : null}
+                <span class="ml-auto flex flex-wrap items-baseline gap-x-3 text-sm text-base-content/60">
+                  <span>{row.summary}</span>
+                  {date(row.scrapedAt) ? <span>{date(row.scrapedAt)}</span> : null}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     {
       recent.length > 0 && (
@@ -142,7 +206,7 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
     {
       requests.generatedAt && (
         <p class="mt-8 text-xs text-base-content/40">
-          Ask list from {date(requests.generatedAt)}.
+          Ask list unchanged since {date(requests.generatedAt)} — checked on every crawl.
         </p>
       )
     }

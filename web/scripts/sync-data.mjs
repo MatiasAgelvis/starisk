@@ -14,6 +14,9 @@ const files = [
   ['../../pipeline/data/scores.json', '../src/data/scores.json'],
   ['../../pipeline/data/groupings.json', '../src/data/groupings.json'],
   ['../../pipeline/data/requests.json', '../src/data/requests.json'],
+  // One small file instead of the crawl list and its tombstones: the crawl writes
+  // what it did, so the site never has to infer it from the corpus.
+  ['../../pipeline/data/stats.json', '../src/data/stats.json'],
 ];
 
 for (const [from, to] of files) {

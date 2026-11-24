@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildWanted, requestAnchor } from '../src/lib/wanted.js';
+import { buildCrawlStats, buildRecent, buildWanted, requestAnchor } from '../src/lib/wanted.js';
 
 const scores = {
   'learn/scored': {
@@ -159,4 +159,55 @@ test('an empty snapshot is an empty page, not a crash', () => {
     waiting: [],
     fulfilled: [],
   });
+});
+
+test('the newest scores come from the tail, newest first', () => {
+  const corpus = {
+    'learn/first': { title: 'First', starisk: 4.0, coursera: 4.5, scrapedAt: '2026-01-01' },
+    'learn/empty': { title: 'Empty', no_reviews: true },
+    'learn/last': { title: 'Last', starisk: 3.0, coursera: 3.4, scrapedAt: '2026-02-01' },
+  };
+
+  const recent = buildRecent(corpus, 2);
+
+  assert.deepEqual(
+    recent.map((entry) => entry.title),
+    ['Last', 'First'],
+  );
+  assert.equal(recent[0].href, '/learn/last');
+  assert.equal(recent[0].summary, 'Coursera 3.4 → Starisk 3.0');
+  assert.equal(recent[0].scrapedAt, '2026-02-01');
+});
+
+test('a missing Coursera number does not break the line', () => {
+  const [entry] = buildRecent({ 'learn/solo': { title: 'Solo', starisk: 2.5 } });
+
+  assert.equal(entry.summary, 'Starisk 2.5');
+});
+
+test('reads the crawl dashboard from the stats file', () => {
+  const stats = buildCrawlStats({
+    at: '2026-11-24T11:21:56+00:00',
+    mode: 'live',
+    added: 120,
+    rescored: 0,
+    records: 1469,
+    scored: 1146,
+    queued: 84,
+  });
+
+  assert.equal(stats.lastRead, '2026-11-24T11:21:56+00:00');
+  assert.equal(stats.added, 120);
+  assert.equal(stats.rescored, 0);
+  assert.equal(stats.read, 1469);
+  assert.equal(stats.scored, 1146);
+  assert.equal(stats.queued, 84);
+});
+
+test('a missing stats file does not break the page', () => {
+  const stats = buildCrawlStats({});
+
+  assert.equal(stats.lastRead, null);
+  assert.equal(stats.added, null);
+  assert.equal(stats.queued, null);
 });
