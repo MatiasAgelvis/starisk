@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildRecent, buildWanted, requestAnchor } from '../src/lib/wanted.js';
+import { buildCrawlStats, buildRecent, buildWanted, requestAnchor } from '../src/lib/wanted.js';
 
 const scores = {
   'learn/scored': {
@@ -183,4 +183,26 @@ test('a missing Coursera number does not break the line', () => {
   const [entry] = buildRecent({ 'learn/solo': { title: 'Solo', starisk: 2.5 } });
 
   assert.equal(entry.summary, 'Starisk 2.5');
+});
+
+test('crawl stats read the last run off the corpus', () => {
+  const corpus = {
+    'learn/a': { starisk: 4, scrapedAt: '2026-11-24T10:00:00+00:00' },
+    'learn/b': { no_reviews: true, scrapedAt: '2026-11-24T10:00:00+00:00' },
+    'learn/c': { starisk: 3, scrapedAt: '2026-11-20T10:00:00+00:00' },
+  };
+
+  const stats = buildCrawlStats(
+    corpus,
+    ['learn/a', 'learn/b', 'learn/c', 'learn/new', 'learn/dead'],
+    { 'learn/dead': { at: '2026-11-24' } },
+  );
+
+  assert.equal(stats.lastDay, '2026-11-24');
+  assert.equal(stats.readInRun, 2);
+  assert.equal(stats.scored, 2);
+  assert.equal(stats.read, 3);
+  // `learn/new` is not read yet; `learn/dead` is a tombstone, not queue work.
+  assert.equal(stats.queued, 1);
+  assert.equal(stats.listed, 5);
 });
