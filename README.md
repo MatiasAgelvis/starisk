@@ -1,5 +1,7 @@
 # Starisk
 
+[![Starisk — the true signal, under the rating](web/public/og.png)](https://starisk.matiasagelvis.com)
+
 **The true signal, under the rating.**
 
 Coursera's ratings cluster between 4.5 and 4.9 stars. Almost nothing is bad, so
