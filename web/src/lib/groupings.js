@@ -5,6 +5,8 @@
 // `programs` table plus its join array; each `courses` entry is a foreign key
 // into `scores.json`.
 
+import { verdictOf } from './verdict.js';
+
 const TYPE_LABELS = {
   specialization: 'Specialization',
   'professional-certificate': 'Professional Certificate',
@@ -54,6 +56,14 @@ export function buildGroupings(groupings, scores) {
       }
     }
 
+    // How the courses inside the bundle individually landed: one line that answers
+    // "does the bundle hold up" without reading every row.
+    const verdicts = { 'holds-up': 0, padded: 0, inflated: 0 };
+    for (const course of scored) {
+      const verdict = verdictOf(course.coursera, course.starisk);
+      if (verdict in verdicts) verdicts[verdict] += 1;
+    }
+
     let average = null;
     if (scored.length > 0) {
       average =
@@ -88,6 +98,8 @@ export function buildGroupings(groupings, scores) {
       noReviews,
       unread,
       instructors: [...people.values()],
+      verdicts,
+      ratingCounts: group.rating_counts ?? null,
       low: scored.length ? Math.min(...scored.map((course) => course.starisk)) : null,
       high: scored.length ? Math.max(...scored.map((course) => course.starisk)) : null,
       coursera: typeof group.coursera === 'number' ? group.coursera : null,
