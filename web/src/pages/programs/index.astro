@@ -29,6 +29,11 @@ const rows = programs.map((program) => ({
   total: program.total,
   complete: program.complete,
   reviews: program.reviews,
+  noReviews: program.noReviews,
+  unread: program.unread,
+  // The drawer lists a handful of names; the program page lists them all.
+  instructors: program.instructors.slice(0, 4),
+  instructorCount: program.instructors.length,
   courses: program.courses.map((course) => ({
     key: course.key,
     title: course.title,

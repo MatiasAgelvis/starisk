@@ -25,6 +25,13 @@ const type = typeLabel(program.type);
 const comparable = program.complete && program.coursera != null && average != null;
 const verdict = comparable ? VERDICT[verdictOf(program.coursera, average)].label : '';
 const ratings = program.ratings;
+// Why the set is short matters: never-read is a crawl away, no-written-reviews is
+// Coursera's answer and may never change.
+const missing = program.total - program.scored;
+const reasons = [
+  program.unread ? `${program.unread} not read yet` : null,
+  program.noReviews ? `${program.noReviews} with no written reviews` : null,
+].filter(Boolean);
 const description =
   average == null
     ? `${program.title}: ${program.total} courses, none with written reviews yet.`
@@ -49,6 +56,22 @@ const description =
           rel="noopener noreferrer">View on Coursera ↗</a
         >
       </p>
+      {
+        program.instructors.length > 0 && (
+          <p class="mt-2 text-sm text-base-content/60">
+            Taught by{' '}
+            {program.instructors.slice(0, 6).map((person, index) => (
+              <>
+                {index > 0 ? ', ' : ''}
+                <a class="link link-hover" href={`/instructors/${person.page}`}>
+                  {person.name}
+                </a>
+              </>
+            ))}
+            {program.instructors.length > 6 ? ` and ${program.instructors.length - 6} more` : ''}
+          </p>
+        )
+      }
     </header>
 
     {
@@ -124,9 +147,8 @@ const description =
       {
         !program.complete && (
           <p>
-            This set is incomplete, so the two numbers are not compared: {program.total -
-              program.scored}{' '}
-            of its courses have no Starisk score yet.
+            This set is incomplete, so the two numbers are not compared: {missing} of its courses
+            have no Starisk score yet{reasons.length ? ` — ${reasons.join(', ')}` : ''}.
           </p>
         )
       }
