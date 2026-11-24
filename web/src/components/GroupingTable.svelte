@@ -301,11 +301,26 @@
         </tr>
         {#if isOpen}
           <tr id={id} class="hover:bg-transparent">
-            <td colspan={COLUMNS.length} class="bg-base-200/50 px-0">
+            <!-- Clicks inside the drawer are for its links, not for toggling the row. -->
+            <td
+              colspan={COLUMNS.length}
+              class="bg-base-200/50 px-0"
+              onclick={(event) => event.stopPropagation()}
+            >
               <div class="py-2 sm:pl-16">
-                <p class="mb-2 px-3 text-xs text-base-content/60 sm:px-4">
-                  {row.scored} of {row.total} courses scored{#if row.average != null}{' · course avg '}{row.average.toFixed(1)}{/if}{' · '}{row.reviews} reviews read
-                </p>
+                <div class="mb-2 space-y-1 px-3 text-xs text-base-content/60 sm:px-4">
+                  <p>
+                    {row.scored} of {row.total} courses scored{#if row.unread}{` · ${row.unread} not read yet`}{/if}{#if row.noReviews}{` · ${row.noReviews} with no written reviews`}{/if}{` · ${row.reviews} reviews read`}{#if row.coursera != null && row.ratings != null}{` · Coursera ${row.coursera.toFixed(1)} from ${row.ratings.toLocaleString()} ratings`}{/if}
+                  </p>
+                  {#if row.instructors.length > 0}
+                    <p>
+                      Taught by{' '}{#each row.instructors as person, index (person.page)}{#if index > 0}<span>, </span>{/if}<a
+                          class="link link-hover"
+                          href={`/instructors/${person.page}`}>{person.name}</a
+                        >{/each}{#if row.instructorCount > row.instructors.length}{` +${row.instructorCount - row.instructors.length} more`}{/if}
+                    </p>
+                  {/if}
+                </div>
                 <ScoreTable
                   rows={row.courses}
                   showFilters={false}
