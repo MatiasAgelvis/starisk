@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import requests from '../data/requests.json';
 import scores from '../data/scores.json';
 import groupings from '../data/groupings.json';
-import { buildWanted } from '../lib/wanted.js';
+import { buildRecent, buildWanted } from '../lib/wanted.js';
 
 type WantedRow = {
   anchor: string;
@@ -26,6 +26,25 @@ const { waiting, fulfilled } = buildWanted(requests, scores, groupings) as {
   fulfilled: WantedRow[];
 };
 const recent = fulfilled.slice(0, 12);
+const newest = buildRecent(scores, 10);
+
+// A heartbeat for the page: the corpus is rebuilt nightly, so these move without
+// anyone asking for anything. "Last week" is anchored to the newest read in the
+// data, not to the build clock, so a stale deploy cannot flatter it.
+const records = Object.values(scores) as { starisk?: number; scrapedAt?: string }[];
+const scoredCount = records.filter((record) => typeof record.starisk === 'number').length;
+const lastRead = records.reduce(
+  (latest, record) => (record.scrapedAt && record.scrapedAt > latest ? record.scrapedAt : latest),
+  '',
+);
+const anchor = lastRead ? new Date(lastRead).getTime() : null;
+const readThisWeek =
+  anchor == null
+    ? 0
+    : records.filter(
+        (record) =>
+          record.scrapedAt && anchor - new Date(record.scrapedAt).getTime() <= 7 * 24 * 60 * 60 * 1000,
+      ).length;
 
 const date = (value?: string | null) =>
   value
@@ -51,20 +70,26 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
         Courses and programs people asked Starisk to score — and what came of it.
       </p>
       <p class="mt-2 text-sm text-base-content/60">
+        {scoredCount.toLocaleString('en-GB')} scored of{' '}
+        {records.length.toLocaleString('en-GB')} courses read ·{' '}
+        {readThisWeek.toLocaleString('en-GB')} read in the last week
+        {lastRead ? ` · last crawl ${date(lastRead)}` : ''}.
+      </p>
+      <p class="mt-2 text-sm text-base-content/60">
         Checked nightly. Requests appear here after the check; there is no ETA. For the courses we
         have already read, <a class="link link-hover" href="/bookmarklet">the score is also on
         Coursera's own pages</a>.
       </p>
     </header>
 
-    <section class="mt-10">
-      <div class="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 class="font-display text-xl font-bold">Waiting</h2>
-        <p class="text-sm text-base-content/60">{waiting.length} in the crawl list</p>
-      </div>
+    {
+      waiting.length > 0 ? (
+        <section class="mt-10">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 class="font-display text-xl font-bold">Waiting</h2>
+            <p class="text-sm text-base-content/60">{waiting.length} in the crawl list</p>
+          </div>
 
-      {
-        waiting.length > 0 ? (
           <ul class="mt-4 divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
             {waiting.map((row) => (
               <li
@@ -91,14 +116,41 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
               </li>
             ))}
           </ul>
-        ) : (
-          <p class="mt-4 rounded-box border border-base-300 p-4 text-sm text-base-content/60">
-            Nothing waiting. The lookup on the <a class="link link-hover" href="/">home page</a> is
-            the way in.
-          </p>
-        )
-      }
-    </section>
+        </section>
+      ) : (
+        <p class="mt-8 text-sm text-base-content/60">
+          Nothing waiting right now. Paste a Coursera link on the{' '}
+          <a class="link link-hover" href="/">home page</a> to ask for a course — it lands here
+          after the next nightly check.
+        </p>
+      )
+    }
+
+    {
+      newest.length > 0 && (
+        <section class="mt-12">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 class="font-display text-xl font-bold">Recently added</h2>
+            <p class="text-sm text-base-content/60">Newest scores in the corpus</p>
+          </div>
+
+          <ul class="mt-4 divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
+            {newest.map((row) => (
+              <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 p-4">
+                <a class="link link-hover font-medium" href={row.href}>{row.title}</a>
+                {row.provider ? (
+                  <span class="text-sm text-base-content/50">{row.provider}</span>
+                ) : null}
+                <span class="ml-auto flex flex-wrap items-baseline gap-x-3 text-sm text-base-content/60">
+                  <span>{row.summary}</span>
+                  {date(row.scrapedAt) ? <span>{date(row.scrapedAt)}</span> : null}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     {
       recent.length > 0 && (
