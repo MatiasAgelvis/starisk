@@ -31,7 +31,7 @@ from pathlib import Path
 
 from .adapter import extract_instructor_courses, extract_specialization_courses
 from .cache import CACHE_DIR, load_page, store_page
-from .crawl import SCORES_PATH, SOURCES_PATH, normalize_source, write_atomic
+from .crawl import SCORES_PATH, SOURCES_PATH, load_retired, normalize_source, write_atomic
 from .fetch import fetch_page
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
 from .paths import CACHE_DIR as STATE_CACHE
@@ -155,6 +155,7 @@ def plan(
     limit: int | None = None,
     refresh: bool = False,
     log=None,
+    retired=(),
 ) -> tuple[dict[str, list[str]], list[str]]:
     """Work out which courses to add, and why.
 
@@ -238,9 +239,13 @@ def plan(
         report(f"  read {visited}/{len(people)} profiles")
 
     new = {key: parents for key, parents in found.items() if key not in known}
+    # A retired course must not come back through a profile that still lists it.
+    gone = {key for key in new if key in retired}
+    new = {key: parents for key, parents in new.items() if key not in gone}
     report("")
     report(
-        f"linked {len(found)} courses | already listed {len(found) - len(new)} | new {len(new)}"
+        f"linked {len(found)} courses | already listed "
+        f"{len(found) - len(new) - len(gone)} | retired {len(gone)} | new {len(new)}"
     )
     if delay:
         requests = len(new) * 2  # reviews page + landing page, per D18
@@ -295,6 +300,7 @@ def main(argv: list[str]) -> int:
         limit=options.limit,
         refresh=options.refresh,
         log=lambda line: print(line, flush=True),
+        retired=load_retired(),
     )
 
     if not options.write:

@@ -33,12 +33,20 @@ HEADERS = {
 
 # Codes where waiting is useless: the page is gone or forbidden for good.
 FATAL_CODES = frozenset({400, 401, 404, 410})
+# A subset of those where the *course* is gone, not the request. Coursera retires
+# courses; a retired slug answers 404 forever, so it is a fact about the corpus,
+# not a failure of this run.
+RETIRED_CODES = frozenset({404, 410})
 # Codes where the host is telling us to slow down.
 RATE_LIMIT_CODES = frozenset({403, 429})
 
 
 class RateLimited(RuntimeError):
     """The host asked us to slow down. The crawl should stop, not retry harder."""
+
+
+class Retired(RuntimeError):
+    """The course no longer exists. Never retried, and never treated as a broken run."""
 
 
 def _wait_seconds(error: urllib.error.HTTPError, attempt: int, backoff: float) -> float:
@@ -76,6 +84,8 @@ def _request(
                 return response.read()
         except urllib.error.HTTPError as error:
             last_error = error
+            if error.code in RETIRED_CODES:
+                raise Retired(f"HTTP {error.code} for {url}") from error
             if error.code in FATAL_CODES:
                 raise RuntimeError(f"HTTP {error.code} for {url}") from error
             if error.code in RATE_LIMIT_CODES:
