@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import BackLink from '../../components/BackLink.astro';
 import ScoreTable from '../../components/ScoreTable.svelte';
 import ScoreGap from '../../components/ScoreGap.astro';
+import RatingBar from '../../components/RatingBar.astro';
 import Stars from '../../components/Stars.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import { buildGroupings, typeLabel } from '../../lib/groupings.js';
@@ -110,6 +111,12 @@ const description =
             {program.complete ? '' : ' · incomplete set, not compared'}
           </div>
         </div>
+      )
+    }
+
+    {
+      program.ratingCounts != null && (
+        <RatingBar counts={program.ratingCounts} ratings={program.ratings} class="mt-3" />
       )
     }
 
