@@ -121,6 +121,40 @@ export function buildRecent(scores, limit = 10) {
     });
 }
 
+/**
+ * The last run, as the data can prove it.
+ *
+ * There is no run log in git, so "last crawl" is the newest `scrapedAt` and
+ * "read in that run" is how many records carry that date. That counts new and
+ * rescored courses together — the label says `read`, not `added`, because the
+ * corpus cannot tell the two apart after the fact.
+ *
+ * `queued` is what still has no record: sources minus tombstones. It is the only
+ * number here that comes from the crawl list rather than the corpus.
+ */
+export function buildCrawlStats(scores, sources = [], retired = {}) {
+  const records = Object.entries(scores);
+  const timed = records.filter(([, record]) => record?.scrapedAt);
+  const lastRead = timed.reduce(
+    (latest, [, record]) => (record.scrapedAt > latest ? record.scrapedAt : latest),
+    '',
+  );
+  const lastDay = lastRead.slice(0, 10);
+  const readInRun = lastDay
+    ? timed.filter(([, record]) => String(record.scrapedAt).slice(0, 10) === lastDay).length
+    : 0;
+
+  return {
+    lastRead,
+    lastDay,
+    readInRun,
+    read: records.length,
+    scored: records.filter(([, record]) => typeof record?.starisk === 'number').length,
+    queued: sources.filter((key) => !scores[key] && !retired[key]).length,
+    listed: sources.length,
+  };
+}
+
 function summaryOf(row, record, program) {
   if (row.type === 'course') {
     if (!record) return 'Waiting for the crawl';
