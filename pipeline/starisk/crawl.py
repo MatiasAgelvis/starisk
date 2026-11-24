@@ -315,7 +315,21 @@ def crawl(
     moment = now or datetime.now(timezone.utc)
     stamp = moment.isoformat()
 
+    def note(line: str) -> None:
+        if problems is not None:
+            problems.append(line)
+
     work = order_by_staleness(unique_sources(sources), scores)
+    # V1 is courses-only (D17). A program page has no written reviews of its own —
+    # Coursera renders the widget of whichever course is selected — so fetching one
+    # as a course would store that course's reviews under the program's key.
+    not_courses = [key for key in work if not key.startswith("learn/")]
+    if not_courses:
+        work = [key for key in work if key.startswith("learn/")]
+        note(
+            f"skipped {len(not_courses)} non-course source(s), e.g. {not_courses[0]} "
+            "(programs are not crawled as courses)"
+        )
     # A retired course is gone for good, so it must not take a slot in the budget.
     if retired:
         work = [key for key in work if key not in retired]
@@ -328,11 +342,6 @@ def crawl(
         work = work[:limit]
 
     total = len(work)
-
-    def note(line: str) -> None:
-        if problems is not None:
-            problems.append(line)
-
     for index, key in enumerate(work, start=1):
         if progress:
             progress(index, total, key)
