@@ -1,23 +1,25 @@
 """Grow data/sources.json from pages that already list courses.
 
-The crawl list is curated, but two kinds of page hand out more of it for the
-price of one request each:
+The crawl list is curated, but three kinds of page hand out more of it for the
+price of one request each (or none at all):
 
   specializations  a certificate -> the courses the specialization is made of
   instructors      a teacher already indexed -> everything else they teach
+  programs         the derived program index -> the courses of a bundle we publish
 
-Both answer "what belongs next to what I already crawled", which is the right
-question for this corpus. Neither is "crawl Coursera": the sitemap has ~23k
-courses and this stays explicit and small.
+Programs carry no request cost: `groupings.json` already holds the membership, so
+the lever just makes sure every course in a published bundle is queued. That is
+the purposeful version of the instructor lever — a bundle someone chose to
+publish, not everything a publisher ever taught.
+
+Neither lever is "crawl Coursera": the sitemap has ~23k courses and this stays
+explicit and small.
 
     cd pipeline
-    python3 -m starisk.expand                 # report both levers, write nothing
+    python3 -m starisk.expand                 # report every lever, write nothing
     python3 -m starisk.expand --write         # extend data/sources.json
-    python3 -m starisk.expand --instructors   # one lever only
+    python3 -m starisk.expand --programs      # one lever only
     python3 -m starisk.expand --limit 10      # at most 10 parent pages
-    python3 -m starisk.expand --refresh       # re-download the sitemap
-
-Parent pages are cached, so a second run costs no requests.
 """
 
 from __future__ import annotations
@@ -33,6 +35,7 @@ from .adapter import extract_instructor_courses, extract_specialization_courses
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import SCORES_PATH, SOURCES_PATH, load_retired, normalize_source, write_atomic
 from .fetch import fetch_page
+from .groupings import read_index
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
 from .paths import CACHE_DIR as STATE_CACHE
 from .sitemap import load_slugs as load_cached_slugs
@@ -152,10 +155,12 @@ def plan(
     slug_cache: Path = SITEMAP_CACHE,
     specializations: bool = True,
     instructors: bool = False,
+    programs: bool = False,
     limit: int | None = None,
     refresh: bool = False,
     log=None,
     retired=(),
+    program_index: dict | None = None,
 ) -> tuple[dict[str, list[str]], list[str]]:
     """Work out which courses to add, and why.
 
@@ -238,6 +243,15 @@ def plan(
             report(line, progress(index, len(people), line))
         report(f"  read {visited}/{len(people)} profiles")
 
+    if programs:
+        index = program_index if program_index is not None else read_index()
+        links = 0
+        for key, group in index.items():
+            for course in group.get("courses") or []:
+                links += 1
+                found.setdefault(normalize_source(course), []).append(f"program:{key}")
+        report(f"programs: {len(index)} programs, {links} course links")
+
     new = {key: parents for key, parents in found.items() if key not in known}
     # A retired course must not come back through a profile that still lists it.
     gone = {key for key in new if key in retired}
@@ -259,7 +273,7 @@ def plan(
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="python -m starisk.expand",
-        description="Grow data/sources.json from specializations and instructor profiles.",
+        description="Grow data/sources.json from specializations, instructors and programs.",
     )
     parser.add_argument("--write", action="store_true", help="extend data/sources.json")
     parser.add_argument("--refresh", action="store_true", help="re-download the sitemap")
@@ -272,6 +286,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--instructors",
         action="store_true",
         help="use only the instructor lever",
+    )
+    parser.add_argument(
+        "--programs",
+        action="store_true",
+        help="use only the program lever (no requests: reads groupings.json)",
     )
     parser.add_argument("--limit", type=int, help="visit at most this many parent pages")
     return parser.parse_args(argv)
@@ -290,13 +309,17 @@ def main(argv: list[str]) -> int:
     )
     sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8")) if SOURCES_PATH.exists() else []
 
+    # No lever flag means every lever, which is what the nightly runs.
+    chosen = options.specializations or options.instructors or options.programs
+
     new, _lines = plan(
         scores,
         entries,
         existing=sources,
         delay=DELAY,
-        specializations=options.specializations or not options.instructors,
-        instructors=options.instructors or not options.specializations,
+        specializations=options.specializations or not chosen,
+        instructors=options.instructors or not chosen,
+        programs=options.programs or not chosen,
         limit=options.limit,
         refresh=options.refresh,
         log=lambda line: print(line, flush=True),
