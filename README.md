@@ -359,4 +359,7 @@ the thesis is the same one it had back then.
 
 ## License
 
-Apache 2.0. See [LICENSE.txt](LICENSE.txt).
+The code is Apache 2.0 — see [LICENSE.txt](LICENSE.txt). The measurements
+(scores, spreads, program averages) are CC BY 4.0, while the course prose,
+provider marks and instructor photos stay with their owners — see
+[LICENSING.md](LICENSING.md).
