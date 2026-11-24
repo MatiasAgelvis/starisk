@@ -18,6 +18,7 @@ def corpus(**scores):
 class AllowedTest(unittest.TestCase):
     def test_data_files_are_allowed(self):
         self.assertTrue(nightly.allowed("pipeline/data/scores.json"))
+        self.assertTrue(nightly.allowed("pipeline/data/retired.json"))
         self.assertTrue(nightly.allowed("web/src/data/logo-sizes.json"))
         self.assertTrue(nightly.allowed("web/public/logos/tile/acme.png"))
 
@@ -119,6 +120,20 @@ class DecideTest(unittest.TestCase):
 
         self.assertEqual(decision.code, nightly.GATE)
         self.assertIn("errors", decision.reason)
+
+    def test_a_few_errors_in_a_large_batch_are_partial_not_refused(self):
+        after = {
+            "learn/a": record(),
+            "learn/b": record(),
+            **{f"learn/e{index}": {"error": "fetch: timeout"} for index in range(3)},
+            **{f"learn/n{index}": record() for index in range(56)},
+        }
+
+        decision = self.decide(after)
+
+        self.assertEqual(decision.code, nightly.PARTIAL)
+        self.assertTrue(decision.commit)
+        self.assertIn("3 record(s) with errors", decision.reason)
 
     def test_a_rate_limited_run_is_partial_not_refused(self):
         after = corpus(a=record(), b=record(landing_error="rate limited: 429"))
