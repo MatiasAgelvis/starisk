@@ -5,6 +5,8 @@ import Stars from '../../components/Stars.astro';
 import ScoreGap from '../../components/ScoreGap.astro';
 import Logo from '../../components/Logo.astro';
 import { verdictOf, VERDICT } from '../../lib/verdict.js';
+import { buildMemberships } from '../../lib/groupings.js';
+import groupings from '../../data/groupings.json';
 import { courses, isScoredEntry } from '../../lib/courses.js';
 import { CELLS, TOO_FEW, cellOf, spreadShareBelow } from '../../lib/contested.js';
 
@@ -52,6 +54,10 @@ const readOn = record.scrapedAt
 
 const instructors = record.instructors ?? [];
 const categories = record.categories ?? [];
+
+// The other half of the program relationship: this course's bundles. Built at
+// build time from the same index the programs directory uses.
+const memberships = buildMemberships(groupings, courses).get(key) ?? [];
 
 // What the ~20 reviews we read actually rated it — not the population.
 const sampleCounts = record.review_counts ?? {};
@@ -145,6 +151,22 @@ const about = splitDescription(aboutText);
         }
       </div>
     </header>
+
+    {
+      memberships.length > 0 && (
+        <p class="mt-3 text-sm text-base-content/60">
+          Part of {memberships.length} {memberships.length === 1 ? 'program' : 'programs'}:{' '}
+          {memberships.map((program, index) => (
+            <>
+              {index > 0 ? ' · ' : ''}
+              <a class="link link-hover" href={`/programs#${program.key}`}>
+                {program.title}
+              </a>
+            </>
+          ))}
+        </p>
+      )
+    }
 
     <div class="mt-6">
       <ScoreGap
