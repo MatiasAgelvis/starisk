@@ -121,7 +121,9 @@ snapshot anyway.
   specialization slugs from the sitemap, fetches their pages, rebuilds the program
   index, and queues every course of every published bundle. That is the only
   discovery lever that runs unattended: `--instructors` is a catalogue, not a
-  curriculum, and stays manual.
+  curriculum, and stays manual. The two numbers are paired: 20 programs is roughly
+  100 member courses, which is what the run reads (`DEFAULT_LIMIT`), so the queue
+  stays flat instead of growing out of reach of the next bundle.
 - **Updating the job.** Merge to `develop`. The next run clones it, so the code
   that runs is the code you merged. Rebuild the image only when the entrypoint or
   runtimes change: `sudo ./ops/setup.sh --env .env`, or
@@ -143,7 +145,7 @@ snapshot anyway.
 ## Flags
 
 ```sh
-nightly                       # the real run
+nightly                       # the real run: 100 courses
 nightly --dry-run             # config + smoke only, writes nothing
 nightly --no-git              # the pipeline, no commit and no push
 nightly --limit 20            # smaller valve for one night

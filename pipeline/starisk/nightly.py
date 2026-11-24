@@ -56,6 +56,8 @@ LOCK = LOG_DIR / "nightly.lock"
 
 BRANCH_PREFIX = "data/crawl-"
 BASE = "develop"
+# Courses read per run. Paired with discovery: 20 programs a night is ~100 new member
+# courses, so 100 keeps the never-read queue flat rather than growing without bound.
 DEFAULT_LIMIT = 100
 
 OK = 0
