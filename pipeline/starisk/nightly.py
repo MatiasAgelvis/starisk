@@ -21,7 +21,7 @@ way you like, including squash, and delete the branch afterwards: nothing depend
 on it.
 
     python -m starisk.nightly --dry-run     # config, connectivity, smoke; no writes
-    python -m starisk.nightly --limit 60
+    python -m starisk.nightly --limit 100
     python -m starisk.nightly --no-push     # rehearsal: commit on the branch, stop
 
 Exit codes are the interface to the timer and the health check:
@@ -56,7 +56,7 @@ LOCK = LOG_DIR / "nightly.lock"
 
 BRANCH_PREFIX = "data/crawl-"
 BASE = "develop"
-DEFAULT_LIMIT = 60
+DEFAULT_LIMIT = 100
 
 OK = 0
 NOTHING = 10
@@ -101,7 +101,7 @@ DATA_PREFIXES = ("web/public/logos/",)
 MAX_SCORED_DROP = 5
 MAX_NEW_ERRORS = 2
 # A few bad courses are weather, not a broken adapter. Refusing a whole night (and
-# with it the clone) over 3/60 is how a backlog stops advancing.
+# with it the clone) over 3/100 is how a backlog stops advancing.
 MAX_ERROR_SHARE = 0.2
 
 
