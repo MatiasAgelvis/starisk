@@ -161,7 +161,7 @@ run = "sudo docker build -f ops/Dockerfile -t starisk-nightly ."
 description = "What the state volume holds"
 run = """
 sudo docker run --rm -v starisk-state:/state --entrypoint sh starisk-nightly \
-  -c 'du -sh /state; wc -c /state/sources.json /state/scores.json; ls /state/.cache/pages | wc -l'
+  -c 'du -sh /state; ls -la /state; ls /state/cache/pages 2>/dev/null | wc -l'
 """
 
 [tasks."ops:dry"]
