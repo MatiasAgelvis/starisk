@@ -46,7 +46,7 @@ const denominator = ratings ?? total;
       <div
         class="flex h-2.5 w-full overflow-hidden rounded-full bg-base-200"
         role="img"
-        aria-label={`${denominator.toLocaleString('en-GB')} ratings, ${lowShare.toFixed(1)}% of them 1 or 2 stars`}
+        aria-label={`${denominator.toLocaleString('en-GB')} ratings on Coursera, ${lowShare.toFixed(1)}% of them 1 or 2 stars`}
       >
         {segments.map((segment) => (
           <span
@@ -56,10 +56,20 @@ const denominator = ratings ?? total;
           />
         ))}
       </div>
-      <p class="mt-1 text-xs text-base-content/50">
-        Coursera's {denominator.toLocaleString('en-GB')} ratings ·{' '}
-        <strong>{lowShare.toFixed(1)}%</strong> are 1–2★
-      </p>
+      <div
+        class="mt-1 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-[0.65rem] text-base-content/50"
+      >
+        <ul class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+          {segments.map((segment) => (
+            <li class="flex items-center gap-1">
+              <span class={`h-1.5 w-2.5 rounded-sm ${segment.tone}`} aria-hidden="true" />
+              <span>{segment.star}★</span>
+              <span class="tabular-nums">{segment.share.toFixed(1)}%</span>
+            </li>
+          ))}
+        </ul>
+        <span class="tabular-nums">{denominator.toLocaleString('en-GB')} ratings on Coursera</span>
+      </div>
     </div>
   )
 }
