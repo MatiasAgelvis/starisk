@@ -3,7 +3,9 @@ import Base from '../layouts/Base.astro';
 import requests from '../data/requests.json';
 import scores from '../data/scores.json';
 import groupings from '../data/groupings.json';
-import { buildRecent, buildWanted } from '../lib/wanted.js';
+import sources from '../data/sources.json';
+import retired from '../data/retired.json';
+import { buildCrawlStats, buildRecent, buildWanted } from '../lib/wanted.js';
 
 type WantedRow = {
   anchor: string;
@@ -27,24 +29,7 @@ const { waiting, fulfilled } = buildWanted(requests, scores, groupings) as {
 };
 const recent = fulfilled.slice(0, 12);
 const newest = buildRecent(scores, 10);
-
-// A heartbeat for the page: the corpus is rebuilt nightly, so these move without
-// anyone asking for anything. "Last week" is anchored to the newest read in the
-// data, not to the build clock, so a stale deploy cannot flatter it.
-const records = Object.values(scores) as { starisk?: number; scrapedAt?: string }[];
-const scoredCount = records.filter((record) => typeof record.starisk === 'number').length;
-const lastRead = records.reduce(
-  (latest, record) => (record.scrapedAt && record.scrapedAt > latest ? record.scrapedAt : latest),
-  '',
-);
-const anchor = lastRead ? new Date(lastRead).getTime() : null;
-const readThisWeek =
-  anchor == null
-    ? 0
-    : records.filter(
-        (record) =>
-          record.scrapedAt && anchor - new Date(record.scrapedAt).getTime() <= 7 * 24 * 60 * 60 * 1000,
-      ).length;
+const stats = buildCrawlStats(scores, sources, retired);
 
 const date = (value?: string | null) =>
   value
@@ -69,12 +54,28 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
       <p class="mt-3 max-w-2xl text-base-content/75">
         Courses and programs people asked Starisk to score — and what came of it.
       </p>
-      <p class="mt-2 text-sm text-base-content/60">
-        {scoredCount.toLocaleString('en-GB')} scored of{' '}
-        {records.length.toLocaleString('en-GB')} courses read ·{' '}
-        {readThisWeek.toLocaleString('en-GB')} read in the last week
-        {lastRead ? ` · last crawl ${date(lastRead)}` : ''}.
-      </p>
+      <div class="stats stats-vertical sm:stats-horizontal mt-6 w-full border border-base-300">
+        <div class="stat">
+          <div class="stat-title">Last crawl</div>
+          <div class="stat-value text-lg">{stats.lastRead ? date(stats.lastRead) : '—'}</div>
+          <div class="stat-desc">{stats.lastRead ? 'newest read in the corpus' : 'no crawl yet'}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Read in that run</div>
+          <div class="stat-value text-lg">{stats.readInRun.toLocaleString('en-GB')}</div>
+          <div class="stat-desc">new and rescored</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Scored</div>
+          <div class="stat-value text-lg">{stats.scored.toLocaleString('en-GB')}</div>
+          <div class="stat-desc">of {stats.read.toLocaleString('en-GB')} read</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Still to read</div>
+          <div class="stat-value text-lg">{stats.queued.toLocaleString('en-GB')}</div>
+          <div class="stat-desc">in the crawl queue</div>
+        </div>
+      </div>
       <p class="mt-2 text-sm text-base-content/60">
         Checked nightly. Requests appear here after the check; there is no ETA. For the courses we
         have already read, <a class="link link-hover" href="/bookmarklet">the score is also on
@@ -194,7 +195,7 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
     {
       requests.generatedAt && (
         <p class="mt-8 text-xs text-base-content/40">
-          Ask list from {date(requests.generatedAt)}.
+          Ask list unchanged since {date(requests.generatedAt)} — checked on every crawl.
         </p>
       )
     }
