@@ -334,8 +334,8 @@ pipeline/      Python — crawler, scoring engine, calibration
   starisk/     engine, adapter, fetch, crawl, rank, calibration, groupings
   data/        sources.json (what to crawl), scores.json (the seam),
                retired.json (slugs Coursera no longer serves),
-               groupings.json (derived program index), programs.json (program seeds),
-               requests.json (exported request queue)
+               groupings.json (derived program index, with each bundle's pooled rating),
+               programs.json (program seeds), requests.json (exported request queue)
   tests/       unittest, zero installs
 web/           Astro + Svelte islands + Tailwind + daisyUI
   public/logos/  provider logos: tile/ and full/ marks, plus a lockup fallback
