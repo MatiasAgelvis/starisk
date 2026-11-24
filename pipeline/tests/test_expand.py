@@ -137,6 +137,28 @@ class PlanTest(unittest.TestCase):
         self.assertIn("specialization:deep-learning", new["learn/course-b"])
         self.assertTrue(any("already listed" in line for line in lines))
 
+    def test_a_retired_course_is_not_added_back(self):
+        def fetch(url):
+            return self.specialization_page
+
+        with TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            slug_cache = tmp / "specializations.txt"
+            slug_cache.write_text("deep-learning\n", encoding="utf-8")
+
+            new, lines = plan(
+                {},
+                self.entries,
+                fetch=fetch,
+                delay=0,
+                cache_dir=tmp / "pages",
+                slug_cache=slug_cache,
+                retired={"learn/course-a": {"at": "2026-11-24"}},
+            )
+
+        self.assertEqual(list(new), ["learn/course-b"])
+        self.assertTrue(any("retired 1" in line for line in lines))
+
     def test_streams_progress_as_each_parent_page_finishes(self):
         seen = []
 
