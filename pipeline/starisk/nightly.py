@@ -85,10 +85,12 @@ DATA_PATHS = (
     "pipeline/data/programs.json",
     "pipeline/data/sources.json",
     "pipeline/data/retired.json",
+    "pipeline/data/stats.json",
     "pipeline/data/requests.json",
     "web/src/data/scores.json",
     "web/src/data/groupings.json",
     "web/src/data/requests.json",
+    "web/src/data/stats.json",
     "web/src/data/logo-sizes.json",
 )
 DATA_PREFIXES = ("web/public/logos/",)
