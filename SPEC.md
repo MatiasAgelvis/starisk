@@ -132,8 +132,12 @@ calibration against my labels, not aesthetics.**
 
 `pipeline/data/sources.json` — the crawl list:
 ```json
-["learn/machine-learning", "specializations/deep-learning"]
+["learn/machine-learning", "learn/deep-learning-specialization"]
 ```
+Sources are courses only. A program key (`specializations/…`, `professional-certificates/…`)
+is a configuration error: Coursera renders a program page's reviews from
+whichever of its courses is selected, so crawling one as a course stores that
+course's reviews under the program's name. The crawl skips them and says so.
 
 `pipeline/data/retired.json` — courses Coursera no longer serves, keyed like
 `sources.json` and recorded when a fetch answers 404/410:
@@ -145,7 +149,8 @@ budget, the gate does not count them as errors, and `expand` will not re-add the
 from a profile that still lists them. Deleting an entry asks for a retry. A course
 that was already scored keeps its record: the score was true when it was measured.
 
-`scores.json` — the built artifact the site serves, keyed by `type/slug`:
+`scores.json` — the built artifact the site serves, keyed by `type/slug`.
+Every key starts with `learn/`: this file is the course corpus and nothing else.
 ```json
 {
   "learn/machine-learning": {
@@ -174,14 +179,23 @@ that was already scored keeps its record: the score was true when it was measure
     "key": "specializations/algorithms",
     "type": "specialization",
     "title": "Algorithms",
+    "provider": "Stanford Online",
     "url": "https://www.coursera.org/specializations/algorithms",
-    "courses": ["learn/algorithms-part1", "learn/algorithms-part2"]
+    "courses": ["learn/algorithms-part1", "learn/algorithms-part2"],
+    "coursera": 4.7,
+    "ratings_total": 3408,
+    "rating_counts": { "1": 37, "2": 31, "3": 102, "4": 517, "5": 2721 }
   }
 }
 ```
 
 - `courses` are foreign keys into `scores.json`; a course can appear in several
   programs.
+- **A program has no score of its own.** Its page has no written reviews — the
+  review widget belongs to whichever course is selected — so `coursera` /
+  `ratings_total` are Coursera's *pooled* rating for the bundle, and the program's
+  Starisk score is the review-weighted average of its courses, computed at build
+  time. Nothing from a program page's review widget is ever stored.
 - Generated from cached program pages by `python -m starisk.groupings --write`.
   It is a derived index, not a second source of truth.
 - `type` is `specialization` or `professional-certificate`; the parser supports
@@ -191,7 +205,8 @@ that was already scored keeps its record: the score was true when it was measure
   starisk.groupings --fetch --write` fetches any missing seed pages first.
 - The Programs directory defaults to **complete sets** — every course in the
   program has a Starisk score. Partial programs stay in the index (and have a
-  direct URL) but are hidden behind a toggle.
+  direct URL) but are hidden behind a toggle, and are not given a gap badge: one
+  scored course is not comparable to the bundle's whole rating population.
 
 - `description` — JSON-LD `description`. Coursera caps the landing page's copy at
   500 characters, cut mid-word, while the reviews page carries the full text, so
