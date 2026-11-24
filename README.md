@@ -333,6 +333,7 @@ unavailable and everything else keeps working; wrapping the same
 pipeline/      Python — crawler, scoring engine, calibration
   starisk/     engine, adapter, fetch, crawl, rank, calibration, groupings
   data/        sources.json (what to crawl), scores.json (the seam),
+               retired.json (slugs Coursera no longer serves),
                groupings.json (derived program index), programs.json (program seeds),
                requests.json (exported request queue)
   tests/       unittest, zero installs
