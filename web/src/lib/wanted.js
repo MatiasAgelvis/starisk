@@ -122,36 +122,23 @@ export function buildRecent(scores, limit = 10) {
 }
 
 /**
- * The last run, as the data can prove it.
+ * The crawl dashboard, read straight from `data/stats.json`.
  *
- * There is no run log in git, so "last crawl" is the newest `scrapedAt` and
- * "read in that run" is how many records carry that date. That counts new and
- * rescored courses together — the label says `read`, not `added`, because the
- * corpus cannot tell the two apart after the fact.
- *
- * `queued` is what still has no record: sources minus tombstones. It is the only
- * number here that comes from the crawl list rather than the corpus.
+ * The file is written by the crawl itself, which is the only place that knows what
+ * was new this run: `scores.json` keeps new and rescored records in the same
+ * arrival order, so the split cannot be recovered afterwards.
  */
-export function buildCrawlStats(scores, sources = [], retired = {}) {
-  const records = Object.entries(scores);
-  const timed = records.filter(([, record]) => record?.scrapedAt);
-  const lastRead = timed.reduce(
-    (latest, [, record]) => (record.scrapedAt > latest ? record.scrapedAt : latest),
-    '',
-  );
-  const lastDay = lastRead.slice(0, 10);
-  const readInRun = lastDay
-    ? timed.filter(([, record]) => String(record.scrapedAt).slice(0, 10) === lastDay).length
-    : 0;
+export function buildCrawlStats(stats = {}) {
+  const number = (value) => (typeof value === 'number' ? value : null);
 
   return {
-    lastRead,
-    lastDay,
-    readInRun,
-    read: records.length,
-    scored: records.filter(([, record]) => typeof record?.starisk === 'number').length,
-    queued: sources.filter((key) => !scores[key] && !retired[key]).length,
-    listed: sources.length,
+    lastRead: typeof stats.at === 'string' ? stats.at : null,
+    mode: stats.mode ?? null,
+    added: number(stats.added),
+    rescored: number(stats.rescored),
+    read: number(stats.records),
+    scored: number(stats.scored),
+    queued: number(stats.queued),
   };
 }
 
