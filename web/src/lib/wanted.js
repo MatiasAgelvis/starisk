@@ -87,6 +87,40 @@ export function buildWanted(snapshot, scores, groupings) {
   };
 }
 
+/**
+ * The newest scores in the corpus, from the tail of `scores.json`.
+ *
+ * The file is append-only: the crawl adds keys at the end and never reorders, so
+ * the tail is arrival order. A rescored course keeps its position, which is what
+ * we want here — this is "what arrived", not "what changed last".
+ *
+ * Without this the page reads as dead whenever nobody is asking, because
+ * "Recently fulfilled" derives from the request queue.
+ */
+export function buildRecent(scores, limit = 10) {
+  const rated = Object.entries(scores).filter(
+    ([, record]) => typeof record?.starisk === 'number',
+  );
+
+  return rated
+    .slice(-limit)
+    .reverse()
+    .map(([key, record]) => {
+      const starisk = record.starisk.toFixed(1);
+      return {
+        key,
+        title: record.title ?? key,
+        href: `/${record.slug ?? key}`,
+        provider: record.provider ?? null,
+        summary:
+          typeof record.coursera === 'number'
+            ? `Coursera ${record.coursera.toFixed(1)} → Starisk ${starisk}`
+            : `Starisk ${starisk}`,
+        scrapedAt: record.scrapedAt ?? null,
+      };
+    });
+}
+
 function summaryOf(row, record, program) {
   if (row.type === 'course') {
     if (!record) return 'Waiting for the crawl';
