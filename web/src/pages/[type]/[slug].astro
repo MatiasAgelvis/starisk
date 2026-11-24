@@ -156,7 +156,7 @@ const about = splitDescription(aboutText);
           {memberships.map((program, index) => (
             <>
               {index > 0 ? ' · ' : ''}
-              <a class="link link-hover" href={`/programs#${program.key}`}>
+              <a class="link link-hover" href={`/programs/${program.key}`}>
                 {program.title}
               </a>
             </>

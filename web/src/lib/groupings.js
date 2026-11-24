@@ -119,8 +119,8 @@ export function buildGroupings(groupings, scores) {
  * The other direction: which programs contain each course.
  *
  * Built once at build time and passed to the course page, so the relationship is
- * navigable both ways without shipping `groupings.json` to the browser. The
- * hash links back into the directory's drawer (`/programs#<program key>`).
+ * navigable both ways without shipping `groupings.json` to the browser. A course
+ * already knows which bundle it is, so the link goes to that program's own page.
  */
 export function buildMemberships(groupings, scores) {
   const byCourse = new Map();
