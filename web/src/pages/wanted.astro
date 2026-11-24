@@ -3,8 +3,7 @@ import Base from '../layouts/Base.astro';
 import requests from '../data/requests.json';
 import scores from '../data/scores.json';
 import groupings from '../data/groupings.json';
-import sources from '../data/sources.json';
-import retired from '../data/retired.json';
+import crawl from '../data/stats.json';
 import { buildCrawlStats, buildRecent, buildWanted } from '../lib/wanted.js';
 
 type WantedRow = {
@@ -29,7 +28,7 @@ const { waiting, fulfilled } = buildWanted(requests, scores, groupings) as {
 };
 const recent = fulfilled.slice(0, 12);
 const newest = buildRecent(scores, 10);
-const stats = buildCrawlStats(scores, sources, retired);
+const stats = buildCrawlStats(crawl);
 
 const date = (value?: string | null) =>
   value
@@ -58,21 +57,33 @@ const asks = (count: number) => `${count} ${count === 1 ? 'ask' : 'asks'}`;
         <div class="stat">
           <div class="stat-title">Last crawl</div>
           <div class="stat-value text-lg">{stats.lastRead ? date(stats.lastRead) : '—'}</div>
-          <div class="stat-desc">{stats.lastRead ? 'newest read in the corpus' : 'no crawl yet'}</div>
+          <div class="stat-desc">
+            {stats.mode === 'offline' ? 'cache re-parse' : 'newest read in the corpus'}
+          </div>
         </div>
         <div class="stat">
-          <div class="stat-title">Read in that run</div>
-          <div class="stat-value text-lg">{stats.readInRun.toLocaleString('en-GB')}</div>
-          <div class="stat-desc">new and rescored</div>
+          <div class="stat-title">Added</div>
+          <div class="stat-value text-lg">
+            {stats.added == null ? '—' : stats.added.toLocaleString('en-GB')}
+          </div>
+          <div class="stat-desc">
+            {stats.rescored ? `${stats.rescored.toLocaleString('en-GB')} rescored` : 'nothing rescored'}
+          </div>
         </div>
         <div class="stat">
           <div class="stat-title">Scored</div>
-          <div class="stat-value text-lg">{stats.scored.toLocaleString('en-GB')}</div>
-          <div class="stat-desc">of {stats.read.toLocaleString('en-GB')} read</div>
+          <div class="stat-value text-lg">
+            {stats.scored == null ? '—' : stats.scored.toLocaleString('en-GB')}
+          </div>
+          <div class="stat-desc">
+            {stats.read == null ? 'never crawled' : `of ${stats.read.toLocaleString('en-GB')} read`}
+          </div>
         </div>
         <div class="stat">
           <div class="stat-title">Still to read</div>
-          <div class="stat-value text-lg">{stats.queued.toLocaleString('en-GB')}</div>
+          <div class="stat-value text-lg">
+            {stats.queued == null ? '—' : stats.queued.toLocaleString('en-GB')}
+          </div>
           <div class="stat-desc">in the crawl queue</div>
         </div>
       </div>
