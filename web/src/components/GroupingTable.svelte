@@ -1,14 +1,21 @@
 <script>
-  import Stars from './Stars.svelte';
-  import { typeLabel } from '../lib/groupings.js';
+  import { onMount, tick } from 'svelte';
+  import ScoreTable from './ScoreTable.svelte';
+  import logoTones from '../data/logo-tones.json';
+  import { logoTile } from '../lib/logos.js';
+  import { verdictOf, VERDICT } from '../lib/verdict.js';
   import { ariaSortFor, compareValues, paginate, toggleSort } from '../lib/table.js';
+  import { typeLabel } from '../lib/groupings.js';
 
   let { rows = [], pageSize = 25 } = $props();
 
   let query = $state('');
   let type = $state('all');
   let hideIncomplete = $state(true);
-  let sortKey = $state('average');
+  // One drawer at a time: a 12-course program is a tall panel, and two open rows
+  // would push the rest of the directory off the screen.
+  let open = $state(null);
+  let sortKey = $state('starisk');
   let sortDir = $state('desc');
   let page = $state(1);
 
@@ -18,20 +25,26 @@
     { id: 'professional-certificate', label: 'Professional Certificates' },
   ];
 
-  // The numeric columns are sized to their content rather than as percentages:
-  // the page is max-w-4xl, and a percentage of it is narrower than the score
-  // plus its stars, which would spill into the next cell. The title takes the rest.
+  // The same three columns as the leaderboard: Coursera's number, ours, and the
+  // badge that names the distance between them. Ours is the review-weighted
+  // average of the courses inside; Coursera's is the pooled rating it shows for
+  // the bundle. Both are bundle-level, from different populations.
   const COLUMNS = [
     { key: 'title', label: 'Program', align: 'text-left', width: 'w-auto' },
-    { key: 'average', label: 'Avg', align: 'text-right', width: 'w-[6rem] md:w-[9.5rem]' },
-    { key: 'low', label: 'Min', align: 'text-right', width: 'w-[5rem]', hide: true },
-    { key: 'high', label: 'Max', align: 'text-right', width: 'w-[5rem]', hide: true },
-    { key: 'reviews', label: 'Reviews read', align: 'text-right', width: 'w-[8rem]', hide: true },
+    { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[6rem]', hide: true },
+    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[6rem]' },
+    { key: 'gap', label: 'Gap', align: 'text-left', width: 'w-[7rem]' },
   ];
+
+  const tones = logoTones;
+
+  function inflationOf(row) {
+    return row.coursera == null || row.starisk == null ? null : row.coursera - row.starisk;
+  }
 
   function value(row, key) {
     if (key === 'title') return (row.title ?? row.key).toLowerCase();
-    if (key === 'type') return typeLabel(row.type).toLowerCase();
+    if (key === 'gap') return inflationOf(row);
     return row[key] ?? null;
   }
 
@@ -72,16 +85,49 @@
     return ariaSortFor(key, sortKey, sortDir);
   }
 
+  function panelId(key) {
+    return `program-courses-${key.replace(/[^a-z0-9]+/gi, '-')}`;
+  }
+
+  /**
+   * Opening a drawer writes the program into the hash, so a course page can link
+   * straight into it (`/programs#specializations/algorithms`) and the state can be
+   * shared. Closing restores the clean URL.
+   */
+  function toggleRow(key) {
+    open = open === key ? null : key;
+    const base = location.pathname + location.search;
+    history.replaceState(null, '', open ? `${base}#${open}` : base);
+  }
+
+  onMount(() => {
+    const reveal = async () => {
+      const key = decodeURIComponent(location.hash.slice(1));
+      if (!key || !rows.some((row) => row.key === key)) return;
+      // A deep link wins over the default filters: the point of the link is to
+      // see the courses, including when the program is one of the partial sets.
+      query = '';
+      type = 'all';
+      hideIncomplete = false;
+      open = key;
+      // The drawer may have landed on another page of the directory.
+      await tick();
+      const index = ordered.findIndex((row) => row.key === key);
+      if (index >= 0) page = Math.floor(index / pageSize) + 1;
+    };
+    reveal();
+    window.addEventListener('hashchange', reveal);
+    return () => window.removeEventListener('hashchange', reveal);
+  });
+
   const completeCount = $derived(rows.filter((row) => row.complete).length);
   const partialCount = $derived(rows.length - completeCount);
-  const availableCount = $derived(hideIncomplete ? completeCount : rows.length);
 
+  // Counts describe the whole directory, not what the toggle leaves visible: "All"
+  // means all, and the toggle carries its own count.
   const typeCounts = $derived.by(() => {
-    const counts = new Map();
-    for (const row of rows) {
-      if (hideIncomplete && !row.complete) continue;
-      counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
-    }
+    const counts = new Map([['all', rows.length]]);
+    for (const row of rows) counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
     return counts;
   });
 
@@ -116,9 +162,7 @@
         onclick={() => pickType(option.id)}
       >
         {option.label}
-        <span class="opacity-50">
-          {option.id === 'all' ? availableCount : (typeCounts.get(option.id) ?? 0)}
-        </span>
+        <span class="opacity-50">{typeCounts.get(option.id) ?? 0}</span>
       </button>
     {/each}
     <button
@@ -163,46 +207,115 @@
     </thead>
     <tbody>
       {#each visible as row (row.key)}
-        <tr>
+        {@const comparable = row.complete &&
+          row.coursera != null &&
+          typeof row.starisk === 'number'}
+        {@const style = comparable ? VERDICT[verdictOf(row.coursera, row.starisk)] : null}
+        {@const isOpen = open === row.key}
+        {@const id = panelId(row.key)}
+        {@const logoSrc = logoTile(row.image) ?? '/coursera-logo.png'}
+        {@const darkChip = tones[logoSrc] === 'dark'}
+        <tr class="cursor-pointer" onclick={() => toggleRow(row.key)}>
           <td>
-            <div class="min-w-0">
-              <div class="truncate font-medium">
-                <a class="link link-hover" href={`/programs/${row.key}`}>{row.title}</a>
-              </div>
-              <!-- Coverage is all-or-nothing for almost every program, so it is a
-                   tag rather than a column: only the exceptions need saying. -->
-              <div class="flex items-center gap-2 text-xs text-base-content/50">
-                <span class="min-w-0 truncate">
-                  {row.provider ?? 'Unknown provider'}{' · '}{typeLabel(row.type)}
-                </span>
-                {#if !row.complete}
-                  <span
-                    class="badge badge-sm shrink-0 whitespace-nowrap {row.scored
-                      ? 'badge-warning'
-                      : 'badge-ghost'}"
+            <div class="flex items-center gap-3">
+              <button
+                class="btn btn-ghost btn-xs btn-square shrink-0"
+                aria-expanded={isOpen}
+                aria-controls={isOpen ? id : null}
+                aria-label={`${isOpen ? 'Hide' : 'Show'} the courses in ${row.title}`}
+                onclick={(event) => {
+                  event.stopPropagation();
+                  toggleRow(row.key);
+                }}
+              >
+                <svg
+                  class="h-4 w-4 transition-transform {isOpen ? 'rotate-90' : ''}"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.21 14.77a.75.75 0 01.02-1.06L11.17 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              <span
+                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded p-1 ring-1 {darkChip
+                  ? 'bg-base-content ring-base-content/20'
+                  : 'bg-white ring-base-300/60'}"
+              >
+                <img
+                  src={logoSrc}
+                  alt=""
+                  class="h-full w-full object-contain drop-shadow-[0_0_1px_rgba(0,0,0,0.6)]"
+                  loading="lazy"
+                  decoding="async"
+                  referrerpolicy="no-referrer"
+                />
+              </span>
+              <div class="min-w-0">
+                <div class="truncate font-medium">
+                  <a
+                    class="link link-hover"
+                    href={`/programs/${row.key}`}
+                    onclick={(event) => event.stopPropagation()}>{row.title}</a
                   >
-                    {row.scored ? `Incomplete ${row.scored}/${row.total}` : 'No scores'}
+                </div>
+                <div class="flex items-center gap-2 text-xs text-base-content/50">
+                  <span class="min-w-0 truncate">
+                    {row.provider ?? 'Unknown provider'}{' · '}{row.total}{' '}
+                    {row.total === 1 ? 'course' : 'courses'}
                   </span>
-                {/if}
+                  {#if !row.complete}
+                    <span
+                      class="badge badge-sm shrink-0 whitespace-nowrap {row.scored
+                        ? 'badge-warning'
+                        : 'badge-ghost'}"
+                    >
+                      {row.scored ? `Incomplete ${row.scored}/${row.total}` : 'No scores'}
+                    </span>
+                  {/if}
+                </div>
               </div>
             </div>
+          </td>
+          <td class="hidden text-right sm:table-cell">
+            {row.coursera == null ? '—' : row.coursera.toFixed(1)}
           </td>
           <td class="text-right">
-            <div class="flex items-center justify-end gap-2">
-              <span class="font-bold">{row.average == null ? '—' : row.average.toFixed(1)}</span>
-              {#if row.average != null}
-                <span class="hidden md:inline-flex"><Stars value={row.average} /></span>
-              {/if}
-            </div>
+            {#if typeof row.starisk === 'number'}
+              <span class="font-bold">{row.starisk.toFixed(1)}</span>
+            {:else}
+              <span class="badge badge-ghost badge-sm whitespace-nowrap">No score</span>
+            {/if}
           </td>
-          <td class="hidden text-right font-mono text-sm sm:table-cell">
-            {row.low == null ? '—' : row.low.toFixed(1)}
+          <td>
+            {#if style}
+              <span class="badge whitespace-nowrap {style.badge}">{style.label}</span>
+            {:else}
+              <span class="text-base-content/30" title="Only complete sets are compared">—</span>
+            {/if}
           </td>
-          <td class="hidden text-right font-mono text-sm sm:table-cell">
-            {row.high == null ? '—' : row.high.toFixed(1)}
-          </td>
-          <td class="hidden text-right font-mono text-sm sm:table-cell">{row.reviews}</td>
         </tr>
+        {#if isOpen}
+          <tr id={id} class="hover:bg-transparent">
+            <td colspan={COLUMNS.length} class="bg-base-200/50 px-0">
+              <div class="py-2 sm:pl-16">
+                <p class="mb-2 px-3 text-xs text-base-content/60 sm:px-4">
+                  {row.scored} of {row.total} courses scored{#if row.average != null}{' · course avg '}{row.average.toFixed(1)}{/if}{' · '}{row.reviews} reviews read
+                </p>
+                <ScoreTable
+                  rows={row.courses}
+                  showFilters={false}
+                  compact={true}
+                  defaultSortKey="starisk"
+                />
+              </div>
+            </td>
+          </tr>
+        {/if}
       {/each}
     </tbody>
   </table>
