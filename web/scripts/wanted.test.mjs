@@ -185,24 +185,29 @@ test('a missing Coursera number does not break the line', () => {
   assert.equal(entry.summary, 'Starisk 2.5');
 });
 
-test('crawl stats read the last run off the corpus', () => {
-  const corpus = {
-    'learn/a': { starisk: 4, scrapedAt: '2026-11-24T10:00:00+00:00' },
-    'learn/b': { no_reviews: true, scrapedAt: '2026-11-24T10:00:00+00:00' },
-    'learn/c': { starisk: 3, scrapedAt: '2026-11-20T10:00:00+00:00' },
-  };
+test('reads the crawl dashboard from the stats file', () => {
+  const stats = buildCrawlStats({
+    at: '2026-11-24T11:21:56+00:00',
+    mode: 'live',
+    added: 120,
+    rescored: 0,
+    records: 1469,
+    scored: 1146,
+    queued: 84,
+  });
 
-  const stats = buildCrawlStats(
-    corpus,
-    ['learn/a', 'learn/b', 'learn/c', 'learn/new', 'learn/dead'],
-    { 'learn/dead': { at: '2026-11-24' } },
-  );
+  assert.equal(stats.lastRead, '2026-11-24T11:21:56+00:00');
+  assert.equal(stats.added, 120);
+  assert.equal(stats.rescored, 0);
+  assert.equal(stats.read, 1469);
+  assert.equal(stats.scored, 1146);
+  assert.equal(stats.queued, 84);
+});
 
-  assert.equal(stats.lastDay, '2026-11-24');
-  assert.equal(stats.readInRun, 2);
-  assert.equal(stats.scored, 2);
-  assert.equal(stats.read, 3);
-  // `learn/new` is not read yet; `learn/dead` is a tombstone, not queue work.
-  assert.equal(stats.queued, 1);
-  assert.equal(stats.listed, 5);
+test('a missing stats file does not break the page', () => {
+  const stats = buildCrawlStats({});
+
+  assert.equal(stats.lastRead, null);
+  assert.equal(stats.added, null);
+  assert.equal(stats.queued, null);
 });
