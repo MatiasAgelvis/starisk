@@ -18,7 +18,16 @@
       "learn/generative-ai-elevate-your-data-science-career",
       "learn/career-guide-and-interview-prep-for-data-science-pc"
     ],
-    "provider": "IBM"
+    "provider": "IBM",
+    "coursera": 4.6,
+    "ratings_total": 259820,
+    "rating_counts": {
+      "1": 3299,
+      "2": 3398,
+      "3": 10855,
+      "4": 50080,
+      "5": 192188
+    }
   },
   "professional-certificates/ibm-enterprise-ai-transformation-and-consulting": {
     "key": "professional-certificates/ibm-enterprise-ai-transformation-and-consulting",
@@ -34,7 +43,16 @@
       "learn/ai-governance-risk-and-executive-communication",
       "learn/ai-transformation-advisory-package"
     ],
-    "provider": "IBM"
+    "provider": "IBM",
+    "coursera": 3.4,
+    "ratings_total": 10,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 8
+    }
   },
   "specializations/ai-agents-mode-context-protocol": {
     "key": "specializations/ai-agents-mode-context-protocol",
@@ -47,7 +65,16 @@
       "learn/claude-code",
       "learn/trustworthy-generative-ai"
     ],
-    "provider": "Vanderbilt University"
+    "provider": "Vanderbilt University",
+    "coursera": 4.8,
+    "ratings_total": 9609,
+    "rating_counts": {
+      "1": 93,
+      "2": 51,
+      "3": 189,
+      "4": 1169,
+      "5": 8107
+    }
   },
   "specializations/ai-healthcare": {
     "key": "specializations/ai-healthcare",
@@ -61,7 +88,16 @@
       "learn/evaluations-ai-applications-healthcare",
       "learn/ai-in-healthcare-capstone"
     ],
-    "provider": "Stanford Online"
+    "provider": "Stanford Online",
+    "coursera": 4.7,
+    "ratings_total": 3408,
+    "rating_counts": {
+      "1": 37,
+      "2": 31,
+      "3": 102,
+      "4": 517,
+      "5": 2721
+    }
   },
   "specializations/algorithms": {
     "key": "specializations/algorithms",
@@ -74,7 +110,16 @@
       "learn/algorithms-greedy",
       "learn/algorithms-npcomplete"
     ],
-    "provider": "Stanford Online"
+    "provider": "Stanford Online",
+    "coursera": 4.8,
+    "ratings_total": 9457,
+    "rating_counts": {
+      "1": 77,
+      "2": 45,
+      "3": 163,
+      "4": 1200,
+      "5": 7972
+    }
   },
   "specializations/computer-fundamentals": {
     "key": "specializations/computer-fundamentals",
@@ -90,7 +135,16 @@
       "learn/algorithmic-thinking-2",
       "learn/fundamentals-of-computing-capstone"
     ],
-    "provider": "Rice University"
+    "provider": "Rice University",
+    "coursera": 4.8,
+    "ratings_total": 6211,
+    "rating_counts": {
+      "1": 78,
+      "2": 35,
+      "3": 139,
+      "4": 638,
+      "5": 5321
+    }
   },
   "specializations/data-science-fundamentals": {
     "key": "specializations/data-science-fundamentals",
@@ -103,7 +157,16 @@
       "learn/cluster-analysis-association-mining-and-model-evaluation",
       "learn/natural-language-processing-captsone-assignment"
     ],
-    "provider": "University of California, Irvine"
+    "provider": "University of California, Irvine",
+    "coursera": 4.3,
+    "ratings_total": 332,
+    "rating_counts": {
+      "1": 15,
+      "2": 15,
+      "3": 26,
+      "4": 63,
+      "5": 213
+    }
   },
   "specializations/deep-learning": {
     "key": "specializations/deep-learning",
@@ -117,7 +180,16 @@
       "learn/convolutional-neural-networks",
       "learn/nlp-sequence-models"
     ],
-    "provider": "DeepLearning.AI"
+    "provider": "DeepLearning.AI",
+    "coursera": 4.8,
+    "ratings_total": 311483,
+    "rating_counts": {
+      "1": 505,
+      "2": 757,
+      "3": 4492,
+      "4": 33305,
+      "5": 272424
+    }
   },
   "specializations/differential-calculus-data-modeling": {
     "key": "specializations/differential-calculus-data-modeling",
@@ -130,7 +202,16 @@
       "learn/calculus-through-data-and-modelling-differentiation-rules",
       "learn/calculus-through-data-and-modelling-applying-differentiation"
     ],
-    "provider": "Johns Hopkins University"
+    "provider": "Johns Hopkins University",
+    "coursera": 4.8,
+    "ratings_total": 524,
+    "rating_counts": {
+      "1": 3,
+      "2": 6,
+      "3": 13,
+      "4": 56,
+      "5": 446
+    }
   },
   "specializations/embedded-systems-security": {
     "key": "specializations/embedded-systems-security",
@@ -143,7 +224,16 @@
       "learn/real-time-systems",
       "learn/autonomous-runway-detection"
     ],
-    "provider": "28DIGITAL"
+    "provider": "28DIGITAL",
+    "coursera": 4.3,
+    "ratings_total": 1413,
+    "rating_counts": {
+      "1": 57,
+      "2": 50,
+      "3": 99,
+      "4": 337,
+      "5": 870
+    }
   },
   "specializations/entrepreneurial-finance": {
     "key": "specializations/entrepreneurial-finance",
@@ -156,7 +246,16 @@
       "learn/blockchain-business-models",
       "learn/financial-risk-management-with-r"
     ],
-    "provider": "Duke University"
+    "provider": "Duke University",
+    "coursera": 4.5,
+    "ratings_total": 1674,
+    "rating_counts": {
+      "1": 41,
+      "2": 33,
+      "3": 102,
+      "4": 370,
+      "5": 1128
+    }
   },
   "specializations/essential-mathematics-for-computer-science-odc": {
     "key": "specializations/essential-mathematics-for-computer-science-odc",
@@ -170,7 +269,16 @@
       "learn/logic-and-reasoning-for-computing",
       "learn/algorithms-and-complexity"
     ],
-    "provider": "University of London"
+    "provider": "University of London",
+    "coursera": 4.1,
+    "ratings_total": 22,
+    "rating_counts": {
+      "1": 3,
+      "2": 0,
+      "3": 1,
+      "4": 2,
+      "5": 16
+    }
   },
   "specializations/excel": {
     "key": "specializations/excel",
@@ -183,7 +291,16 @@
       "learn/excel-intermediate-2",
       "learn/excel-advanced"
     ],
-    "provider": "Macquarie University"
+    "provider": "Macquarie University",
+    "coursera": 4.9,
+    "ratings_total": 83888,
+    "rating_counts": {
+      "1": 265,
+      "2": 177,
+      "3": 844,
+      "4": 8800,
+      "5": 73802
+    }
   },
   "specializations/genomic-data-science": {
     "key": "specializations/genomic-data-science",
@@ -198,7 +315,16 @@
       "learn/bioconductor",
       "learn/statistical-genomics"
     ],
-    "provider": "Johns Hopkins University"
+    "provider": "Johns Hopkins University",
+    "coursera": 4.5,
+    "ratings_total": 9016,
+    "rating_counts": {
+      "1": 194,
+      "2": 218,
+      "3": 641,
+      "4": 2306,
+      "5": 5657
+    }
   },
   "specializations/good-with-words": {
     "key": "specializations/good-with-words",
@@ -211,7 +337,16 @@
       "learn/writing-editing-drafting",
       "learn/writing-editing-revising"
     ],
-    "provider": "University of Michigan"
+    "provider": "University of Michigan",
+    "coursera": 4.7,
+    "ratings_total": 3399,
+    "rating_counts": {
+      "1": 39,
+      "2": 30,
+      "3": 94,
+      "4": 444,
+      "5": 2792
+    }
   },
   "specializations/improve-english": {
     "key": "specializations/improve-english",
@@ -224,7 +359,16 @@
       "learn/eportfolio-english",
       "learn/english-communication-capstone"
     ],
-    "provider": "Georgia Institute of Technology"
+    "provider": "Georgia Institute of Technology",
+    "coursera": 4.7,
+    "ratings_total": 30693,
+    "rating_counts": {
+      "1": 370,
+      "2": 202,
+      "3": 738,
+      "4": 4568,
+      "5": 24815
+    }
   },
   "specializations/investment-management-python-machine-learning": {
     "key": "specializations/investment-management-python-machine-learning",
@@ -237,7 +381,16 @@
       "learn/python-machine-learning-for-investment-management",
       "learn/machine-learning-asset-management-alternative-data"
     ],
-    "provider": "EDHEC Business School"
+    "provider": "EDHEC Business School",
+    "coursera": 4.6,
+    "ratings_total": 2565,
+    "rating_counts": {
+      "1": 75,
+      "2": 79,
+      "3": 139,
+      "4": 357,
+      "5": 1915
+    }
   },
   "specializations/learn-spanish": {
     "key": "specializations/learn-spanish",
@@ -251,7 +404,16 @@
       "learn/spanish-vocabulary-careers",
       "learn/spanish-vocabulary-project"
     ],
-    "provider": "University of California, Davis"
+    "provider": "University of California, Davis",
+    "coursera": 4.5,
+    "ratings_total": 4558,
+    "rating_counts": {
+      "1": 171,
+      "2": 67,
+      "3": 147,
+      "4": 728,
+      "5": 3445
+    }
   },
   "specializations/mathematics-machine-learning": {
     "key": "specializations/mathematics-machine-learning",
@@ -263,7 +425,16 @@
       "learn/multivariate-calculus-machine-learning",
       "learn/pca-machine-learning"
     ],
-    "provider": "Imperial College London"
+    "provider": "Imperial College London",
+    "coursera": 4.6,
+    "ratings_total": 21596,
+    "rating_counts": {
+      "1": 412,
+      "2": 401,
+      "3": 1013,
+      "4": 4254,
+      "5": 15516
+    }
   },
   "specializations/medical-billing-coding-fundamentals": {
     "key": "specializations/medical-billing-coding-fundamentals",
@@ -275,7 +446,16 @@
       "learn/medical-terminology-human-body-fundamentals",
       "learn/medical-billing-coding-essentials"
     ],
-    "provider": "MedCerts"
+    "provider": "MedCerts",
+    "coursera": 4.7,
+    "ratings_total": 2028,
+    "rating_counts": {
+      "1": 39,
+      "2": 12,
+      "3": 52,
+      "4": 208,
+      "5": 1717
+    }
   },
   "specializations/modern-contemporary-art-design": {
     "key": "specializations/modern-contemporary-art-design",
@@ -287,7 +467,16 @@
       "learn/contemporary-art",
       "learn/photography"
     ],
-    "provider": "The Museum of Modern Art"
+    "provider": "The Museum of Modern Art",
+    "coursera": 4.8,
+    "ratings_total": 13405,
+    "rating_counts": {
+      "1": 83,
+      "2": 81,
+      "3": 319,
+      "4": 1919,
+      "5": 11003
+    }
   },
   "specializations/music-production": {
     "key": "specializations/music-production",
@@ -300,7 +489,16 @@
       "learn/protools",
       "learn/music-production-capstone"
     ],
-    "provider": "Berklee"
+    "provider": "Berklee",
+    "coursera": 4.8,
+    "ratings_total": 3955,
+    "rating_counts": {
+      "1": 34,
+      "2": 32,
+      "3": 88,
+      "4": 458,
+      "5": 3343
+    }
   },
   "specializations/object-oriented-programming-s12n": {
     "key": "specializations/object-oriented-programming-s12n",
@@ -314,7 +512,16 @@
       "learn/cplusplus-crypto-iv",
       "learn/cplusplus-crypto-v"
     ],
-    "provider": "University of London"
+    "provider": "University of London",
+    "coursera": 4.7,
+    "ratings_total": 357,
+    "rating_counts": {
+      "1": 11,
+      "2": 3,
+      "3": 8,
+      "4": 43,
+      "5": 292
+    }
   },
   "specializations/oss-development-linux-git": {
     "key": "specializations/oss-development-linux-git",
@@ -327,7 +534,16 @@
       "learn/linux-tools-for-developers",
       "learn/git-distributed-development"
     ],
-    "provider": "The Linux Foundation"
+    "provider": "The Linux Foundation",
+    "coursera": 4.6,
+    "ratings_total": 4272,
+    "rating_counts": {
+      "1": 65,
+      "2": 68,
+      "3": 211,
+      "4": 870,
+      "5": 3058
+    }
   },
   "specializations/people-and-soft-skills-for-professional-success": {
     "key": "specializations/people-and-soft-skills-for-professional-success",
@@ -342,7 +558,16 @@
       "learn/interpersonal-skills",
       "learn/people-soft-skills-assessment"
     ],
-    "provider": "IBM"
+    "provider": "IBM",
+    "coursera": 4.7,
+    "ratings_total": 6631,
+    "rating_counts": {
+      "1": 101,
+      "2": 79,
+      "3": 202,
+      "4": 1134,
+      "5": 5115
+    }
   },
   "specializations/prompt-engineering-for-law": {
     "key": "specializations/prompt-engineering-for-law",
@@ -354,7 +579,16 @@
       "learn/generative-ai-for-legal-services-primer",
       "learn/openai-custom-gpts"
     ],
-    "provider": "Vanderbilt University"
+    "provider": "Vanderbilt University",
+    "coursera": 4.8,
+    "ratings_total": 9154,
+    "rating_counts": {
+      "1": 93,
+      "2": 48,
+      "3": 173,
+      "4": 1092,
+      "5": 7748
+    }
   },
   "specializations/public-speaking": {
     "key": "specializations/public-speaking",
@@ -367,7 +601,16 @@
       "learn/persuade-speech",
       "learn/speak-to-inspire-ceremonial-motivational-speeches"
     ],
-    "provider": "University of Washington"
+    "provider": "University of Washington",
+    "coursera": 4.7,
+    "ratings_total": 3398,
+    "rating_counts": {
+      "1": 56,
+      "2": 17,
+      "3": 63,
+      "4": 440,
+      "5": 2822
+    }
   },
   "specializations/reinforcement-learning": {
     "key": "specializations/reinforcement-learning",
@@ -380,7 +623,16 @@
       "learn/prediction-control-function-approximation",
       "learn/complete-reinforcement-learning-system"
     ],
-    "provider": "University of Alberta"
+    "provider": "University of Alberta",
+    "coursera": 4.7,
+    "ratings_total": 5679,
+    "rating_counts": {
+      "1": 45,
+      "2": 31,
+      "3": 162,
+      "4": 792,
+      "5": 4649
+    }
   },
   "specializations/singer-songwriter": {
     "key": "specializations/singer-songwriter",
@@ -393,7 +645,16 @@
       "learn/songwriting-lyrics",
       "learn/ableton-live"
     ],
-    "provider": "Berklee"
+    "provider": "Berklee",
+    "coursera": 4.8,
+    "ratings_total": 4572,
+    "rating_counts": {
+      "1": 57,
+      "2": 37,
+      "3": 90,
+      "4": 580,
+      "5": 3808
+    }
   },
   "specializations/statistical-methods-for-computer-science": {
     "key": "specializations/statistical-methods-for-computer-science",
@@ -405,6 +666,15 @@
       "learn/advanced-probability-and-statistical-methods",
       "learn/computational-and-graphical-models-in-probability"
     ],
-    "provider": "Johns Hopkins University"
+    "provider": "Johns Hopkins University",
+    "coursera": 5.0,
+    "ratings_total": 8,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 7
+    }
   }
 }
