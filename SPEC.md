@@ -149,6 +149,17 @@ budget, the gate does not count them as errors, and `expand` will not re-add the
 from a profile that still lists them. Deleting an entry asks for a retry. A course
 that was already scored keeps its record: the score was true when it was measured.
 
+`pipeline/data/stats.json` — what the last run did, written by the crawl itself:
+```json
+{"at": "2026-11-24T11:21:56Z", "mode": "live", "added": 120, "rescored": 0,
+ "records": 1469, "scored": 1146, "noReviews": 323, "errors": 0,
+ "listed": 1556, "queued": 84, "retired": 3}
+```
+It exists because `scores.json` cannot tell a new record from a re-read one after
+the fact — both sit in arrival order. The site's crawl dashboard reads this file
+instead of the corpus and the crawl list. A run that reads nothing leaves it
+alone, so a quiet night is not a commit.
+
 `scores.json` — the built artifact the site serves, keyed by `type/slug`.
 Every key starts with `learn/`: this file is the course corpus and nothing else.
 ```json
