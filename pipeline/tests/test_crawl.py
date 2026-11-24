@@ -224,6 +224,28 @@ class RetiredCrawlTest(unittest.TestCase):
         self.assertNotIn("error", scores["learn/old"])
         self.assertTrue(retired["learn/old"]["had_score"])
 
+    def test_a_program_is_not_crawled_as_a_course(self):
+        # Coursera renders a program page's reviews from whichever course is
+        # selected, so a program key in the source list would store that course's
+        # reviews under the program's name.
+        calls = []
+        problems = []
+
+        def fetch(url):
+            calls.append(url)
+            return self.good_html
+
+        scores = crawl(
+            ["specializations/ai-healthcare", "learn/good"],
+            fetch=fetch,
+            now=STAMP,
+            problems=problems,
+        )
+
+        self.assertEqual(list(scores), ["learn/good"])
+        self.assertFalse(any("specializations" in url for url in calls))
+        self.assertTrue(any("non-course" in line for line in problems))
+
     def test_a_retired_course_does_not_consume_the_budget(self):
         calls = []
 

@@ -23,6 +23,16 @@ PAGE = (
     '<a href="/learn/algorithms-part1" data-e2e="sdp-course-list-link">A again</a>'
 )
 
+# A program page has no written reviews, only Coursera's pooled rating.
+RATED_PAGE = (
+    '<meta property="og:title" content="Algorithms">'
+    '<script type="application/ld+json">'
+    '{"@type":"Product","name":"Algorithms",'
+    '"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.7","ratingCount":3408}}'
+    "</script>"
+    '<a href="/learn/algorithms-part1" data-e2e="sdp-course-list-link">A</a>'
+)
+
 
 class GroupingKeyTest(unittest.TestCase):
     def test_specialization_and_professional_certificate_pages(self):
@@ -64,6 +74,17 @@ class ExtractGroupingTest(unittest.TestCase):
         grouping = extract_grouping(PAGE, "professional-certificates/google-data-analytics")
 
         self.assertEqual(grouping["type"], "professional-certificate")
+
+    def test_reads_the_bundle_rating_and_never_scores_the_program(self):
+        grouping = extract_grouping(RATED_PAGE, "specializations/algorithms")
+
+        self.assertEqual(grouping["coursera"], 4.7)
+        self.assertEqual(grouping["ratings_total"], 3408)
+        # The page's review widget belongs to one of its courses, so nothing that
+        # looks like a score may come out of here.
+        self.assertNotIn("starisk", grouping)
+        self.assertNotIn("reviews", grouping)
+        self.assertNotIn("top_review", grouping)
 
     def test_a_page_without_courses_is_not_a_program(self):
         self.assertIsNone(extract_grouping("<html></html>", "specializations/empty"))
