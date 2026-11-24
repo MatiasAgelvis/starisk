@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildGroupings, buildProgramLookup, typeLabel } from '../src/lib/groupings.js';
+import { buildGroupings, buildMemberships, buildProgramLookup, typeLabel } from '../src/lib/groupings.js';
 
 const groupings = {
   'specializations/a': {
@@ -9,6 +9,8 @@ const groupings = {
     type: 'specialization',
     title: 'Program A',
     provider: 'Test U',
+    coursera: 4.2,
+    ratings_total: 1000,
     courses: ['learn/one', 'learn/two', 'learn/missing'],
   },
   'professional-certificates/b': {
@@ -23,7 +25,6 @@ const scores = {
   'learn/one': { starisk: 4.0, reviews: 10, title: 'One' },
   'learn/two': { starisk: 2.0, reviews: 30, title: 'Two' },
   'learn/three': { starisk: 5.0, reviews: 0, title: 'Three' },
-  'specializations/a': { starisk: 3.5 },
 };
 
 test('the lookup payload keeps only what the island draws', () => {
@@ -37,6 +38,126 @@ test('the lookup payload keeps only what the island draws', () => {
   assert.equal(program.scored, 2);
   assert.equal(program.total, 3);
   assert.equal(program.reviews, 40);
+});
+
+test('maps each course to the programs that contain it', () => {
+  const memberships = buildMemberships(groupings, scores);
+
+  assert.deepEqual(memberships.get('learn/one'), [
+    { key: 'specializations/a', title: 'Program A', type: 'specialization' },
+  ]);
+  assert.deepEqual(memberships.get('learn/three'), [
+    {
+      key: 'professional-certificates/b',
+      title: 'Program B',
+      type: 'professional-certificate',
+    },
+  ]);
+  assert.equal(memberships.has('learn/nope'), false);
+});
+
+test('inherits the teaching team from its courses, deduped', () => {
+  const [program] = buildGroupings(
+    { 'specializations/a': { title: 'A', courses: ['learn/one', 'learn/two'] } },
+    {
+      'learn/one': { starisk: 4, instructors: [{ name: 'Ada', page: 'ada' }] },
+      'learn/two': {
+        starisk: 3,
+        instructors: [
+          { name: 'Ada', page: 'ada' },
+          { name: 'Alan', page: 'alan' },
+        ],
+      },
+    },
+  );
+
+  assert.deepEqual(program.instructors, [
+    { name: 'Ada', page: 'ada' },
+    { name: 'Alan', page: 'alan' },
+  ]);
+});
+
+test('separates never-read courses from ones with no written reviews', () => {
+  const [program] = buildGroupings(
+    {
+      'specializations/a': {
+        title: 'A',
+        courses: ['learn/one', 'learn/empty', 'learn/missing'],
+      },
+    },
+    {
+      'learn/one': { starisk: 4, reviews: 10 },
+      'learn/empty': { no_reviews: true, reviews: 0 },
+    },
+  );
+
+  assert.equal(program.scored, 1);
+  assert.equal(program.noReviews, 1);
+  assert.equal(program.unread, 1);
+});
+
+test('counts how the courses inside the bundle landed', () => {
+  const [program] = buildGroupings(
+    {
+      'specializations/a': {
+        title: 'A',
+        courses: ['learn/inflated', 'learn/padded', 'learn/held'],
+      },
+    },
+    {
+      'learn/inflated': { starisk: 3.0, coursera: 4.8 },
+      'learn/padded': { starisk: 3.5, coursera: 4.2 },
+      'learn/held': { starisk: 4.5, coursera: 4.6 },
+    },
+  );
+
+  assert.deepEqual(program.verdicts, { 'holds-up': 1, padded: 1, inflated: 1 });
+});
+
+test('carries the bundle rating distribution', () => {
+  const [program] = buildGroupings(
+    {
+      'specializations/a': {
+        title: 'A',
+        courses: ['learn/one'],
+        rating_counts: { '1': 1, '5': 9 },
+        ratings_total: 10,
+      },
+    },
+    { 'learn/one': { starisk: 4 } },
+  );
+
+  assert.deepEqual(program.ratingCounts, { '1': 1, '5': 9 });
+  assert.equal(program.ratings, 10);
+});
+
+test('a course can belong to more than one program', () => {
+  const memberships = buildMemberships(
+    {
+      'specializations/a': { title: 'A', courses: ['learn/two'] },
+      'specializations/b': { title: 'B', courses: ['learn/two'] },
+    },
+    scores,
+  );
+
+  assert.deepEqual(
+    memberships.get('learn/two').map((program) => program.key),
+    ['specializations/a', 'specializations/b'],
+  );
+});
+
+test('takes the provider mark from the program record or a member course', () => {
+  const [withRecord] = buildGroupings(
+    { 'specializations/a': { title: 'A', courses: ['learn/one'] } },
+    { ...scores, 'specializations/a': { starisk: 3.5, image: '/logos/tile/a.png' } },
+  );
+  const [fromCourse] = buildGroupings(
+    { 'specializations/a': { title: 'A', courses: ['learn/one'] } },
+    { 'learn/one': { starisk: 4, image: '/logos/tile/provider.png' } },
+  );
+
+  assert.equal(withRecord.image, '/logos/tile/a.png');
+  assert.equal(fromCourse.image, '/logos/tile/provider.png');
 });
 
 test('a program with no scores still appears in the lookup', () => {
@@ -71,7 +192,24 @@ test('weights the average by reviews read', () => {
   assert.equal(program.total, 3);
   assert.equal(program.complete, false);
   assert.equal(program.reviews, 40);
-  assert.equal(program.programRating, 3.5);
+  assert.equal(program.coursera, 4.2);
+  assert.equal(program.ratings, 1000);
+  // A program is never scored from its page's review widget.
+  assert.equal(program.programRating, undefined);
+});
+
+test('a score stored under a program key is ignored', () => {
+  const [program] = buildGroupings(
+    { 'specializations/a': { title: 'A', courses: ['learn/one'] } },
+    {
+      'learn/one': { starisk: 4.0, reviews: 10 },
+      'specializations/a': { starisk: 1.2, coursera: 4.9, reviews: 20 },
+    },
+  );
+
+  assert.equal(program.average, 4.0);
+  assert.equal(program.coursera, null);
+  assert.equal(program.reviews, 10);
 });
 
 test('falls back to the plain mean when no course has reviews', () => {
@@ -82,7 +220,7 @@ test('falls back to the plain mean when no course has reviews', () => {
   assert.equal(program.average, 5.0);
   assert.equal(program.scored, 1);
   assert.equal(program.complete, true);
-  assert.equal(program.programRating, null);
+  assert.equal(program.coursera, null);
 });
 
 test('keeps unscored and missing courses in the list', () => {

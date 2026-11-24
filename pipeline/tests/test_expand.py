@@ -17,11 +17,12 @@ def og(title: str) -> str:
 
 
 class ParseArgsTest(unittest.TestCase):
-    def test_defaults_to_both_levers(self):
+    def test_defaults_to_all_levers(self):
         options = parse_args([])
 
         self.assertFalse(options.specializations)
         self.assertFalse(options.instructors)
+        self.assertFalse(options.programs)
         self.assertFalse(options.write)
 
     def test_flags(self):
@@ -30,6 +31,12 @@ class ParseArgsTest(unittest.TestCase):
         self.assertTrue(options.instructors)
         self.assertEqual(options.limit, 5)
         self.assertTrue(options.write)
+
+    def test_the_program_lever_has_its_own_flag(self):
+        options = parse_args(["--programs"])
+
+        self.assertTrue(options.programs)
+        self.assertFalse(options.specializations)
 
 
 class BareTitleTest(unittest.TestCase):
@@ -211,6 +218,31 @@ class PlanTest(unittest.TestCase):
 
         self.assertEqual(list(new), ["learn/course-c"])
         self.assertEqual(new["learn/course-c"], ["instructor:ada"])
+
+    def test_program_members_join_the_queue(self):
+        index = {
+            "specializations/a": {
+                "title": "A",
+                "courses": ["learn/already-there", "learn/from-program", "learn/retired"],
+            }
+        }
+
+        new, lines = plan(
+            {},
+            [],
+            existing=["learn/already-there"],
+            fetch=lambda url: "",
+            delay=0,
+            specializations=False,
+            instructors=False,
+            programs=True,
+            program_index=index,
+            retired={"learn/retired"},
+        )
+
+        self.assertEqual(list(new), ["learn/from-program"])
+        self.assertEqual(new["learn/from-program"], ["program:specializations/a"])
+        self.assertTrue(any("programs: 1 programs" in line for line in lines))
 
     def test_a_parent_page_that_dies_is_reported_not_raised(self):
         def fetch(url):

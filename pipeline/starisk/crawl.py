@@ -58,6 +58,7 @@ from .paths import DATA_DIR
 SOURCES_PATH = DATA_DIR / "sources.json"
 SCORES_PATH = DATA_DIR / "scores.json"
 RETIRED_PATH = DATA_DIR / "retired.json"
+STATS_PATH = DATA_DIR / "stats.json"
 
 DEFAULT_DELAY = 1.5
 
@@ -315,7 +316,21 @@ def crawl(
     moment = now or datetime.now(timezone.utc)
     stamp = moment.isoformat()
 
+    def note(line: str) -> None:
+        if problems is not None:
+            problems.append(line)
+
     work = order_by_staleness(unique_sources(sources), scores)
+    # V1 is courses-only (D17). A program page has no written reviews of its own —
+    # Coursera renders the widget of whichever course is selected — so fetching one
+    # as a course would store that course's reviews under the program's key.
+    not_courses = [key for key in work if not key.startswith("learn/")]
+    if not_courses:
+        work = [key for key in work if key.startswith("learn/")]
+        note(
+            f"skipped {len(not_courses)} non-course source(s), e.g. {not_courses[0]} "
+            "(programs are not crawled as courses)"
+        )
     # A retired course is gone for good, so it must not take a slot in the budget.
     if retired:
         work = [key for key in work if key not in retired]
@@ -328,11 +343,6 @@ def crawl(
         work = work[:limit]
 
     total = len(work)
-
-    def note(line: str) -> None:
-        if problems is not None:
-            problems.append(line)
-
     for index, key in enumerate(work, start=1):
         if progress:
             progress(index, total, key)
@@ -506,6 +516,40 @@ def write_atomic(path: Path, data: dict | list) -> None:
             os.unlink(temporary)
 
 
+def build_stats(
+    before: dict,
+    after: dict,
+    sources: list[str],
+    retired: dict,
+    moment: datetime,
+    offline: bool = False,
+) -> dict:
+    """What this run did, in one small file.
+
+    `scores.json` cannot say which records are new and which were re-read: both sit
+    in arrival order. The run itself knows, so it says so here — and the site's
+    crawl dashboard reads this file instead of the whole corpus and the crawl list.
+    """
+    counts = summarize(after)
+    return {
+        "at": moment.isoformat(),
+        "mode": "offline" if offline else "live",
+        "added": sum(1 for key in after if key not in before),
+        "rescored": sum(
+            1 for key in after if key in before and after[key] != before[key]
+        ),
+        "records": counts["records"],
+        "scored": counts["scored"],
+        "noReviews": counts["no_reviews"],
+        "errors": counts["errors"],
+        "listed": len(sources),
+        # Courses in the list that have never produced a record. Tombstones are
+        # not queue work: Coursera will not serve them again.
+        "queued": sum(1 for key in sources if key not in after and key not in retired),
+        "retired": len(retired),
+    }
+
+
 def summarize(scores: dict) -> dict:
     """The counts a run is judged by.
 
@@ -649,6 +693,21 @@ def main(argv: list[str]) -> int:
     write_atomic(SCORES_PATH, scores)
     if len(retired) > known_retired:
         write_retired(retired)
+    # A run that read nothing (everything fresh, or rate-limited before the first
+    # course) leaves the file alone: a stats-only commit every night would make
+    # "did anything change?" unanswerable, the same reason demand keeps its stamp.
+    if state["done"]:
+        write_atomic(
+            STATS_PATH,
+            build_stats(
+                existing,
+                scores,
+                sources,
+                retired,
+                moment,
+                offline=options["offline"],
+            ),
+        )
 
     stats = summarize(scores)
     verb = "reparsed" if options["offline"] else "fetched"

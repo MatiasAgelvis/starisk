@@ -6,8 +6,15 @@ programs. This module builds the derived index — conceptually the `programs`
 table plus the `program_courses` join — from pages that already list their
 courses. The `courses` values are foreign keys into `scores.json`.
 
+A program is **not a course**: its page has no written reviews of its own (the
+review widget belongs to whichever course is selected), so no score is derived
+here. What is stored is the bundle's own aggregate — Coursera's pooled rating and
+the population behind it — which is the one number that is the program's own.
+
 No network: it reads the page cache. Program pages are fetched by `expand` (for
-specializations) or added explicitly (for Professional Certificates).
+specializations) or added explicitly (for Professional Certificates). `--discover`
+walks Coursera's specialization sitemap to add the next few program seeds, which
+is how the directory grows without an editorial list.
 """
 
 from __future__ import annotations
@@ -16,15 +23,26 @@ import argparse
 import json
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
-from .adapter import extract_details, extract_specialization_courses, extract_title
+from .adapter import (
+    extract_aggregate,
+    extract_details,
+    extract_specialization_courses,
+    extract_title,
+)
 from .cache import CACHE_DIR, load_page, store_page
-from .crawl import DATA_DIR, write_atomic
-from .fetch import RateLimited, fetch_page
+from .crawl import DATA_DIR, load_retired, write_atomic, write_retired
+from .fetch import RateLimited, Retired, fetch_page
+from .sitemap import program_slugs
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
 PROGRAMS_PATH = DATA_DIR / "programs.json"
+
+# Programs discovered per run. One request each, and each brings a handful of
+# courses into the queue, so this is the throttle on corpus growth.
+DISCOVER_PER_RUN = 20
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
 
@@ -56,7 +74,14 @@ def grouping_key(path: Path) -> str | None:
 
 
 def extract_grouping(html: str, key: str) -> dict | None:
-    """One program from its landing page, or None when the page has no courses."""
+    """One program from its landing page, or None when the page has no courses.
+
+    A program has no written reviews of its own — Coursera renders the review
+    widget of whichever course is selected — so this never stores a score. What
+    it does store is the page's own aggregate: the pooled rating Coursera shows
+    for the bundle, and the population behind it. That is the one number a
+    program has that is not derived from its courses.
+    """
     kind = key.split("/", 1)[0]
     courses = list(
         dict.fromkeys(f"learn/{slug}" for slug in extract_specialization_courses(html))
@@ -75,9 +100,18 @@ def extract_grouping(html: str, key: str) -> dict | None:
         "url": f"https://www.coursera.org/{key}",
         "courses": courses,
     }
-    provider = extract_details(html).get("provider")
+    details = extract_details(html)
+    provider = details.get("provider")
     if provider:
         grouping["provider"] = provider
+
+    aggregate = extract_aggregate(html)
+    if aggregate["rating"] is not None:
+        grouping["coursera"] = round(aggregate["rating"], 1)
+    if aggregate["ratings_total"]:
+        grouping["ratings_total"] = aggregate["ratings_total"]
+    if aggregate["counts"]:
+        grouping["rating_counts"] = aggregate["counts"]
     return grouping
 
 
@@ -110,6 +144,43 @@ def build_groupings(directory: Path = CACHE_DIR) -> dict[str, dict]:
     return groupings
 
 
+def read_seeds(path: Path = PROGRAMS_PATH) -> list[str]:
+    """The program keys someone committed to fetching: `programs.json`."""
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    return [str(value).strip() for value in data if str(value).strip()]
+
+
+def discover_candidates(
+    index: dict,
+    seeds: list[str],
+    retired: dict,
+    slugs: list[str],
+    limit: int = DISCOVER_PER_RUN,
+) -> list[str]:
+    """The next program pages nobody has fetched yet, in sitemap order.
+
+    `index` (published), `seeds` (committed) and `retired` (tombstones) are
+    everything already known. Walking in sitemap order means every run advances
+    instead of retrying the head of the list, and a 404 is recorded once rather
+    than paid for every night.
+    """
+    known = set(index) | set(seeds) | set(retired)
+    candidates = []
+    for slug in slugs:
+        key = f"specializations/{slug}"
+        if key in known:
+            continue
+        candidates.append(key)
+        if len(candidates) >= limit:
+            break
+    return candidates
+
+
 def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH) -> list[str]:
     """Program keys to fetch when their pages are not cached yet.
 
@@ -136,16 +207,32 @@ def fetch_missing(
     cache_dir: Path = CACHE_DIR,
     delay: float = 0.0,
     sleep=time.sleep,
+    retired: dict | None = None,
 ) -> int:
-    """Fetch seeded program pages that are not in the cache. Returns the count."""
+    """Fetch seeded program pages that are not in the cache. Returns the count.
+
+    A 404/410 here means the program is gone, not that the run broke: it is
+    tombstoned in `retired` (when a dict is given) so discovery never pays for it
+    again.
+    """
     fetched = 0
     for key in keys:
+        if retired and key in retired:
+            continue
         if load_page(key, cache_dir) or load_page(f"{key}.landing", cache_dir):
             continue
         try:
             html = fetch(f"https://www.coursera.org/{key}")
         except RateLimited:
             raise
+        except Retired as error:
+            if retired is not None:
+                retired[key] = {
+                    "at": datetime.now(timezone.utc).isoformat(),
+                    "reason": str(error),
+                }
+            print(f"  ! retired ({key}): {error}")
+            continue
         except Exception as error:  # noqa: BLE001 - one bad seed must not block the rest
             print(f"  ! seed failed ({key}): {error}")
             continue
@@ -195,6 +282,17 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="fetch seeded program pages that are not cached yet",
     )
     parser.add_argument(
+        "--discover",
+        action="store_true",
+        help="seed the next programs from the sitemap (writes programs.json with --write)",
+    )
+    parser.add_argument(
+        "--discover-limit",
+        type=int,
+        default=DISCOVER_PER_RUN,
+        help=f"programs to discover this run (default {DISCOVER_PER_RUN})",
+    )
+    parser.add_argument(
         "--force",
         action="store_true",
         help="write even when the index would lose programs",
@@ -204,14 +302,34 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str]) -> int:
     options = parse_args(argv)
+    retired = load_retired()
+    known_retired = len(retired)
+
+    if options.discover:
+        seeds = read_seeds()
+        slugs = program_slugs()
+        candidates = discover_candidates(
+            read_index(), seeds, retired, slugs, options.discover_limit
+        )
+        print(
+            f"discovered {len(candidates)} program(s) from {len(slugs)} sitemap slug(s)"
+        )
+        for key in candidates:
+            print(f"  + {key}")
+        if candidates and options.write:
+            write_atomic(PROGRAMS_PATH, [*seeds, *candidates])
+            print(f"wrote {PROGRAMS_PATH} ({len(candidates)} new seed(s))")
+
     if options.fetch:
         try:
-            fetched = fetch_missing(load_seed_keys(), delay=1.5)
+            fetched = fetch_missing(load_seed_keys(), delay=1.5, retired=retired)
         except RateLimited as error:
             # 2, not 1: the index on disk is still valid, so a caller can carry on.
             print(f"Coursera rate limited the program fetch: {error}", file=sys.stderr)
             return 2
         print(f"seeded {fetched} program page(s)")
+        if len(retired) > known_retired:
+            write_retired(retired)
 
     groupings = build_groupings()
     links = sum(len(grouping["courses"]) for grouping in groupings.values())

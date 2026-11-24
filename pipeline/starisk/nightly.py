@@ -6,7 +6,8 @@ inside a shell script:
 
 1. Read the request queue (Turso) into `sources.json`.
 2. Check that Coursera still parses and that the deployed data is still served.
-3. Crawl, localise logos, rebuild the program index, copy the data into the site.
+3. Discover the next programs, rebuild the program index, expand the crawl list
+   from them, then crawl, localise logos and copy the data into the site.
 4. Gate the result. A run that lost scores, grew errors or touched code does not
    become a commit — it becomes a notification.
 5. Publish: a new branch for this run, one commit, a plain push, one pull request.
@@ -20,7 +21,7 @@ way you like, including squash, and delete the branch afterwards: nothing depend
 on it.
 
     python -m starisk.nightly --dry-run     # config, connectivity, smoke; no writes
-    python -m starisk.nightly --limit 60
+    python -m starisk.nightly --limit 100
     python -m starisk.nightly --no-push     # rehearsal: commit on the branch, stop
 
 Exit codes are the interface to the timer and the health check:
@@ -55,7 +56,9 @@ LOCK = LOG_DIR / "nightly.lock"
 
 BRANCH_PREFIX = "data/crawl-"
 BASE = "develop"
-DEFAULT_LIMIT = 60
+# Courses read per run. Paired with discovery: 20 programs a night is ~100 new member
+# courses, so 100 keeps the never-read queue flat rather than growing without bound.
+DEFAULT_LIMIT = 100
 
 OK = 0
 NOTHING = 10
@@ -85,10 +88,12 @@ DATA_PATHS = (
     "pipeline/data/programs.json",
     "pipeline/data/sources.json",
     "pipeline/data/retired.json",
+    "pipeline/data/stats.json",
     "pipeline/data/requests.json",
     "web/src/data/scores.json",
     "web/src/data/groupings.json",
     "web/src/data/requests.json",
+    "web/src/data/stats.json",
     "web/src/data/logo-sizes.json",
 )
 DATA_PREFIXES = ("web/public/logos/",)
@@ -98,7 +103,7 @@ DATA_PREFIXES = ("web/public/logos/",)
 MAX_SCORED_DROP = 5
 MAX_NEW_ERRORS = 2
 # A few bad courses are weather, not a broken adapter. Refusing a whole night (and
-# with it the clone) over 3/60 is how a backlog stops advancing.
+# with it the clone) over 3/100 is how a backlog stops advancing.
 MAX_ERROR_SHARE = 0.2
 
 
@@ -573,14 +578,33 @@ def run(options) -> int:
                 "; ".join(str(problem) for problem in report.adapter),
             )
 
+        # Offline keeps to the page cache: expansion only fetches, and discovery has
+        # no network to walk the sitemap with.
+        index_args = (
+            ["--fetch", "--write"]
+            if options.offline
+            else ["--discover", "--fetch", "--write"]
+        )
+
+        # Programs first: --fetch needs the page cache (a fresh clone has none), and
+        # the expansion lever below queues the members of the index this writes.
+        index_code = groupings.main(index_args)
+        if index_code == 2:
+            print("[nightly] the program fetch was rate-limited; keeping the current index")
+        elif index_code != 0:
+            return finish(env, started, FAILED, "the program index rebuild failed")
+
         if options.offline:
-            # Expansion only fetches. Offline means the page cache is all there is.
             print("[nightly] offline: skipping the source expansion")
         else:
-            # --refresh re-downloads the program sitemap. Without it the cached
-            # copy is reused forever, so programs created later are never found.
+            # Instructor profiles are a catalogue, not a curriculum: one scored
+            # course handed over 455 unrelated slugs, most of them other publishers'
+            # courses. Programs are the bounded, deliberate lever, so they are what
+            # runs unattended; `--instructors` stays available by hand.
             try:
-                grown = expand.main(["--refresh", "--write"])
+                grown = expand.main(
+                    ["--refresh", "--write", "--programs", "--specializations"]
+                )
             except Exception as error:  # noqa: BLE001 - discovery is an input, not a prerequisite
                 print(f"[nightly] the expansion failed: {error}")
                 grown = 1
@@ -596,15 +620,6 @@ def run(options) -> int:
         for module in (logos, logo_hires):
             if module.main([]) != 0:
                 return finish(env, started, FAILED, f"{module.__name__} exited non-zero")
-
-        # --fetch first: the index is derived from the page cache, and a fresh
-        # clone has none. Without it the rebuild is empty and deletes every
-        # program — the exact failure this guard now also refuses.
-        index_code = groupings.main(["--fetch", "--write"])
-        if index_code == 2:
-            print("[nightly] the program fetch was rate-limited; keeping the current index")
-        elif index_code != 0:
-            return finish(env, started, FAILED, "the program index rebuild failed")
 
         synced = subprocess.run(("node", "web/scripts/sync-data.mjs"), cwd=REPO)
         if synced.returncode != 0:
