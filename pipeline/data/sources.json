@@ -1538,5 +1538,19 @@
   "learn/zarchitecture-assembler-language-pt3-working-programs",
   "learn/zos-system-services-structure",
   "learn/matlab-agentic",
-  "learn/simulink-agentic"
+  "learn/simulink-agentic",
+  "learn/advanced-probability-and-statistical-methods",
+  "learn/algorithmic-thinking-1",
+  "learn/algorithmic-thinking-2",
+  "learn/cluster-analysis-association-mining-and-model-evaluation",
+  "learn/computational-and-graphical-models-in-probability",
+  "learn/foundations-of-probability-and-random-variables",
+  "learn/fundamentals-of-computing-capstone",
+  "learn/interactive-python-1",
+  "learn/interactive-python-2",
+  "learn/intro-analyticthinking-datascience-datamining",
+  "learn/natural-language-processing-captsone-assignment",
+  "learn/predictive-modeling-model-fitting-regression-analysis",
+  "learn/principles-of-computing-1",
+  "learn/principles-of-computing-2"
 ]
