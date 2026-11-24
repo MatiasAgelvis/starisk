@@ -578,12 +578,13 @@ def run(options) -> int:
                 "; ".join(str(problem) for problem in report.adapter),
             )
 
-        if options.offline:
-            # Expansion only fetches. Offline means the page cache is all there is.
-            index_args = ["--fetch", "--write"]
-        else:
-            # Discovery walks the sitemap; offline has no network to walk it with.
-            index_args = ["--discover", "--fetch", "--write"]
+        # Offline keeps to the page cache: expansion only fetches, and discovery has
+        # no network to walk the sitemap with.
+        index_args = (
+            ["--fetch", "--write"]
+            if options.offline
+            else ["--discover", "--fetch", "--write"]
+        )
 
         # Programs first: --fetch needs the page cache (a fresh clone has none), and
         # the expansion lever below queues the members of the index this writes.
