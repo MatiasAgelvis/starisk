@@ -1,0 +1,65 @@
+---
+/**
+ * Coursera's own rating distribution for a bundle, as a five-segment bar.
+ *
+ * This is population data, not a sample: every star rating Coursera has, which is
+ * the denominator the headline is drawn from. Emphasis rises as the stars fall, so
+ * the dissent is the part you notice — the same instinct as the verdict badges.
+ */
+interface Props {
+  counts: Record<string, number> | null;
+  ratings?: number | null;
+  class?: string;
+}
+
+const { counts, ratings = null, class: className = '' } = Astro.props;
+
+const STARS = ['1', '2', '3', '4', '5'];
+const TONES = [
+  'bg-base-content',
+  'bg-base-content/80',
+  'bg-base-content/55',
+  'bg-base-content/30',
+  'bg-base-content/15',
+];
+
+const values = STARS.map((star) => counts?.[star] ?? 0);
+const total = values.reduce((sum, value) => sum + value, 0);
+const segments = total
+  ? STARS.map((star, index) => ({
+      star,
+      value: values[index],
+      share: (values[index] / total) * 100,
+      tone: TONES[index],
+    }))
+  : [];
+const lowShare = segments
+  .filter((segment) => segment.star === '1' || segment.star === '2')
+  .reduce((sum, segment) => sum + segment.share, 0);
+// `ratings_total` and the sum of the buckets agree; prefer the published total.
+const denominator = ratings ?? total;
+---
+
+{
+  segments.length > 0 && (
+    <div class={className}>
+      <div
+        class="flex h-2.5 w-full overflow-hidden rounded-full bg-base-200"
+        role="img"
+        aria-label={`${denominator.toLocaleString('en-GB')} ratings, ${lowShare.toFixed(1)}% of them 1 or 2 stars`}
+      >
+        {segments.map((segment) => (
+          <span
+            class={segment.tone}
+            style={`width:${segment.share}%`}
+            title={`${segment.star}★ · ${segment.value.toLocaleString('en-GB')} (${segment.share.toFixed(1)}%)`}
+          />
+        ))}
+      </div>
+      <p class="mt-1 text-xs text-base-content/50">
+        Coursera's {denominator.toLocaleString('en-GB')} ratings ·{' '}
+        <strong>{lowShare.toFixed(1)}%</strong> are 1–2★
+      </p>
+    </div>
+  )
+}
