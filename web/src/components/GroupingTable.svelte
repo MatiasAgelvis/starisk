@@ -11,6 +11,7 @@
 
   let query = $state('');
   let type = $state('all');
+  let provider = $state('all');
   let hideIncomplete = $state(true);
   // One drawer at a time: a 12-course program is a tall panel, and two open rows
   // would push the rest of the directory off the screen.
@@ -32,8 +33,23 @@
   const COLUMNS = [
     { key: 'title', label: 'Program', align: 'text-left', width: 'w-auto' },
     { key: 'coursera', label: 'Coursera', align: 'text-right', width: 'w-[6rem]', hide: true },
-    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[6rem]' },
+    { key: 'starisk', label: 'Starisk', align: 'text-right', width: 'w-[6rem]', hint: 'avg' },
     { key: 'gap', label: 'Gap', align: 'text-left', width: 'w-[7rem]' },
+  ];
+
+  // Every order the dropdown offers. Column headers are shortcuts into the same
+  // keys, so the select always shows the current order.
+  const SORTS = [
+    { value: 'starisk:desc', label: 'Score: high → low' },
+    { value: 'starisk:asc', label: 'Score: low → high' },
+    { value: 'coursera:desc', label: 'Coursera: high → low' },
+    { value: 'coursera:asc', label: 'Coursera: low → high' },
+    { value: 'gap:desc', label: 'Gap: biggest first' },
+    { value: 'gap:asc', label: 'Gap: smallest first' },
+    { value: 'total:desc', label: 'Most courses' },
+    { value: 'total:asc', label: 'Fewest courses' },
+    { value: 'title:asc', label: 'Title: A → Z' },
+    { value: 'title:desc', label: 'Title: Z → A' },
   ];
 
   const tones = logoTones;
@@ -64,6 +80,19 @@
     page = 1;
   }
 
+  function pickProvider(event) {
+    provider = event.currentTarget.value;
+    page = 1;
+  }
+
+  // The dropdown and the column headers write the same pair.
+  function pickSort(event) {
+    const [key, direction] = event.currentTarget.value.split(':');
+    sortKey = key;
+    sortDir = direction;
+    page = 1;
+  }
+
   function toggleIncomplete() {
     hideIncomplete = !hideIncomplete;
     page = 1;
@@ -77,6 +106,7 @@
   function clearFilters() {
     query = '';
     type = 'all';
+    provider = 'all';
     hideIncomplete = true;
     page = 1;
   }
@@ -122,6 +152,18 @@
 
   const completeCount = $derived(rows.filter((row) => row.complete).length);
   const partialCount = $derived(rows.length - completeCount);
+  const sortMode = $derived(`${sortKey}:${sortDir}`);
+
+  // Providers come from the data, ordered by coverage — the useful axis once the
+  // list is longer than a screen.
+  const providers = $derived.by(() => {
+    const counts = new Map();
+    for (const row of rows) {
+      const name = row.provider ?? 'Unknown provider';
+      counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  });
 
   // Counts describe the whole directory, not what the toggle leaves visible: "All"
   // means all, and the toggle carries its own count.
@@ -136,6 +178,7 @@
     return rows.filter((row) => {
       if (hideIncomplete && !row.complete) return false;
       if (type !== 'all' && row.type !== type) return false;
+      if (provider !== 'all' && (row.provider ?? 'Unknown provider') !== provider) return false;
       if (!needle) return true;
       return `${row.title ?? ''} ${row.provider ?? ''} ${typeLabel(row.type)}`
         .toLowerCase()
@@ -153,34 +196,66 @@
   const narrowed = $derived(ordered.length !== rows.length);
 </script>
 
-<div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-  <div class="flex flex-wrap gap-2">
-    {#each TYPES as option (option.id)}
-      <button
-        class="btn btn-sm whitespace-nowrap {type === option.id ? 'btn-neutral' : 'btn-ghost'}"
-        aria-pressed={type === option.id}
-        onclick={() => pickType(option.id)}
-      >
-        {option.label}
-        <span class="opacity-50">{typeCounts.get(option.id) ?? 0}</span>
-      </button>
-    {/each}
-    <button
-      class="btn btn-sm whitespace-nowrap {hideIncomplete ? 'btn-neutral' : 'btn-ghost'}"
-      aria-pressed={hideIncomplete}
-      onclick={toggleIncomplete}
-    >
-      Hide incomplete sets
-      {#if partialCount}<span class="opacity-50">{partialCount}</span>{/if}
-    </button>
+<div class="mb-4 flex flex-col gap-3">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-wrap gap-2">
+      {#each TYPES as option (option.id)}
+        <button
+          class="btn btn-sm whitespace-nowrap {type === option.id ? 'btn-neutral' : 'btn-ghost'}"
+          aria-pressed={type === option.id}
+          onclick={() => pickType(option.id)}
+        >
+          {option.label}
+          <span class="opacity-50">{typeCounts.get(option.id) ?? 0}</span>
+        </button>
+      {/each}
+    </div>
+    <input
+      class="input input-sm w-full sm:w-64"
+      value={query}
+      oninput={search}
+      placeholder="Filter by program or provider…"
+      aria-label="Filter programs"
+    />
   </div>
-  <input
-    class="input input-sm w-full sm:w-64"
-    value={query}
-    oninput={search}
-    placeholder="Filter by program or provider…"
-    aria-label="Filter programs"
-  />
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+    <label class="flex items-center gap-1.5">
+      <span class="text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+        Provider
+      </span>
+      <select
+        class="select select-xs"
+        value={provider}
+        onchange={pickProvider}
+        aria-label="Filter by provider"
+      >
+        <option value="all">Any</option>
+        {#each providers as [name, count] (name)}
+          <option value={name}>{name} ({count})</option>
+        {/each}
+      </select>
+    </label>
+    <label class="flex items-center gap-1.5">
+      <span class="text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+        Sort
+      </span>
+      <select class="select select-xs" value={sortMode} onchange={pickSort} aria-label="Sort programs">
+        {#each SORTS as option (option.value)}
+          <option value={option.value}>{option.label}</option>
+        {/each}
+      </select>
+    </label>
+    <label class="label cursor-pointer gap-2 p-0 text-xs text-base-content/60 sm:ml-auto">
+      <input
+        type="checkbox"
+        class="toggle toggle-sm"
+        checked={hideIncomplete}
+        onchange={toggleIncomplete}
+      />
+      Hide incomplete sets
+      <span class="badge badge-ghost badge-sm">{partialCount}</span>
+    </label>
+  </div>
 </div>
 
 <div>
@@ -197,6 +272,9 @@
               onclick={() => sortBy(column.key)}
             >
               {column.label}
+              {#if column.hint}
+                <span class="text-[0.6rem] font-normal text-base-content/40">{column.hint}</span>
+              {/if}
               <span class="text-[0.6rem] text-base-content/50" aria-hidden="true">
                 {sortKey === column.key ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </span>
