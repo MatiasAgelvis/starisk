@@ -41,7 +41,6 @@ from .crawl import SCORES_PATH, SOURCES_PATH, load_retired, normalize_source, wr
 from .fetch import fetch_page
 from .groupings import read_index
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
-from .paths import CACHE_DIR as STATE_CACHE
 from .sitemap import PROGRAM_SITEMAP_CACHE, program_slugs
 
 SPECIALIZATION_URL = "https://www.coursera.org/specializations/{slug}"
