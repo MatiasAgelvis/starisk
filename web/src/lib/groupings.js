@@ -36,6 +36,23 @@ export function buildGroupings(groupings, scores) {
     }));
     const scored = members.filter((course) => typeof course.starisk === 'number');
     const reviews = scored.reduce((total, course) => total + (course.reviews ?? 0), 0);
+    // Why a set is incomplete matters: a course we have never crawled is a crawl
+    // away from being measured, while one Coursera shows no written reviews for
+    // may never have a score at all.
+    const noReviews = members.filter((course) => course.no_reviews === true).length;
+    const unread = members.filter(
+      (course) => typeof course.starisk !== 'number' && course.no_reviews !== true,
+    ).length;
+
+    // The teaching team is inherited, like the average: a program has no roster of
+    // its own, so this is the union over its courses, deduped by profile page.
+    const people = new Map();
+    for (const course of members) {
+      for (const person of course.instructors ?? []) {
+        const page = person.page ?? person.slug ?? person.name;
+        if (page && !people.has(page)) people.set(page, { name: person.name ?? page, page });
+      }
+    }
 
     let average = null;
     if (scored.length > 0) {
@@ -68,6 +85,9 @@ export function buildGroupings(groupings, scores) {
       complete: members.length > 0 && scored.length === members.length,
       reviews,
       average,
+      noReviews,
+      unread,
+      instructors: [...people.values()],
       low: scored.length ? Math.min(...scored.map((course) => course.starisk)) : null,
       high: scored.length ? Math.max(...scored.map((course) => course.starisk)) : null,
       coursera: typeof group.coursera === 'number' ? group.coursera : null,
