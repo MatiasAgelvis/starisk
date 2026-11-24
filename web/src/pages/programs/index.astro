@@ -68,7 +68,7 @@ const rows = programs.map((program) => ({
     </p>
 
     <div class="mt-8">
-      <GroupingTable client:load rows={rows} />
+      <GroupingTable client:load rows={rows} pageSize={50} />
     </div>
 
     <section class="mt-10 space-y-3 text-sm text-base-content/60">
