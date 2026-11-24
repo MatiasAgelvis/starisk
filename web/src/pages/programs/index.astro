@@ -9,19 +9,35 @@ const programs = buildGroupings(groupings, scores);
 const completePrograms = programs.filter((program) => program.complete).length;
 
 // The island only needs the columns it draws; shipping every course in every
-// program would bloat the page for no benefit.
+// program would bloat the page for no benefit. The drawer does need the member
+// courses, trimmed to the fields the compact table renders (~140 rows in total).
 const rows = programs.map((program) => ({
   key: program.key,
   title: program.title,
   type: program.type,
   provider: program.provider,
+  image: program.image,
+  // The program page's own numbers: Coursera's pooled rating for the bundle and
+  // the population behind it. The score is the review-weighted average of the
+  // courses inside — never anything from a program page's review widget, which
+  // belongs to whichever course is selected.
+  coursera: program.coursera,
+  starisk: program.average,
+  ratings: program.ratings,
+  average: program.average,
   scored: program.scored,
   total: program.total,
   complete: program.complete,
-  average: program.average,
-  low: program.low,
-  high: program.high,
   reviews: program.reviews,
+  courses: program.courses.map((course) => ({
+    key: course.key,
+    title: course.title,
+    provider: course.provider,
+    image: course.image,
+    coursera: course.coursera,
+    starisk: course.starisk,
+    low: course.low_sample === true,
+  })),
 }));
 ---
 
@@ -36,10 +52,10 @@ const rows = programs.map((program) => ({
       obvious next question: <strong>does the bundle hold up?</strong>
     </p>
     <p class="mt-2 max-w-2xl text-sm text-base-content/60">
-      The Starisk average weights each course by the reviews we actually read, matching the teacher
-      directory. Courses with no written reviews stay in the list but do not pull on the average.
-      Where the program page itself has a review score, its page shows that program page's Starisk
-      score next to the course average.
+      A program has no written reviews of its own, so its Starisk score is the
+      <strong>review-weighted average of its courses</strong>: a course with twenty readable reviews pulls
+      harder than one with four. The <strong>Gap</strong> compares that against Coursera's bundled rating for
+      the program — two bundle-level numbers, from different populations.
     </p>
     <p class="mt-2 max-w-2xl text-sm text-base-content/60">
       Only <strong>complete sets</strong> are shown by default: every course in the program has a
