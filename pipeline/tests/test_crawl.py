@@ -8,6 +8,7 @@ from tempfile import TemporaryDirectory
 from starisk.cache import load_page, path_for, store_page
 from starisk.crawl import (
     _top_review,
+    build_stats,
     crawl,
     excerpt,
     is_fresh,
@@ -263,6 +264,37 @@ class RetiredCrawlTest(unittest.TestCase):
 
         self.assertEqual(list(scores), ["learn/alive"])
         self.assertFalse(any("gone" in url for url in calls))
+
+
+class StatsTest(unittest.TestCase):
+    def test_counts_what_the_run_did(self):
+        before = {"learn/a": {"starisk": 4.0}, "learn/dropped": {"error": "x"}}
+        after = {"learn/a": {"starisk": 4.2}, "learn/new": {"starisk": 3.0}}
+
+        stats = build_stats(
+            before,
+            after,
+            ["learn/a", "learn/new", "learn/unread", "learn/dead"],
+            {"learn/dead": {"at": "2026-11-24"}},
+            STAMP,
+        )
+
+        self.assertEqual(stats["at"], STAMP.isoformat())
+        self.assertEqual(stats["mode"], "live")
+        self.assertEqual(stats["added"], 1)
+        self.assertEqual(stats["rescored"], 1)
+        self.assertEqual(stats["records"], 2)
+        self.assertEqual(stats["scored"], 2)
+        # A tombstone is not queue work; a source with no record is.
+        self.assertEqual(stats["queued"], 1)
+        self.assertEqual(stats["listed"], 4)
+        self.assertEqual(stats["retired"], 1)
+
+    def test_an_offline_reparse_says_so(self):
+        stats = build_stats({}, {}, [], {}, STAMP, offline=True)
+
+        self.assertEqual(stats["mode"], "offline")
+        self.assertEqual(stats["added"], 0)
 
 
 class SourceListTest(unittest.TestCase):
