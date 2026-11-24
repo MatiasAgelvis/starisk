@@ -96,6 +96,41 @@ test('separates never-read courses from ones with no written reviews', () => {
   assert.equal(program.unread, 1);
 });
 
+test('counts how the courses inside the bundle landed', () => {
+  const [program] = buildGroupings(
+    {
+      'specializations/a': {
+        title: 'A',
+        courses: ['learn/inflated', 'learn/padded', 'learn/held'],
+      },
+    },
+    {
+      'learn/inflated': { starisk: 3.0, coursera: 4.8 },
+      'learn/padded': { starisk: 3.5, coursera: 4.2 },
+      'learn/held': { starisk: 4.5, coursera: 4.6 },
+    },
+  );
+
+  assert.deepEqual(program.verdicts, { 'holds-up': 1, padded: 1, inflated: 1 });
+});
+
+test('carries the bundle rating distribution', () => {
+  const [program] = buildGroupings(
+    {
+      'specializations/a': {
+        title: 'A',
+        courses: ['learn/one'],
+        rating_counts: { '1': 1, '5': 9 },
+        ratings_total: 10,
+      },
+    },
+    { 'learn/one': { starisk: 4 } },
+  );
+
+  assert.deepEqual(program.ratingCounts, { '1': 1, '5': 9 });
+  assert.equal(program.ratings, 10);
+});
+
 test('a course can belong to more than one program', () => {
   const memberships = buildMemberships(
     {
