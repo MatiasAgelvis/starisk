@@ -6,6 +6,11 @@ programs. This module builds the derived index — conceptually the `programs`
 table plus the `program_courses` join — from pages that already list their
 courses. The `courses` values are foreign keys into `scores.json`.
 
+A program is **not a course**: its page has no written reviews of its own (the
+review widget belongs to whichever course is selected), so no score is derived
+here. What is stored is the bundle's own aggregate — Coursera's pooled rating and
+the population behind it — which is the one number that is the program's own.
+
 No network: it reads the page cache. Program pages are fetched by `expand` (for
 specializations) or added explicitly (for Professional Certificates).
 """
@@ -18,7 +23,12 @@ import sys
 import time
 from pathlib import Path
 
-from .adapter import extract_details, extract_specialization_courses, extract_title
+from .adapter import (
+    extract_aggregate,
+    extract_details,
+    extract_specialization_courses,
+    extract_title,
+)
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import DATA_DIR, write_atomic
 from .fetch import RateLimited, fetch_page
@@ -56,7 +66,14 @@ def grouping_key(path: Path) -> str | None:
 
 
 def extract_grouping(html: str, key: str) -> dict | None:
-    """One program from its landing page, or None when the page has no courses."""
+    """One program from its landing page, or None when the page has no courses.
+
+    A program has no written reviews of its own — Coursera renders the review
+    widget of whichever course is selected — so this never stores a score. What
+    it does store is the page's own aggregate: the pooled rating Coursera shows
+    for the bundle, and the population behind it. That is the one number a
+    program has that is not derived from its courses.
+    """
     kind = key.split("/", 1)[0]
     courses = list(
         dict.fromkeys(f"learn/{slug}" for slug in extract_specialization_courses(html))
@@ -75,9 +92,18 @@ def extract_grouping(html: str, key: str) -> dict | None:
         "url": f"https://www.coursera.org/{key}",
         "courses": courses,
     }
-    provider = extract_details(html).get("provider")
+    details = extract_details(html)
+    provider = details.get("provider")
     if provider:
         grouping["provider"] = provider
+
+    aggregate = extract_aggregate(html)
+    if aggregate["rating"] is not None:
+        grouping["coursera"] = round(aggregate["rating"], 1)
+    if aggregate["ratings_total"]:
+        grouping["ratings_total"] = aggregate["ratings_total"]
+    if aggregate["counts"]:
+        grouping["rating_counts"] = aggregate["counts"]
     return grouping
 
 
