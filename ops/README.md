@@ -6,8 +6,8 @@ request against `develop`. Production is untouched until you merge.
 
 **The container is stateless.** Every run clones `develop` into its own
 filesystem, does the work, publishes, and exits; the clone dies with the
-container. Only one volume survives: `starisk-state`, holding the JSON corpus and
-the page cache. The host supplies three things and nothing else: the image,
+container. Only one volume survives: `starisk-state`, holding the page cache and
+the run record. The host supplies three things and nothing else: the image,
 `/etc/starisk/env`, and a cron line.
 
 ```mermaid
@@ -107,6 +107,16 @@ snapshot anyway.
 - **ntfy.** Silent when nothing changed, a digest when something did, high
   priority on failure. `last-run.json` is written in the silent case too, so a
   dead cron looks different from a quiet week.
+- **Failures.** Every failed fetch or parse is one line in the journal, with the
+  course key and the message. The exit code says *whether* something broke; the
+  journal says *what*.
+- **Retired courses.** Coursera retires courses and the slug then answers 404
+  forever. The crawl records that in `pipeline/data/retired.json` and stops
+  asking, so a dead course cannot keep consuming the nightly budget; deleting an
+  entry is how you ask for the course to be tried again. A course we already
+  scored keeps its record — the score was true on the day it was measured.
+  Retired slugs never trip the gate, and `expand` will not re-add them from a
+  profile that still lists them.
 - **Updating the job.** Merge to `develop`. The next run clones it, so the code
   that runs is the code you merged. Rebuild the image only when the entrypoint or
   runtimes change: `sudo ./ops/setup.sh --env .env`, or
@@ -119,7 +129,7 @@ snapshot anyway.
 | 0 | ok | Committed and published (or dry run passed) |
 | 10 | nothing | Ran, changed nothing, no commit, no notification |
 | 20 | refused | A gate tripped; read `reason` in `last-run.json` |
-| 30 | partial | Published late: either Coursera rate-limited the crawl, or the push failed. The data is in the state volume; the next run publishes it |
+| 30 | partial | Committed, but with a caveat: Coursera rate-limited the crawl, a few records failed, or the push did not land |
 | 40 | git | Clone, commit or push failed — the message names which |
 | 50 | smoke | A live page stopped parsing — nothing was crawled |
 | 60 | config | A required variable is missing |
@@ -156,12 +166,15 @@ roughly 25 requests, once.
 
 **`40 git`** — the clone, the commit or the push failed in a way that left nothing
 published. There is no rebase and no force, so there is nothing half-applied to
-repair. The crawl's data is in the state volume either way.
+repair. The clone is gone, so the crawl's work is lost: the journal has the error
+line that names the cause, and the next run re-crawls from the stalest course.
 
 **`20 refused`** — the run produced something it did not trust: courses
-disappeared, the scored count dropped by more than five, three or more records
-gained errors, or a file outside `pipeline/data` and `web/src/data` changed. The
-refused data stays in the state volume for inspection.
+disappeared, the scored count dropped by more than five, more than a fifth of the
+fetched records failed, or a file outside `pipeline/data` and `web/src/data`
+changed. The clone is discarded with the container, so the refused data is gone
+too — the journal lines are the record. Courses that answer 404/410 are *not*
+refusals: they are retired (see below).
 
 **`50 smoke`** — a Coursera page stopped parsing. Each run checks a normal
 course, a low-sample course, and a program page before crawling, so this fires
@@ -171,9 +184,11 @@ early instead of after an hour of cache writes. Reproduce with:
 cd pipeline && STARISK_LIVE=1 python3 -m unittest tests.test_live
 ```
 
-**`30 partial`** — Coursera rate-limited us partway through, or the push failed.
-Either way the data is in the state volume and the next run carries it forward:
-the corpus is cumulative, so nothing is lost by publishing a night late.
+**`30 partial`** — Coursera rate-limited us partway through, a few records failed
+(fetch or parse), or the push failed. A handful of failures is weather, not a
+broken adapter, so the good data is published and the failures are listed one per
+line in the journal. The crawl is cumulative: the next run picks up whatever was
+skipped.
 
 **Login prompt / `could not read Username`** — `GITHUB_TOKEN` is missing or
 expired. The token is read from the environment at push time and is never written

@@ -21,7 +21,7 @@ from starisk.crawl import (
     summarize,
     unique_sources,
 )
-from starisk.fetch import RateLimited
+from starisk.fetch import RateLimited, Retired
 
 GOOD_FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 STAMP = datetime(2026, 1, 1, tzinfo=timezone.utc)
@@ -163,6 +163,84 @@ class CrawlTest(unittest.TestCase):
         )
 
         self.assertEqual(slept, [1.5] * 6)  # two requests per course, each throttled
+
+
+class RetiredCrawlTest(unittest.TestCase):
+    def setUp(self):
+        self.good_html = GOOD_FIXTURE.read_text(encoding="utf-8")
+
+    def test_a_retired_course_is_recorded_instead_of_scored(self):
+        retired = {}
+        problems = []
+
+        def fetch(url):
+            if "gone" in url:
+                raise Retired("HTTP 404 for https://www.coursera.org/learn/gone/reviews")
+            return self.good_html
+
+        scores = crawl(
+            ["learn/gone", "learn/alive"],
+            fetch=fetch,
+            now=STAMP,
+            retired=retired,
+            problems=problems,
+        )
+
+        self.assertNotIn("learn/gone", scores)
+        self.assertFalse(retired["learn/gone"]["had_score"])
+        self.assertIn("learn/alive", scores)
+        self.assertEqual(problems, [f"retired learn/gone: {retired['learn/gone']['reason']}"])
+
+    def test_a_retired_course_is_never_fetched_again(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return self.good_html
+
+        crawl(
+            ["learn/gone", "learn/alive"],
+            fetch=fetch,
+            now=STAMP,
+            retired={"learn/gone": {"at": "2026-01-01"}},
+        )
+
+        self.assertFalse(any("gone" in url for url in calls))
+        self.assertTrue(any("alive" in url for url in calls))
+
+    def test_a_scored_course_that_retires_keeps_its_score(self):
+        existing = {"learn/old": {"starisk": 4.2, "reviews": 10, "scrapedAt": "old"}}
+        retired = {}
+
+        def fetch(url):
+            raise Retired("HTTP 410 for https://www.coursera.org/learn/old/reviews")
+
+        scores = crawl(
+            ["learn/old"], fetch=fetch, existing=existing, now=STAMP, retired=retired
+        )
+
+        self.assertEqual(scores["learn/old"]["starisk"], 4.2)
+        self.assertEqual(scores["learn/old"]["scrapedAt"], "old")
+        self.assertNotIn("error", scores["learn/old"])
+        self.assertTrue(retired["learn/old"]["had_score"])
+
+    def test_a_retired_course_does_not_consume_the_budget(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return self.good_html
+
+        scores = crawl(
+            ["learn/gone", "learn/alive"],
+            fetch=fetch,
+            now=STAMP,
+            limit=1,
+            retired={"learn/gone": {"at": "2026-01-01"}},
+        )
+
+        self.assertEqual(list(scores), ["learn/alive"])
+        self.assertFalse(any("gone" in url for url in calls))
 
 
 class SourceListTest(unittest.TestCase):

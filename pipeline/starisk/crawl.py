@@ -18,6 +18,10 @@ Design notes:
   `--max-age` are skipped without a request. So re-running is cheap.
 - Ordered by staleness (never-scraped first, then oldest), so `--limit` makes
   progress across runs instead of re-doing the top of the list.
+- Retired courses (404/410) are recorded in `data/retired.json` and skipped from
+  then on. A dead slug left in the queue is what makes a run spend its budget on
+  the same missing courses forever; a course we already scored keeps its record,
+  because the score was true on the day it was measured.
 - Every fetched page is cached (gzipped), so an adapter fix can be re-scored with
   `--offline` instead of re-fetching the list.
 - Atomic write: the file is replaced only once fully written.
@@ -47,12 +51,13 @@ from .adapter import (
 )
 from .cache import CACHE_DIR, load_page, store_page
 from .engine import CALIBRATED, course_score, peer_spread, review_spread
-from .fetch import RateLimited, fetch_page
+from .fetch import RateLimited, Retired, fetch_page
 from .naming import IMAGE_PREFIX, stem
 from .paths import DATA_DIR
 
 SOURCES_PATH = DATA_DIR / "sources.json"
 SCORES_PATH = DATA_DIR / "scores.json"
+RETIRED_PATH = DATA_DIR / "retired.json"
 
 DEFAULT_DELAY = 1.5
 
@@ -267,6 +272,21 @@ def landing_html(key: str, fetch, cache_dir: Path) -> str | None:
     return landing
 
 
+def load_retired(path: Path = RETIRED_PATH) -> dict:
+    """Courses Coursera no longer serves, as observed by earlier runs.
+
+    `{key: {"at", "reason", "had_score"}}`. Written by the crawl, never by hand —
+    but deleting an entry is how you ask for a course to be tried again.
+    """
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def write_retired(retired: dict, path: Path = RETIRED_PATH) -> None:
+    write_atomic(path, dict(sorted(retired.items())))
+
+
 def crawl(
     sources: list[str],
     fetch=fetch_page,
@@ -279,17 +299,26 @@ def crawl(
     offline: bool = False,
     cache_dir: Path = CACHE_DIR,
     progress=None,
+    retired: dict | None = None,
+    problems: list[str] | None = None,
 ) -> dict:
     """Fetch, score and merge. Returns the updated scores dict.
 
     `progress(done, total, key)` is called before each course, so a caller can
-    draw a counter or a bar. The library prints nothing on its own.
+    draw a counter or a bar. `retired` is updated in place with the courses that
+    turned out to be gone; `problems` collects one line per failure, because the
+    journal is the only place a failed run can be diagnosed after the fact. The
+    library prints nothing on its own.
     """
     scores = dict(existing or {})
+    retired = {} if retired is None else retired
     moment = now or datetime.now(timezone.utc)
     stamp = moment.isoformat()
 
     work = order_by_staleness(unique_sources(sources), scores)
+    # A retired course is gone for good, so it must not take a slot in the budget.
+    if retired:
+        work = [key for key in work if key not in retired]
     # Drop fresh records before taking the budget, so `total` is the work actually
     # about to happen rather than "the list". Staleness ordering already puts them
     # last, so this does not change which courses a `--limit` run picks.
@@ -299,6 +328,11 @@ def crawl(
         work = work[:limit]
 
     total = len(work)
+
+    def note(line: str) -> None:
+        if problems is not None:
+            problems.append(line)
+
     for index, key in enumerate(work, start=1):
         if progress:
             progress(index, total, key)
@@ -318,17 +352,29 @@ def crawl(
         else:
             try:
                 html = fetch(url)
+            except Retired as error:
+                # The course is gone, not broken. Remember that and move on: asking
+                # again every night is what pins the queue to the same dead slugs.
+                retired[key] = {
+                    "at": stamp,
+                    "reason": str(error),
+                    "had_score": "starisk" in (scores.get(key) or {}),
+                }
+                note(f"retired {key}: {error}")
+                continue
             except RateLimited as error:
                 # Stop the run. The next one starts with this course, because it is
                 # the stalest one left.
                 record = scores.get(key) or {}
                 record["error"] = f"rate limited: {error}"
                 scores[key] = record
+                note(f"rate limited at {key}: {error}")
                 break
             except Exception as error:  # noqa: BLE001 - one bad course must not stop the crawl
                 record = scores.get(key) or {}
                 record["error"] = f"fetch: {error}"
                 scores[key] = record
+                note(f"error {key}: fetch: {error}")
                 continue
             store_page(key, html, cache_dir)
             if delay:
@@ -348,6 +394,7 @@ def crawl(
             # Never overwrite a good record with a failed parse.
             previous["error"] = "no reviews parsed (markup changed?)"
             scores[key] = previous
+            note(f"error {key}: no reviews parsed (markup changed?)")
         elif result.get("no_reviews") and "starisk" in previous:
             # Fail safe: a course that once had readable reviews should not lose
             # its score because Coursera is showing the empty state today.
@@ -567,7 +614,7 @@ def main(argv: list[str]) -> int:
         else 0
     )
 
-    state = {"drawn": False, "done": 0}
+    state = {"drawn": False, "done": 0, "problems": []}
     started = time.monotonic()
     interactive = sys.stdout.isatty()
 
@@ -582,6 +629,9 @@ def main(argv: list[str]) -> int:
             # Redirected to a file or a CI log: one line per course, no carriage returns.
             print(line)
 
+    retired = load_retired()
+    known_retired = len(retired)
+
     scores = crawl(
         sources,
         existing=existing,
@@ -591,10 +641,14 @@ def main(argv: list[str]) -> int:
         limit=options["limit"],
         offline=options["offline"],
         progress=report,
+        retired=retired,
+        problems=state["problems"],
     )
     if state["drawn"] and interactive:
         sys.stdout.write("\n")
     write_atomic(SCORES_PATH, scores)
+    if len(retired) > known_retired:
+        write_retired(retired)
 
     stats = summarize(scores)
     verb = "reparsed" if options["offline"] else "fetched"
@@ -603,6 +657,13 @@ def main(argv: list[str]) -> int:
         f"| records {stats['records']} | scored {stats['scored']} "
         f"| no reviews {stats['no_reviews']} | errors {stats['errors']}"
     )
+    for line in state["problems"]:
+        print(line)
+    if len(retired) > known_retired:
+        print(
+            f"retired {len(retired) - known_retired} course(s) Coursera no longer serves "
+            f"-> {RETIRED_PATH}"
+        )
     if stats["rate_limited"]:
         print(
             "stopped early: the host rate-limited us. Re-run later — it resumes at the "

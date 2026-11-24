@@ -6,7 +6,7 @@ from email.message import Message
 from email.utils import format_datetime
 from unittest import mock
 
-from starisk.fetch import RateLimited, _wait_seconds, fetch_page
+from starisk.fetch import RateLimited, Retired, _wait_seconds, fetch_page
 
 URL = "https://www.coursera.org/learn/x/reviews"
 
@@ -80,11 +80,33 @@ class RetryTest(unittest.TestCase):
 
         with (
             mock.patch("starisk.fetch.urllib.request.urlopen", fake_urlopen),
-            self.assertRaises(RuntimeError),
+            self.assertRaises(Retired),
         ):
             fetch_page(URL, retries=2)
 
         self.assertEqual(calls, [URL])
+
+    def test_a_410_is_a_retirement_too(self):
+        def fake_urlopen(request, timeout=None):
+            raise http_error(410)
+
+        with (
+            mock.patch("starisk.fetch.urllib.request.urlopen", fake_urlopen),
+            self.assertRaises(Retired),
+        ):
+            fetch_page(URL, retries=2)
+
+    def test_a_400_is_a_failure_not_a_retirement(self):
+        def fake_urlopen(request, timeout=None):
+            raise http_error(400)
+
+        with (
+            mock.patch("starisk.fetch.urllib.request.urlopen", fake_urlopen),
+            self.assertRaises(RuntimeError) as caught,
+        ):
+            fetch_page(URL, retries=2)
+
+        self.assertNotIsInstance(caught.exception, Retired)
 
     def test_transient_network_errors_are_retried(self):
         calls = []

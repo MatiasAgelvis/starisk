@@ -35,6 +35,7 @@ from __future__ import annotations
 import argparse
 import fcntl
 import json
+import math
 import os
 import subprocess
 import sys
@@ -83,6 +84,7 @@ DATA_PATHS = (
     "pipeline/data/groupings.json",
     "pipeline/data/programs.json",
     "pipeline/data/sources.json",
+    "pipeline/data/retired.json",
     "pipeline/data/requests.json",
     "web/src/data/scores.json",
     "web/src/data/groupings.json",
@@ -91,9 +93,13 @@ DATA_PATHS = (
 )
 DATA_PREFIXES = ("web/public/logos/",)
 
-# Guards against a quietly broken adapter publishing itself.
+# Guards against a quietly broken adapter publishing itself. Retired courses are
+# not errors (they never reach `summarize`), so these only count real breakage.
 MAX_SCORED_DROP = 5
 MAX_NEW_ERRORS = 2
+# A few bad courses are weather, not a broken adapter. Refusing a whole night (and
+# with it the clone) over 3/60 is how a backlog stops advancing.
+MAX_ERROR_SHARE = 0.2
 
 
 class GitError(RuntimeError):
@@ -151,10 +157,14 @@ def decide(
     if drop > MAX_SCORED_DROP:
         return Decision(GATE, f"scored courses dropped by {drop}")
     errors = summary["errors"] - before["errors"]
-    if errors > MAX_NEW_ERRORS:
-        return Decision(GATE, f"{errors} more records with errors")
+    batch = len(summary["added"]) + len(summary["updated"])
+    tolerance = max(MAX_NEW_ERRORS, math.ceil(batch * MAX_ERROR_SHARE))
+    if errors > tolerance:
+        return Decision(GATE, f"{errors} of {batch} fetched records have errors")
     if summary["rate_limited"]:
         return Decision(PARTIAL, "Coursera rate-limited the crawl")
+    if errors:
+        return Decision(PARTIAL, f"committed with {errors} record(s) with errors")
     return Decision(OK, "committed")
 
 

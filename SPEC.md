@@ -135,6 +135,16 @@ calibration against my labels, not aesthetics.**
 ["learn/machine-learning", "specializations/deep-learning"]
 ```
 
+`pipeline/data/retired.json` — courses Coursera no longer serves, keyed like
+`sources.json` and recorded when a fetch answers 404/410:
+```json
+{"learn/ultimate-seo-course": {"at": "2026-11-24", "reason": "HTTP 404", "had_score": false}}
+```
+The crawl skips them so a dead slug cannot keep taking a slot in the nightly
+budget, the gate does not count them as errors, and `expand` will not re-add them
+from a profile that still lists them. Deleting an entry asks for a retry. A course
+that was already scored keeps its record: the score was true when it was measured.
+
 `scores.json` — the built artifact the site serves, keyed by `type/slug`:
 ```json
 {

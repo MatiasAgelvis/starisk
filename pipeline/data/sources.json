@@ -1551,5 +1551,7 @@
   "learn/zarchitecture-assembler-language-part-1-the-basics",
   "learn/zarchitecture-assembler-language-pt-2-machine-instructions",
   "learn/zarchitecture-assembler-language-pt3-working-programs",
-  "learn/zos-system-services-structure"
+  "learn/zos-system-services-structure",
+  "learn/matlab-agentic",
+  "learn/simulink-agentic"
 ]
