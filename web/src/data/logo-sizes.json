@@ -79,10 +79,6 @@
     "tile": "/logos/tile/mcmaster-university.jpg",
     "full": "/logos/full/mcmaster-university.jpg"
   },
-  "ibm": {
-    "tile": "/logos/tile/ibm.png",
-    "full": "/logos/full/ibm.png"
-  },
   "university-of-amsterdam": {
     "tile": "/logos/tile/university-of-amsterdam.jpg",
     "full": "/logos/full/university-of-amsterdam.jpg"
@@ -95,21 +91,9 @@
     "tile": "/logos/tile/imperial-college-london.png",
     "full": "/logos/full/imperial-college-london.png"
   },
-  "university-of-london": {
-    "tile": "/logos/tile/university-of-london.png",
-    "full": "/logos/full/university-of-london.png"
-  },
   "google": {
     "tile": "/logos/tile/google.png",
     "full": "/logos/full/google.png"
-  },
-  "berklee": {
-    "tile": "/logos/tile/berklee.jpg",
-    "full": "/logos/full/berklee.jpg"
-  },
-  "the-museum-of-modern-art": {
-    "tile": "/logos/tile/the-museum-of-modern-art.jpg",
-    "full": "/logos/full/the-museum-of-modern-art.jpg"
   },
   "universitat-de-barcelona": {
     "tile": "/logos/tile/universitat-de-barcelona.png",
@@ -119,6 +103,30 @@
     "tile": "/logos/tile/yonsei-university.png",
     "full": "/logos/full/yonsei-university.png"
   },
+  "universiteit-leiden": {
+    "tile": "/logos/tile/universiteit-leiden.png",
+    "full": "/logos/full/universiteit-leiden.png"
+  },
+  "university-of-michigan": {
+    "tile": "/logos/tile/university-of-michigan.jpg",
+    "full": "/logos/full/university-of-michigan.jpg"
+  },
+  "berklee": {
+    "tile": "/logos/tile/berklee.jpg",
+    "full": "/logos/full/berklee.jpg"
+  },
+  "ibm": {
+    "tile": "/logos/tile/ibm.png",
+    "full": "/logos/full/ibm.png"
+  },
+  "university-of-london": {
+    "tile": "/logos/tile/university-of-london.png",
+    "full": "/logos/full/university-of-london.png"
+  },
+  "the-museum-of-modern-art": {
+    "tile": "/logos/tile/the-museum-of-modern-art.jpg",
+    "full": "/logos/full/the-museum-of-modern-art.jpg"
+  },
   "georgia-institute-of-technology": {
     "tile": "/logos/tile/georgia-institute-of-technology.jpg",
     "full": "/logos/full/georgia-institute-of-technology.jpg"
@@ -127,25 +135,17 @@
     "tile": "/logos/tile/medcerts.jpg",
     "full": "/logos/full/medcerts.jpg"
   },
+  "coursera": {
+    "tile": "/logos/tile/coursera.jpg",
+    "full": "/logos/full/coursera.jpg"
+  },
   "macquarie-university": {
     "tile": "/logos/tile/macquarie-university.png",
     "full": "/logos/full/macquarie-university.png"
   },
-  "universiteit-leiden": {
-    "tile": "/logos/tile/universiteit-leiden.png",
-    "full": "/logos/full/universiteit-leiden.png"
-  },
   "university-of-california-davis": {
     "tile": "/logos/tile/university-of-california-davis.jpg",
     "full": "/logos/full/university-of-california-davis.jpg"
-  },
-  "university-of-michigan": {
-    "tile": "/logos/tile/university-of-michigan.jpg",
-    "full": "/logos/full/university-of-michigan.jpg"
-  },
-  "coursera": {
-    "tile": "/logos/tile/coursera.jpg",
-    "full": "/logos/full/coursera.jpg"
   },
   "skillup": {
     "tile": "/logos/tile/skillup.jpg",
@@ -174,5 +174,25 @@
   "sap": {
     "tile": "/logos/tile/sap.jpg",
     "full": "/logos/full/sap.jpg"
+  },
+  "rice-university": {
+    "tile": "/logos/tile/rice-university.png",
+    "full": "/logos/full/rice-university.png"
+  },
+  "university-of-california-irvine": {
+    "tile": "/logos/tile/university-of-california-irvine.jpg",
+    "full": "/logos/full/university-of-california-irvine.jpg"
+  },
+  "skillshare": {
+    "tile": "/logos/tile/skillshare.jpg",
+    "full": "/logos/full/skillshare.jpg"
+  },
+  "university-of-illinois-urbana-champaign": {
+    "tile": "/logos/tile/university-of-illinois-urbana-champaign.png",
+    "full": "/logos/full/university-of-illinois-urbana-champaign.png"
+  },
+  "educba": {
+    "tile": "/logos/tile/educba.png",
+    "full": "/logos/full/educba.png"
   }
 }
