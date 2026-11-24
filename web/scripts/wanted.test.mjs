@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildWanted, requestAnchor } from '../src/lib/wanted.js';
+import { buildRecent, buildWanted, requestAnchor } from '../src/lib/wanted.js';
 
 const scores = {
   'learn/scored': {
@@ -159,4 +159,28 @@ test('an empty snapshot is an empty page, not a crash', () => {
     waiting: [],
     fulfilled: [],
   });
+});
+
+test('the newest scores come from the tail, newest first', () => {
+  const corpus = {
+    'learn/first': { title: 'First', starisk: 4.0, coursera: 4.5, scrapedAt: '2026-01-01' },
+    'learn/empty': { title: 'Empty', no_reviews: true },
+    'learn/last': { title: 'Last', starisk: 3.0, coursera: 3.4, scrapedAt: '2026-02-01' },
+  };
+
+  const recent = buildRecent(corpus, 2);
+
+  assert.deepEqual(
+    recent.map((entry) => entry.title),
+    ['Last', 'First'],
+  );
+  assert.equal(recent[0].href, '/learn/last');
+  assert.equal(recent[0].summary, 'Coursera 3.4 → Starisk 3.0');
+  assert.equal(recent[0].scrapedAt, '2026-02-01');
+});
+
+test('a missing Coursera number does not break the line', () => {
+  const [entry] = buildRecent({ 'learn/solo': { title: 'Solo', starisk: 2.5 } });
+
+  assert.equal(entry.summary, 'Starisk 2.5');
 });
