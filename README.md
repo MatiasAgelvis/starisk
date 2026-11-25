@@ -34,6 +34,9 @@ and puts the result next to Coursera's number.
   shown by default.
 - **A wanted list.** Courses readers asked for but Starisk has not scored yet, what
   came of the ones it has, and an Atom feed for the handful who follow them.
+- **A dataset.** `/data/dataset.json` — the scores, the counts behind them and the
+  identifiers to join them, under CC BY 4.0. No review text, no logos: those are
+  other people's work, and the site quotes them rather than republishing them.
 - **Not** a browser extension, not a product with accounts, not a claim about
   objective quality.
 
