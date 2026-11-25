@@ -28,7 +28,8 @@ and puts the result next to Coursera's number.
 - **A leaderboard** of courses, and a lookup box that accepts a course *or* a
   teacher URL.
 - **A teacher directory.** Who teaches what, and whether the catalogue holds up —
-  the same measurement re-cut by instructor, with the range across their courses.
+  the same measurement re-cut by instructor, with the best and weakest of their
+  courses. Publisher accounts (Starweaver, IBM Skills Network) are labelled.
 - **A program directory.** Specializations and Professional Certificates, with the
   courses they contain and the average score of those courses. Complete sets are
   shown by default.
