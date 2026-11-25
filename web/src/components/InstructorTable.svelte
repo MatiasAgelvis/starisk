@@ -10,6 +10,9 @@
   let sortKey = $state('courseCount');
   let sortDir = $state('desc');
   let multiOnly = $state(false);
+  // Publisher accounts are real entries, but a visitor hunting for a person does
+  // not need Starweaver's 285 courses in the way. One click removes them.
+  let peopleOnly = $state(false);
   // One drawer at a time. A publisher account has hundreds of courses, so the
   // drawer shows the best five and links to the page for the rest.
   let open = $state(null);
@@ -51,6 +54,11 @@
     page = 1;
   }
 
+  function togglePeople() {
+    peopleOnly = !peopleOnly;
+    page = 1;
+  }
+
   function toggleRow(key) {
     open = open === key ? null : key;
   }
@@ -60,6 +68,7 @@
   }
 
   const multiCount = $derived(rows.filter((row) => row.courseCount >= 2).length);
+  const publisherCount = $derived(rows.filter((row) => row.publisher).length);
 
   function ariaSort(key) {
     return ariaSortFor(key, sortKey, sortDir);
@@ -69,6 +78,7 @@
     const needle = query.trim().toLowerCase();
     const filtered = rows.filter((row) => {
       if (multiOnly && row.courseCount < 2) return false;
+      if (peopleOnly && row.publisher) return false;
       if (!needle) return true;
       return `${row.name ?? ''} ${row.role ?? ''} ${row.department ?? ''} ${row.page}`
         .toLowerCase()
@@ -94,6 +104,15 @@
     >
       Two or more courses{#if multiCount} <span class="opacity-50">{multiCount}</span>{/if}
     </button>
+    {#if publisherCount}
+      <button
+        class="btn btn-sm whitespace-nowrap {peopleOnly ? 'btn-neutral' : 'btn-ghost'}"
+        aria-pressed={peopleOnly}
+        onclick={togglePeople}
+      >
+        People only
+      </button>
+    {/if}
   </div>
   <div class="flex items-center gap-3">
     <input
@@ -238,7 +257,9 @@
   {:else}
     <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
       <p class="text-xs text-base-content/60" aria-live="polite">
-        Showing {first}–{last} of {visible.length}{multiOnly ? ` (${rows.length} total)` : ''}
+        Showing {first}–{last} of {visible.length}{multiOnly || peopleOnly
+          ? ` (${rows.length} total)`
+          : ''}
       </p>
       {#if pageCount > 1}
         <div class="join">
