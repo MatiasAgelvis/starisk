@@ -19,6 +19,12 @@ const name = person.name ?? person.page;
 const single = person.courses.length === 1;
 const role = [person.role, person.department].filter(Boolean).join(' · ');
 
+// The table below is already ordered best first; naming both ends saves the
+// visitor from reading the column to find out how wide the teacher's range is.
+const best = person.courses[0];
+const weakest = person.courses[person.courses.length - 1];
+const showRange = !single && best.starisk !== weakest.starisk;
+
 // Co-teachers are gathered from the courses, not from the person's own record:
 // the same pair can appear on a whole series.
 const coTeachers = [
@@ -65,11 +71,62 @@ const description = single
         <div class="stat-value text-2xl">{person.average.toFixed(1)}</div>
         <Stars value={person.average} size={16} />
         <div class="stat-desc">
-          {single ? 'one course scored' : `across ${person.courses.length} scored courses`}
+          {
+            single
+              ? 'one course, not a pattern'
+              : `review-weighted across ${person.courses.length} scored courses`
+          }
         </div>
+      </div>
+      {
+        !single && (
+          <div class="stat">
+            <div class="stat-title">Courses scored</div>
+            <div class="stat-value text-2xl">{person.courses.length}</div>
+            <div class="stat-desc">
+              {person.courses_taught == null
+                ? 'credited on Coursera'
+                : person.courses_taught > person.courses.length
+                  ? `of ${person.courses_taught} credited on Coursera`
+                  : 'all credited on Coursera'}
+            </div>
+          </div>
+        )
+      }
+      <div class="stat">
+        <div class="stat-title">Reviews read</div>
+        <div class="stat-value text-2xl">{person.reviews.toLocaleString()}</div>
+        <div class="stat-desc">most-upvoted written reviews</div>
       </div>
     </div>
 
+    {
+      single && (
+        <div class="alert mt-4 border border-base-300 bg-base-200/50 text-sm">
+          <span>
+            <strong>One course is not a pattern.</strong> This page is the course page with less on
+            it: the number above is that course's own score, and it moves as more reviews are read.
+          </span>
+        </div>
+      )
+    }
+
+    {
+      showRange && (
+        <p class="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm text-base-content/70">
+          <span>
+            Best{' '}
+            <a class="link link-hover" href={`/${best.key}`}>{best.title}</a>
+            {' '}<span class="font-mono text-xs">{best.starisk.toFixed(1)}</span>
+          </span>
+          <span>
+            Weakest{' '}
+            <a class="link link-hover" href={`/${weakest.key}`}>{weakest.title}</a>
+            {' '}<span class="font-mono text-xs">{weakest.starisk.toFixed(1)}</span>
+          </span>
+        </p>
+      )
+    }
 
     <section class="mt-8">
       <h2 class="font-display text-xl font-bold">
@@ -112,15 +169,22 @@ const description = single
         ) : null
       }
       <p>
-        {single
-          ? 'One course is not a pattern. This page will get more useful when the index grows.'
-          : `The average weights each course by the reviews we read, so a course with four readable reviews does not pull as hard as one with twenty. It is still a small sample: ${person.reviews} reviews in total.`}
+        {
+          single ? (
+            <>
+              The score is the one the{' '}
+              <a class="link link-hover" href={`/${person.courses[0].key}`}>course page</a> shows —
+              what the most-upvoted reviews say — not a verdict on the teaching.{' '}
+              <a class="link link-hover" href="/method">The method.</a>
+            </>
+          ) : (
+            `The average weights each course by the reviews we read, so a course with four readable reviews does not pull as hard as one with twenty. It is still a small sample: ${person.reviews} reviews in total.`
+          )
+        }
       </p>
       <p>
-        A course taught by several people counts for everyone on it. The score is the same one
-        the <a class="link link-hover" href={`/${person.courses[0].key}`}>course page</a> shows —
-        what the most-upvoted reviews say — not a verdict on the teaching.
-        <a class="link link-hover" href="/method">The method.</a>
+        A course taught by several people counts for everyone on it — the score belongs to the
+        course, not to a person. <a class="link link-hover" href="/method">The method.</a>
       </p>
     </section>
   </article>
