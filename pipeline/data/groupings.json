@@ -744,13 +744,13 @@
     ],
     "provider": "Universidad de Palermo",
     "coursera": 4.8,
-    "ratings_total": 3975,
+    "ratings_total": 3978,
     "rating_counts": {
       "1": 50,
       "2": 29,
       "3": 98,
       "4": 447,
-      "5": 3351
+      "5": 3354
     }
   },
   "specializations/administracion-proyectos": {
@@ -766,12 +766,12 @@
     ],
     "provider": "University of California, Irvine",
     "coursera": 4.7,
-    "ratings_total": 7859,
+    "ratings_total": 7860,
     "rating_counts": {
       "1": 58,
       "2": 68,
       "3": 238,
-      "4": 1400,
+      "4": 1401,
       "5": 6095
     }
   },
@@ -786,14 +786,14 @@
       "learn/mejora-tu-negocio-con-inteligencia-artificial"
     ],
     "provider": "Universidades Anáhuac",
-    "coursera": 4.5,
-    "ratings_total": 80,
+    "coursera": 4.6,
+    "ratings_total": 82,
     "rating_counts": {
       "1": 4,
       "2": 1,
       "3": 5,
       "4": 5,
-      "5": 65
+      "5": 67
     }
   },
   "specializations/administration-red-hat-linux-systems": {
@@ -942,6 +942,440 @@
       "3": 0,
       "4": 3,
       "5": 10
+    }
+  },
+  "specializations/adobe-premiere-pro-for-beginners": {
+    "key": "specializations/adobe-premiere-pro-for-beginners",
+    "type": "specialization",
+    "title": "Adobe Premiere Pro for Beginners",
+    "url": "https://www.coursera.org/specializations/adobe-premiere-pro-for-beginners",
+    "courses": [
+      "learn/premiere-pro-pt-1--getting-started-editing-basics",
+      "learn/premiere-pro-pt-2-transitions-graphics-animation",
+      "learn/premiere-pro-pt-3-audio-color-exporting"
+    ],
+    "provider": "Skillshare",
+    "coursera": 4.8,
+    "ratings_total": 54,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 1,
+      "4": 7,
+      "5": 45
+    }
+  },
+  "specializations/advanced-accounting-reporting": {
+    "key": "specializations/advanced-accounting-reporting",
+    "type": "specialization",
+    "title": "Advanced Accounting and Reporting",
+    "url": "https://www.coursera.org/specializations/advanced-accounting-reporting",
+    "courses": [
+      "learn/financial-instruments-accounting-principles",
+      "learn/fair-value-accounting-disclosure-analysis",
+      "learn/fair-value-hierarchy-disclosure-analysis",
+      "learn/revenue-recognition-contract-accounting",
+      "learn/lease-measurement-financial-reporting",
+      "learn/insurance-contract-accounting-reporting"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 5.0,
+    "ratings_total": 27,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 26
+    }
+  },
+  "specializations/advanced-ai-driven-brand-strategy-for-digital-growth-scale": {
+    "key": "specializations/advanced-ai-driven-brand-strategy-for-digital-growth-scale",
+    "type": "specialization",
+    "title": "Advanced AI-Driven Brand Strategy for Digital Growth & Scale",
+    "url": "https://www.coursera.org/specializations/advanced-ai-driven-brand-strategy-for-digital-growth-scale",
+    "courses": [
+      "learn/reimagining-digital-brand-strategy",
+      "learn/ai-branding-insights-creativity-personalization",
+      "learn/agile-brand-ecosystems-data-culture"
+    ],
+    "provider": "Board Infinity",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "specializations/advanced-angular-development": {
+    "key": "specializations/advanced-angular-development",
+    "type": "specialization",
+    "title": "Mastering Angular: Foundations to Enterprise-Ready Apps",
+    "url": "https://www.coursera.org/specializations/advanced-angular-development",
+    "courses": [
+      "learn/angular-foundation--application-architecture",
+      "learn/scalable-state-management-and-architecture-with-angular",
+      "learn/angular-advanced-enterprise-patterns-ssr--performance"
+    ],
+    "provider": "Board Infinity",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 1
+    }
+  },
+  "specializations/advanced-app-android": {
+    "key": "specializations/advanced-app-android",
+    "type": "specialization",
+    "title": "Advanced App Development in Android",
+    "url": "https://www.coursera.org/specializations/advanced-app-android",
+    "courses": [
+      "learn/intro-android-graphics",
+      "learn/3d-graphics-android-sensors-vr",
+      "learn/aada-capstone"
+    ],
+    "provider": "Imperial College London",
+    "coursera": 4.3,
+    "ratings_total": 150,
+    "rating_counts": {
+      "1": 11,
+      "2": 5,
+      "3": 10,
+      "4": 23,
+      "5": 101
+    }
+  },
+  "specializations/advanced-budgeting-automobile-it-banking": {
+    "key": "specializations/advanced-budgeting-automobile-it-banking",
+    "type": "specialization",
+    "title": "Advanced Budgeting Across Automobile, IT & Banking",
+    "url": "https://www.coursera.org/specializations/advanced-budgeting-automobile-it-banking",
+    "courses": [
+      "learn/master-automobile-budgeting-analyze-financial-performance",
+      "learn/master-it-budgeting-analyze-forecast-optimize",
+      "learn/master-banking-budgets-analyze-forecast-optimize"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 5.0,
+    "ratings_total": 43,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 42
+    }
+  },
+  "specializations/advanced-business-combinations-ownership-accounting": {
+    "key": "specializations/advanced-business-combinations-ownership-accounting",
+    "type": "specialization",
+    "title": "Advanced Business Combinations & Ownership Accounting",
+    "url": "https://www.coursera.org/specializations/advanced-business-combinations-ownership-accounting",
+    "courses": [
+      "learn/master-lease-accounting-analyze-classify-apply-standards",
+      "learn/mastering-special-purpose-entities-analyze-apply-spe",
+      "learn/mastering-business-combinations-analyze-apply-ifrs",
+      "learn/mastering-llp-accounting-compliance-analyze-apply",
+      "learn/master-advanced-ownership-accounting-deconsolidation"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.7,
+    "ratings_total": 18,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 17
+    }
+  },
+  "specializations/advanced-campaign-channel-analytics": {
+    "key": "specializations/advanced-campaign-channel-analytics",
+    "type": "specialization",
+    "title": "Advanced Campaign & Channel Analytics",
+    "url": "https://www.coursera.org/specializations/advanced-campaign-channel-analytics",
+    "courses": [
+      "learn/google-analytics-insights",
+      "learn/compare-user-behavior-with-segments",
+      "learn/crm-analytics-fundamentals",
+      "learn/attribution-model-analysis",
+      "learn/optimize-campaigns-data-driven-marketing",
+      "learn/evaluate-paid-media-performance",
+      "learn/perform-cohort-analysis",
+      "learn/forecasting-techniques",
+      "learn/generate-visuals-for-ab-testing-success",
+      "learn/run-smart-ab-tests",
+      "learn/build-evaluate-and-perfect-marketing-dashboards",
+      "learn/data-storytelling-for-engaging-presentations"
+    ],
+    "provider": "Coursera",
+    "coursera": 3.8,
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 0,
+      "2": 2,
+      "3": 0,
+      "4": 1,
+      "5": 3
+    }
+  },
+  "specializations/advanced-college-writing-skills": {
+    "key": "specializations/advanced-college-writing-skills",
+    "type": "specialization",
+    "title": "Advanced College Writing Skills",
+    "url": "https://www.coursera.org/specializations/advanced-college-writing-skills",
+    "courses": [
+      "learn/research-writing-foundations",
+      "learn/research-question-and-proposal",
+      "learn/research-sources",
+      "learn/synthesizing-research-and-avoiding-plagiarism",
+      "learn/drafting-an-essay",
+      "learn/reading-and-writing-about-literature",
+      "learn/revising-and-editing-strategies",
+      "learn/writing-in-different-disciplines"
+    ],
+    "provider": "Pearson",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
+  "specializations/advanced-corporate-accounting-financial-reporting": {
+    "key": "specializations/advanced-corporate-accounting-financial-reporting",
+    "type": "specialization",
+    "title": "Advanced Corporate Accounting and Financial Reporting",
+    "url": "https://www.coursera.org/specializations/advanced-corporate-accounting-financial-reporting",
+    "courses": [
+      "learn/master-advanced-accounting-analyze-value-consolidate",
+      "learn/master-bond-accounting-analyze-value-apply-ifrs",
+      "learn/master-branch-accounting-analyze-apply-consolidate",
+      "learn/analyze-evaluate-related-party-transactions-ias-24",
+      "learn/mastering-foreign-currency-accounting-hedging-techniques",
+      "learn/master-deferred-tax-analyze-apply-evaluate-concepts"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.7,
+    "ratings_total": 62,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 2,
+      "4": 11,
+      "5": 48
+    }
+  },
+  "specializations/advanced-credit-risk-banking-analytics": {
+    "key": "specializations/advanced-credit-risk-banking-analytics",
+    "type": "specialization",
+    "title": "Advanced Credit Risk & Banking Analytics",
+    "url": "https://www.coursera.org/specializations/advanced-credit-risk-banking-analytics",
+    "courses": [
+      "learn/analyze-manage-credit-risk-banking",
+      "learn/analyze-evaluate-credit-risk-banks",
+      "learn/analyze-manage-counterparty-credit-risk",
+      "learn/analyze-manage-banking-risks-effectively",
+      "learn/analyze-evaluate-banking-risk-management-frameworks"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 117,
+    "rating_counts": {
+      "1": 2,
+      "2": 3,
+      "3": 0,
+      "4": 5,
+      "5": 107
+    }
+  },
+  "specializations/advanced-deep-learning--architectures": {
+    "key": "specializations/advanced-deep-learning--architectures",
+    "type": "specialization",
+    "title": "Advanced Deep Learning Architectures",
+    "url": "https://www.coursera.org/specializations/advanced-deep-learning--architectures",
+    "courses": [
+      "learn/deep-learning-advanced-backbones-and-efficient-gpu-training",
+      "learn/generative-ai-fine-tuning-llms-and-diffusion-models",
+      "learn/deploying-deep-learning-quantization-serving-and-edge-ai"
+    ],
+    "provider": "Board Infinity",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
+  "specializations/advanced-deep-learning-architectures": {
+    "key": "specializations/advanced-deep-learning-architectures",
+    "type": "specialization",
+    "title": "Advanced Deep Learning Architectures",
+    "url": "https://www.coursera.org/specializations/advanced-deep-learning-architectures",
+    "courses": [
+      "learn/neural-networks-computer-vision-foundations",
+      "learn/transformer-architectures-multimodal-models",
+      "learn/generative-ai-models-gpu-systems"
+    ],
+    "provider": "Edureka",
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 2,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    }
+  },
+  "specializations/advanced-digital-marketing": {
+    "key": "specializations/advanced-digital-marketing",
+    "type": "specialization",
+    "title": "Advanced Digital Marketing",
+    "url": "https://www.coursera.org/specializations/advanced-digital-marketing",
+    "courses": [
+      "learn/customer-value-acquisition-and-retention",
+      "learn/selecting-the-right-customer-channel",
+      "learn/ai-in-digital-marketing",
+      "learn/smiths-digital-marketing-capstone"
+    ],
+    "provider": "University of Maryland, College Park",
+    "coursera": 4.5,
+    "ratings_total": 75,
+    "rating_counts": {
+      "1": 2,
+      "2": 1,
+      "3": 5,
+      "4": 11,
+      "5": 56
+    }
+  },
+  "specializations/advanced-digital-transformation-iima": {
+    "key": "specializations/advanced-digital-transformation-iima",
+    "type": "specialization",
+    "title": "Advanced Digital Transformation",
+    "url": "https://www.coursera.org/specializations/advanced-digital-transformation-iima",
+    "courses": [
+      "learn/leading-with-a-digital-strategy",
+      "learn/how-to-transform-digitally",
+      "learn/transforming-life-organizations-in-digital-age"
+    ],
+    "provider": "IIMA - IIM Ahmedabad",
+    "coursera": 4.7,
+    "ratings_total": 286,
+    "rating_counts": {
+      "1": 4,
+      "2": 2,
+      "3": 11,
+      "4": 36,
+      "5": 233
+    }
+  },
+  "specializations/advanced-embedded-linux-development": {
+    "key": "specializations/advanced-embedded-linux-development",
+    "type": "specialization",
+    "title": "Advanced Embedded Linux Development",
+    "url": "https://www.coursera.org/specializations/advanced-embedded-linux-development",
+    "courses": [
+      "learn/linux-system-programming-introduction-to-buildroot",
+      "learn/linux-kernel-programming-yocto-project",
+      "learn/linux-embedded-systems-topics-projects"
+    ],
+    "provider": "University of Colorado Boulder",
+    "coursera": 4.4,
+    "ratings_total": 208,
+    "rating_counts": {
+      "1": 11,
+      "2": 5,
+      "3": 9,
+      "4": 38,
+      "5": 145
+    }
+  },
+  "specializations/advanced-employment-laws": {
+    "key": "specializations/advanced-employment-laws",
+    "type": "specialization",
+    "title": "Advanced Employment Laws: HR Compliance and Investigations",
+    "url": "https://www.coursera.org/specializations/advanced-employment-laws",
+    "courses": [
+      "learn/examining-workplace-regulations",
+      "learn/handling-employee-investigations",
+      "learn/legal-aspects-of-hr-policies"
+    ],
+    "provider": "Minnesota State University, Mankato"
+  },
+  "specializations/advanced-excel-analytics-automation-data-analysis": {
+    "key": "specializations/advanced-excel-analytics-automation-data-analysis",
+    "type": "specialization",
+    "title": "Advanced Excel Analytics, Automation & Data Analysis",
+    "url": "https://www.coursera.org/specializations/advanced-excel-analytics-automation-data-analysis",
+    "courses": [
+      "learn/master-advanced-excel-functions-analyze-automate-data",
+      "learn/master-excel-skills-analyze-automate-visualize-data",
+      "learn/analyze-interpret-data-using-excel"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 37,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 34
+    }
+  },
+  "specializations/advanced-excel-tools-data-analysis": {
+    "key": "specializations/advanced-excel-tools-data-analysis",
+    "type": "specialization",
+    "title": "Advanced Excel Tools for Data Analysis",
+    "url": "https://www.coursera.org/specializations/advanced-excel-tools-data-analysis",
+    "courses": [
+      "learn/excel-pivot-table-analysis-visualization",
+      "learn/power-pivot-excel-data-analysis",
+      "learn/advanced-excel-business-analytics",
+      "learn/excel-simulation-forecasting-techniques"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.6,
+    "ratings_total": 29,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 2,
+      "5": 24
+    }
+  },
+  "specializations/advanced-financial-accounting-specialized-transactions": {
+    "key": "specializations/advanced-financial-accounting-specialized-transactions",
+    "type": "specialization",
+    "title": "Advanced Financial Accounting & Specialized Transactions",
+    "url": "https://www.coursera.org/specializations/advanced-financial-accounting-specialized-transactions",
+    "courses": [
+      "learn/master-depreciation-accounting-analyze-apply-methods",
+      "learn/master-partnership-accounting-analyze-apply-evaluate",
+      "learn/master-partnership-liquidation-analyze-apply-finalize",
+      "learn/master-repo-accounting-analyze-apply-key-principles",
+      "learn/master-securities-lending-accounting-analyze-apply"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 5.0,
+    "ratings_total": 14,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 14
     }
   },
   "specializations/ai-agents-mode-context-protocol": {
@@ -1450,13 +1884,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.7,
-    "ratings_total": 6682,
+    "ratings_total": 6684,
     "rating_counts": {
       "1": 102,
       "2": 79,
       "3": 204,
       "4": 1135,
-      "5": 5162
+      "5": 5164
     }
   },
   "specializations/prompt-engineering-for-law": {
