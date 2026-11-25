@@ -194,5 +194,65 @@
   "educba": {
     "tile": "/logos/tile/educba.png",
     "full": "/logos/full/educba.png"
+  },
+  "university-of-glasgow": {
+    "tile": "/logos/tile/university-of-glasgow.jpg",
+    "full": "/logos/full/university-of-glasgow.jpg"
+  },
+  "the-university-of-sydney": {
+    "tile": "/logos/tile/the-university-of-sydney.png",
+    "full": "/logos/full/the-university-of-sydney.png"
+  },
+  "universita-di-napoli-federico-ii": {
+    "tile": "/logos/tile/universita-di-napoli-federico-ii.png",
+    "full": "/logos/full/universita-di-napoli-federico-ii.png"
+  },
+  "wesleyan-university": {
+    "tile": "/logos/tile/wesleyan-university.jpg",
+    "full": "/logos/full/wesleyan-university.jpg"
+  },
+  "university-of-minnesota": {
+    "tile": "/logos/tile/university-of-minnesota.jpg",
+    "full": "/logos/full/university-of-minnesota.jpg"
+  },
+  "kennesaw-state-university": {
+    "tile": "/logos/tile/kennesaw-state-university.jpg",
+    "full": "/logos/full/kennesaw-state-university.jpg"
+  },
+  "intel": {
+    "tile": "/logos/tile/intel.jpg",
+    "full": "/logos/full/intel.png"
+  },
+  "american-council-on-exercise": {
+    "tile": "/logos/tile/american-council-on-exercise.png",
+    "full": "/logos/full/american-council-on-exercise.png"
+  },
+  "o-p-jindal-global-university": {
+    "tile": "/logos/tile/o-p-jindal-global-university.png",
+    "full": "/logos/full/o-p-jindal-global-university.png"
+  },
+  "university-of-colorado-boulder": {
+    "tile": "/logos/tile/university-of-colorado-boulder.jpg",
+    "full": "/logos/full/university-of-colorado-boulder.jpg"
+  },
+  "university-of-miami": {
+    "tile": "/logos/tile/university-of-miami.jpg",
+    "full": "/logos/full/university-of-miami.jpg"
+  },
+  "l-t-edutech": {
+    "tile": "/logos/tile/l-t-edutech.jpg",
+    "full": "/logos/full/l-t-edutech.jpg"
+  },
+  "tecnologico-de-monterrey": {
+    "tile": "/logos/tile/tecnologico-de-monterrey.jpg",
+    "full": "/logos/full/tecnologico-de-monterrey.jpg"
+  },
+  "universidad-de-palermo": {
+    "tile": "/logos/tile/universidad-de-palermo.jpg",
+    "full": "/logos/full/universidad-de-palermo.jpg"
+  },
+  "adobe": {
+    "tile": "/logos/tile/adobe.jpg",
+    "full": "/logos/full/adobe.jpg"
   }
 }
