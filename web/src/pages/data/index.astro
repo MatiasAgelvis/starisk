@@ -1,0 +1,148 @@
+---
+import Base from '../../layouts/Base.astro';
+import scores from '../../data/scores.json';
+import groupings from '../../data/groupings.json';
+import { buildDataset } from '../../lib/dataset.js';
+
+const dataset = buildDataset(scores, groupings, new Date().toISOString());
+const { counts } = dataset;
+const kilobytes = Math.round(JSON.stringify(dataset).length / 1024);
+
+const COURSE_FIELDS = [
+  ['key', '`learn/…` — the Coursera path, and the join key everywhere'],
+  ['title, provider, categories, level', 'Identifiers, as Coursera states them'],
+  ['coursera, ratings, ratingCounts', "Coursera's own number and the whole population behind it"],
+  ['starisk, spread', 'What the written reviews we read came to'],
+  ['reviewsRead, reviewsTotal, reviewCounts', 'Our sample: how many we read, and their star distribution'],
+  ['lowSample', 'Fewer than 15 readable reviews — treat the score as a hint'],
+  ['noReviews', 'Coursera shows no written reviews for this course'],
+  ['scrapedAt', 'When the page was last read'],
+  ['instructors', 'Name and profile URL; no photos'],
+];
+
+const PROGRAM_FIELDS = [
+  ['key, type, title, provider, url', 'Identifiers'],
+  ['courses', 'Foreign keys into `courses[].key`'],
+  ['coursera, ratings, ratingCounts', "Coursera's pooled rating for the bundle"],
+  ['average, scored, total', 'Review-weighted mean of the courses, and how complete the set is'],
+];
+---
+
+<Base
+  title="Data — Starisk"
+  description="The Starisk corpus as one file: scores, counts and identifiers. CC BY 4.0."
+>
+  <article class="mx-auto max-w-3xl">
+    <header>
+      <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Data</h1>
+      <p class="mt-3 max-w-2xl text-base-content/75">
+        The whole corpus as one JSON file: the scores, the counts they came from, and the
+        identifiers you need to join or plot them.
+      </p>
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        <a class="btn btn-neutral btn-sm" href="/data/dataset.json" download>
+          Download dataset.json <span class="opacity-60">{kilobytes} KB</span>
+        </a>
+        <span class="text-sm text-base-content/60">JSON · schema v1 · CC BY 4.0</span>
+      </div>
+    </header>
+
+    <section class="mt-8">
+      <dl class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {
+          [
+            ['Courses', counts.courses],
+            ['Scored', counts.scored],
+            ['Programs', counts.programs],
+            ['Reviews read', counts.reviewsRead],
+          ].map(([label, value]) => (
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-wide text-base-content/50">{label}</dt>
+              <dd class="font-display text-2xl font-bold">{Number(value).toLocaleString('en-GB')}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">What's in it</h2>
+      <p class="mt-2 text-sm text-base-content/70">
+        A missing field means “not measured”, never zero. <code>starisk</code> appears only where
+        there were written reviews to read; <code>coursera</code> only where Coursera publishes a
+        rating.
+      </p>
+
+      <h3 class="mt-5 text-sm font-semibold">courses</h3>
+      <div class="mt-2 overflow-x-auto">
+        <table class="table table-sm">
+          <tbody>
+            {
+              COURSE_FIELDS.map(([field, meaning]) => (
+                <tr>
+                  <th class="w-[45%] align-top font-mono text-xs font-normal text-base-content/70">
+                    {field}
+                  </th>
+                  <td class="text-sm text-base-content/70">{meaning}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="mt-5 text-sm font-semibold">programs</h3>
+      <div class="mt-2 overflow-x-auto">
+        <table class="table table-sm">
+          <tbody>
+            {
+              PROGRAM_FIELDS.map(([field, meaning]) => (
+                <tr>
+                  <th class="w-[45%] align-top font-mono text-xs font-normal text-base-content/70">
+                    {field}
+                  </th>
+                  <td class="text-sm text-base-content/70">{meaning}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">What isn't, and why</h2>
+      <p class="mt-2 text-sm text-base-content/70">
+        Review text, course descriptions, provider logos and instructor photos are other people's
+        work. They appear on the site (quoted reviews carry a link to the original), but they are
+        not part of the dataset and are not licensed here.
+      </p>
+      <p class="mt-2 text-sm text-base-content/70">
+        The data is <strong>CC BY 4.0</strong> — use it, credit
+        <a class="link link-hover" href="/">Starisk</a>. The code is Apache-2.0. The full split is
+        in
+        <a
+          class="link link-hover"
+          href="https://github.com/MatiasAgelvis/starisk/blob/develop/LICENSING.md"
+          target="_blank"
+          rel="noopener noreferrer">LICENSING.md</a
+        >.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-display text-xl font-bold">How to read the two numbers</h2>
+      <p class="mt-2 text-sm text-base-content/70">
+        <code>coursera</code> is every star rating Coursera has; <code>starisk</code> is one page of
+        the most-helpful written reviews, weighted by their upvotes. They measure different
+        populations, which is exactly what makes the gap worth looking at.
+        <a class="link link-hover" href="/method">The method, with the numbers.</a>
+      </p>
+      <p class="mt-2 text-sm text-base-content/60">
+        The site's own build input is still served raw at
+        <a class="link link-hover" href="/data/scores.json"><code>/data/scores.json</code></a> — it
+        includes the quoted reviews, so it is a page feed, not the dataset.
+      </p>
+    </section>
+  </article>
+</Base>
