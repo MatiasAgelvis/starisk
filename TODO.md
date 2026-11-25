@@ -4,8 +4,8 @@ Small, near-term work. The bigger threads — polarization, the dataset, calibra
 the transcript — live in [`IDEAS.md`](IDEAS.md) with their reasoning and an order of
 work. This file is the list I actually open.
 
-Current shape: **1064 courses indexed, 881 scored, 372 low-sample, 0 errors, 29
-programs, 354 instructors, 12 requests.**
+Current shape: **1669 courses indexed, 1287 scored, 638 low-sample, 0 errors, 90
+programs, 383 instructors, 2 requests.**
 
 ## Next
 
@@ -15,6 +15,15 @@ programs, 354 instructors, 12 requests.**
   courses. Then `k` stops being a guess.
 - **Bookmarklet batch asks.** `PER_HOUR = 6` per visitor, so a results page asking
   for seven courses 429s on the seventh. Per-card asking is what ships today.
+- **Publisher accounts are inferred, not verified.** The teacher directory marks an
+  entry as a publisher when its page or display name matches the provider's name.
+  Coursera offers no flag to read: its JSON-LD types every profile — SkillUp, IBM
+  Skills Network — as `Person`. The rule catches the 11 obvious ones but misses
+  aggregate accounts: "Professionals in the Industry" (491 courses) survives as a
+  person. Store the verified set in `pipeline/data/publishers.json` (12 slugs, one
+  line of evidence each), keep the name rule as a candidate finder that prints for
+  review during `expand --instructors`, and have `buildInstructors` read the file
+  instead of guessing at build time.
 
 ## Front end
 
