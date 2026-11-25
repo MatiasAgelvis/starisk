@@ -14,11 +14,22 @@ const rows = instructors.map((person) => ({
   role: person.role,
   department: person.department,
   photo: person.photo,
-  courses: person.courses.length,
+  courseCount: person.courses.length,
+  coursesTaught: person.courses_taught ?? null,
   average: person.average,
-  low: person.low,
-  high: person.high,
   reviews: person.reviews,
+  // The drawer shows the best five and links to the page for the rest — a
+  // publisher account can have hundreds of courses. Only the fields ScoreTable's
+  // compact mode draws, or the island would carry each teacher's catalogue.
+  topCourses: person.courses.slice(0, 5).map((course) => ({
+    key: course.key,
+    title: course.title,
+    provider: course.provider,
+    image: course.image,
+    coursera: course.coursera,
+    starisk: course.starisk,
+    low: course.low,
+  })),
 }));
 
 const multi = instructors.filter((person) => person.courses.length > 1).length;
@@ -26,7 +37,7 @@ const multi = instructors.filter((person) => person.courses.length > 1).length;
 
 <Base
   title="Teachers — Starisk"
-  description="What else has a Coursera teacher made, and does it hold up? Every instructor in the index, with the range of their courses' scores."
+  description="What else has a Coursera teacher made, and does it hold up? Every instructor in the index, with the courses we have scored."
 >
   <article class="mx-auto max-w-4xl">
     <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Teachers</h1>
