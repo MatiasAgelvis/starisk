@@ -11,6 +11,31 @@
 
 const PERSON_FIELDS = ['name', 'slug', 'url', 'id', 'role', 'department', 'learners', 'courses_taught', 'photo'];
 
+function normalize(value) {
+  return (value ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+/**
+ * Coursera files publisher accounts under instructors: Starweaver, SkillUp, IBM
+ * Skills Network, Google Career Certificates. They are real catalogue entries —
+ * their courses are scored like anyone else's — but calling them "teachers" and
+ * showing "Instructor" as their role is wrong.
+ *
+ * Detected from the data rather than a hand-kept list: the account's page or
+ * display name is the partner's own name, or its name starts with it ("IBM
+ * Skills Network Team"). A person who merely mentions the partner in their
+ * title ("Jeff Maggioncalda, Coursera CEO") is not one.
+ */
+export function isPublisherAccount(person, providers) {
+  const name = normalize(person.name ?? person.page);
+  const page = normalize(person.page);
+
+  return providers.some((provider) => {
+    const slug = normalize(provider);
+    return slug !== '' && (name === slug || page === slug || name.startsWith(slug));
+  });
+}
+
 /**
  * Collapse every course record into one entry per person.
  * @returns an array sorted for the directory: most courses first.
@@ -58,6 +83,11 @@ export function buildInstructors(scores) {
   }
 
   for (const entry of people.values()) {
+    entry.publisher = isPublisherAccount(
+      entry,
+      [...new Set(entry.courses.map((course) => course.provider).filter(Boolean))],
+    );
+
     const weight = entry.courses.reduce((total, course) => total + course.reviews, 0);
     entry.reviews = weight;
     entry.average =
