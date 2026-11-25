@@ -5,30 +5,62 @@ import Avatar from '../../components/Avatar.astro';
 import ScoreTable from '../../components/ScoreTable.svelte';
 import Stars from '../../components/Stars.astro';
 import { buildInstructors } from '../../lib/instructors.js';
+import { buildMemberships, typeLabel } from '../../lib/groupings.js';
 import scores from '../../data/scores.json';
+import groupings from '../../data/groupings.json';
 
 export function getStaticPaths() {
+  // One pass for every teacher page. A teacher's programs are inherited from
+  // their courses, the same way the program page inherits its teaching team.
+  const memberships = buildMemberships(groupings, scores);
+
   return buildInstructors(scores).map((person) => ({
     params: { slug: person.page },
-    props: { person },
+    props: {
+      person,
+      programs: [
+        ...new Map(
+          person.courses
+            .flatMap((course) => memberships.get(course.key) ?? [])
+            .map((program) => [program.key, program]),
+        ).values(),
+      ],
+    },
   }));
 }
 
-const { person } = Astro.props;
+const { person, programs } = Astro.props;
 const name = person.name ?? person.page;
 const single = person.courses.length === 1;
 const role = [person.role, person.department].filter(Boolean).join(' · ');
 
+// The table below is already ordered best first; naming both ends saves the
+// visitor from reading the column to find out how wide the teacher's range is.
+const best = person.courses[0];
+const weakest = person.courses[person.courses.length - 1];
+const showRange = !single && best.starisk !== weakest.starisk;
+
 // Co-teachers are gathered from the courses, not from the person's own record:
-// the same pair can appear on a whole series.
-const coTeachers = [
-  ...new Map(
-    person.courses
-      .flatMap((course) => course.co)
-      .filter((other) => other.page !== person.page)
-      .map((other) => [other.page, other]),
-  ).values(),
-];
+// the same pair can appear on a whole series, so they are ranked by how many
+// courses they share. A publisher account can share a course with dozens of
+// people, so the list is capped below.
+const coCounts = new Map();
+for (const course of person.courses) {
+  for (const other of course.co) {
+    if (other.page === person.page) continue;
+    const entry = coCounts.get(other.page) ?? {
+      name: other.name ?? other.page,
+      page: other.page,
+      shared: 0,
+    };
+    entry.shared += 1;
+    coCounts.set(other.page, entry);
+  }
+}
+const coTeachers = [...coCounts.values()].sort(
+  (a, b) => b.shared - a.shared || a.name.localeCompare(b.name),
+);
+const shownCoTeachers = coTeachers.slice(0, 12);
 
 const description = single
   ? `${name}: their one indexed course sits at ${person.average.toFixed(1)} out of 5.`
@@ -42,7 +74,10 @@ const description = single
     <header class="mt-4 flex items-start gap-4">
       <Avatar src={person.photo} name={name} class="h-16 w-16 text-lg" />
       <div class="min-w-0">
-        <h1 class="font-display text-3xl font-bold tracking-tight">{name}</h1>
+        <div class="flex flex-wrap items-center gap-2">
+          <h1 class="font-display text-3xl font-bold tracking-tight">{name}</h1>
+          {person.publisher && <span class="badge badge-ghost badge-sm">Publisher</span>}
+        </div>
         {role && <p class="mt-1 text-sm text-base-content/60">{role}</p>}
         {
           person.url && (
@@ -65,11 +100,62 @@ const description = single
         <div class="stat-value text-2xl">{person.average.toFixed(1)}</div>
         <Stars value={person.average} size={16} />
         <div class="stat-desc">
-          {single ? 'one course scored' : `across ${person.courses.length} scored courses`}
+          {
+            single
+              ? 'one course, not a pattern'
+              : `review-weighted across ${person.courses.length} scored courses`
+          }
         </div>
+      </div>
+      {
+        !single && (
+          <div class="stat">
+            <div class="stat-title">Courses scored</div>
+            <div class="stat-value text-2xl">{person.courses.length}</div>
+            <div class="stat-desc">
+              {person.courses_taught == null
+                ? 'credited on Coursera'
+                : person.courses_taught > person.courses.length
+                  ? `of ${person.courses_taught} credited on Coursera`
+                  : 'all credited on Coursera'}
+            </div>
+          </div>
+        )
+      }
+      <div class="stat">
+        <div class="stat-title">Reviews read</div>
+        <div class="stat-value text-2xl">{person.reviews.toLocaleString()}</div>
+        <div class="stat-desc">most-upvoted written reviews</div>
       </div>
     </div>
 
+    {
+      single && (
+        <div class="alert mt-4 border border-base-300 bg-base-200/50 text-sm">
+          <span>
+            <strong>One course is not a pattern.</strong> This page is the course page with less on
+            it: the number above is that course's own score, and it moves as more reviews are read.
+          </span>
+        </div>
+      )
+    }
+
+    {
+      showRange && (
+        <p class="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm text-base-content/70">
+          <span>
+            Best{' '}
+            <a class="link link-hover" href={`/${best.key}`}>{best.title}</a>
+            {' '}<span class="font-mono text-xs">{best.starisk.toFixed(1)}</span>
+          </span>
+          <span>
+            Weakest{' '}
+            <a class="link link-hover" href={`/${weakest.key}`}>{weakest.title}</a>
+            {' '}<span class="font-mono text-xs">{weakest.starisk.toFixed(1)}</span>
+          </span>
+        </p>
+      )
+    }
 
     <section class="mt-8">
       <h2 class="font-display text-xl font-bold">
@@ -90,19 +176,63 @@ const description = single
     {
       coTeachers.length > 0 && (
         <section class="mt-6">
-          <h2 class="font-display text-xl font-bold">Teaches with</h2>
+          <h2 class="font-display text-xl font-bold">
+            {person.publisher ? 'Instructors on these courses' : 'Teaches with'}
+          </h2>
           <p class="mt-3 flex flex-wrap gap-2">
-            {coTeachers.map((other) => (
+            {shownCoTeachers.map((other) => (
               <a class="btn btn-sm btn-ghost" href={`/instructors/${other.page}`}>
                 {other.name}
               </a>
             ))}
           </p>
+          {coTeachers.length > shownCoTeachers.length && (
+            <p class="mt-2 text-xs text-base-content/50">
+              and {coTeachers.length - shownCoTeachers.length} more, on the courses above
+            </p>
+          )}
+        </section>
+      )
+    }
+
+    {
+      programs.length > 0 && (
+        <section class="mt-6">
+          <h2 class="font-display text-xl font-bold">
+            {programs.length === 1
+              ? 'Part of one program'
+              : `Part of ${programs.length} programs`}
+          </h2>
+          <ul class="mt-3 space-y-1 text-sm">
+            {programs.slice(0, 6).map((program) => (
+              <li>
+                <a class="link link-hover" href={`/programs/${program.key}`}>
+                  {program.title}
+                </a>{' '}
+                <span class="badge badge-ghost badge-xs">{typeLabel(program.type)}</span>
+              </li>
+            ))}
+          </ul>
+          {programs.length > 6 && (
+            <p class="mt-2 text-xs text-base-content/50">
+              and {programs.length - 6} more — <a class="link link-hover" href="/programs">
+                the program directory
+              </a>
+            </p>
+          )}
         </section>
       )
     }
 
     <section class="mt-10 space-y-3 text-sm text-base-content/60">
+      {
+        person.publisher && (
+          <p>
+            Coursera lists {name} as an instructor, but this is a publisher account — a team, not
+            a person. Its courses are scored and averaged exactly like anyone else's.
+          </p>
+        )
+      }
       {
         person.courses_taught && person.courses_taught > person.courses.length ? (
           <p>
@@ -112,15 +242,22 @@ const description = single
         ) : null
       }
       <p>
-        {single
-          ? 'One course is not a pattern. This page will get more useful when the index grows.'
-          : `The average weights each course by the reviews we read, so a course with four readable reviews does not pull as hard as one with twenty. It is still a small sample: ${person.reviews} reviews in total.`}
+        {
+          single ? (
+            <>
+              The score is the one the{' '}
+              <a class="link link-hover" href={`/${person.courses[0].key}`}>course page</a> shows —
+              what the most-upvoted reviews say — not a verdict on the teaching.{' '}
+              <a class="link link-hover" href="/method">The method.</a>
+            </>
+          ) : (
+            `The average weights each course by the reviews we read, so a course with four readable reviews does not pull as hard as one with twenty. It is still a small sample: ${person.reviews} reviews in total.`
+          )
+        }
       </p>
       <p>
-        A course taught by several people counts for everyone on it. The score is the same one
-        the <a class="link link-hover" href={`/${person.courses[0].key}`}>course page</a> shows —
-        what the most-upvoted reviews say — not a verdict on the teaching.
-        <a class="link link-hover" href="/method">The method.</a>
+        A course taught by several people counts for everyone on it — the score belongs to the
+        course, not to a person. <a class="link link-hover" href="/method">The method.</a>
       </p>
     </section>
   </article>

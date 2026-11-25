@@ -26,5 +26,7 @@ relicense:
 | `web/public/logos/*` | Providers' marks, trademarks of their owners | Identifying the provider |
 | `instructors[].photo` | A URL to Coursera's CDN | Hotlinked; the image is never copied into this repository |
 
-If the corpus is ever published as a dataset, those fields are excluded: the
-export carries scores, counts and identifiers, never the prose or the marks.
+The published dataset is `/data/dataset.json` at
+https://starisk.matiasagelvis.com. It carries the scores, counts and identifiers and
+**none** of the prose or the marks above. `/data/scores.json` is the site's own
+build input: it includes the quoted reviews, so it is a page feed, not the dataset.

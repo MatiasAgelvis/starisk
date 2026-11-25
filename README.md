@@ -28,12 +28,16 @@ and puts the result next to Coursera's number.
 - **A leaderboard** of courses, and a lookup box that accepts a course *or* a
   teacher URL.
 - **A teacher directory.** Who teaches what, and whether the catalogue holds up —
-  the same measurement re-cut by instructor, with the range across their courses.
+  the same measurement re-cut by instructor, with the best and weakest of their
+  courses. Publisher accounts (Starweaver, IBM Skills Network) are labelled.
 - **A program directory.** Specializations and Professional Certificates, with the
   courses they contain and the average score of those courses. Complete sets are
   shown by default.
 - **A wanted list.** Courses readers asked for but Starisk has not scored yet, what
   came of the ones it has, and an Atom feed for the handful who follow them.
+- **A dataset.** `/data/dataset.json` — the scores, the counts behind them and the
+  identifiers to join them, under CC BY 4.0. No review text, no logos: those are
+  other people's work, and the site quotes them rather than republishing them.
 - **Not** a browser extension, not a product with accounts, not a claim about
   objective quality.
 

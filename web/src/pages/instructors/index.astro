@@ -14,19 +14,32 @@ const rows = instructors.map((person) => ({
   role: person.role,
   department: person.department,
   photo: person.photo,
-  courses: person.courses.length,
+  publisher: person.publisher,
+  courseCount: person.courses.length,
+  coursesTaught: person.courses_taught ?? null,
   average: person.average,
-  low: person.low,
-  high: person.high,
   reviews: person.reviews,
+  // The drawer shows the best five and links to the page for the rest — a
+  // publisher account can have hundreds of courses. Only the fields ScoreTable's
+  // compact mode draws, or the island would carry each teacher's catalogue.
+  topCourses: person.courses.slice(0, 5).map((course) => ({
+    key: course.key,
+    title: course.title,
+    provider: course.provider,
+    image: course.image,
+    coursera: course.coursera,
+    starisk: course.starisk,
+    low: course.low,
+  })),
 }));
 
 const multi = instructors.filter((person) => person.courses.length > 1).length;
+const publishers = instructors.filter((person) => person.publisher).length;
 ---
 
 <Base
   title="Teachers — Starisk"
-  description="What else has a Coursera teacher made, and does it hold up? Every instructor in the index, with the range of their courses' scores."
+  description="What else has a Coursera teacher made, and does it hold up? Every instructor in the index, with the courses we have scored."
 >
   <article class="mx-auto max-w-4xl">
     <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Teachers</h1>
@@ -49,6 +62,12 @@ const multi = instructors.filter((person) => person.courses.length > 1).length;
         {instructors.length} teachers, {multi} of them with more than one course scored. The
         rest teach exactly one course in the index so far — a teacher page with one course is
         a course page with less on it, and it says so.
+      </p>
+      <p>
+        {publishers} of these entries are publisher accounts rather than people (Starweaver,
+        SkillUp, IBM Skills Network). Coursera files both as instructors and so do we — their
+        courses are scored the same way — but the table marks them, for the same reason a
+        course page says who you are actually learning from.
       </p>
       <p>
         None of this is an instructor rating. It is the same measurement as everywhere else on
