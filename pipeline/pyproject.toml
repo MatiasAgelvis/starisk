@@ -2,6 +2,7 @@
 name = "starisk-pipeline"
 version = "0.1.0"
 description = "Fetch, parse and score Coursera course reviews."
+license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
 dependencies = []
 
