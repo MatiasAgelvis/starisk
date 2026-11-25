@@ -41,15 +41,26 @@ const weakest = person.courses[person.courses.length - 1];
 const showRange = !single && best.starisk !== weakest.starisk;
 
 // Co-teachers are gathered from the courses, not from the person's own record:
-// the same pair can appear on a whole series.
-const coTeachers = [
-  ...new Map(
-    person.courses
-      .flatMap((course) => course.co)
-      .filter((other) => other.page !== person.page)
-      .map((other) => [other.page, other]),
-  ).values(),
-];
+// the same pair can appear on a whole series, so they are ranked by how many
+// courses they share. A publisher account can share a course with dozens of
+// people, so the list is capped below.
+const coCounts = new Map();
+for (const course of person.courses) {
+  for (const other of course.co) {
+    if (other.page === person.page) continue;
+    const entry = coCounts.get(other.page) ?? {
+      name: other.name ?? other.page,
+      page: other.page,
+      shared: 0,
+    };
+    entry.shared += 1;
+    coCounts.set(other.page, entry);
+  }
+}
+const coTeachers = [...coCounts.values()].sort(
+  (a, b) => b.shared - a.shared || a.name.localeCompare(b.name),
+);
+const shownCoTeachers = coTeachers.slice(0, 12);
 
 const description = single
   ? `${name}: their one indexed course sits at ${person.average.toFixed(1)} out of 5.`
@@ -165,14 +176,21 @@ const description = single
     {
       coTeachers.length > 0 && (
         <section class="mt-6">
-          <h2 class="font-display text-xl font-bold">Teaches with</h2>
+          <h2 class="font-display text-xl font-bold">
+            {person.publisher ? 'Instructors on these courses' : 'Teaches with'}
+          </h2>
           <p class="mt-3 flex flex-wrap gap-2">
-            {coTeachers.map((other) => (
+            {shownCoTeachers.map((other) => (
               <a class="btn btn-sm btn-ghost" href={`/instructors/${other.page}`}>
                 {other.name}
               </a>
             ))}
           </p>
+          {coTeachers.length > shownCoTeachers.length && (
+            <p class="mt-2 text-xs text-base-content/50">
+              and {coTeachers.length - shownCoTeachers.length} more, on the courses above
+            </p>
+          )}
         </section>
       )
     }
