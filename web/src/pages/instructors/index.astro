@@ -14,6 +14,7 @@ const rows = instructors.map((person) => ({
   role: person.role,
   department: person.department,
   photo: person.photo,
+  publisher: person.publisher,
   courseCount: person.courses.length,
   coursesTaught: person.courses_taught ?? null,
   average: person.average,
@@ -33,6 +34,7 @@ const rows = instructors.map((person) => ({
 }));
 
 const multi = instructors.filter((person) => person.courses.length > 1).length;
+const publishers = instructors.filter((person) => person.publisher).length;
 ---
 
 <Base
@@ -60,6 +62,12 @@ const multi = instructors.filter((person) => person.courses.length > 1).length;
         {instructors.length} teachers, {multi} of them with more than one course scored. The
         rest teach exactly one course in the index so far — a teacher page with one course is
         a course page with less on it, and it says so.
+      </p>
+      <p>
+        {publishers} of these entries are publisher accounts rather than people (Starweaver,
+        SkillUp, IBM Skills Network). Coursera files both as instructors and so do we — their
+        courses are scored the same way — but the table marks them, for the same reason a
+        course page says who you are actually learning from.
       </p>
       <p>
         None of this is an instructor rating. It is the same measurement as everywhere else on

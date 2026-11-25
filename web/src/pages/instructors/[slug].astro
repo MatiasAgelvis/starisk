@@ -5,16 +5,31 @@ import Avatar from '../../components/Avatar.astro';
 import ScoreTable from '../../components/ScoreTable.svelte';
 import Stars from '../../components/Stars.astro';
 import { buildInstructors } from '../../lib/instructors.js';
+import { buildMemberships, typeLabel } from '../../lib/groupings.js';
 import scores from '../../data/scores.json';
+import groupings from '../../data/groupings.json';
 
 export function getStaticPaths() {
+  // One pass for every teacher page. A teacher's programs are inherited from
+  // their courses, the same way the program page inherits its teaching team.
+  const memberships = buildMemberships(groupings, scores);
+
   return buildInstructors(scores).map((person) => ({
     params: { slug: person.page },
-    props: { person },
+    props: {
+      person,
+      programs: [
+        ...new Map(
+          person.courses
+            .flatMap((course) => memberships.get(course.key) ?? [])
+            .map((program) => [program.key, program]),
+        ).values(),
+      ],
+    },
   }));
 }
 
-const { person } = Astro.props;
+const { person, programs } = Astro.props;
 const name = person.name ?? person.page;
 const single = person.courses.length === 1;
 const role = [person.role, person.department].filter(Boolean).join(' · ');
@@ -48,7 +63,10 @@ const description = single
     <header class="mt-4 flex items-start gap-4">
       <Avatar src={person.photo} name={name} class="h-16 w-16 text-lg" />
       <div class="min-w-0">
-        <h1 class="font-display text-3xl font-bold tracking-tight">{name}</h1>
+        <div class="flex flex-wrap items-center gap-2">
+          <h1 class="font-display text-3xl font-bold tracking-tight">{name}</h1>
+          {person.publisher && <span class="badge badge-ghost badge-sm">Publisher</span>}
+        </div>
         {role && <p class="mt-1 text-sm text-base-content/60">{role}</p>}
         {
           person.url && (
@@ -159,7 +177,44 @@ const description = single
       )
     }
 
+    {
+      programs.length > 0 && (
+        <section class="mt-6">
+          <h2 class="font-display text-xl font-bold">
+            {programs.length === 1
+              ? 'Part of one program'
+              : `Part of ${programs.length} programs`}
+          </h2>
+          <ul class="mt-3 space-y-1 text-sm">
+            {programs.slice(0, 6).map((program) => (
+              <li>
+                <a class="link link-hover" href={`/programs/${program.key}`}>
+                  {program.title}
+                </a>{' '}
+                <span class="badge badge-ghost badge-xs">{typeLabel(program.type)}</span>
+              </li>
+            ))}
+          </ul>
+          {programs.length > 6 && (
+            <p class="mt-2 text-xs text-base-content/50">
+              and {programs.length - 6} more — <a class="link link-hover" href="/programs">
+                the program directory
+              </a>
+            </p>
+          )}
+        </section>
+      )
+    }
+
     <section class="mt-10 space-y-3 text-sm text-base-content/60">
+      {
+        person.publisher && (
+          <p>
+            Coursera lists {name} as an instructor, but this is a publisher account — a team, not
+            a person. Its courses are scored and averaged exactly like anyone else's.
+          </p>
+        )
+      }
       {
         person.courses_taught && person.courses_taught > person.courses.length ? (
           <p>

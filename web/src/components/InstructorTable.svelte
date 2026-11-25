@@ -184,7 +184,9 @@
                   >
                 </div>
                 <div class="truncate text-xs text-base-content/50">
-                  {row.role ?? 'Instructor'}{row.department ? ` · ${row.department}` : ''}
+                  {row.publisher ? 'Publisher' : row.role ?? 'Instructor'}{row.department
+                    ? ` · ${row.department}`
+                    : ''}
                 </div>
               </div>
             </div>
