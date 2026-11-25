@@ -392,7 +392,7 @@
                   </p>
                   {#if row.instructors.length > 0}
                     <p>
-                      Taught by{' '}{#each row.instructors as person, index (person.page)}{#if index > 0}<span>, </span>{/if}<a
+                      Taught by{' '}{#each row.instructors as person, index (person.page)}{#if index > 0}{', '}{/if}<a
                           class="link link-hover"
                           href={`/instructors/${person.page}`}>{person.name}</a
                         >{/each}{#if row.instructorCount > row.instructors.length}{` +${row.instructorCount - row.instructors.length} more`}{/if}
