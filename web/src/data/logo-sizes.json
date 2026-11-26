@@ -282,5 +282,21 @@
   "iima-iim-ahmedabad": {
     "tile": "/logos/tile/iima-iim-ahmedabad.png",
     "full": "/logos/full/iima-iim-ahmedabad.png"
+  },
+  "scrimba": {
+    "tile": "/logos/tile/scrimba.jpg",
+    "full": "/logos/full/scrimba.jpg"
+  },
+  "logical-operations": {
+    "tile": "/logos/tile/logical-operations.png",
+    "full": "/logos/full/logical-operations.png"
+  },
+  "infosec": {
+    "tile": "/logos/tile/infosec.png",
+    "full": "/logos/full/infosec.png"
+  },
+  "google-cloud": {
+    "tile": "/logos/tile/google-cloud.jpg",
+    "full": "/logos/full/google-cloud.jpg"
   }
 }
