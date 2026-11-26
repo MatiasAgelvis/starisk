@@ -100,9 +100,11 @@ stalest-first so `--limit` always makes progress. Each course is **two**
 requests — the reviews page and the landing page (the whole teaching team,
 categories) — and both are cached, so `--offline` re-parses without touching the
 network. The landing page's data blob carries every instructor, not just the ones
-the hero links, so teachers cost no extra request. If Coursera rate-limits a run
-(403/429), it **stops** instead of retrying — the next run resumes at the same
-course.
+the hero links, so teachers cost no extra request. Requests are spaced by `--delay`
+(1.5 s by default) **plus up to 50% jitter**: the delay is a floor, not a schedule,
+because a fixed interval is the one pattern a rate limiter can fingerprint for
+free. If Coursera rate-limits a run (403/429), it **stops** instead of retrying —
+the next run resumes at the same course.
 
 The cache can be inspected without touching the network:
 
