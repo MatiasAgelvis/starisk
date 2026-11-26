@@ -117,13 +117,15 @@ snapshot anyway.
   scored keeps its record — the score was true on the day it was measured.
   Retired slugs never trip the gate, and `expand` will not re-add them from a
   profile that still lists them.
-- **Programs are discovered, courses are queued.** Each night walks the next 20
-  specialization slugs from the sitemap, fetches their pages, rebuilds the program
-  index, and queues every course of every published bundle. That is the only
-  discovery lever that runs unattended: `--instructors` is a catalogue, not a
-  curriculum, and stays manual. The two numbers are paired: 20 programs is roughly
-  100 member courses, which is what the run reads (`DEFAULT_LIMIT`), so the queue
-  stays flat instead of growing out of reach of the next bundle.
+- **Programs are discovered, courses are queued.** Each night samples the next 20
+  specialization slugs from the sitemap — in a stable hash order, not
+  alphabetically, so the corpus grows across the whole catalogue instead of
+  stopping at `advanced-*` — fetches their pages, rebuilds the program index, and
+  queues every course of every published bundle. That is the only discovery lever
+  that runs unattended: `--instructors` is a catalogue, not a curriculum, and stays
+  manual. The two numbers are paired: 20 programs is roughly 100 member courses,
+  which is what the run reads (`DEFAULT_LIMIT`), so the queue stays flat instead of
+  growing out of reach of the next bundle.
 - **Updating the job.** Merge to `develop`. The next run clones it, so the code
   that runs is the code you merged. Rebuild the image only when the entrypoint or
   runtimes change: `sudo ./ops/setup.sh --env .env`, or
