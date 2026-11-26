@@ -15,6 +15,7 @@ from starisk.groupings import (
     read_index,
     read_seeds,
     refuse_reason,
+    spread,
 )
 
 PAGE = (
@@ -230,6 +231,33 @@ class RefuseReasonTest(unittest.TestCase):
 
     def test_force_overrides(self):
         self.assertIsNone(refuse_reason({}, {"a": {}}, force=True))
+
+
+class SpreadTest(unittest.TestCase):
+    def test_is_a_permutation_and_ignores_the_input_order(self):
+        slugs = [f"course-{index:03d}" for index in range(50)]
+
+        spread_slugs = spread(slugs)
+
+        self.assertEqual(sorted(spread_slugs), sorted(slugs))
+        self.assertEqual(spread_slugs, spread(list(reversed(slugs))))
+
+    def test_is_not_the_alphabetical_head(self):
+        slugs = [f"course-{index:04d}" for index in range(1000)]
+
+        first = spread(slugs)[:20]
+
+        self.assertNotEqual(first, slugs[:20])
+        # The first batch reaches well past the start of the alphabet.
+        self.assertTrue(any(slugs.index(slug) >= 500 for slug in first))
+
+    def test_a_new_slug_does_not_reorder_the_existing_ones(self):
+        slugs = [f"course-{index:03d}" for index in range(100)]
+
+        before = spread(slugs)
+        after = spread([*slugs, "course-new"])
+
+        self.assertEqual([slug for slug in after if slug in set(slugs)], before)
 
 
 class DiscoverTest(unittest.TestCase):
