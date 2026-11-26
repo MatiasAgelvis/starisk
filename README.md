@@ -104,6 +104,18 @@ the hero links, so teachers cost no extra request. If Coursera rate-limits a run
 (403/429), it **stops** instead of retrying — the next run resumes at the same
 course.
 
+The cache can be inspected without touching the network:
+
+```sh
+mise run pipeline:cache -- stats    # pages, bytes and date range per kind
+mise run pipeline:cache -- verify   # gunzip + re-parse each page with this checkout
+```
+
+`verify` is the answer to “how much of my cache can today's adapter still read?”
+Before changing a selector, it tells apart pages that parse, pages Coursera marks
+as having no written reviews, and pages that no longer yield anything — and names
+the last group.
+
 ### Growing the list
 
 The list grows along edges that already exist, not by sampling the sitemap:
