@@ -20,6 +20,7 @@ is how the directory grows without an editorial list.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 import time
@@ -156,6 +157,19 @@ def read_seeds(path: Path = PROGRAMS_PATH) -> list[str]:
     return [str(value).strip() for value in data if str(value).strip()]
 
 
+def spread(slugs: list[str]) -> list[str]:
+    """Order the sitemap so the walk samples all of it, not its alphabetical head.
+
+    `program_slugs` returns a sorted list, so taking the first N unknown every
+    night would spend the first months of the budget on `advanced-*` and
+    `agentic-*` and never reach the rest of the alphabet. A stable hash gives
+    every slug an equal place in line: no seed to store, the same order on every
+    machine and every run, and adding a slug to the sitemap does not reorder the
+    ones already queued.
+    """
+    return sorted(slugs, key=lambda slug: hashlib.sha1(slug.encode()).digest())
+
+
 def discover_candidates(
     index: dict,
     seeds: list[str],
@@ -164,7 +178,7 @@ def discover_candidates(
     limit: int = DISCOVER_PER_RUN,
     cached: Iterable[str] = (),
 ) -> list[str]:
-    """The next program pages nobody has fetched yet, in sitemap order.
+    """The next program pages nobody has fetched yet, in the order given.
 
     `index` (published), `seeds` (committed), `retired` (tombstones) and `cached`
     (pages already on disk) are everything already paid for. Walking in sitemap
@@ -315,7 +329,7 @@ def main(argv: list[str]) -> int:
 
     if options.discover:
         seeds = read_seeds()
-        slugs = program_slugs()
+        slugs = spread(program_slugs())
         candidates = discover_candidates(
             read_index(),
             seeds,
