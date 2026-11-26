@@ -103,6 +103,10 @@ def _request(
     raise RuntimeError(f"failed to fetch {url}: {last_error}")
 
 
+# How much extra pause the scheduler may add on top of the configured delay.
+JITTER = 0.5
+
+
 def fetch_page(url: str, timeout: float = 25, retries: int = 2, backoff: float = 2.0) -> str:
     """Fetch a URL and return its HTML as text."""
     return _request(url, HEADERS, timeout, retries, backoff).decode("utf-8", "replace")
@@ -115,7 +119,7 @@ def fetch_bytes(url: str, timeout: float = 25, retries: int = 2, backoff: float 
     )
 
 
-def jitter(delay: float, spread: float = 0.5) -> float:
+def jitter(delay: float, spread: float = JITTER) -> float:
     """Seconds to wait before the next request: the delay, plus up to `spread`.
 
     A fixed interval is the one pattern a rate limiter can fingerprint for free,
