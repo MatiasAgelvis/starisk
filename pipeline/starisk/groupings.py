@@ -279,17 +279,50 @@ def read_index(path: Path = GROUPINGS_PATH) -> dict:
 def refuse_reason(new: dict, previous: dict, force: bool = False) -> str | None:
     """Why writing this index would be unsafe, or None when it is fine.
 
-    The index is derived from cached pages, so a smaller rebuild means the cache
-    is missing pages — not that Coursera removed programs. A fresh clone has an
-    empty cache and would otherwise delete the whole program directory on its
-    first run.
+    The index is derived from cached pages, so it may only ever say *more* than
+    the version on disk. A smaller rebuild means the cache is missing pages, and
+    a program that lost ratings or courses means the pages behind it are older
+    than the ones that produced the published index. Both are the signature of a
+    stale cache, not news from Coursera, so they need `--force` to publish.
     """
-    if force or len(new) >= len(previous):
+    if force:
         return None
-    return (
-        f"refusing to write {len(new)} program(s) over {len(previous)}: the page cache "
-        "is incomplete. Re-run with --fetch, or --force if the drop is real."
-    )
+
+    if len(new) < len(previous):
+        return (
+            f"refusing to write {len(new)} program(s) over {len(previous)}: the page cache "
+            "is incomplete. Re-run with --fetch, or --force if the drop is real."
+        )
+
+    for key, old in previous.items():
+        entry = new.get(key)
+        if entry is None:
+            return (
+                f"refusing to drop {key}: the page cache is incomplete. "
+                "Re-run with --fetch, or --force if the drop is real."
+            )
+
+        if (entry.get("courses") or []) != (old.get("courses") or []):
+            return (
+                f"refusing to write {key}: its course list changed. That is a different "
+                "page than the one this index was built from — re-fetch or --force."
+            )
+
+        # Counts only ever grow as a bundle ages. A fall means the page behind it
+        # is older than the one that produced the index we already published.
+        for field, label in (("ratings_total", "ratings"), ("coursera", "bundle rating")):
+            before, after = old.get(field), entry.get(field)
+            if (
+                isinstance(before, (int, float))
+                and isinstance(after, (int, float))
+                and after < before
+            ):
+                return (
+                    f"refusing to write {key}: its {label} fell from {before} to {after}. "
+                    "That is the signature of a stale cache, not a recount — --force if real."
+                )
+
+    return None
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
