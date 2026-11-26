@@ -67,7 +67,7 @@ Front and back are **separate**, joined by one file: `scores.json`.
   **scoped Turso token used from the browser** (later), or a small serverless
   function. Seen from the crawler's side it is simply **a queue**: a row is a
   job, and the local pipeline drains it. That is the one genuinely tricky later
-  decision; don't solve it now. (Design sketch: `IDEAS.md` I11.)
+  decision; don't solve it now. (Design sketch: `ARCHIVE.md` I11.)
 
 ## 6. Decisions (the log)
 

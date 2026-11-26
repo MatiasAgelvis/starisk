@@ -368,6 +368,7 @@ calibration/   my own 74 credentials, for measuring the model
 samples/       scratch space for live HTML snapshots (gitignored)
 SPEC.md        the why: mission, non-goals, decision log
 IDEAS.md       the registry of larger ideas, with reasoning
+ARCHIVE.md     shipped and rejected threads, kept for the reasoning
 ```
 
 ## History
