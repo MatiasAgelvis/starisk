@@ -298,5 +298,41 @@
   "google-cloud": {
     "tile": "/logos/tile/google-cloud.jpg",
     "full": "/logos/full/google-cloud.jpg"
+  },
+  "the-expert-academy": {
+    "tile": "/logos/tile/the-expert-academy.png",
+    "full": "/logos/full/the-expert-academy.png"
+  },
+  "learnkarts": {
+    "tile": "/logos/tile/learnkarts.jpg",
+    "full": "/logos/full/learnkarts.jpg"
+  },
+  "macmillan-learning": {
+    "tile": "/logos/tile/macmillan-learning.png",
+    "full": "/logos/full/macmillan-learning.png"
+  },
+  "university-of-colorado-system": {
+    "tile": "/logos/tile/university-of-colorado-system.jpg",
+    "full": "/logos/full/university-of-colorado-system.jpg"
+  },
+  "corporate-finance-institute": {
+    "tile": "/logos/tile/corporate-finance-institute.jpg",
+    "full": "/logos/full/corporate-finance-institute.jpg"
+  },
+  "technical-university-of-munich-tum": {
+    "tile": "/logos/tile/technical-university-of-munich-tum.png",
+    "full": "/logos/full/technical-university-of-munich-tum.png"
+  },
+  "alex-genadinik": {
+    "tile": "/logos/tile/alex-genadinik.jpg",
+    "full": "/logos/full/alex-genadinik.jpg"
+  },
+  "creo-incubator": {
+    "tile": "/logos/tile/creo-incubator.png",
+    "full": "/logos/full/creo-incubator.png"
+  },
+  "illinois-tech": {
+    "tile": "/logos/tile/illinois-tech.png",
+    "full": "/logos/full/illinois-tech.png"
   }
 }
