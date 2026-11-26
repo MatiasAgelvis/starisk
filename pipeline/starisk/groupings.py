@@ -35,7 +35,7 @@ from .adapter import (
 )
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import DATA_DIR, load_retired, write_atomic, write_retired
-from .fetch import RateLimited, Retired, fetch_page
+from .fetch import RateLimited, Retired, fetch_page, jitter
 from .sitemap import program_slugs
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
@@ -247,7 +247,7 @@ def fetch_missing(
         store_page(key, html, cache_dir)
         fetched += 1
         if delay:
-            sleep(delay)
+            sleep(jitter(delay))
     return fetched
 
 

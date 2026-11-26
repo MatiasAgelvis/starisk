@@ -38,7 +38,7 @@ from pathlib import Path
 from .adapter import extract_instructor_courses, extract_specialization_courses
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import SCORES_PATH, SOURCES_PATH, load_retired, normalize_source, write_atomic
-from .fetch import fetch_page
+from .fetch import fetch_page, jitter
 from .groupings import read_index
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
 from .sitemap import PROGRAM_SITEMAP_CACHE, program_slugs
@@ -77,7 +77,7 @@ def _page(key: str, url: str, fetch, delay, sleep, cache_dir) -> str | None:
         return None
     store_page(key, html, cache_dir)
     if delay:
-        sleep(delay)
+        sleep(jitter(delay))
     return html
 
 
