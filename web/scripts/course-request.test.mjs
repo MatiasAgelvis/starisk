@@ -153,7 +153,7 @@ test('refuses bodies larger than a course name', async () => {
 });
 
 test('rate limits one visitor per hour and the site per day', async () => {
-  const hourly = stubTurso({ hits: 7 });
+  const hourly = stubTurso({ hits: 25 });
   try {
     const response = await handleCourseRequest({
       request: post({ query: 'learn/machine-learning' }),

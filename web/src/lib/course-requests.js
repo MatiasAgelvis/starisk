@@ -11,7 +11,11 @@
 
 import { REASON_MESSAGES, validateQuery } from './requests.js';
 
-const PER_HOUR = 6; // one visitor, one clock hour
+// Coursera's results page is a single-page app and "Show more" appends cards, so
+// one visitor browsing normally can ask for a couple of dozen courses in a burst.
+// Six made the last chips of a single page fail; the site-wide daily cap is the
+// real ceiling on abuse, and this one is only here to stop a runaway client.
+const PER_HOUR = 24; // one visitor, one clock hour
 const PER_DAY = 400; // the whole site, one UTC day
 const BODY_LIMIT = 2048;
 
