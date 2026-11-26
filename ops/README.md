@@ -165,6 +165,12 @@ retires with code 15; the one after resumes, because the skipped night writes a
 record without the flag. That alternation is deliberate: a host that just said
 403 wants silence, not a retry, and an offline re-parse is never skipped.
 
+**A refused program index is not a dead night.** If rebuilding `groupings.json`
+would shrink the directory, drop a program, change a program's course list or
+lower its ratings, the rebuild is skipped, the published index stays as it was,
+and the crawl continues. If anything else changed, the run is reported `partial`
+with that reason in `last-run.json`. `--force` publishes the rebuild anyway.
+
 The container gets its environment from `--env-file` — `/etc/starisk/env` on the
 box, `ops/.env` for the local compose path — so `--env-file` is for running the
 module directly on the host:
