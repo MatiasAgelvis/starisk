@@ -284,9 +284,11 @@ committed copy is kept.
 - `/data/scores.json` is published as a file — the whole dataset, CORS `*`.
 - Provider logos are committed in `web/public/logos/`, so no download runs at
   build time. `mise run pipeline:logos` fetches any that are missing and derives
-  the `tile/` and `full/` sizes the tables and course pages draw. `--prune` drops
-  the 160px lockup once a provider has both; the crawl keeps local logo paths, so
-  neither step is needed *after* a crawl to keep `scores.json` honest.
+  the `tile/` and `full/` sizes the tables and course pages draw — paced like the
+  crawl (0.5 s plus jitter), because a logo run after a big crawl is a burst of
+  image requests. `--prune` drops the 160px lockup once a provider has both; the
+  crawl keeps local logo paths, so neither step is needed *after* a crawl to keep
+  `scores.json` honest.
 - `web/public/_headers` sets caching for Cloudflare Pages (ignored elsewhere).
 
 ### Course requests
