@@ -50,6 +50,11 @@ programs, 383 instructors, 2 requests.**
 - **Alert on repeated `error` records.** Zero today; a run that produces several in
   a row means the markup moved. The nightly already notifies on failure, so this is
   a threshold inside the existing gate, not a new channel.
+- **A groupings rebuild can regress published stats.** A rebuild from an older
+  laptop cache lowered `ratings_total` on 25 published programs and raised none —
+  the signature of a stale snapshot, not Coursera recounting. `refuse_reason` only
+  protects the program count. Extend it to refuse when an existing program's bundle
+  rating or course list changes, unless `--force`.
 - **The tests write into the real page cache.** About a dozen `crawl()` calls in
   `tests/test_crawl.py` omit `cache_dir`, so every test run leaves `learn/a`,
   `learn/empty` and friends in `pipeline/data/.cache` — and `cache verify` reports
