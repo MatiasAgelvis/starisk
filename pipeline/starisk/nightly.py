@@ -28,7 +28,7 @@ Exit codes are the interface to the timer and the health check:
 
     0   ok, committed             20  gate refused             50  smoke failed
     10  nothing changed           30  partial (rate limited)   60  missing config
-    40  git trouble               70  unexpected failure
+    15  cooldown, no requests      40  git trouble              70  unexpected failure
 """
 
 from __future__ import annotations
@@ -62,6 +62,9 @@ DEFAULT_LIMIT = 100
 
 OK = 0
 NOTHING = 10
+# A rate-limited run buys one night of silence: the host asked for it, and
+# hammering a 403 is how a soft limit becomes a ban.
+COOLDOWN = 15
 GATE = 20
 PARTIAL = 30
 GIT = 40
@@ -72,6 +75,7 @@ FAILED = 70
 STATUS = {
     OK: "ok",
     NOTHING: "nothing",
+    COOLDOWN: "cooldown",
     GATE: "refused",
     PARTIAL: "partial",
     GIT: "git",
@@ -440,6 +444,30 @@ def write_last_run(record: dict) -> None:
     LAST_RUN.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
 
 
+def load_last_run(path: Path = LAST_RUN) -> dict | None:
+    """The previous run's record, or None when there is nothing usable."""
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def cooldown_reason(record: dict | None) -> str | None:
+    """Why tonight should make no requests, or None.
+
+    A rate-limited run buys exactly one night off. The skipped run writes its own
+    record without the flag, so the schedule alternates instead of stopping for
+    good — if the host is still refusing, the night after tries again. Offline
+    runs are never skipped: they send nothing.
+    """
+    if not record or not record.get("rateLimited"):
+        return None
+    return "the previous run was rate-limited; skipping tonight"
+
+
 @contextmanager
 def single_run(path: Path = LOCK):
     LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -469,6 +497,7 @@ def finish(
     summary: dict | None = None,
     commit_hash: str | None = None,
     pr_url: str | None = None,
+    rate_limited: bool = False,
 ) -> int:
     record = {
         "started": started,
@@ -478,6 +507,7 @@ def finish(
         "reason": reason,
         "commit": commit_hash,
         "pullRequest": pr_url,
+        "rateLimited": bool(rate_limited),
     }
     if summary:
         record["corpus"] = {
@@ -491,7 +521,7 @@ def finish(
     if code == NOTHING:
         # Silent by design: the heartbeat file above is the sign of life.
         pass
-    elif code in (OK, PARTIAL):
+    elif code in (OK, PARTIAL, COOLDOWN):
         lines = [summary_line(summary, Decision(code, reason)) if summary else reason]
         if pr_url:
             lines.append(pr_url)
@@ -507,6 +537,10 @@ def dry_run(options) -> int:
     """Config, connectivity and the live checks. No crawl, no writes, no commit."""
     print("[nightly] dry run: no crawl, no commit, no push")
     print(f"[nightly] publishing to a {BRANCH_PREFIX}<stamp> branch off {BASE}")
+
+    reason = cooldown_reason(load_last_run())
+    if reason:
+        print(f"[nightly] would skip tonight: {reason}")
 
     scores = load_scores()
     stats = crawl.summarize(scores)
@@ -556,7 +590,18 @@ def run(options) -> int:
         if options.dry_run:
             return dry_run(options)
 
+        # One night of silence after a rate-limited run: hammering a host that
+        # just answered 403 is how a soft limit becomes a ban. The skipped run
+        # writes its own record without the flag, so the schedule alternates
+        # instead of stopping for good. `--offline` sends nothing and is never
+        # skipped; `--no-cooldown` is the manual escape hatch.
+        if not (options.no_cooldown or options.offline):
+            reason = cooldown_reason(load_last_run())
+            if reason:
+                return finish(env, started, COOLDOWN, reason)
+
         before = load_scores()
+        rate_limited = False
         # Files already dirty when we started are not this run's doing: a stray
         # note in a dev clone must not gate the commit.
         baseline = set(changed())
@@ -590,6 +635,7 @@ def run(options) -> int:
         # the expansion lever below queues the members of the index this writes.
         index_code = groupings.main(index_args)
         if index_code == 2:
+            rate_limited = True
             print("[nightly] the program fetch was rate-limited; keeping the current index")
         elif index_code != 0:
             return finish(env, started, FAILED, "the program index rebuild failed")
@@ -628,6 +674,7 @@ def run(options) -> int:
         after = load_scores()
         new_paths = [path for path in changed() if path not in baseline]
         summary = diff_summary(before, after)
+        rate_limited = rate_limited or summary["rate_limited"]
         decision = decide(new_paths, summary, crawl.summarize(before))
 
         commit_hash = None
@@ -660,6 +707,7 @@ def run(options) -> int:
                         f"crawl kept, publish pending: {error}",
                         summary=summary,
                         commit_hash=commit_hash,
+                        rate_limited=rate_limited,
                     )
                 try:
                     pr_url = open_pull_request(
@@ -686,6 +734,7 @@ def run(options) -> int:
             summary=summary,
             commit_hash=commit_hash,
             pr_url=pr_url,
+            rate_limited=rate_limited,
         )
 
 
@@ -720,6 +769,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--offline",
         action="store_true",
         help="re-parse cached pages instead of making requests",
+    )
+    parser.add_argument(
+        "--no-cooldown",
+        action="store_true",
+        help="run even if the previous run was rate-limited",
     )
     return parser.parse_args(argv)
 

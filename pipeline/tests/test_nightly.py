@@ -1,6 +1,8 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from starisk import nightly
 
@@ -220,6 +222,50 @@ class EnvFileTest(unittest.TestCase):
 
         self.assertIn("not found", error)
         self.assertEqual(env, {})
+
+
+class CooldownTest(unittest.TestCase):
+    def test_there_is_no_cooldown_without_a_rate_limited_run(self):
+        for record in (
+            None,
+            {},
+            {"status": "ok"},
+            {"status": "partial"},
+            {"status": "partial", "rateLimited": False},
+        ):
+            self.assertIsNone(nightly.cooldown_reason(record))
+
+    def test_a_rate_limited_run_buys_one_night(self):
+        reason = nightly.cooldown_reason({"status": "partial", "rateLimited": True})
+
+        self.assertIn("rate-limited", reason)
+
+    def test_the_skipped_run_does_not_extend_the_cooldown(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "last-run.json"
+            with mock.patch.object(nightly, "LAST_RUN", path):
+                nightly.finish({}, "2026-01-01T00:00:00Z", nightly.COOLDOWN, "skipped")
+            record = json.loads(path.read_text(encoding="utf-8"))
+
+        self.assertEqual(record["status"], "cooldown")
+        self.assertFalse(record["rateLimited"])
+        self.assertIsNone(nightly.cooldown_reason(record))
+
+    def test_a_rate_limited_run_records_the_flag(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "last-run.json"
+            with mock.patch.object(nightly, "LAST_RUN", path):
+                nightly.finish(
+                    {},
+                    "2026-01-01T00:00:00Z",
+                    nightly.PARTIAL,
+                    "Coursera rate-limited the crawl",
+                    rate_limited=True,
+                )
+            record = json.loads(path.read_text(encoding="utf-8"))
+
+        self.assertTrue(record["rateLimited"])
+        self.assertEqual(record["status"], "partial")
 
 
 if __name__ == "__main__":
