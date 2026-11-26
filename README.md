@@ -100,9 +100,23 @@ stalest-first so `--limit` always makes progress. Each course is **two**
 requests — the reviews page and the landing page (the whole teaching team,
 categories) — and both are cached, so `--offline` re-parses without touching the
 network. The landing page's data blob carries every instructor, not just the ones
-the hero links, so teachers cost no extra request. If Coursera rate-limits a run
-(403/429), it **stops** instead of retrying — the next run resumes at the same
-course.
+the hero links, so teachers cost no extra request. Requests are spaced by `--delay`
+(1.5 s by default) **plus up to 50% jitter**: the delay is a floor, not a schedule,
+because a fixed interval is the one pattern a rate limiter can fingerprint for
+free. If Coursera rate-limits a run (403/429), it **stops** instead of retrying —
+the next run resumes at the same course.
+
+The cache can be inspected without touching the network:
+
+```sh
+mise run pipeline:cache -- stats    # pages, bytes and date range per kind
+mise run pipeline:cache -- verify   # gunzip + re-parse each page with this checkout
+```
+
+`verify` is the answer to “how much of my cache can today's adapter still read?”
+Before changing a selector, it tells apart pages that parse, pages Coursera marks
+as having no written reviews, and pages that no longer yield anything — and names
+the last group.
 
 ### Growing the list
 
@@ -270,9 +284,11 @@ committed copy is kept.
 - `/data/scores.json` is published as a file — the whole dataset, CORS `*`.
 - Provider logos are committed in `web/public/logos/`, so no download runs at
   build time. `mise run pipeline:logos` fetches any that are missing and derives
-  the `tile/` and `full/` sizes the tables and course pages draw. `--prune` drops
-  the 160px lockup once a provider has both; the crawl keeps local logo paths, so
-  neither step is needed *after* a crawl to keep `scores.json` honest.
+  the `tile/` and `full/` sizes the tables and course pages draw — paced like the
+  crawl (0.5 s plus jitter), because a logo run after a big crawl is a burst of
+  image requests. `--prune` drops the 160px lockup once a provider has both; the
+  crawl keeps local logo paths, so neither step is needed *after* a crawl to keep
+  `scores.json` honest.
 - `web/public/_headers` sets caching for Cloudflare Pages (ignored elsewhere).
 
 ### Course requests

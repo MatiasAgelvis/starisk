@@ -25,6 +25,11 @@ description = "Lint the Python pipeline"
 dir = "pipeline"
 run = "ruff check ."
 
+[tasks."pipeline:cache"]
+description = "Inspect the page cache: counts and sizes, or a full reparse"
+dir = "pipeline"
+run = "python -m starisk.cache"
+
 [tasks."pipeline:crawl"]
 description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
 dir = "pipeline"

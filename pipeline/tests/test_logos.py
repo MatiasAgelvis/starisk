@@ -142,6 +142,34 @@ class LocalizeTest(unittest.TestCase):
 
             self.assertEqual(scores["learn/a"]["image"], "https://cdn/y.png")
 
+    def test_downloads_are_spaced_and_failures_pause_too(self):
+        slept = []
+
+        def fetch(url):
+            if "bad" in url:
+                raise RuntimeError("timeout")
+            return PNG
+
+        scores = {
+            "learn/a": {"provider": "Yale University", "image": "https://cdn/y.png"},
+            "learn/b": {"provider": "Duke University", "image": "https://cdn/bad.png"},
+        }
+        with TemporaryDirectory() as tmp:
+            localize_images(
+                scores,
+                fetch=fetch,
+                out_dir=Path(tmp),
+                log=lambda *_: None,
+                delay=1.0,
+                sleep=slept.append,
+            )
+
+        # One pause per request, including the one that failed.
+        self.assertEqual(len(slept), 2)
+        for pause in slept:
+            self.assertGreaterEqual(pause, 1.0)
+            self.assertLessEqual(pause, 1.5)
+
     def test_unrecognised_bytes_keep_the_remote_url(self):
         scores = {"learn/a": {"provider": "Yale University", "image": "https://cdn/y.png"}}
         with TemporaryDirectory() as tmp:

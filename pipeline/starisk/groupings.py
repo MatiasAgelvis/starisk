@@ -23,6 +23,7 @@ import argparse
 import json
 import sys
 import time
+from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -34,7 +35,7 @@ from .adapter import (
 )
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import DATA_DIR, load_retired, write_atomic, write_retired
-from .fetch import RateLimited, Retired, fetch_page
+from .fetch import RateLimited, Retired, fetch_page, jitter
 from .sitemap import program_slugs
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
@@ -161,15 +162,22 @@ def discover_candidates(
     retired: dict,
     slugs: list[str],
     limit: int = DISCOVER_PER_RUN,
+    cached: Iterable[str] = (),
 ) -> list[str]:
     """The next program pages nobody has fetched yet, in sitemap order.
 
-    `index` (published), `seeds` (committed) and `retired` (tombstones) are
-    everything already known. Walking in sitemap order means every run advances
-    instead of retrying the head of the list, and a 404 is recorded once rather
-    than paid for every night.
+    `index` (published), `seeds` (committed), `retired` (tombstones) and `cached`
+    (pages already on disk) are everything already paid for. Walking in sitemap
+    order means every run advances instead of retrying the head of the list, and a
+    404 is recorded once rather than paid for every night.
+
+    `cached` matters as much as the rest: a program page that fetched fine but
+    yielded no course list is not in the index, not a seed and not retired, so
+    without it the page stays a candidate forever, eats a slot of the nightly
+    discovery budget and is refetched never. With it, a cached-but-silent page is
+    skipped until someone fixes the adapter and clears the cache.
     """
-    known = set(index) | set(seeds) | set(retired)
+    known = set(index) | set(seeds) | set(retired) | set(cached)
     candidates = []
     for slug in slugs:
         key = f"specializations/{slug}"
@@ -239,7 +247,7 @@ def fetch_missing(
         store_page(key, html, cache_dir)
         fetched += 1
         if delay:
-            sleep(delay)
+            sleep(jitter(delay))
     return fetched
 
 
@@ -309,7 +317,12 @@ def main(argv: list[str]) -> int:
         seeds = read_seeds()
         slugs = program_slugs()
         candidates = discover_candidates(
-            read_index(), seeds, retired, slugs, options.discover_limit
+            read_index(),
+            seeds,
+            retired,
+            slugs,
+            options.discover_limit,
+            cached=cached_grouping_keys(),
         )
         print(
             f"discovered {len(candidates)} program(s) from {len(slugs)} sitemap slug(s)"

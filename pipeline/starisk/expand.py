@@ -38,7 +38,7 @@ from pathlib import Path
 from .adapter import extract_instructor_courses, extract_specialization_courses
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import SCORES_PATH, SOURCES_PATH, load_retired, normalize_source, write_atomic
-from .fetch import fetch_page
+from .fetch import JITTER, fetch_page, jitter
 from .groupings import read_index
 from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
 from .sitemap import PROGRAM_SITEMAP_CACHE, program_slugs
@@ -77,7 +77,7 @@ def _page(key: str, url: str, fetch, delay, sleep, cache_dir) -> str | None:
         return None
     store_page(key, html, cache_dir)
     if delay:
-        sleep(delay)
+        sleep(jitter(delay))
     return html
 
 
@@ -259,9 +259,11 @@ def plan(
     )
     if delay:
         requests = len(new) * 2  # reviews page + landing page, per D18
+        # Jittered pauses average delay * (1 + JITTER/2), not the raw delay.
+        average = delay * (1 + JITTER / 2)
         report(
-            f"estimated crawl: {requests} requests, about {requests * delay / 60:.1f} min "
-            f"at {delay:g}s between requests"
+            f"estimated crawl: {requests} requests, about {requests * average / 60:.1f} min "
+            f"at {delay:g}s + jitter between requests"
         )
     return new, lines
 

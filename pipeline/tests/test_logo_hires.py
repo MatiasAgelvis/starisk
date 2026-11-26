@@ -84,6 +84,30 @@ class LocalizeHiresTest(unittest.TestCase):
             self.assertTrue((out / "full" / "yale-university.png").exists())
             self.assertEqual(list(out.rglob("*.tmp")), [])
 
+    def test_downloads_are_spaced_when_a_delay_is_given(self):
+        slept = []
+
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            cache, out = root / "cache", root / "out"
+            store_page("learn/a", PAGE, cache)
+
+            localize_hires(
+                self.scores(),
+                cache_dir=cache,
+                out_dir=out,
+                fetch=lambda _: PNG,
+                log=lambda *_: None,
+                delay=1.0,
+                sleep=slept.append,
+            )
+
+        # Two sizes for Yale; Duke has no cached page, so it is not requested.
+        self.assertEqual(len(slept), 2)
+        for pause in slept:
+            self.assertGreaterEqual(pause, 1.0)
+            self.assertLessEqual(pause, 1.5)
+
     def test_second_run_makes_no_requests(self):
         def failing_fetch(url):
             raise AssertionError("should have reused the files")
