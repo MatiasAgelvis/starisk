@@ -45,11 +45,11 @@
     ],
     "provider": "IBM",
     "coursera": 3.4,
-    "ratings_total": 18,
+    "ratings_total": 20,
     "rating_counts": {
-      "1": 3,
+      "1": 4,
       "2": 0,
-      "3": 3,
+      "3": 4,
       "4": 1,
       "5": 11
     }
@@ -2277,6 +2277,27 @@
       "5": 8146
     }
   },
+  "specializations/ai-for-hr": {
+    "key": "specializations/ai-for-hr",
+    "type": "specialization",
+    "title": "AI for HR",
+    "url": "https://www.coursera.org/specializations/ai-for-hr",
+    "courses": [
+      "learn/introduction-to-ai-for-hr-professionals",
+      "learn/practical-ai-and-prompting-for-hr-professionals",
+      "learn/ai-agents-creator-tools-for-hr-professionals"
+    ],
+    "provider": "AI Business School",
+    "coursera": 4.7,
+    "ratings_total": 52,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 6,
+      "5": 43
+    }
+  },
   "specializations/ai-healthcare": {
     "key": "specializations/ai-healthcare",
     "type": "specialization",
@@ -2300,6 +2321,47 @@
       "5": 2734
     }
   },
+  "specializations/ai-powered-cybersecurity-mqcsa": {
+    "key": "specializations/ai-powered-cybersecurity-mqcsa",
+    "type": "specialization",
+    "title": "AI-Powered Cybersecurity",
+    "url": "https://www.coursera.org/specializations/ai-powered-cybersecurity-mqcsa",
+    "courses": [
+      "learn/machine-learning-cyber-threat-and-anomaly-detection-mqcsa",
+      "learn/adversarial-ai-attacking-defending-and-governing-ml-systems-mqcsa",
+      "learn/cyber-incident-response-triage-containment-and-recovery-mqcsa"
+    ],
+    "provider": "Macquarie University",
+    "coursera": 4.9,
+    "ratings_total": 28,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 27
+    }
+  },
+  "specializations/ai-powered-marketing-analytics-with-google-analytics-4-ga4": {
+    "key": "specializations/ai-powered-marketing-analytics-with-google-analytics-4-ga4",
+    "type": "specialization",
+    "title": "AI-Powered Marketing Analytics with Google Analytics 4 (GA4)",
+    "url": "https://www.coursera.org/specializations/ai-powered-marketing-analytics-with-google-analytics-4-ga4",
+    "courses": [
+      "learn/build-your-marketing-insights-google-analytics-foundations",
+      "learn/forecasting-for-marketers-mastering-google-analytics",
+      "learn/advanced-google-analytics-4-optimization-and-attribution"
+    ],
+    "provider": "Board Infinity",
+    "ratings_total": 7,
+    "rating_counts": {
+      "1": 4,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 2
+    }
+  },
   "specializations/algorithms": {
     "key": "specializations/algorithms",
     "type": "specialization",
@@ -2320,6 +2382,71 @@
       "3": 163,
       "4": 1201,
       "5": 7972
+    }
+  },
+  "specializations/applied-ai-cybersecurity": {
+    "key": "specializations/applied-ai-cybersecurity",
+    "type": "specialization",
+    "title": "Applied AI in Cybersecurity",
+    "url": "https://www.coursera.org/specializations/applied-ai-cybersecurity",
+    "courses": [
+      "learn/practical-ai-foundations",
+      "learn/practical-prompt-engineering-ai",
+      "learn/ai-enabled-cybersecurity"
+    ],
+    "provider": "Chegg Skills",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    }
+  },
+  "specializations/business-english": {
+    "key": "specializations/business-english",
+    "type": "specialization",
+    "title": "Business English Communication Skills",
+    "url": "https://www.coursera.org/specializations/business-english",
+    "courses": [
+      "learn/business-english-intro",
+      "learn/business-english-meetings",
+      "learn/business-english-negotiating",
+      "learn/business-english-presentations",
+      "learn/business-english-capstone"
+    ],
+    "provider": "University of Washington",
+    "coursera": 4.7,
+    "ratings_total": 6283,
+    "rating_counts": {
+      "1": 103,
+      "2": 38,
+      "3": 122,
+      "4": 764,
+      "5": 5256
+    }
+  },
+  "specializations/cloud": {
+    "key": "specializations/cloud",
+    "type": "specialization",
+    "title": "System Issues in Cloud Computing",
+    "url": "https://www.coursera.org/specializations/cloud",
+    "courses": [
+      "learn/sdnetworking",
+      "learn/cloud-sys-software",
+      "learn/cloud-app",
+      "learn/network-virtual"
+    ],
+    "provider": "Georgia Institute of Technology",
+    "coursera": 4.5,
+    "ratings_total": 422,
+    "rating_counts": {
+      "1": 16,
+      "2": 7,
+      "3": 20,
+      "4": 73,
+      "5": 306
     }
   },
   "specializations/computer-fundamentals": {
@@ -2345,6 +2472,27 @@
       "3": 139,
       "4": 638,
       "5": 5322
+    }
+  },
+  "specializations/cybersecurity-foundations": {
+    "key": "specializations/cybersecurity-foundations",
+    "type": "specialization",
+    "title": "Cybersecurity Foundations",
+    "url": "https://www.coursera.org/specializations/cybersecurity-foundations",
+    "courses": [
+      "learn/introduction-to-cybersecurity-foundations",
+      "learn/operating-system-foundations",
+      "learn/cybersecurity-policy-foundations"
+    ],
+    "provider": "Infosec",
+    "coursera": 4.7,
+    "ratings_total": 780,
+    "rating_counts": {
+      "1": 18,
+      "2": 8,
+      "3": 22,
+      "4": 95,
+      "5": 637
     }
   },
   "specializations/data-science-fundamentals": {
@@ -2503,6 +2651,27 @@
       "5": 73870
     }
   },
+  "specializations/financial-reporting-cost-management-foundations": {
+    "key": "specializations/financial-reporting-cost-management-foundations",
+    "type": "specialization",
+    "title": "Financial Reporting and Cost Management Foundations",
+    "url": "https://www.coursera.org/specializations/financial-reporting-cost-management-foundations",
+    "courses": [
+      "learn/analyze-apply-financial-reporting-fundamentals",
+      "learn/analyze-apply-cost-performance-management-concepts",
+      "learn/analyze-systems-data-analytics-management-accounting"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 5.0,
+    "ratings_total": 30,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 30
+    }
+  },
   "specializations/genomic-data-science": {
     "key": "specializations/genomic-data-science",
     "type": "specialization",
@@ -2549,6 +2718,49 @@
       "5": 2792
     }
   },
+  "specializations/holistic-mobile-app-design-and-development-cross-platform-excellence": {
+    "key": "specializations/holistic-mobile-app-design-and-development-cross-platform-excellence",
+    "type": "specialization",
+    "title": "Holistic Mobile App Design & Development",
+    "url": "https://www.coursera.org/specializations/holistic-mobile-app-design-and-development-cross-platform-excellence",
+    "courses": [
+      "learn/v2-cross-platform-mobile-development-with-react-native",
+      "learn/advanced-concepts-in-react-native-development",
+      "learn/microservices-and-deployment-by-using-aspnet"
+    ],
+    "provider": "Board Infinity",
+    "coursera": 4.2,
+    "ratings_total": 57,
+    "rating_counts": {
+      "1": 3,
+      "2": 4,
+      "3": 3,
+      "4": 15,
+      "5": 32
+    }
+  },
+  "specializations/homeland-security-cybersecurity": {
+    "key": "specializations/homeland-security-cybersecurity",
+    "type": "specialization",
+    "title": "Homeland Security and Cybersecurity",
+    "url": "https://www.coursera.org/specializations/homeland-security-cybersecurity",
+    "courses": [
+      "learn/homeland-security-cybersecurity-connection",
+      "learn/cybersecurity-policy-water-electricity",
+      "learn/cybersecurity-policy-aviation-internet",
+      "learn/homeland-security-cybersecurity-future"
+    ],
+    "provider": "University of Colorado System",
+    "coursera": 4.7,
+    "ratings_total": 991,
+    "rating_counts": {
+      "1": 6,
+      "2": 8,
+      "3": 35,
+      "4": 195,
+      "5": 747
+    }
+  },
   "specializations/improve-english": {
     "key": "specializations/improve-english",
     "type": "specialization",
@@ -2591,6 +2803,27 @@
       "3": 139,
       "4": 357,
       "5": 1916
+    }
+  },
+  "specializations/leading-technical-organizations2": {
+    "key": "specializations/leading-technical-organizations2",
+    "type": "specialization",
+    "title": "Leading Technical Organizations",
+    "url": "https://www.coursera.org/specializations/leading-technical-organizations2",
+    "courses": [
+      "learn/foundations-of-leadership",
+      "learn/strategic-and-inclusive-leadership",
+      "learn/leadership-in-action-and-planning"
+    ],
+    "provider": "Johns Hopkins University",
+    "coursera": 4.8,
+    "ratings_total": 91,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 2,
+      "4": 7,
+      "5": 79
     }
   },
   "specializations/learn-spanish": {
@@ -2656,6 +2889,26 @@
       "3": 52,
       "4": 209,
       "5": 1726
+    }
+  },
+  "specializations/microsoft-word-365": {
+    "key": "specializations/microsoft-word-365",
+    "type": "specialization",
+    "title": "Microsoft Word 365 Mastery",
+    "url": "https://www.coursera.org/specializations/microsoft-word-365",
+    "courses": [
+      "learn/microsoft-word-office-365-lo091141",
+      "learn/microsoft-word-office-365-lo091142",
+      "learn/microsoft-word-office-365-lo091143"
+    ],
+    "provider": "Logical Operations",
+    "ratings_total": 2,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 1
     }
   },
   "specializations/modern-contemporary-art-design": {
@@ -2746,6 +2999,47 @@
       "5": 3060
     }
   },
+  "specializations/packt-comptia-it-fundamentals-fc0-u61": {
+    "key": "specializations/packt-comptia-it-fundamentals-fc0-u61",
+    "type": "specialization",
+    "title": "CompTIA IT Fundamentals+ (FC0-U61)",
+    "url": "https://www.coursera.org/specializations/packt-comptia-it-fundamentals-fc0-u61",
+    "courses": [
+      "learn/packt-foundations-of-it-fundamentals-s4ieo",
+      "learn/packt-hardware-networking-databases-armbp",
+      "learn/packt-security-and-troubleshooting-essentials-armbp"
+    ],
+    "provider": "Packt",
+    "coursera": 4.6,
+    "ratings_total": 19,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 1,
+      "4": 1,
+      "5": 16
+    }
+  },
+  "specializations/packt-leetcode-in-c-top-100-coding-interview-problems": {
+    "key": "specializations/packt-leetcode-in-c-top-100-coding-interview-problems",
+    "type": "specialization",
+    "title": "LEETCODE In C++ - Top 100 Coding Interview Problems",
+    "url": "https://www.coursera.org/specializations/packt-leetcode-in-c-top-100-coding-interview-problems",
+    "courses": [
+      "learn/packt-introduction-to-data-structures-and-algorithmic-foundations-bo3qv",
+      "learn/packt-advanced-problem-solving-methods-and-search-algorithms-bo3qv",
+      "learn/packt-advanced-data-structures-and-algorithm-optimization-bo3qv"
+    ],
+    "provider": "Packt",
+    "ratings_total": 5,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    }
+  },
   "specializations/people-and-soft-skills-for-professional-success": {
     "key": "specializations/people-and-soft-skills-for-professional-success",
     "type": "specialization",
@@ -2768,6 +3062,51 @@
       "3": 204,
       "4": 1138,
       "5": 5166
+    }
+  },
+  "specializations/principles-of-management": {
+    "key": "specializations/principles-of-management",
+    "type": "specialization",
+    "title": "Principles of Management",
+    "url": "https://www.coursera.org/specializations/principles-of-management",
+    "courses": [
+      "learn/managing-yourself-and-others",
+      "learn/influencing-without-authority",
+      "learn/strategy-and-implementation",
+      "learn/decision-making-ethical-reasoning"
+    ],
+    "provider": "Johns Hopkins University",
+    "coursera": 4.5,
+    "ratings_total": 29,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 4,
+      "4": 9,
+      "5": 16
+    }
+  },
+  "specializations/professional-communication-interview-mastery": {
+    "key": "specializations/professional-communication-interview-mastery",
+    "type": "specialization",
+    "title": "Professional Communication & Interview Mastery",
+    "url": "https://www.coursera.org/specializations/professional-communication-interview-mastery",
+    "courses": [
+      "learn/build-job-ready-professional-resume",
+      "learn/interview-preparation-resume-final-round",
+      "learn/master-interview-skills-communication",
+      "learn/public-speaking-skills-professional-success",
+      "learn/master-voice-accent-pronunciation-skills"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.5,
+    "ratings_total": 79,
+    "rating_counts": {
+      "1": 7,
+      "2": 3,
+      "3": 2,
+      "4": 1,
+      "5": 66
     }
   },
   "specializations/prompt-engineering-for-law": {
@@ -2811,6 +3150,28 @@
       "3": 63,
       "4": 441,
       "5": 2834
+    }
+  },
+  "specializations/r-data-analytics-statistical-modeling-specialization": {
+    "key": "specializations/r-data-analytics-statistical-modeling-specialization",
+    "type": "specialization",
+    "title": "Analyze and Apply R for Data Analytics",
+    "url": "https://www.coursera.org/specializations/r-data-analytics-statistical-modeling-specialization",
+    "courses": [
+      "learn/analyze-data-using-r-for-statistical-analytics",
+      "learn/analyze-data-science-concepts-using-r",
+      "learn/apply-quantitative-data-analysis-using-r",
+      "learn/apply-exploratory-data-analysis-with-r-and-ggplot2"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 5.0,
+    "ratings_total": 14,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 14
     }
   },
   "specializations/reinforcement-learning": {
@@ -2876,6 +3237,64 @@
       "3": 0,
       "4": 0,
       "5": 7
+    }
+  },
+  "specializations/statistical-thermodynamics-engineering": {
+    "key": "specializations/statistical-thermodynamics-engineering",
+    "type": "specialization",
+    "title": "Statistical Thermodynamics",
+    "url": "https://www.coursera.org/specializations/statistical-thermodynamics-engineering",
+    "courses": [
+      "learn/macroscopic-microscopic-thermodynamics",
+      "learn/quantum-mechanics",
+      "learn/ideal-gases",
+      "learn/dense-gases-liquids-solids",
+      "learn/stats-thermo-non-equilibrium-applications"
+    ],
+    "provider": "University of Colorado Boulder",
+    "coursera": 4.5,
+    "ratings_total": 1368,
+    "rating_counts": {
+      "1": 50,
+      "2": 24,
+      "3": 73,
+      "4": 288,
+      "5": 933
+    }
+  },
+  "specializations/the-principles-of-leadership": {
+    "key": "specializations/the-principles-of-leadership",
+    "type": "specialization",
+    "title": "The Principles of Leadership: The Five P's",
+    "url": "https://www.coursera.org/specializations/the-principles-of-leadership",
+    "courses": [
+      "learn/principles-intro-potential",
+      "learn/principles-purpose-people",
+      "learn/principles-playbook-pay-it-forward"
+    ],
+    "provider": "Marshall University"
+  },
+  "specializations/tidyverse-data-science-r": {
+    "key": "specializations/tidyverse-data-science-r",
+    "type": "specialization",
+    "title": "Tidyverse Skills for Data Science in R",
+    "url": "https://www.coursera.org/specializations/tidyverse-data-science-r",
+    "courses": [
+      "learn/tidyverse",
+      "learn/tidyverse-importing-data",
+      "learn/tidyverse-data-wrangling",
+      "learn/tidyverse-visualize-data",
+      "learn/tidyverse-modelling-data"
+    ],
+    "provider": "Johns Hopkins University",
+    "coursera": 4.5,
+    "ratings_total": 168,
+    "rating_counts": {
+      "1": 4,
+      "2": 2,
+      "3": 9,
+      "4": 28,
+      "5": 125
     }
   }
 }

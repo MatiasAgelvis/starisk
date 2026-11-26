@@ -60,8 +60,10 @@ def program_slugs(
 ) -> list[str]:
     """Specialization slugs: the list programs are discovered from.
 
-    Expansion resolves certificates against it; discovery walks it in order to
-    find bundles nobody has fetched yet. One cache file, one download.
+    Expansion resolves certificates against it; discovery samples it in a spread
+    order (stable hash) instead of from the top, because this list is sorted and a
+    nightly walk from the start would never leave the first letters. One cache
+    file, one download.
     """
     return load_slugs(
         PROGRAM_SITEMAP_URL,
