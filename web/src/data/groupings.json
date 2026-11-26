@@ -20,13 +20,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.6,
-    "ratings_total": 259932,
+    "ratings_total": 259936,
     "rating_counts": {
       "1": 3301,
       "2": 3400,
-      "3": 10857,
+      "3": 10859,
       "4": 50090,
-      "5": 192284
+      "5": 192286
     }
   },
   "professional-certificates/ibm-enterprise-ai-transformation-and-consulting": {
@@ -45,11 +45,11 @@
     ],
     "provider": "IBM",
     "coursera": 3.4,
-    "ratings_total": 15,
+    "ratings_total": 18,
     "rating_counts": {
       "1": 3,
       "2": 0,
-      "3": 0,
+      "3": 3,
       "4": 1,
       "5": 11
     }
@@ -1817,6 +1817,444 @@
       "5": 15
     }
   },
+  "specializations/advanced-statistical-techniques-for-data-science": {
+    "key": "specializations/advanced-statistical-techniques-for-data-science",
+    "type": "specialization",
+    "title": "Advanced Statistical Techniques for Data Science",
+    "url": "https://www.coursera.org/specializations/advanced-statistical-techniques-for-data-science",
+    "courses": [
+      "learn/illinois-tech-linear-regression",
+      "learn/illinois-tech-model-diagnostics-and-remedial-measures",
+      "learn/illinois-tech-variable-selection-model-validation-and-nonlinear-regression",
+      "learn/illinois-tech-bayesian-computational-statistics",
+      "learn/illinois-tech-data-preparation-and-analysis"
+    ],
+    "provider": "Illinois Tech",
+    "coursera": 4.5,
+    "ratings_total": 61,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 5,
+      "4": 6,
+      "5": 47
+    }
+  },
+  "specializations/advanced-statistics-data-science": {
+    "key": "specializations/advanced-statistics-data-science",
+    "type": "specialization",
+    "title": "Advanced Statistics for Data Science",
+    "url": "https://www.coursera.org/specializations/advanced-statistics-data-science",
+    "courses": [
+      "learn/biostatistics",
+      "learn/biostatistics-2",
+      "learn/linear-models",
+      "learn/linear-models-2"
+    ],
+    "provider": "Johns Hopkins University",
+    "coursera": 4.4,
+    "ratings_total": 985,
+    "rating_counts": {
+      "1": 22,
+      "2": 25,
+      "3": 77,
+      "4": 230,
+      "5": 631
+    }
+  },
+  "specializations/advanced-survey-design-and-statistical-analysis": {
+    "key": "specializations/advanced-survey-design-and-statistical-analysis",
+    "type": "specialization",
+    "title": "Advanced Survey Design & Statistical Analysis",
+    "url": "https://www.coursera.org/specializations/advanced-survey-design-and-statistical-analysis",
+    "courses": [
+      "learn/design--analyze-impactful-market-surveys",
+      "learn/design-smart-surveys-with-skip-logic",
+      "learn/survey-samples-size-and-methods",
+      "learn/statistical-tests-for-market-research",
+      "learn/automate-surveys-for-smart-market-insights",
+      "learn/predict--validate-regression-models-in-r",
+      "learn/transform-analyze-and-report-data-with-r",
+      "learn/govern-and-evaluate-research-data-quality"
+    ],
+    "provider": "Coursera",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    }
+  },
+  "specializations/advanced-system-security-design": {
+    "key": "specializations/advanced-system-security-design",
+    "type": "specialization",
+    "title": "Advanced System Security Design",
+    "url": "https://www.coursera.org/specializations/advanced-system-security-design",
+    "courses": [
+      "learn/cloud-computing-security",
+      "learn/ddos-attacks-and-defense",
+      "learn/security-and-privacy-in-tor-network",
+      "learn/advanced-system-security-topics"
+    ],
+    "provider": "University of Colorado System",
+    "coursera": 4.5,
+    "ratings_total": 730,
+    "rating_counts": {
+      "1": 24,
+      "2": 15,
+      "3": 40,
+      "4": 144,
+      "5": 507
+    }
+  },
+  "specializations/advanced-tableau": {
+    "key": "specializations/advanced-tableau",
+    "type": "specialization",
+    "title": "Advanced Tableau",
+    "url": "https://www.coursera.org/specializations/advanced-tableau",
+    "courses": [
+      "learn/advanced-tableau-table-calculations",
+      "learn/advanced-tableau-lod",
+      "learn/advanced-tableau-data-model",
+      "learn/tableau-trading-dashboard"
+    ],
+    "provider": "Corporate Finance Institute",
+    "coursera": 4.7,
+    "ratings_total": 43,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 9,
+      "5": 33
+    }
+  },
+  "specializations/advanced-thought-leadership-mastering-influence-and-impact": {
+    "key": "specializations/advanced-thought-leadership-mastering-influence-and-impact",
+    "type": "specialization",
+    "title": "Advanced Thought Leadership: Mastering Influence and Impact",
+    "url": "https://www.coursera.org/specializations/advanced-thought-leadership-mastering-influence-and-impact",
+    "courses": [
+      "learn/strategic-leadership-influence-thought-leadership",
+      "learn/conflict-resolution-for--leaders",
+      "learn/critical-thinking-for-decision-making",
+      "learn/navigating-internal-politics",
+      "learn/negotiations-for-leaders"
+    ],
+    "provider": "Creo Incubator",
+    "coursera": 4.7,
+    "ratings_total": 11,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 10
+    }
+  },
+  "specializations/advanced-topics-linear-algebra-and-applications": {
+    "key": "specializations/advanced-topics-linear-algebra-and-applications",
+    "type": "specialization",
+    "title": "Advanced Topics in Linear Algebra and Applications",
+    "url": "https://www.coursera.org/specializations/advanced-topics-linear-algebra-and-applications",
+    "courses": [
+      "learn/advanced-eigenvectors-and-vector-spaces",
+      "learn/advanced-orthogonality-and-transformations",
+      "learn/advanced-inner-products-and-applications"
+    ],
+    "provider": "Macmillan Learning"
+  },
+  "specializations/advanced-unity-projects-rpg-level-design-vfx": {
+    "key": "specializations/advanced-unity-projects-rpg-level-design-vfx",
+    "type": "specialization",
+    "title": "Advanced Unity Projects: RPG, Level Design & VFX",
+    "url": "https://www.coursera.org/specializations/advanced-unity-projects-rpg-level-design-vfx",
+    "courses": [
+      "learn/unity-design-implement-advanced-rendering-effects",
+      "learn/unity-design-build-procedural-hex-maps",
+      "learn/unity-design-build-advanced-3d-game-levels",
+      "learn/unity-design-develop-role-playing-games-rpgs",
+      "learn/unity-create-2d-jetpack-joyride-clone-game"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 70,
+    "rating_counts": {
+      "1": 2,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 67
+    }
+  },
+  "specializations/advanced-unix-system-programming-performance": {
+    "key": "specializations/advanced-unix-system-programming-performance",
+    "type": "specialization",
+    "title": "Advanced Unix System Programming and Performance",
+    "url": "https://www.coursera.org/specializations/advanced-unix-system-programming-performance",
+    "courses": [
+      "learn/unix-system-overview-and-command",
+      "learn/advanced-unix-concepts-and-ipc",
+      "learn/input-output-expression-handling-and-system-management",
+      "learn/unix-performance-signals-and-system-internals"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 70,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 13,
+      "5": 57
+    }
+  },
+  "specializations/advanced-videography": {
+    "key": "specializations/advanced-videography",
+    "type": "specialization",
+    "title": "Advanced Videography",
+    "url": "https://www.coursera.org/specializations/advanced-videography",
+    "courses": [
+      "learn/advanced-videography-commercial-filmmaking-essentials",
+      "learn/advanced-videography-cinematic-travel-vlogging",
+      "learn/advanced-videography-documentary-and-promo-editing"
+    ],
+    "provider": "Skillshare",
+    "coursera": 4.5,
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 5
+    }
+  },
+  "specializations/advanced-xml-integration-project-applications": {
+    "key": "specializations/advanced-xml-integration-project-applications",
+    "type": "specialization",
+    "title": "Advanced XML Integration and Project Applications",
+    "url": "https://www.coursera.org/specializations/advanced-xml-integration-project-applications",
+    "courses": [
+      "learn/xml-practical-xslt-and-svg-project",
+      "learn/xml-practical-web-service-parsing-xml-api",
+      "learn/xml-practical-web-development-with-xml",
+      "learn/xml-and-java",
+      "learn/xml-xsd"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.4,
+    "ratings_total": 82,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 4,
+      "4": 28,
+      "5": 47
+    }
+  },
+  "specializations/advances-in-manufacturing-technology": {
+    "key": "specializations/advances-in-manufacturing-technology",
+    "type": "specialization",
+    "title": "Advances in Manufacturing Technology",
+    "url": "https://www.coursera.org/specializations/advances-in-manufacturing-technology",
+    "courses": [
+      "learn/industry-4-point-0-and-its-impact-on-manufacturing-sector",
+      "learn/key-industry-4-point-0-technologies-in-manufacturing---1",
+      "learn/key-industry-4-point-0-technologies-in-manufacturing--2",
+      "learn/key-enablers-and-challenges-in-industry-4-point-0"
+    ],
+    "provider": "Board Infinity",
+    "coursera": 4.5,
+    "ratings_total": 46,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 2,
+      "4": 9,
+      "5": 33
+    }
+  },
+  "specializations/aerospace": {
+    "key": "specializations/aerospace",
+    "type": "specialization",
+    "title": "Digitalisation in Aeronautics and Space",
+    "url": "https://www.coursera.org/specializations/aerospace",
+    "courses": [
+      "learn/industry",
+      "learn/space",
+      "learn/aeronautics"
+    ],
+    "provider": "Technical University of Munich (TUM)",
+    "coursera": 4.6,
+    "ratings_total": 613,
+    "rating_counts": {
+      "1": 9,
+      "2": 8,
+      "3": 26,
+      "4": 94,
+      "5": 476
+    }
+  },
+  "specializations/affiliate-marketing": {
+    "key": "specializations/affiliate-marketing",
+    "type": "specialization",
+    "title": "Affiliate Marketing For Passive Income - 2026",
+    "url": "https://www.coursera.org/specializations/affiliate-marketing",
+    "courses": [
+      "learn/affiliate-marketing",
+      "learn/vibe-coding",
+      "learn/sales-video-formats",
+      "learn/youtube-ads",
+      "learn/youtube"
+    ],
+    "provider": "Alex Genadinik",
+    "coursera": 4.6,
+    "ratings_total": 21,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 3,
+      "4": 0,
+      "5": 18
+    }
+  },
+  "specializations/affinity-photo-editing-mastery": {
+    "key": "specializations/affinity-photo-editing-mastery",
+    "type": "specialization",
+    "title": "Affinity Photo Editing Mastery",
+    "url": "https://www.coursera.org/specializations/affinity-photo-editing-mastery",
+    "courses": [
+      "learn/master-retouching-in-affinity-photo",
+      "learn/master-raw-editing-in-affinity-photo",
+      "learn/master-black--white-editing-in-affinity-photo",
+      "learn/create-amazing-macros-in-affinity-photo"
+    ],
+    "provider": "Skillshare",
+    "ratings_total": 2,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "specializations/after-effects-motion-graphics-keying-mastery": {
+    "key": "specializations/after-effects-motion-graphics-keying-mastery",
+    "type": "specialization",
+    "title": "After Effects Motion Graphics and Keying Mastery",
+    "url": "https://www.coursera.org/specializations/after-effects-motion-graphics-keying-mastery",
+    "courses": [
+      "learn/master-keying-techniques-after-effects",
+      "learn/master-motion-graphics-after-effects-create-animate",
+      "learn/master-after-effects-analyze-create-dynamic-motion"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 48,
+    "rating_counts": {
+      "1": 3,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 45
+    }
+  },
+  "specializations/agentic-ai-development-security": {
+    "key": "specializations/agentic-ai-development-security",
+    "type": "specialization",
+    "title": "Agentic AI Development & Security",
+    "url": "https://www.coursera.org/specializations/agentic-ai-development-security",
+    "courses": [
+      "learn/architect-reusable-ai-agent-systems",
+      "learn/optimize-agentic-ai-algorithms-for-peak-performance",
+      "learn/hybrid-ai-search-workflows",
+      "learn/engineer-and-explain-ai-model-decisions",
+      "learn/optimize-ai-build-reusable-model-pipelines",
+      "learn/optimize-python-for-agentic-ai",
+      "learn/test-and-secure-your-ai-code",
+      "learn/secure-ai-api-and-dependency-risks",
+      "learn/secure-your-ai-threat-modeling",
+      "learn/design-ethical-ai-rewards-and-policies"
+    ],
+    "provider": "Coursera",
+    "ratings_total": 8,
+    "rating_counts": {
+      "1": 1,
+      "2": 5,
+      "3": 0,
+      "4": 1,
+      "5": 1
+    }
+  },
+  "specializations/agentic-ai-engineering-rag-mcp-mern": {
+    "key": "specializations/agentic-ai-engineering-rag-mcp-mern",
+    "type": "specialization",
+    "title": "Agentic AI Engineering: RAG, MCP & MERN",
+    "url": "https://www.coursera.org/specializations/agentic-ai-engineering-rag-mcp-mern",
+    "courses": [
+      "learn/agentic-ai-foundations-mern-rag-mcp",
+      "learn/build-production-ai-agents-rag-mcp",
+      "learn/advanced-mcp-tool-calling-ai-agents",
+      "learn/agentic-ai-systems-vector-db-rag"
+    ],
+    "provider": "LearnKartS",
+    "coursera": 3.6,
+    "ratings_total": 9,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 6
+    }
+  },
+  "specializations/agentic-ai-engineering": {
+    "key": "specializations/agentic-ai-engineering",
+    "type": "specialization",
+    "title": "Agentic AI Engineering",
+    "url": "https://www.coursera.org/specializations/agentic-ai-engineering",
+    "courses": [
+      "learn/building-your-first-ai-agent-with-langchain",
+      "learn/applied-agentic-ai-pipelines-with-langchain",
+      "learn/multi-agent-systems-with-langgraph",
+      "learn/developing-mcp-powered-agentic-ai-systems"
+    ],
+    "provider": "Edureka",
+    "coursera": 3.6,
+    "ratings_total": 26,
+    "rating_counts": {
+      "1": 12,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 14
+    }
+  },
+  "specializations/agentic-ai": {
+    "key": "specializations/agentic-ai",
+    "type": "specialization",
+    "title": "Full Stack Agentic AI",
+    "url": "https://www.coursera.org/specializations/agentic-ai",
+    "courses": [
+      "learn/agentic-ai-foundations-rag-mcp-chatbots",
+      "learn/mcp-servers-agentic-ai-architecture",
+      "learn/advanced-agentic-ai-production-architecture"
+    ],
+    "provider": "LearnKartS",
+    "coursera": 4.2,
+    "ratings_total": 5,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 2,
+      "5": 2
+    }
+  },
   "specializations/ai-agents-mode-context-protocol": {
     "key": "specializations/ai-agents-mode-context-protocol",
     "type": "specialization",
@@ -1830,11 +2268,11 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9664,
+    "ratings_total": 9666,
     "rating_counts": {
       "1": 96,
-      "2": 52,
-      "3": 191,
+      "2": 53,
+      "3": 192,
       "4": 1179,
       "5": 8146
     }
@@ -2344,11 +2782,11 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9167,
+    "ratings_total": 9169,
     "rating_counts": {
       "1": 93,
-      "2": 48,
-      "3": 174,
+      "2": 49,
+      "3": 175,
       "4": 1094,
       "5": 7758
     }
