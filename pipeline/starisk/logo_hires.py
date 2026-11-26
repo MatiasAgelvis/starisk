@@ -34,12 +34,13 @@ import os
 import re
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 from .cache import CACHE_DIR, load_page
 from .crawl import SCORES_PATH, write_atomic
-from .fetch import fetch_bytes
-from .logos import LOGO_DIR, sniff_extension
+from .fetch import fetch_bytes, jitter
+from .logos import LOGO_DELAY, LOGO_DIR, sniff_extension
 from .naming import IMAGE_PREFIX, stem
 
 # name -> device pixel ratio. The directory is named after the size, not the dpr,
@@ -99,6 +100,8 @@ def localize_hires(
     out_dir: Path = LOGO_DIR,
     fetch=fetch_bytes,
     log=print,
+    delay: float = 0.0,
+    sleep=time.sleep,
 ) -> dict[str, dict[str, str]]:
     """Download each size of the square mark and map the small path to them."""
     keys_by_image: dict[str, list[str]] = {}
@@ -130,6 +133,10 @@ def localize_hires(
                 except Exception as error:  # noqa: BLE001 - a logo must not stop the run
                     log(f"  ! {variant} failed ({name}): {error}")
                     continue
+                finally:
+                    # Pause even after a failure: the request still reached the CDN.
+                    if delay:
+                        sleep(jitter(delay))
 
                 extension = sniff_extension(body)
                 if extension is None:
@@ -152,7 +159,7 @@ def main(argv: list[str]) -> int:
         return 1
 
     scores = json.loads(SCORES_PATH.read_text(encoding="utf-8"))
-    mapping = localize_hires(scores)
+    mapping = localize_hires(scores, delay=LOGO_DELAY)
     write_atomic(MAP_PATH, mapping)
 
     tiles = sum(1 for sizes in mapping.values() if "tile" in sizes)

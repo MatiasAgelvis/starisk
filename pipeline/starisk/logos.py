@@ -21,13 +21,17 @@ import json
 import os
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 from .crawl import SCORES_PATH, write_atomic
-from .fetch import fetch_bytes
+from .fetch import fetch_bytes, jitter
 from .naming import IMAGE_PREFIX, stem
 
 LOGO_DIR = Path(__file__).resolve().parents[2] / "web" / "public" / "logos"
+
+# Images come from a CDN, but a burst of two hundred downloads is still a burst.
+LOGO_DELAY = 0.5
 
 # Extensions we are willing to store. Alpha matters: several provider marks are
 # white-on-transparent, which is why JPEG is not a safe blanket choice.
@@ -67,6 +71,8 @@ def localize_images(
     out_dir: Path = LOGO_DIR,
     force: bool = False,
     log=print,
+    delay: float = 0.0,
+    sleep=time.sleep,
 ) -> dict:
     """Download each unique provider logo and rewrite `image` to a local path.
 
@@ -96,6 +102,10 @@ def localize_images(
         except Exception as error:  # noqa: BLE001 - a logo must not stop the pipeline
             log(f"  ! logo failed ({name}): {error}")
             continue
+        finally:
+            # Pause even after a failure: the request still reached the CDN.
+            if delay:
+                sleep(jitter(delay))
 
         extension = sniff_extension(body)
         if extension is None:
@@ -168,7 +178,7 @@ def main(argv: list[str]) -> int:
         return 1
 
     scores = json.loads(SCORES_PATH.read_text(encoding="utf-8"))
-    localize_images(scores, force=force)
+    localize_images(scores, force=force, delay=LOGO_DELAY)
     if prune:
         prune_base_logos(scores)
     write_atomic(SCORES_PATH, scores)
