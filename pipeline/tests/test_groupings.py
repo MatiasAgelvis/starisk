@@ -250,6 +250,20 @@ class DiscoverTest(unittest.TestCase):
             [],
         )
 
+    def test_a_cached_page_that_never_parsed_is_not_a_candidate(self):
+        # Fetched, but with no course list to publish: not in the index, not a
+        # seed, not retired. It must not sit at the head of the walk forever.
+        candidates = discover_candidates(
+            {},
+            [],
+            {},
+            ["silent", "fresh"],
+            limit=5,
+            cached=["specializations/silent"],
+        )
+
+        self.assertEqual(candidates, ["specializations/fresh"])
+
     def test_reads_the_seed_list(self):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "programs.json"
