@@ -254,5 +254,33 @@
   "adobe": {
     "tile": "/logos/tile/adobe.jpg",
     "full": "/logos/full/adobe.jpg"
+  },
+  "universidades-anahuac": {
+    "tile": "/logos/tile/universidades-anahuac.png",
+    "full": "/logos/full/universidades-anahuac.png"
+  },
+  "board-infinity": {
+    "tile": "/logos/tile/board-infinity.jpg",
+    "full": "/logos/full/board-infinity.jpg"
+  },
+  "university-of-maryland-college-park": {
+    "tile": "/logos/tile/university-of-maryland-college-park.png",
+    "full": "/logos/full/university-of-maryland-college-park.png"
+  },
+  "pearson": {
+    "tile": "/logos/tile/pearson.png",
+    "full": "/logos/full/pearson.png"
+  },
+  "minnesota-state-university-mankato": {
+    "tile": "/logos/tile/minnesota-state-university-mankato.jpg",
+    "full": "/logos/full/minnesota-state-university-mankato.jpg"
+  },
+  "edureka": {
+    "tile": "/logos/tile/edureka.png",
+    "full": "/logos/full/edureka.png"
+  },
+  "iima-iim-ahmedabad": {
+    "tile": "/logos/tile/iima-iim-ahmedabad.png",
+    "full": "/logos/full/iima-iim-ahmedabad.png"
   }
 }
