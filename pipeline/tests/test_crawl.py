@@ -163,7 +163,12 @@ class CrawlTest(unittest.TestCase):
             sleep=slept.append,
         )
 
-        self.assertEqual(slept, [1.5] * 6)  # two requests per course, each throttled
+        self.assertEqual(len(slept), 6)  # two requests per course, each throttled
+        # The delay is a floor; jitter adds up to half again so the requests do not
+        # arrive on a metronome.
+        for pause in slept:
+            self.assertGreaterEqual(pause, 1.5)
+            self.assertLessEqual(pause, 1.5 * 1.5)
 
 
 class RetiredCrawlTest(unittest.TestCase):

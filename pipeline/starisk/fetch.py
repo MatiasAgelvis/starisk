@@ -113,3 +113,16 @@ def fetch_bytes(url: str, timeout: float = 25, retries: int = 2, backoff: float 
     return _request(
         url, {**HEADERS, "Accept": "image/*,*/*;q=0.8"}, timeout, retries, backoff
     )
+
+
+def jitter(delay: float, spread: float = 0.5) -> float:
+    """Seconds to wait before the next request: the delay, plus up to `spread`.
+
+    A fixed interval is the one pattern a rate limiter can fingerprint for free,
+    so the configured delay is a floor, not a schedule — no request ever arrives
+    sooner than the caller asked for, and the mean goes up by half the spread.
+    `--delay 0` stays 0: tests and offline runs should not sleep at all.
+    """
+    if delay <= 0:
+        return 0.0
+    return delay * (1 + random.uniform(0, spread))

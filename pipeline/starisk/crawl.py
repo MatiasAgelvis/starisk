@@ -51,7 +51,7 @@ from .adapter import (
 )
 from .cache import CACHE_DIR, load_page, store_page
 from .engine import CALIBRATED, course_score, peer_spread, review_spread
-from .fetch import RateLimited, Retired, fetch_page
+from .fetch import RateLimited, Retired, fetch_page, jitter
 from .naming import IMAGE_PREFIX, stem
 from .paths import DATA_DIR
 
@@ -388,7 +388,7 @@ def crawl(
                 continue
             store_page(key, html, cache_dir)
             if delay:
-                sleep(delay)  # breathe between the reviews page and the landing page
+                sleep(jitter(delay))  # breathe between the reviews page and the landing page
             try:
                 landing = landing_html(key, fetch, cache_dir)
             except RateLimited as error:
@@ -457,7 +457,7 @@ def crawl(
             break
         # Offline is a re-parse: no requests, so there is nothing to be polite about.
         if delay and not offline:
-            sleep(delay)
+            sleep(jitter(delay))
 
     return resolve_instructors(scores)
 
@@ -585,7 +585,7 @@ def parse_args(argv: list[str]) -> dict:
         "--delay",
         type=float,
         default=DEFAULT_DELAY,
-        help="seconds to wait between requests",
+        help="minimum seconds between requests (jitter adds up to 50%%)",
     )
     parser.add_argument(
         "--max-age",

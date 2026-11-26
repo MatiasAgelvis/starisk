@@ -6,7 +6,7 @@ from email.message import Message
 from email.utils import format_datetime
 from unittest import mock
 
-from starisk.fetch import RateLimited, Retired, _wait_seconds, fetch_page
+from starisk.fetch import RateLimited, Retired, _wait_seconds, fetch_page, jitter
 
 URL = "https://www.coursera.org/learn/x/reviews"
 
@@ -167,6 +167,19 @@ class BackoffTest(unittest.TestCase):
         header = format_datetime(when, usegmt=True)
 
         self.assertEqual(_wait_seconds(http_error(429, {"Retry-After": header}), 0, 2.0), 1.0)
+
+
+class JitterTest(unittest.TestCase):
+    def test_no_delay_means_no_pause(self):
+        self.assertEqual(jitter(0), 0)
+        self.assertEqual(jitter(-1), 0)
+
+    def test_the_delay_is_a_floor_and_the_ceiling_is_half_again(self):
+        pauses = [jitter(1.5) for _ in range(200)]
+
+        self.assertTrue(all(1.5 <= pause <= 2.25 for pause in pauses))
+        # 200 draws on a metronome would be one value; real jitter is not.
+        self.assertGreater(len(set(pauses)), 1)
 
 
 if __name__ == "__main__":
