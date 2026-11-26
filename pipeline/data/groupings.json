@@ -20,13 +20,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.6,
-    "ratings_total": 259931,
+    "ratings_total": 259932,
     "rating_counts": {
       "1": 3301,
       "2": 3400,
       "3": 10857,
       "4": 50090,
-      "5": 192283
+      "5": 192284
     }
   },
   "professional-certificates/ibm-enterprise-ai-transformation-and-consulting": {
@@ -44,13 +44,13 @@
       "learn/ai-transformation-advisory-package"
     ],
     "provider": "IBM",
-    "coursera": 3.3,
-    "ratings_total": 14,
+    "coursera": 3.4,
+    "ratings_total": 15,
     "rating_counts": {
       "1": 3,
       "2": 0,
       "3": 0,
-      "4": 0,
+      "4": 1,
       "5": 11
     }
   },
@@ -322,13 +322,13 @@
     ],
     "provider": "The University of Sydney",
     "coursera": 4.9,
-    "ratings_total": 10653,
+    "ratings_total": 10654,
     "rating_counts": {
       "1": 141,
       "2": 28,
       "3": 109,
       "4": 606,
-      "5": 9769
+      "5": 9770
     }
   },
   "specializations/academic-writing-research-methods": {
@@ -744,9 +744,9 @@
     ],
     "provider": "Universidad de Palermo",
     "coursera": 4.8,
-    "ratings_total": 3978,
+    "ratings_total": 3979,
     "rating_counts": {
-      "1": 50,
+      "1": 51,
       "2": 29,
       "3": 98,
       "4": 447,
@@ -787,13 +787,13 @@
     ],
     "provider": "Universidades Anáhuac",
     "coursera": 4.6,
-    "ratings_total": 82,
+    "ratings_total": 83,
     "rating_counts": {
       "1": 4,
       "2": 1,
       "3": 5,
       "4": 5,
-      "5": 67
+      "5": 68
     }
   },
   "specializations/administration-red-hat-linux-systems": {
@@ -849,12 +849,12 @@
     ],
     "provider": "Adobe",
     "coursera": 4.7,
-    "ratings_total": 912,
+    "ratings_total": 913,
     "rating_counts": {
       "1": 14,
       "2": 8,
       "3": 20,
-      "4": 114,
+      "4": 115,
       "5": 756
     }
   },
@@ -1270,12 +1270,12 @@
     ],
     "provider": "IIMA - IIM Ahmedabad",
     "coursera": 4.7,
-    "ratings_total": 286,
+    "ratings_total": 287,
     "rating_counts": {
       "1": 4,
       "2": 2,
       "3": 11,
-      "4": 36,
+      "4": 37,
       "5": 233
     }
   },
@@ -1378,6 +1378,445 @@
       "5": 14
     }
   },
+  "specializations/advanced-financial-analysis-decision-making": {
+    "key": "specializations/advanced-financial-analysis-decision-making",
+    "type": "specialization",
+    "title": "Advanced Financial Analysis & Decision Making",
+    "url": "https://www.coursera.org/specializations/advanced-financial-analysis-decision-making",
+    "courses": [
+      "learn/master-financial-statement-ratio-analysis",
+      "learn/master-corporate-finance-strategies-valuation",
+      "learn/master-cost-volume-profit-cvp-analysis",
+      "learn/master-managerial-decisions-pricing-strategy",
+      "learn/master-capital-budgeting-investment-analysis",
+      "learn/accounting-ethics-governance-internal-controls"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 28,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 5,
+      "5": 23
+    }
+  },
+  "specializations/advanced-grammar-punctuation": {
+    "key": "specializations/advanced-grammar-punctuation",
+    "type": "specialization",
+    "title": "Learn English: Advanced Grammar and Punctuation",
+    "url": "https://www.coursera.org/specializations/advanced-grammar-punctuation",
+    "courses": [
+      "learn/verb-passives",
+      "learn/conjunctions-connectives-adverb-clauses",
+      "learn/noun-clauses-conditionals",
+      "learn/advanced-grammar-project"
+    ],
+    "provider": "University of California, Irvine",
+    "coursera": 4.8,
+    "ratings_total": 3380,
+    "rating_counts": {
+      "1": 52,
+      "2": 26,
+      "3": 49,
+      "4": 359,
+      "5": 2894
+    }
+  },
+  "specializations/advanced-java-case-studies-testng-automation": {
+    "key": "specializations/advanced-java-case-studies-testng-automation",
+    "type": "specialization",
+    "title": "Apply Advanced Java Case Studies & TestNG Automation",
+    "url": "https://www.coursera.org/specializations/advanced-java-case-studies-testng-automation",
+    "courses": [
+      "learn/apply-java-concepts-real-world-case-study",
+      "learn/develop-java-student-management-system",
+      "learn/build-test-java-applications-using-testng",
+      "learn/analyze-design-implement-java-crud-testng"
+    ],
+    "provider": "EDUCBA",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "specializations/advanced-java-concepts": {
+    "key": "specializations/advanced-java-concepts",
+    "type": "specialization",
+    "title": "Java Spring Boot Backend Development",
+    "url": "https://www.coursera.org/specializations/advanced-java-concepts",
+    "courses": [
+      "learn/core-java-foundations-for-spring-developers",
+      "learn/spring-core--spring-mvc",
+      "learn/spring-boot-spring-security--application-finalization"
+    ],
+    "provider": "Board Infinity",
+    "coursera": 3.6,
+    "ratings_total": 5,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    }
+  },
+  "specializations/advanced-javascript": {
+    "key": "specializations/advanced-javascript",
+    "type": "specialization",
+    "title": "Advanced JavaScript",
+    "url": "https://www.coursera.org/specializations/advanced-javascript",
+    "courses": [
+      "learn/advanced-javascript-1-objects-loops-hoisting",
+      "learn/advanced-javascript-2-async-js-apis-operators-objects",
+      "learn/advanced-javascript-3-objects-collections-functions"
+    ],
+    "provider": "Scrimba",
+    "coursera": 4.7,
+    "ratings_total": 28,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 5,
+      "5": 22
+    }
+  },
+  "specializations/advanced-kubernetes": {
+    "key": "specializations/advanced-kubernetes",
+    "type": "specialization",
+    "title": "Advanced Kubernetes",
+    "url": "https://www.coursera.org/specializations/advanced-kubernetes",
+    "courses": [
+      "learn/advanced-kubernetes-first-course-1",
+      "learn/advanced-kubernetes-second-course-2",
+      "learn/advanced-kubernetes-third-course-3"
+    ],
+    "provider": "LearnQuest",
+    "coursera": 3.8,
+    "ratings_total": 39,
+    "rating_counts": {
+      "1": 6,
+      "2": 4,
+      "3": 0,
+      "4": 5,
+      "5": 24
+    }
+  },
+  "specializations/advanced-leadership-skills": {
+    "key": "specializations/advanced-leadership-skills",
+    "type": "specialization",
+    "title": "Advanced Leadership Skills for the 21st Century",
+    "url": "https://www.coursera.org/specializations/advanced-leadership-skills",
+    "courses": [
+      "learn/developing-leadership-framework",
+      "learn/leading-and-developing-top-talent",
+      "learn/leading-organizational-change"
+    ],
+    "provider": "Kennesaw State University",
+    "coursera": 4.4,
+    "ratings_total": 105,
+    "rating_counts": {
+      "1": 3,
+      "2": 7,
+      "3": 7,
+      "4": 13,
+      "5": 75
+    }
+  },
+  "specializations/advanced-machine-learning-tensorflow-gcp": {
+    "key": "specializations/advanced-machine-learning-tensorflow-gcp",
+    "type": "specialization",
+    "title": "Advanced Machine Learning on Google Cloud",
+    "url": "https://www.coursera.org/specializations/advanced-machine-learning-tensorflow-gcp",
+    "courses": [
+      "learn/gcp-production-ml-systems",
+      "learn/image-understanding-tensorflow-gcp",
+      "learn/sequence-models-tensorflow-gcp",
+      "learn/recommendation-models-gcp"
+    ],
+    "provider": "Google Cloud",
+    "coursera": 4.5,
+    "ratings_total": 2611,
+    "rating_counts": {
+      "1": 50,
+      "2": 53,
+      "3": 163,
+      "4": 569,
+      "5": 1776
+    }
+  },
+  "specializations/advanced-marketing-optimization-strategy": {
+    "key": "specializations/advanced-marketing-optimization-strategy",
+    "type": "specialization",
+    "title": "Advanced Marketing Optimization & Strategy",
+    "url": "https://www.coursera.org/specializations/advanced-marketing-optimization-strategy",
+    "courses": [
+      "learn/analyze-and-predict-with-ai-insights",
+      "learn/forecast-and-validate-your-marketing-traffic",
+      "learn/optimize-seo-keywords--schema",
+      "learn/optimize-campaigns-data-driven-marketing",
+      "learn/analyze-traffic-sources-with-analytics-dimensions",
+      "learn/target-demographics-boost-purchase-velocity",
+      "learn/build-evaluate-and-perfect-marketing-dashboards",
+      "learn/automate-and-verify-marketing-reports-accurately",
+      "learn/transform-analytics-impactful-marketing-insights",
+      "learn/data-storytelling-for-engaging-presentations"
+    ],
+    "provider": "Coursera",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 2,
+      "3": 0,
+      "4": 1,
+      "5": 1
+    }
+  },
+  "specializations/advanced-network-security": {
+    "key": "specializations/advanced-network-security",
+    "type": "specialization",
+    "title": "Advanced Network Security",
+    "url": "https://www.coursera.org/specializations/advanced-network-security",
+    "courses": [
+      "learn/advanced-network-security-first-course-1",
+      "learn/advanced-network-security-course-2",
+      "learn/advanced-network-security-course-3"
+    ],
+    "provider": "LearnQuest",
+    "coursera": 4.4,
+    "ratings_total": 120,
+    "rating_counts": {
+      "1": 6,
+      "2": 4,
+      "3": 15,
+      "4": 10,
+      "5": 85
+    }
+  },
+  "specializations/advanced-programming-techniques-python": {
+    "key": "specializations/advanced-programming-techniques-python",
+    "type": "specialization",
+    "title": "Advanced Programming Techniques with Python",
+    "url": "https://www.coursera.org/specializations/advanced-programming-techniques-python",
+    "courses": [
+      "learn/advanced-python-object-oriented-programming-lo094032",
+      "learn/advanced-python-apps-desktop-database-web-lo094032",
+      "learn/advanced-python-data-science-testing-distribution-lo094032"
+    ],
+    "provider": "Logical Operations",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
+  "specializations/advanced-project-operations-automation": {
+    "key": "specializations/advanced-project-operations-automation",
+    "type": "specialization",
+    "title": "Advanced Project Operations & Automation",
+    "url": "https://www.coursera.org/specializations/advanced-project-operations-automation",
+    "courses": [
+      "learn/analyze-timelines-conquer-project-bottlenecks",
+      "learn/automate-and-analyze-project-backlogs-fast",
+      "learn/choose-best-project-management-methods",
+      "learn/hybrid-project-plans-and-changes",
+      "learn/analyze-and-mitigate-project-resource-overloads",
+      "learn/analyze-project-performance-earned-value",
+      "learn/automate-prioritize-and-project-backlogs",
+      "learn/automate-project-updates-across-platforms",
+      "learn/automate-wip-limits-for-agile-projects",
+      "learn/automate-workflows-across-tools-seamlessly",
+      "learn/project-status-reports-with-ai",
+      "learn/evaluate-ai-risks-adopt-smart-predictions",
+      "learn/automate-reports-and-dashboards-with-ai",
+      "learn/communication-protocols-for-project-success",
+      "learn/evaluate-change-communication-for-project-success",
+      "learn/optimize-meetings-boost-team-productivity",
+      "learn/evaluate-collaboration-tools-for-peak-performance"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.6,
+    "ratings_total": 58,
+    "rating_counts": {
+      "1": 1,
+      "2": 3,
+      "3": 3,
+      "4": 7,
+      "5": 44
+    }
+  },
+  "specializations/advanced-python-scripting-for-cybersecurity": {
+    "key": "specializations/advanced-python-scripting-for-cybersecurity",
+    "type": "specialization",
+    "title": "Advanced Python Scripting for Cybersecurity",
+    "url": "https://www.coursera.org/specializations/advanced-python-scripting-for-cybersecurity",
+    "courses": [
+      "learn/python-in-recon",
+      "learn/establishing-command-and-control-and-finding-credentials",
+      "learn/defensive-python"
+    ],
+    "provider": "Infosec",
+    "coursera": 4.4,
+    "ratings_total": 124,
+    "rating_counts": {
+      "1": 6,
+      "2": 4,
+      "3": 10,
+      "4": 11,
+      "5": 93
+    }
+  },
+  "specializations/advanced-react-skills": {
+    "key": "specializations/advanced-react-skills",
+    "type": "specialization",
+    "title": "Advanced React Skills",
+    "url": "https://www.coursera.org/specializations/advanced-react-skills",
+    "courses": [
+      "learn/learn-class-components-in-react",
+      "learn/learn-react-router-6",
+      "learn/learn-react-build-a-movie-search-app",
+      "learn/learn-styled-components-in-react",
+      "learn/learn-react-hooks-build-a-tic-tac-toe-game",
+      "learn/redux-in-javascript-and-react"
+    ],
+    "provider": "Scrimba",
+    "coursera": 4.8,
+    "ratings_total": 42,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 7,
+      "5": 34
+    }
+  },
+  "specializations/advanced-sales-prospecting-and-lead-generation": {
+    "key": "specializations/advanced-sales-prospecting-and-lead-generation",
+    "type": "specialization",
+    "title": "Advanced Sales Prospecting and Lead Generation",
+    "url": "https://www.coursera.org/specializations/advanced-sales-prospecting-and-lead-generation",
+    "courses": [
+      "learn/mastering-digital-prospecting-foundations",
+      "learn/advanced-lead-qualification-and-pipeline-management",
+      "learn/sales-enablement-innovation-and-growth-hacking"
+    ],
+    "provider": "LearnQuest",
+    "ratings_total": 2,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    }
+  },
+  "specializations/advanced-sales-training-challenging-coaching-and-closing": {
+    "key": "specializations/advanced-sales-training-challenging-coaching-and-closing",
+    "type": "specialization",
+    "title": "Advanced Sales Training: Challenging, Coaching, and Closing",
+    "url": "https://www.coursera.org/specializations/advanced-sales-training-challenging-coaching-and-closing",
+    "courses": [
+      "learn/sales-challenger-mastery-engaging-the-modern-buyer",
+      "learn/sales-coaching-and-team-enablement-for-the-digital-era",
+      "learn/advanced-closing-tactics-for-high-value-deals"
+    ],
+    "provider": "LearnQuest",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "specializations/advanced-sales-training-challenging-coaching-closing": {
+    "key": "specializations/advanced-sales-training-challenging-coaching-closing",
+    "type": "specialization",
+    "title": "Advanced Sales Training: Challenging, Coaching And Closing",
+    "url": "https://www.coursera.org/specializations/advanced-sales-training-challenging-coaching-closing",
+    "courses": [
+      "learn/sales-skills-build-trust-and-influence-buyers",
+      "learn/sales-skills-coach-buyers-through-complex-decisions",
+      "learn/sales-skills-handle-objections-and-close-complex-deals"
+    ],
+    "provider": "The Expert Academy"
+  },
+  "specializations/advanced-sas-programming-macros-reporting-specialization": {
+    "key": "specializations/advanced-sas-programming-macros-reporting-specialization",
+    "type": "specialization",
+    "title": "Advanced SAS Programming, Macros & Reporting",
+    "url": "https://www.coursera.org/specializations/advanced-sas-programming-macros-reporting-specialization",
+    "courses": [
+      "learn/master-apply-advanced-sas-programming-techniques",
+      "learn/mastering-categorical-data-analysis-with-sas",
+      "learn/mastering-sas-macros-build-automate-optimize-programs",
+      "learn/mastering-sas-ods-create-customize-deliver-reports",
+      "learn/mastering-proc-sql-in-sas-analyze-query-optimize-data"
+    ],
+    "provider": "EDUCBA"
+  },
+  "specializations/advanced-selling-ai-emotional-intelligence": {
+    "key": "specializations/advanced-selling-ai-emotional-intelligence",
+    "type": "specialization",
+    "title": "Advanced Selling with AI & Emotional Intelligence",
+    "url": "https://www.coursera.org/specializations/advanced-selling-ai-emotional-intelligence",
+    "courses": [
+      "learn/boost-emotional-awareness",
+      "learn/spark-instant-rapport",
+      "learn/control-emotions-in-deals",
+      "learn/ai-tools-for-seller",
+      "learn/automate-crm-nudges",
+      "learn/dashboard-win-drivers",
+      "learn/co-create-success-plans",
+      "learn/tailor-your-message",
+      "learn/pitch-interactive-decks",
+      "learn/create-win-win-partnerships",
+      "learn/unearth-needs-fast",
+      "learn/use-ai-during-calls",
+      "learn/write-persuasive-emails",
+      "learn/sell-outcomes-not-features"
+    ],
+    "provider": "Coursera",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 2
+    }
+  },
+  "specializations/advanced-spacecraft-dynamics-control": {
+    "key": "specializations/advanced-spacecraft-dynamics-control",
+    "type": "specialization",
+    "title": "Advanced Spacecraft Dynamics and Control",
+    "url": "https://www.coursera.org/specializations/advanced-spacecraft-dynamics-control",
+    "courses": [
+      "learn/attitude-control-momentum-exchange-devices",
+      "learn/analytical-mechanics-spacecraft-dynamics",
+      "learn/advanced-capstone-spacecraft-dynamics-control-project"
+    ],
+    "provider": "University of Colorado Boulder",
+    "coursera": 4.9,
+    "ratings_total": 18,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 3,
+      "5": 15
+    }
+  },
   "specializations/ai-agents-mode-context-protocol": {
     "key": "specializations/ai-agents-mode-context-protocol",
     "type": "specialization",
@@ -1391,13 +1830,13 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9660,
+    "ratings_total": 9664,
     "rating_counts": {
       "1": 96,
       "2": 52,
-      "3": 190,
+      "3": 191,
       "4": 1179,
-      "5": 8143
+      "5": 8146
     }
   },
   "specializations/ai-healthcare": {
@@ -1506,13 +1945,13 @@
     ],
     "provider": "DeepLearning.AI",
     "coursera": 4.8,
-    "ratings_total": 311507,
+    "ratings_total": 311509,
     "rating_counts": {
       "1": 506,
       "2": 757,
       "3": 4492,
-      "4": 33307,
-      "5": 272445
+      "4": 33308,
+      "5": 272446
     }
   },
   "specializations/differential-calculus-data-modeling": {
@@ -1617,13 +2056,13 @@
     ],
     "provider": "Macquarie University",
     "coursera": 4.9,
-    "ratings_total": 83965,
+    "ratings_total": 83967,
     "rating_counts": {
       "1": 269,
       "2": 177,
       "3": 844,
-      "4": 8806,
-      "5": 73869
+      "4": 8807,
+      "5": 73870
     }
   },
   "specializations/genomic-data-science": {
@@ -1793,13 +2232,13 @@
     ],
     "provider": "The Museum of Modern Art",
     "coursera": 4.8,
-    "ratings_total": 13415,
+    "ratings_total": 13417,
     "rating_counts": {
       "1": 83,
       "2": 81,
       "3": 319,
       "4": 1921,
-      "5": 11011
+      "5": 11013
     }
   },
   "specializations/music-production": {
@@ -1884,13 +2323,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.7,
-    "ratings_total": 6684,
+    "ratings_total": 6689,
     "rating_counts": {
       "1": 102,
       "2": 79,
       "3": 204,
-      "4": 1135,
-      "5": 5164
+      "4": 1138,
+      "5": 5166
     }
   },
   "specializations/prompt-engineering-for-law": {
@@ -1905,13 +2344,13 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9163,
+    "ratings_total": 9167,
     "rating_counts": {
       "1": 93,
       "2": 48,
-      "3": 173,
+      "3": 174,
       "4": 1094,
-      "5": 7755
+      "5": 7758
     }
   },
   "specializations/public-speaking": {
@@ -1927,13 +2366,13 @@
     ],
     "provider": "University of Washington",
     "coursera": 4.7,
-    "ratings_total": 3410,
+    "ratings_total": 3412,
     "rating_counts": {
-      "1": 56,
+      "1": 57,
       "2": 17,
       "3": 63,
       "4": 441,
-      "5": 2833
+      "5": 2834
     }
   },
   "specializations/reinforcement-learning": {
