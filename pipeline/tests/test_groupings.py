@@ -232,6 +232,56 @@ class RefuseReasonTest(unittest.TestCase):
     def test_force_overrides(self):
         self.assertIsNone(refuse_reason({}, {"a": {}}, force=True))
 
+    def test_a_program_that_lost_ratings_is_refused(self):
+        reason = refuse_reason(
+            {"specializations/a": {"ratings_total": 900}},
+            {"specializations/a": {"ratings_total": 1000}},
+        )
+
+        self.assertIn("fell", reason)
+        self.assertIn("ratings", reason)
+
+    def test_a_program_that_gained_ratings_is_written(self):
+        self.assertIsNone(
+            refuse_reason(
+                {"specializations/a": {"ratings_total": 1000}},
+                {"specializations/a": {"ratings_total": 900}},
+            )
+        )
+
+    def test_a_lower_bundle_rating_is_refused(self):
+        reason = refuse_reason(
+            {"specializations/a": {"coursera": 4.5}},
+            {"specializations/a": {"coursera": 4.7}},
+        )
+
+        self.assertIn("bundle rating", reason)
+
+    def test_a_changed_course_list_is_refused(self):
+        reason = refuse_reason(
+            {"specializations/a": {"courses": ["learn/x"]}},
+            {"specializations/a": {"courses": ["learn/x", "learn/y"]}},
+        )
+
+        self.assertIn("course list", reason)
+
+    def test_a_dropped_program_is_refused_even_when_the_count_matches(self):
+        reason = refuse_reason(
+            {"specializations/b": {}, "specializations/c": {}},
+            {"specializations/a": {}, "specializations/b": {}},
+        )
+
+        self.assertIn("specializations/a", reason)
+
+    def test_force_publishes_a_regression(self):
+        self.assertIsNone(
+            refuse_reason(
+                {"specializations/a": {"ratings_total": 900}},
+                {"specializations/a": {"ratings_total": 1000}},
+                force=True,
+            )
+        )
+
 
 class SpreadTest(unittest.TestCase):
     def test_is_a_permutation_and_ignores_the_input_order(self):
