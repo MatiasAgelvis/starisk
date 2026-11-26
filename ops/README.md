@@ -137,6 +137,7 @@ snapshot anyway.
 |---|---|---|
 | 0 | ok | Committed and published (or dry run passed) |
 | 10 | nothing | Ran, changed nothing, no commit, no notification |
+| 15 | cooldown | The previous run was rate-limited; nothing was requested tonight |
 | 20 | refused | A gate tripped; read `reason` in `last-run.json` |
 | 30 | partial | Committed, but with a caveat: Coursera rate-limited the crawl, a few records failed, or the push did not land |
 | 40 | git | Clone, commit or push failed — the message names which |
@@ -154,8 +155,15 @@ nightly --limit 20            # smaller valve for one night
 nightly --limit 0             # uncapped
 nightly --no-push             # commit on the branch, stop before push/PR
 nightly --offline             # re-parse the cache, no requests
+nightly --no-cooldown         # run even if the last run was rate-limited
 nightly --env-file .env         # host runs: read a dotenv instead of exporting it
 ```
+
+**Rate-limit cooldown.** A run that ends rate-limited leaves
+`"rateLimited": true` in `last-run.json`. The next run makes no requests and
+retires with code 15; the one after resumes, because the skipped night writes a
+record without the flag. That alternation is deliberate: a host that just said
+403 wants silence, not a retry, and an offline re-parse is never skipped.
 
 The container gets its environment from `--env-file` — `/etc/starisk/env` on the
 box, `ops/.env` for the local compose path — so `--env-file` is for running the
