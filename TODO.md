@@ -4,7 +4,7 @@ Small, near-term work. The bigger threads — polarization, the dataset, calibra
 the transcript — live in [`IDEAS.md`](IDEAS.md) with their reasoning and an order of
 work. This file is the list I actually open.
 
-Current shape: **1669 courses indexed, 1287 scored, 638 low-sample, 0 errors, 90
+Current shape: **1669 courses indexed, 1287 scored, 638 low-sample, 0 errors, 110
 programs, 383 instructors, 2 requests.**
 
 ## Next
@@ -36,28 +36,29 @@ programs, 383 instructors, 2 requests.**
 - **Search** is the newest surface and the least settled: partial matching shows top
   results as you type, but the ranking is plain substring plus sort order. Worth a
   pass once there's evidence people use it.
-- **Programs page needs another pass.** The index is seed-driven, not derived from
-  the course corpus: 15 programs are committed, a cache-only rebuild produces 29,
-  and the sitemap holds 3,399 specialization slugs. A program only appears if its
-  page was cached, so the directory depends on which machine built it. Add a
-  committed seed/discovery strategy (batched sitemap, demand, or a reliable
-  course→program hook) before judging the page.
-- **The wanted page looks dead when there are no asks.** Add a “Recently added”
-  section with the last 10 courses appended to `scores.json` — the file is
-  append-only, so the end is the newest — so the page shows movement even when the
-  queue is empty. It is distinct from “Recently fulfilled”, which needs a request.
+- **Program coverage: 110 of 3,399 sitemap slugs.** Discovery walks the sitemap 20 at
+  a time and skips pages already in the cache, so the nightly budget no longer goes
+  to pages that fetched but never yielded a course list (15 of them — collections
+  such as `specializations/excel`). To go faster, run `--discover-limit 100 --fetch
+  --write` **where the cache lives** (the crawl server), not on a laptop: groupings
+  is derived, and a rebuild from a partial cache diverges from the server's in hunks
+  git cannot merge. Raising `DISCOVER_PER_RUN` only grows a queue the crawl drains
+  at 100 a night, so measure queue depth before changing it.
 
 ## Pipeline
 
 - **Alert on repeated `error` records.** Zero today; a run that produces several in
   a row means the markup moved. The nightly already notifies on failure, so this is
   a threshold inside the existing gate, not a new channel.
-- **Cache stats and verify.** `python -m starisk.cache stats|verify`: counts by kind,
-  size, staleness, then gunzip and re-parse every cached page with the current
-  adapter. Zero requests, and it answers "how much of my cache can today's code
-  still read" after a selector change. Copying the cache between machines stays
-  plain `rsync` — the files are key-named and written atomically, so last write
-  wins and nothing needs merging.
+- **A groupings rebuild can regress published stats.** A rebuild from an older
+  laptop cache lowered `ratings_total` on 25 published programs and raised none —
+  the signature of a stale snapshot, not Coursera recounting. `refuse_reason` only
+  protects the program count. Extend it to refuse when an existing program's bundle
+  rating or course list changes, unless `--force`.
+- **The tests write into the real page cache.** About a dozen `crawl()` calls in
+  `tests/test_crawl.py` omit `cache_dir`, so every test run leaves `learn/a`,
+  `learn/empty` and friends in `pipeline/data/.cache` — and `cache verify` reports
+  them as unparsed pages. Pass a temporary directory everywhere.
 - **Optional pagination** (`?page=N`) if we ever want more than the first reviews
   page.
 - **Score history over time** — git commits of `scores.json` already form a timeline.
@@ -67,10 +68,10 @@ programs, 383 instructors, 2 requests.**
 
 Grow along the two existing edges (`mise run pipeline:expand`), not by sampling the
 sitemap: the teacher graph has been the productive one, the specialization lever
-much less so. 1537 sources listed against 1064 records — the gap is courses that
-were listed but never scored (90 have no reviews at all).
+much less so. 1818 sources listed against 1669 records — the gap is courses that
+were listed but never scored (382 have no reviews at all).
 
-- **Teacher pages are only as good as the corpus.** 121 of 354 teachers have exactly
+- **Teacher pages are only as good as the corpus.** 133 of 383 teachers have exactly
   one course; the surface gets interesting at 3+ per person, which is a crawl
   problem, not a code one.
 - Program aggregate *scoring* is done (groupings + the gap mark); what's missing is
