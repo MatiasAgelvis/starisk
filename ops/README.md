@@ -156,6 +156,7 @@ nightly --limit 0             # uncapped
 nightly --no-push             # commit on the branch, stop before push/PR
 nightly --offline             # re-parse the cache, no requests
 nightly --no-cooldown         # run even if the last run was rate-limited
+nightly --force-index         # publish a program index the stale check refused
 nightly --env-file .env         # host runs: read a dotenv instead of exporting it
 ```
 
@@ -165,11 +166,14 @@ retires with code 15; the one after resumes, because the skipped night writes a
 record without the flag. That alternation is deliberate: a host that just said
 403 wants silence, not a retry, and an offline re-parse is never skipped.
 
-**A refused program index is not a dead night.** If rebuilding `groupings.json`
-would shrink the directory, drop a program, change a program's course list or
-lower its ratings, the rebuild is skipped, the published index stays as it was,
-and the crawl continues. If anything else changed, the run is reported `partial`
-with that reason in `last-run.json`. `--force` publishes the rebuild anyway.
+**A refused program index is not a dead night.** The write guard refuses in two
+cases only: the rebuild would shrink the directory or drop a program (the cache is
+missing pages), or **more than a tenth of the published programs move at once** —
+course lists and counts together, which is the stale-cache signature. One program
+changing is news from Coursera (a bundle edit, a recount) and publishes normally.
+When the guard fires, the published index stays as it was, the crawl continues,
+and the run is reported `partial` with the count and the first program in
+`last-run.json`'s reason. `--force-index` publishes anyway.
 
 The container gets its environment from `--env-file` — `/etc/starisk/env` on the
 box, `ops/.env` for the local compose path — so `--env-file` is for running the
