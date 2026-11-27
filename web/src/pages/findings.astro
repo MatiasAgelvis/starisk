@@ -418,21 +418,45 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
       <p class="mt-2 text-sm text-base-content/60">
         The eight largest gaps between the headline and the reviews.
       </p>
-      <ol class="mt-4 divide-y divide-base-300/60">
-        {
-          topGaps.map((course) => (
-            <li class="flex items-baseline justify-between gap-4 py-3">
-              <a class="link link-hover min-w-0 font-medium" href={`/${course.key}`}>
-                {course.title}
-              </a>
-              <span class="shrink-0 whitespace-nowrap font-mono text-sm text-base-content/60">
-                {course.coursera.toFixed(1)} → {course.starisk.toFixed(1)}
-                <span class="ml-2 text-base-content/40">({course.gap.toFixed(1)})</span>
-              </span>
-            </li>
-          ))
-        }
-      </ol>
+      <table class="table table-sm table-zebra mt-4">
+        <thead>
+          <tr>
+            <th class="font-semibold">Course</th>
+            <th class="text-right font-semibold">Coursera</th>
+            <th class="text-right font-semibold">Starisk</th>
+            <th class="text-right font-semibold">Gap</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            topGaps.map((course) => (
+              <tr>
+                <td class="font-medium">
+                  <a class="link link-hover" href={`/${course.key}`}>
+                    {course.title}
+                  </a>
+                </td>
+                <td class="text-right font-mono text-base-content/60">
+                  {course.coursera.toFixed(1)}
+                </td>
+                <td class="text-right font-mono font-semibold">
+                  {course.starisk.toFixed(1)}
+                </td>
+                <td class="text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <span
+                      aria-hidden="true"
+                      class="hidden h-1.5 rounded-full bg-error/25 sm:block"
+                      style={`width:${Math.round((course.gap / maxGap) * 48)}px`}
+                    />
+                    <span class="font-mono font-semibold text-error">+{course.gap.toFixed(1)}</span>
+                  </div>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </section>
 
     <section class="mt-10 space-y-3 text-sm text-base-content/60">
