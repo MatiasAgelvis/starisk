@@ -126,6 +126,13 @@ snapshot anyway.
   manual. The two numbers are paired: 20 programs is roughly 100 member courses,
   which is what the run reads (`DEFAULT_LIMIT`), so the queue stays flat instead of
   growing out of reach of the next bundle.
+- **Program fetches are capped too.** `--fetch` walks published programs first, then
+  seeds, and fetches at most `FETCH_PER_RUN` (200) pages a run — a ceiling for the
+  cold case, not the normal one. A warm cache fetches the night's 20 new seeds; a
+  cold one drains over a night or two instead of a thousands-of-requests burst.
+  Programs whose page is still missing keep their published entry (`build_groupings`
+  carries it forward), so the budget costs freshness, never the directory.
+  `--fetch-limit 0` lifts the cap.
 - **Updating the job.** Merge to `develop`. The next run clones it, so the code
   that runs is the code you merged. Rebuild the image only when the entrypoint or
   runtimes change: `sudo ./ops/setup.sh --env .env`, or
@@ -166,14 +173,15 @@ retires with code 15; the one after resumes, because the skipped night writes a
 record without the flag. That alternation is deliberate: a host that just said
 403 wants silence, not a retry, and an offline re-parse is never skipped.
 
-**A refused program index is not a dead night.** The write guard refuses in two
-cases only: the rebuild would shrink the directory or drop a program (the cache is
-missing pages), or **more than a tenth of the published programs move at once** —
-course lists and counts together, which is the stale-cache signature. One program
-changing is news from Coursera (a bundle edit, a recount) and publishes normally.
-When the guard fires, the published index stays as it was, the crawl continues,
-and the run is reported `partial` with the count and the first program in
-`last-run.json`'s reason. `--force-index` publishes anyway.
+**A refused program index is not a dead night.** Missing pages no longer shrink the
+index — a published program is carried forward until its page comes back — so the
+write guard now fires in one case: **more than a tenth of the published programs
+move at once**, course lists and counts together, which is the stale-cache
+signature. One program changing is news from Coursera (a bundle edit, a recount)
+and publishes normally. When the guard fires, the published index stays as it was,
+the crawl continues, and the run is reported `partial` with the count and the first
+program in `last-run.json`'s reason. `--force-index` publishes anyway. A program
+that 404s is tombstoned and dropped deliberately, and is not counted as movement.
 
 The container gets its environment from `--env-file` — `/etc/starisk/env` on the
 box, `ops/.env` for the local compose path — so `--env-file` is for running the
