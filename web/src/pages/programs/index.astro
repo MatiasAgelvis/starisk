@@ -42,6 +42,8 @@ const rows = programs.map((program) => ({
     coursera: course.coursera,
     starisk: course.starisk,
     low: course.low_sample === true,
+    // The drawer folds never-crawled members, so it has to know which they are.
+    read: course.read,
   })),
 }));
 ---
