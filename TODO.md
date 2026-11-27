@@ -118,13 +118,15 @@ incomparable things. Leaning: separate type, separate listing.
    program discovery (N/night) or run it as a one-off; it competes with the course
    queue, so the pace is a decision.
 3. **Data:** `scores.json` gains `projects/*` records with the same score model.
-4. **Site:** pages already render via `[type]/[slug]`, but `index.astro` currently
-   maps every scored key. Split by type: courses stay on the home table, projects
-   get their own index (or a product filter). `/coverage` already counts the family.
+4. **Site:** detail pages already render via `[type]/[slug]`. Build a separate
+   `/projects` leaderboard (reuse `ScoreTable`) plus a small link under the home
+   table — "We also read Guided Projects →". No top-nav tab until there is data.
+   Keep projects out of `findings` / `contested` (`type === 'course'`) and adjust
+   the detail-page copy. **Deferred until the first batch is scored**; until then
+   `/coverage` is the only place they show up.
 
-Open: separate `/projects` leaderboard vs a product filter on the home table;
-and whether project reviews join the calibration sample or stay a separate
-population (they are short and may rate differently).
+Open: do project reviews join the calibration sample, or stay a separate
+population? They are short and may rate differently.
 
 **MasterTrack — separate from programs.**
 

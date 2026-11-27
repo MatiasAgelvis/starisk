@@ -20,6 +20,7 @@ const round = (value) => Math.round(value * 100) / 100;
 function courseRow(key, record) {
   const row = {
     key,
+    type: record.type ?? (key.startsWith('projects/') ? 'project' : 'course'),
     title: record.title ?? key,
     provider: record.provider ?? null,
   };
@@ -119,7 +120,8 @@ export function buildDataset(scores, groupings, generatedAt) {
         'a program has no written reviews of its own; average is the review-weighted mean of its courses, null when none are scored',
     },
     counts: {
-      courses: courses.length,
+      courses: courses.filter((course) => course.type === 'course').length,
+      projects: courses.filter((course) => course.type === 'project').length,
       scored: courses.filter((course) => typeof course.starisk === 'number').length,
       noReviews: courses.filter((course) => course.noReviews === true).length,
       reviewsRead: courses.reduce((total, course) => total + (course.reviewsRead ?? 0), 0),

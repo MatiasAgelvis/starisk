@@ -54,6 +54,7 @@ test('carries the measurements and the identifiers', () => {
   const course = dataset.courses[0];
 
   assert.equal(course.key, 'learn/a');
+  assert.equal(course.type, 'course');
   assert.equal(course.coursera, 4.5);
   assert.equal(course.starisk, 3.9);
   assert.equal(course.reviewsRead, 20);
@@ -86,6 +87,7 @@ test('never includes third-party prose, marks or photos', () => {
     'spread',
     'starisk',
     'title',
+    'type',
   ]);
 });
 
@@ -114,6 +116,7 @@ test('counts and licence describe the file', () => {
   assert.ok(dataset.license.attribution.includes('starisk.matiasagelvis.com'));
   assert.deepEqual(dataset.counts, {
     courses: 2,
+    projects: 0,
     scored: 1,
     noReviews: 1,
     reviewsRead: 20,
