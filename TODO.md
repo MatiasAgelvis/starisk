@@ -76,6 +76,33 @@ never scored (554 have no written reviews at all).
   nothing at this level — see `IDEAS.md` I5 for what a program-level claim would
   need to be defensible.
 
+## Product types
+
+Coursera's sitemap index names every product family. What the corpus reads today,
+and the gap to "all of them":
+
+| Type | Path | Rough count | Status |
+|---|---|---|---|
+| Courses | `learn/*` | ~23k | **in** — scored from written reviews |
+| Specializations | `specializations/*` | ~3.6k | **in** — discovered, expanded to members |
+| Professional Certificates | `professional-certificates/*` | ~300 | **in** — second sitemap, aliases deduped |
+| Guided Projects | `projects/*` | ~2,188 | **out** — no course list, no SSR reviews |
+| MasterTrack | `mastertrack/*` | ~31 | **out** — no course-list hook |
+| Degrees | `degrees/*` | ~64 | **out** — no course list or reviews |
+
+Not products: `collections/*` (editorial groupings, ~412), `browse` / `explore` /
+`eqp` (catalog and query pages), `about` / `articles` / `partners` / `instructors` /
+`resources` / `enterprise` (site information).
+
+- **Guided Projects are the biggest gap (2,188).** They are single, short products,
+  not bundles; the page carries neither `sdp-course-list-link` nor review cards, and
+  `/projects/<slug>/reviews` has zero review hooks too. `/api/` is disallowed by
+  `robots.txt`, so unless a rendered reviews page exists, they can only be directory
+  entries — not scored.
+- **MasterTrack and Degrees are a different model.** No course list to expand and no
+  written reviews to score, so they would need their own fields (institution,
+  tuition, format) rather than the course pipeline.
+
 ## V2 / later
 
 - **Classify reviews** (quality vs policy vs praise) — **parked**, `IDEAS.md` I3.
