@@ -478,6 +478,7 @@ def extract_details(html: str) -> dict:
         "description": None,
         "provider": None,
         "image": None,
+        "url": None,
         "level": None,
         "enrollment": None,
     }
@@ -512,6 +513,12 @@ def extract_details(html: str) -> dict:
         enrollment = product.get("totalHistoricalEnrollment")
         if enrollment is not None:
             details["enrollment"] = _as_int(enrollment)
+
+        # The canonical URL, which differs from a localized alias slug: Coursera
+        # serves `/professional-certificates/<localized>` with the English page.
+        url = product.get("url")
+        if isinstance(url, str) and "coursera.org/" in url:
+            details["url"] = url.split("#", 1)[0].split("?", 1)[0]
 
         image = product.get("image")
         if isinstance(image, list):
