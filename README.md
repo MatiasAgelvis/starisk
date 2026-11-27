@@ -129,20 +129,19 @@ mise run pipeline:expand -- --write   # extend sources.json
 mise run pipeline:expand -- --instructors --limit 10
 ```
 
-- **specializations** — my certificate specializations, resolved from Coursera's
-  sitemap and confirmed by `og:title`, then expanded into their constituent
-  courses (`data-e2e="sdp-course-list-link"`).
 - **instructors** — every teacher already in `scores.json`, read from their
   Coursera profile (`data-e2e="course-card"`).
+- **programs** — the members of every published program in `groupings.json`. No
+  requests: the index already holds the membership.
 
-Both cost one cached request per parent page. Each page is printed as it finishes
-with `[i/N]` and elapsed seconds, so a long expand run shows progress instead of
-looking frozen. Language variants (`-fr`, `-de`, …) are dropped; a separately-created
-translation with its own slug is not (only one so far — the landing page carries
-`inLanguage` if it ever matters).
+Instructor profiles cost one cached request per parent page and print `[i/N]` with
+elapsed seconds, so a long expand run shows progress instead of looking frozen.
+Language variants (`-fr`, `-de`, …) are dropped; a separately-created translation
+with its own slug is not (only one so far — the landing page carries `inLanguage` if
+it ever matters).
 
-Professional Certificates are not in the calibration file, so they are seeded
-explicitly in `pipeline/data/programs.json`:
+A program that discovery has not reached yet can be seeded explicitly in
+`pipeline/data/programs.json`:
 
 ```sh
 mise run pipeline:seed-programs   # fetch missing seeds, then rebuild groupings.json

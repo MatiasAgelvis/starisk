@@ -11,10 +11,10 @@ review widget belongs to whichever course is selected), so no score is derived
 here. What is stored is the bundle's own aggregate — Coursera's pooled rating and
 the population behind it — which is the one number that is the program's own.
 
-No network: it reads the page cache. Program pages are fetched by `expand` (for
-specializations) or added explicitly (for Professional Certificates). `--discover`
-walks Coursera's specialization sitemap to add the next few program seeds, which
-is how the directory grows without an editorial list.
+No network: it reads the page cache. `--fetch` downloads seed pages that are not
+cached yet; `--discover` walks Coursera's specialization sitemap for new
+specialization seeds, while Professional Certificates are seeded explicitly in
+`programs.json`. That is how the directory grows without an editorial list.
 """
 
 from __future__ import annotations

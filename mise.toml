@@ -54,8 +54,6 @@ dir = "pipeline"
 # Composed rather than copied, so the order and the derived steps live in one
 # place. Discovery comes before expansion because `expand --programs` reads the
 # groupings.json that discovery rewrites; this is the nightly's order too.
-# Specializations are excluded: they re-read my completed certificates to find
-# members already queued, so that lever is run by hand when a cert is added.
 # groupings.json is derived from the page cache, so a full run you intend to
 # commit belongs where that cache lives (the crawl box), not a partial laptop one.
 # The shebang keeps `-- --limit 20` flowing to `pipeline:crawl`.
