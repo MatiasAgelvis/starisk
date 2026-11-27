@@ -5,8 +5,17 @@ import groupings from '../../data/groupings.json';
 import { buildDataset } from '../../lib/dataset.js';
 
 const dataset = buildDataset(scores, groupings, new Date().toISOString());
-const { counts } = dataset;
+const { counts, asOf } = dataset;
 const kilobytes = Math.round(JSON.stringify(dataset).length / 1024);
+
+const asOfLabel = asOf
+  ? new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(new Date(asOf))
+  : null;
 
 const COURSE_FIELDS = [
   ['key', '`learn/…` — the Coursera path, and the join key everywhere'],
@@ -45,6 +54,15 @@ const PROGRAM_FIELDS = [
         </a>
         <span class="text-sm text-base-content/60">JSON · schema v1 · CC BY 4.0</span>
       </div>
+      {
+        asOfLabel && (
+          <p class="mt-2 text-xs text-base-content/55">
+            Data as of {asOfLabel} (newest review read). Reviews are read on a nightly
+            crawl; if a course looks stale,{' '}
+            <a class="link link-hover" href="/request">ask for it to be re-read</a>.
+          </p>
+        )
+      }
     </header>
 
     <section class="mt-8">

@@ -4,9 +4,9 @@ Small, near-term work. The bigger threads — polarization, the dataset, calibra
 the transcript — live in [`IDEAS.md`](IDEAS.md) with their reasoning and an order of
 work. Shipped and rejected threads live in [`ARCHIVE.md`](ARCHIVE.md).
 
-Current shape (2026-11-26): **1,969 courses indexed, 1,453 scored, 759 low-sample,
-0 errors, 150 programs, 430 instructors, 2 requests.** The nightly moves these;
-`pipeline/data/stats.json` has the counts it wrote.
+Current shape (2026-11-27): **2,089 courses indexed, 1,535 scored, 554 with no
+written reviews, 0 errors, 200 programs, 169 queued, 2 requests.** The nightly
+moves these; `pipeline/data/stats.json` has the counts it wrote.
 
 ## Next
 
@@ -26,8 +26,9 @@ Current shape (2026-11-26): **1,969 courses indexed, 1,453 scored, 759 low-sampl
 - **Search** is the newest surface and the least settled: partial matching shows top
   results as you type, but the ranking is plain substring plus sort order. Worth a
   pass once there's evidence people use it.
-- **Dataset page leftovers.** `/data` ships the JSON; a CSV dump and a "cite this"
-  line (version + date) are what make the file usable outside the site. An hour,
+- **Dataset page leftovers.** `/data` now shows a "Data as of <date>" line (newest
+  review read; also `asOf` in the JSON) with a link to request a re-read. What's
+  left is a CSV dump and a copy-paste "cite this" line (version + date). An hour,
   per `IDEAS.md` I6.
 
 ## Pipeline
@@ -44,10 +45,21 @@ Current shape (2026-11-26): **1,969 courses indexed, 1,453 scored, 759 low-sampl
 
 Grow along the two existing edges (`mise run pipeline:expand`), not by sampling the
 sitemap: the teacher graph has been the productive one, the specialization lever
-much less so. 2,068 sources listed against 1,969 records — the gap is courses that
-were listed but never scored (516 have no reviews at all).
+much less so. 2,261 sources listed against 2,089 records — the gap is courses that
+were listed but never scored (554 have no written reviews at all).
 
-- **Program coverage: 150 of ~3,604 sitemap slugs.** Discovery samples the sitemap
+- **Program memberships drift slowly, and no program page is ever re-read.**
+  Coursera usually replaces a course or ships a new program (which discovery finds),
+  so real additions are rare. But neither `groupings --fetch` (it only fills *missing*
+  pages) nor `expand --programs` re-reads an existing page, so once a bundle is
+  fetched its membership is frozen. A full yearly refresh needs either a `--refetch`
+  flag on `groupings` (re-download published program pages, with the movement guard
+  still refusing widespread change) or clearing `cache/pages/specializations/*` and
+  re-running `pipeline:seed-programs` (one night of requests). The calibration-cert
+  lever (`expand --specializations`) only ever covered my own certificates, not the
+  published directory; it no longer runs in the nightly.
+
+- **Program coverage: 200 of ~3,604 sitemap slugs.** Discovery samples the sitemap
   20 a night (stable hash order, so it spreads across the catalogue instead of
   stopping at `advanced-*`) and skips pages already in the cache, so the budget no
   longer goes to pages that fetched but never yielded a course list (15 collections

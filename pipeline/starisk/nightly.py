@@ -626,11 +626,13 @@ def run(options) -> int:
             )
 
         # Offline keeps to the page cache: expansion only fetches, and discovery has
-        # no network to walk the sitemap with.
+        # no network to walk the sitemap with. Online, discovery refreshes the sitemap
+        # first — it is now the only place that re-downloads it, so programs created
+        # later are still found.
         index_args = (
             ["--fetch", "--write"]
             if options.offline
-            else ["--discover", "--fetch", "--write"]
+            else ["--discover", "--refresh", "--fetch", "--write"]
         )
         if options.force_index:
             # Used by hand after reading the refusal: the numbers are legitimately
@@ -659,11 +661,12 @@ def run(options) -> int:
             # Instructor profiles are a catalogue, not a curriculum: one scored
             # course handed over 455 unrelated slugs, most of them other publishers'
             # courses. Programs are the bounded, deliberate lever, so they are what
-            # runs unattended; `--instructors` stays available by hand.
+            # runs unattended; `--instructors` stays available by hand. The
+            # specializations lever is excluded for the same reason: it re-reads my
+            # completed certificates to extract members that are already queued, so
+            # once seeded it is a cached no-op. Run it by hand when a cert is added.
             try:
-                grown = expand.main(
-                    ["--refresh", "--write", "--programs", "--specializations"]
-                )
+                grown = expand.main(["--write", "--programs"])
             except Exception as error:  # noqa: BLE001 - discovery is an input, not a prerequisite
                 print(f"[nightly] the expansion failed: {error}")
                 grown = 1

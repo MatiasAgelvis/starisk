@@ -401,6 +401,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="seed the next programs from the sitemap (writes programs.json with --write)",
     )
     parser.add_argument(
+        "--refresh",
+        action="store_true",
+        help="re-download the program sitemap before discovering",
+    )
+    parser.add_argument(
         "--discover-limit",
         type=int,
         default=DISCOVER_PER_RUN,
@@ -427,7 +432,7 @@ def main(argv: list[str], on_refusal: Callable[[str], None] | None = None) -> in
 
     if options.discover:
         seeds = read_seeds()
-        slugs = spread(program_slugs())
+        slugs = spread(program_slugs(refresh=options.refresh))
         candidates = discover_candidates(
             read_index(),
             seeds,

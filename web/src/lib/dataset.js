@@ -83,9 +83,19 @@ export function buildDataset(scores, groupings, generatedAt) {
   const courses = Object.entries(scores).map(([key, record]) => courseRow(key, record));
   const programs = buildGroupings(groupings, scores).map(programRow);
 
+  // The corpus's "manufactured on" date: the newest review read, not the build
+  // time. `generatedAt` changes every build; this only moves when the crawl does.
+  const asOf =
+    courses
+      .map((course) => course.scrapedAt)
+      .filter(Boolean)
+      .sort()
+      .pop() ?? null;
+
   return {
     schema: 1,
     generatedAt,
+    asOf,
     site: SITE,
     source: SOURCE,
     license: {

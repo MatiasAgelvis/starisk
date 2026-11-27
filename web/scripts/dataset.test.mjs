@@ -109,6 +109,7 @@ test('programs carry membership and a derived average', () => {
 test('counts and licence describe the file', () => {
   assert.equal(dataset.schema, 1);
   assert.equal(dataset.generatedAt, '2026-11-25T12:00:00Z');
+  assert.equal(dataset.asOf, '2026-11-25T00:00:00Z');
   assert.equal(dataset.license.data, 'CC BY 4.0');
   assert.ok(dataset.license.attribution.includes('starisk.matiasagelvis.com'));
   assert.deepEqual(dataset.counts, {
