@@ -549,6 +549,32 @@ class RefusalReportTest(unittest.TestCase):
         self.assertIn("page cache", reasons[0])
 
 
+class CanonicalAliasTest(unittest.TestCase):
+    def test_a_localized_alias_does_not_become_a_second_program(self):
+        page = (
+            '<meta property="og:title" content="Google Data Analytics">'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Google Data Analytics",'
+            '"url":"https://www.coursera.org/professional-certificates/'
+            'google-data-analytics"}'
+            "</script>"
+            '<a href="/learn/course-a" data-e2e="sdp-course-list-link">A</a>'
+        )
+
+        with TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            store_page("professional-certificates/google-data-analytics", page, tmp)
+            store_page(
+                "professional-certificates/analytique-des-donnees-google", page, tmp
+            )
+
+            groupings = build_groupings(directory=tmp)
+
+        self.assertEqual(
+            list(groupings), ["professional-certificates/google-data-analytics"]
+        )
+
+
 class SitemapRefreshTest(unittest.TestCase):
     def _discover(self, argv):
         with (
