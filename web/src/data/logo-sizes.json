@@ -334,5 +334,37 @@
   "illinois-tech": {
     "tile": "/logos/tile/illinois-tech.png",
     "full": "/logos/full/illinois-tech.png"
+  },
+  "ai-business-school": {
+    "tile": "/logos/tile/ai-business-school.jpg",
+    "full": "/logos/full/ai-business-school.jpg"
+  },
+  "chegg-skills": {
+    "tile": "/logos/tile/chegg-skills.jpg",
+    "full": "/logos/full/chegg-skills.jpg"
+  },
+  "packt": {
+    "tile": "/logos/tile/packt.jpg",
+    "full": "/logos/full/packt.jpg"
+  },
+  "marshall-university": {
+    "tile": "/logos/tile/marshall-university.png",
+    "full": "/logos/full/marshall-university.png"
+  },
+  "federico-garay": {
+    "tile": "/logos/tile/federico-garay.jpg",
+    "full": "/logos/full/federico-garay.jpg"
+  },
+  "banco-interamericano-de-desarrollo": {
+    "tile": "/logos/tile/banco-interamericano-de-desarrollo.png",
+    "full": "/logos/full/banco-interamericano-de-desarrollo.png"
+  },
+  "iese-business-school": {
+    "tile": "/logos/tile/iese-business-school.png",
+    "full": "/logos/full/iese-business-school.png"
+  },
+  "kodekloud": {
+    "tile": "/logos/tile/kodekloud.png",
+    "full": "/logos/full/kodekloud.png"
   }
 }

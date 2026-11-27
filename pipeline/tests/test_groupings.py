@@ -130,6 +130,47 @@ class BuildGroupingsTest(unittest.TestCase):
         self.assertIn("specializations/algorithms", groupings)
         self.assertEqual(len(groupings["specializations/algorithms"]["courses"]), 2)
 
+    def test_a_published_program_survives_a_missing_page(self):
+        published = {
+            "specializations/algorithms": {
+                "key": "specializations/algorithms",
+                "courses": ["learn/algorithms-part1"],
+            }
+        }
+
+        with TemporaryDirectory() as tmp:
+            groupings = build_groupings(Path(tmp), previous=published)
+
+        # A capped fetch leaves the entry stale, not gone — and not a refusal.
+        self.assertEqual(groupings, published)
+        self.assertIsNone(refuse_reason(groupings, published))
+
+    def test_a_cached_page_replaces_the_carried_entry(self):
+        published = {
+            "specializations/algorithms": {
+                "key": "specializations/algorithms",
+                "courses": ["learn/old"],
+            }
+        }
+
+        with TemporaryDirectory() as tmp:
+            store_page("specializations/algorithms", PAGE, Path(tmp))
+            groupings = build_groupings(Path(tmp), previous=published)
+
+        self.assertEqual(len(groupings["specializations/algorithms"]["courses"]), 2)
+
+    def test_a_tombstoned_program_is_not_carried(self):
+        published = {"specializations/algorithms": {"key": "specializations/algorithms"}}
+
+        with TemporaryDirectory() as tmp:
+            groupings = build_groupings(
+                Path(tmp),
+                previous=published,
+                retired={"specializations/algorithms": {}},
+            )
+
+        self.assertEqual(groupings, {})
+
 
 class SeedTest(unittest.TestCase):
     def test_load_seed_keys_filters_and_dedupes(self):
@@ -170,7 +211,8 @@ class SeedTest(unittest.TestCase):
 
         self.assertEqual(
             keys,
-            ["professional-certificates/ibm-data-science", "specializations/algorithms"],
+            # Published first: a cold cache must not lose them to a fetch budget.
+            ["specializations/algorithms", "professional-certificates/ibm-data-science"],
         )
 
     def test_a_missing_seed_is_fetched_once(self):
@@ -194,6 +236,28 @@ class SeedTest(unittest.TestCase):
             self.assertEqual(load_page(key, directory), PAGE)
 
         self.assertEqual(calls, [f"https://www.coursera.org/{key}"])
+
+    def test_fetches_no_more_than_the_budget(self):
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            return PAGE
+
+        with TemporaryDirectory() as tmp:
+            fetched = fetch_missing(
+                [
+                    "specializations/a",
+                    "specializations/b",
+                    "specializations/c",
+                ],
+                fetch=fetch,
+                cache_dir=Path(tmp),
+                limit=2,
+            )
+
+        self.assertEqual(fetched, 2)
+        self.assertEqual(len(calls), 2)
 
     def test_a_landing_copy_counts_as_cached(self):
         key = "professional-certificates/ibm-data-science"
@@ -422,6 +486,7 @@ class RefusalReportTest(unittest.TestCase):
 
         with (
             mock.patch("starisk.groupings.build_groupings", return_value={}),
+            mock.patch("starisk.groupings.cached_grouping_keys", return_value=[]),
             mock.patch(
                 "starisk.groupings.read_index",
                 return_value={"specializations/a": {}},

@@ -12,15 +12,28 @@ export const SPREAD_MAX = 2.2;
 // spread of zero by definition. Matches the pipeline's `low_sample` bar.
 export const MIN_REVIEWS = 15;
 
+// Order matches the quadrant grid: rows are spread (high on top), columns are
+// score (low on the left), so reading left→right, top→bottom is contested,
+// divisive, consensus poor, consensus good.
 export const CELLS = [
-  { id: 'contested', label: 'Contested', note: 'low score, reviews scatter' },
-  { id: 'divisive', label: 'Divisive', note: 'high score, reviews scatter' },
-  { id: 'consensusGood', label: 'Consensus good', note: 'high score, reviews agree' },
-  { id: 'consensusPoor', label: 'Consensus poor', note: 'low score, reviews agree' },
+  { id: 'contested', label: 'Contested', note: 'low score, reviews scatter', badge: 'badge-warning' },
+  { id: 'divisive', label: 'Divisive', note: 'high score, reviews scatter', badge: 'badge-info' },
+  {
+    id: 'consensusPoor',
+    label: 'Consensus Poor',
+    note: 'low score, reviews agree',
+    badge: 'badge-error',
+  },
+  {
+    id: 'consensusGood',
+    label: 'Consensus Good',
+    note: 'high score, reviews agree',
+    badge: 'badge-success',
+  },
 ];
 
 /** Not a quadrant: the sample is too small to label. */
-export const TOO_FEW = { id: 'tooFew', label: 'Too few reviews' };
+export const TOO_FEW = { id: 'tooFew', label: 'Too few reviews', badge: 'badge-ghost' };
 
 /** Stable 0..1 from a string, so the jitter survives a rebuild. */
 function hash(text) {

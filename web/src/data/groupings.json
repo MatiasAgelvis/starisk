@@ -2277,6 +2277,18 @@
       "5": 8147
     }
   },
+  "specializations/ai-for-creators-strategy-content-automation": {
+    "key": "specializations/ai-for-creators-strategy-content-automation",
+    "type": "specialization",
+    "title": "AI for Creators: Strategy, Content & Automation",
+    "url": "https://www.coursera.org/specializations/ai-for-creators-strategy-content-automation",
+    "courses": [
+      "learn/unlock-your-creative-potential-with-ai-chatgpt-for-creators",
+      "learn/youtube-channel-growth-use-chatgpt-to-level-up-your-content",
+      "learn/build-your-own-creative-assistant"
+    ],
+    "provider": "Skillshare"
+  },
   "specializations/ai-for-hr": {
     "key": "specializations/ai-for-hr",
     "type": "specialization",
@@ -2297,6 +2309,18 @@
       "4": 6,
       "5": 43
     }
+  },
+  "specializations/ai-for-maintenance": {
+    "key": "specializations/ai-for-maintenance",
+    "type": "specialization",
+    "title": "AI for Maintenance",
+    "url": "https://www.coursera.org/specializations/ai-for-maintenance",
+    "courses": [
+      "learn/introduction-to-ai-for-maintenance-professionals",
+      "learn/practical-ai-and-prompting-for-maintenance-professionals",
+      "learn/ai-agents-creator-tools-for-maintenance-professionals"
+    ],
+    "provider": "AI Business School"
   },
   "specializations/ai-healthcare": {
     "key": "specializations/ai-healthcare",
@@ -2319,6 +2343,31 @@
       "3": 102,
       "4": 517,
       "5": 2734
+    }
+  },
+  "specializations/ai-marketing-mastery": {
+    "key": "specializations/ai-marketing-mastery",
+    "type": "specialization",
+    "title": "AI Marketing Mastery",
+    "url": "https://www.coursera.org/specializations/ai-marketing-mastery",
+    "courses": [
+      "learn/ai-digital-marketing-content-creation",
+      "learn/monetize-chatgpt",
+      "learn/chatgpt-work-productivity",
+      "learn/chatgpt-business-marketing",
+      "learn/ai-marketing-brand-growth",
+      "learn/ai-marketing-automation",
+      "learn/generative-ai-image-content-generation"
+    ],
+    "provider": "LearnKartS",
+    "coursera": 3.7,
+    "ratings_total": 22,
+    "rating_counts": {
+      "1": 3,
+      "2": 2,
+      "3": 1,
+      "4": 2,
+      "5": 14
     }
   },
   "specializations/ai-powered-cybersecurity-mqcsa": {
@@ -2446,6 +2495,26 @@
       "5": 0
     }
   },
+  "specializations/assistant-editing-in-film-with-adobe-premiere": {
+    "key": "specializations/assistant-editing-in-film-with-adobe-premiere",
+    "type": "specialization",
+    "title": "Assistant Editing in Film with Adobe Premiere",
+    "url": "https://www.coursera.org/specializations/assistant-editing-in-film-with-adobe-premiere",
+    "courses": [
+      "learn/the-assistant-editors-foundations-in-adobe-premiere",
+      "learn/daily-editorial-workflows-for-assistant-editor-in-adobe-premiere",
+      "learn/finishing-the-cut-post-production-pipelines-in-premiere"
+    ],
+    "provider": "Adobe",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
   "specializations/blender-3d-modeling-rendering-games-animation": {
     "key": "specializations/blender-3d-modeling-rendering-games-animation",
     "type": "specialization",
@@ -2550,6 +2619,49 @@
       "5": 5323
     }
   },
+  "specializations/construction-practices-in-deep-excavations-and-tunnels": {
+    "key": "specializations/construction-practices-in-deep-excavations-and-tunnels",
+    "type": "specialization",
+    "title": "Construction Practices in Deep excavations and Tunnels",
+    "url": "https://www.coursera.org/specializations/construction-practices-in-deep-excavations-and-tunnels",
+    "courses": [
+      "learn/deep-excavations-and-support-system",
+      "learn/tunnel-construction-practices",
+      "learn/underground-metros-shafts-and-caverns"
+    ],
+    "provider": "L&T EduTech",
+    "coursera": 4.4,
+    "ratings_total": 12,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 9
+    }
+  },
+  "specializations/creatividad-diseno-innovacion": {
+    "key": "specializations/creatividad-diseno-innovacion",
+    "type": "specialization",
+    "title": "Creatividad, diseño e innovación: Técnicas y herramientas",
+    "url": "https://www.coursera.org/specializations/creatividad-diseno-innovacion",
+    "courses": [
+      "learn/creatividad",
+      "learn/innovacion-diseno",
+      "learn/entender-diseno",
+      "learn/creatividad-proyecto-final"
+    ],
+    "provider": "Arizona State University",
+    "coursera": 4.7,
+    "ratings_total": 5003,
+    "rating_counts": {
+      "1": 38,
+      "2": 31,
+      "3": 133,
+      "4": 747,
+      "5": 4054
+    }
+  },
   "specializations/cybersecurity-foundations": {
     "key": "specializations/cybersecurity-foundations",
     "type": "specialization",
@@ -2569,6 +2681,50 @@
       "3": 22,
       "4": 95,
       "5": 637
+    }
+  },
+  "specializations/data-analysis-numpy-pandas": {
+    "key": "specializations/data-analysis-numpy-pandas",
+    "type": "specialization",
+    "title": "Data Analysis with NumPy and Pandas",
+    "url": "https://www.coursera.org/specializations/data-analysis-numpy-pandas",
+    "courses": [
+      "learn/pandas-python-analyze-transform-export-data",
+      "learn/numpy-pandas-analyze-transform-data",
+      "learn/numpy-pandas-analyze-manage-retail-data"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 31,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 28
+    }
+  },
+  "specializations/data-analysis-visualization-excel": {
+    "key": "specializations/data-analysis-visualization-excel",
+    "type": "specialization",
+    "title": "Data Analysis and Visualization with Microsoft Excel",
+    "url": "https://www.coursera.org/specializations/data-analysis-visualization-excel",
+    "courses": [
+      "learn/excel-data-analysis-visualization-fundamentals-lo091157",
+      "learn/excel-data-analysis-formulas-functions-pivottables-lo091157",
+      "learn/excel-dashboards-geospatial-visualizations-lo091157",
+      "learn/excel-statistical-analysis-data-transformation-lo091157",
+      "learn/excel-modeling-power-pivot-reporting-insights-lo091157"
+    ],
+    "provider": "Logical Operations",
+    "coursera": 4.3,
+    "ratings_total": 40,
+    "rating_counts": {
+      "1": 4,
+      "2": 1,
+      "3": 1,
+      "4": 2,
+      "5": 32
     }
   },
   "specializations/data-science-fundamentals": {
@@ -2591,6 +2747,37 @@
       "3": 26,
       "4": 63,
       "5": 213
+    }
+  },
+  "specializations/data-visualization-business-intelligence": {
+    "key": "specializations/data-visualization-business-intelligence",
+    "type": "specialization",
+    "title": "Data Visualization & Business Intelligence",
+    "url": "https://www.coursera.org/specializations/data-visualization-business-intelligence",
+    "courses": [
+      "learn/charts-visualize-data-like-a-pro",
+      "learn/present-compelling-data-stories-with-excel",
+      "learn/conditional-formatting-tables-charts-microsoft-excel",
+      "learn/create-charts-dashboards-using-microsoft-excel",
+      "learn/dynamic-dashboards-report-and-visualize-data",
+      "learn/microsoft-powerpoint-how-to-customize-your-slides-and-visualize-your-data",
+      "learn/powerbi-visualize--publish-data",
+      "learn/model-power-bi-data-with-security",
+      "learn/design-impactful-dashboards-visualize-and-evaluate-data",
+      "learn/microsoft-copilot-for-power-bi-ai-powered-report-insights",
+      "learn/powerbi-for-beginners-data-transformation",
+      "learn/power-bi-for-beginners-interactive-dashboard-fundamentals",
+      "learn/powerbi-for-beginners-build-your-first-report"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.6,
+    "ratings_total": 2007,
+    "rating_counts": {
+      "1": 58,
+      "2": 23,
+      "3": 71,
+      "4": 357,
+      "5": 1498
     }
   },
   "specializations/deep-learning": {
@@ -2771,6 +2958,18 @@
       "5": 30
     }
   },
+  "specializations/foundations-of-web-and-cloud-development": {
+    "key": "specializations/foundations-of-web-and-cloud-development",
+    "type": "specialization",
+    "title": "Foundations of Web and Cloud Development",
+    "url": "https://www.coursera.org/specializations/foundations-of-web-and-cloud-development",
+    "courses": [
+      "learn/html-quick-start",
+      "learn/javascript-basics-for-beginners",
+      "learn/demystify-the-cloud-amazon-web-services-basics"
+    ],
+    "provider": "Madecraft"
+  },
   "specializations/genomic-data-science": {
     "key": "specializations/genomic-data-science",
     "type": "specialization",
@@ -2904,6 +3103,30 @@
       "5": 747
     }
   },
+  "specializations/hr-training-talent-management": {
+    "key": "specializations/hr-training-talent-management",
+    "type": "specialization",
+    "title": "HR Training and Talent Management",
+    "url": "https://www.coursera.org/specializations/hr-training-talent-management",
+    "courses": [
+      "learn/strategic-hr-management-business-strategy",
+      "learn/talent-acquisition-recruitment-planning",
+      "learn/effective-job-descriptions-recruitment",
+      "learn/talent-acquisition-recruitment-strategies",
+      "learn/employee-evaluation-appraisal-techniques",
+      "learn/succession-planning-leadership-strategy"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.9,
+    "ratings_total": 26,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 1,
+      "5": 24
+    }
+  },
   "specializations/improve-english": {
     "key": "specializations/improve-english",
     "type": "specialization",
@@ -2948,6 +3171,27 @@
       "5": 1
     }
   },
+  "specializations/innovacion-digital": {
+    "key": "specializations/innovacion-digital",
+    "type": "specialization",
+    "title": "Innovación digital",
+    "url": "https://www.coursera.org/specializations/innovacion-digital",
+    "courses": [
+      "learn/liderazgo-innovacion",
+      "learn/estrategias-digitales-innovacion-ciudades-hidrointeligentes",
+      "learn/innovacion-medios-digitales"
+    ],
+    "provider": "Universidad Nacional Autónoma de México",
+    "coursera": 4.7,
+    "ratings_total": 208,
+    "rating_counts": {
+      "1": 9,
+      "2": 1,
+      "3": 4,
+      "4": 18,
+      "5": 176
+    }
+  },
   "specializations/international-trade-finance-risk-management": {
     "key": "specializations/international-trade-finance-risk-management",
     "type": "specialization",
@@ -2967,6 +3211,28 @@
       "3": 0,
       "4": 1,
       "5": 55
+    }
+  },
+  "specializations/introduction-to-cosmetic-science": {
+    "key": "specializations/introduction-to-cosmetic-science",
+    "type": "specialization",
+    "title": "Introduction to Cosmetic Science and Ingredients",
+    "url": "https://www.coursera.org/specializations/introduction-to-cosmetic-science",
+    "courses": [
+      "learn/introduction-to-cosmetic-and-skin-care-science",
+      "learn/cosmetic-formulation-science",
+      "learn/cosmetic-product-development",
+      "learn/quality-control-and-regulatory-in-cosmetic-science"
+    ],
+    "provider": "Olay",
+    "coursera": 4.7,
+    "ratings_total": 673,
+    "rating_counts": {
+      "1": 7,
+      "2": 7,
+      "3": 29,
+      "4": 93,
+      "5": 537
     }
   },
   "specializations/investment-management-python-machine-learning": {
@@ -2989,6 +3255,29 @@
       "3": 139,
       "4": 357,
       "5": 1916
+    }
+  },
+  "specializations/leadership-nursing-informatics": {
+    "key": "specializations/leadership-nursing-informatics",
+    "type": "specialization",
+    "title": "Nursing Informatics Leadership",
+    "url": "https://www.coursera.org/specializations/leadership-nursing-informatics",
+    "courses": [
+      "learn/skills-for-nursing-informatics-leaders",
+      "learn/health-informatics-leadership",
+      "learn/nursing-informatics-leaders",
+      "learn/training-others-nursing-informatics",
+      "learn/leadership-interprofessional-informatics"
+    ],
+    "provider": "University of Minnesota",
+    "coursera": 4.7,
+    "ratings_total": 436,
+    "rating_counts": {
+      "1": 6,
+      "2": 8,
+      "3": 9,
+      "4": 66,
+      "5": 347
     }
   },
   "specializations/leading-technical-organizations2": {
@@ -3055,6 +3344,19 @@
       "4": 728,
       "5": 3447
     }
+  },
+  "specializations/master-go-programming-concurrency": {
+    "key": "specializations/master-go-programming-concurrency",
+    "type": "specialization",
+    "title": "Master Go Programming and Concurrency",
+    "url": "https://www.coursera.org/specializations/master-go-programming-concurrency",
+    "courses": [
+      "learn/build-go-programs-core-fundamentals",
+      "learn/apply-control-flow-data-structures-go",
+      "learn/implement-error-handling-go-concurrency",
+      "learn/manage-concurrent-state-go-utilities"
+    ],
+    "provider": "EDUCBA"
   },
   "specializations/mathematics-machine-learning": {
     "key": "specializations/mathematics-machine-learning",
@@ -3312,6 +3614,26 @@
       "5": 7
     }
   },
+  "specializations/packt-data-structures-and-algorithms-in-java-150-leetcode-problems": {
+    "key": "specializations/packt-data-structures-and-algorithms-in-java-150-leetcode-problems",
+    "type": "specialization",
+    "title": "Data Structures & Algorithms in Java + 150 Leetcode Problems",
+    "url": "https://www.coursera.org/specializations/packt-data-structures-and-algorithms-in-java-150-leetcode-problems",
+    "courses": [
+      "learn/packt-foundations-of-data-structures-and-algorithms-pnfqd",
+      "learn/packt-advanced-data-structures-patterns-and-recursion-techniques-pnfqd",
+      "learn/packt-advanced-algorithms-dynamic-programming-and-graph-algorithms-pnfqd"
+    ],
+    "provider": "Packt",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
   "specializations/packt-kubernetes-an-enterprise-guide": {
     "key": "specializations/packt-kubernetes-an-enterprise-guide",
     "type": "specialization",
@@ -3344,6 +3666,39 @@
       "5": 3
     }
   },
+  "specializations/packt-md-102-endpoint-administrator": {
+    "key": "specializations/packt-md-102-endpoint-administrator",
+    "type": "specialization",
+    "title": "MD-102: Endpoint Administrator",
+    "url": "https://www.coursera.org/specializations/packt-md-102-endpoint-administrator",
+    "courses": [
+      "learn/packt-deploying-windows-clients-and-managing-identities-nu9a7",
+      "learn/packt-managing-security-and-enrollment-with-intune-pqxyu",
+      "learn/packt-application-deployment-and-management-with-intune-pqxyu"
+    ],
+    "provider": "Packt",
+    "coursera": 4.8,
+    "ratings_total": 46,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 4,
+      "5": 41
+    }
+  },
+  "specializations/packt-node-js-cookbook": {
+    "key": "specializations/packt-node-js-cookbook",
+    "type": "specialization",
+    "title": "Node.js Cookbook",
+    "url": "https://www.coursera.org/specializations/packt-node-js-cookbook",
+    "courses": [
+      "learn/packt-foundations-of-node-js-22-core-concepts-and-web-protocols",
+      "learn/packt-modern-nodejs-apps-modules-fastify-databases",
+      "learn/packt-securing-optimizing-and-deploying-node-js"
+    ],
+    "provider": "Packt"
+  },
   "specializations/packt-pytorch-ultimate-2024---from-basics-to-cutting-edge": {
     "key": "specializations/packt-pytorch-ultimate-2024---from-basics-to-cutting-edge",
     "type": "specialization",
@@ -3363,6 +3718,62 @@
       "3": 5,
       "4": 17,
       "5": 88
+    }
+  },
+  "specializations/packt-salesforce-agentforce-masterclass-hands-on-guide": {
+    "key": "specializations/packt-salesforce-agentforce-masterclass-hands-on-guide",
+    "type": "specialization",
+    "title": "Salesforce Agentforce Masterclass- Hands-on Guide",
+    "url": "https://www.coursera.org/specializations/packt-salesforce-agentforce-masterclass-hands-on-guide",
+    "courses": [
+      "learn/packt-ai-foundations-and-agentforce-essentials-on-salesforce",
+      "learn/packt-building-intelligent-agents-with-salesforce-agentforce",
+      "learn/packt-advanced-agentforce-rag-data-integration-and-customization"
+    ],
+    "provider": "Packt"
+  },
+  "specializations/pearson-building-linux-servers-dhcp-dns-and-directory-services": {
+    "key": "specializations/pearson-building-linux-servers-dhcp-dns-and-directory-services",
+    "type": "specialization",
+    "title": "Building Linux Servers: DHCP, DNS, and Directory Services",
+    "url": "https://www.coursera.org/specializations/pearson-building-linux-servers-dhcp-dns-and-directory-services",
+    "courses": [
+      "learn/pearson-building-linux-servers-dhcp-dns-and-directory-services-livelessons-goy7u",
+      "learn/pearson-building-linux-servers-dhcp-dns-and-directory-services-livelessons-qtdls",
+      "learn/pearson-building-linux-servers-dhcp-dns-and-directory-services-livelessons-htbx2",
+      "learn/pearson-building-linux-servers-dhcp-dns-and-directory-services-livelessons-uzcyu"
+    ],
+    "provider": "Pearson",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 2
+    }
+  },
+  "specializations/pearson-comptia-cybersecurity-analyst-cysa-cs0-003": {
+    "key": "specializations/pearson-comptia-cybersecurity-analyst-cysa-cs0-003",
+    "type": "specialization",
+    "title": "CompTIA Cybersecurity Analyst (CySA+) CS0-003",
+    "url": "https://www.coursera.org/specializations/pearson-comptia-cybersecurity-analyst-cysa-cs0-003",
+    "courses": [
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-1-tkhzg",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-2-jt58z",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-3-cwosx",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-4-6orxd",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-5-xyh21"
+    ],
+    "provider": "Pearson",
+    "coursera": 4.5,
+    "ratings_total": 45,
+    "rating_counts": {
+      "1": 3,
+      "2": 0,
+      "3": 0,
+      "4": 5,
+      "5": 37
     }
   },
   "specializations/people-and-soft-skills-for-professional-success": {
@@ -3388,6 +3799,18 @@
       "4": 1138,
       "5": 5169
     }
+  },
+  "specializations/personal-finance-strategy": {
+    "key": "specializations/personal-finance-strategy",
+    "type": "specialization",
+    "title": "Personal Finance Strategy",
+    "url": "https://www.coursera.org/specializations/personal-finance-strategy",
+    "courses": [
+      "learn/shifting-your-mindset-for-financial-agility",
+      "learn/how-to-budget-on-a-starting-salary",
+      "learn/planning-for-retirement"
+    ],
+    "provider": "Madecraft"
   },
   "specializations/principles-of-management": {
     "key": "specializations/principles-of-management",
@@ -3434,6 +3857,27 @@
       "5": 66
     }
   },
+  "specializations/project-management-exam-preparation-practice": {
+    "key": "specializations/project-management-exam-preparation-practice",
+    "type": "specialization",
+    "title": "Project Management Exam Preparation and Practice",
+    "url": "https://www.coursera.org/specializations/project-management-exam-preparation-practice",
+    "courses": [
+      "learn/project-management-exam-foundations-leadership",
+      "learn/apply-project-integration-scope-process-skills",
+      "learn/evaluate-schedule-cost-quality-risk-controls",
+      "learn/apply-agile-procurement-stakeholder-strategies"
+    ],
+    "provider": "EDUCBA",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
   "specializations/prompt-engineering-for-law": {
     "key": "specializations/prompt-engineering-for-law",
     "type": "specialization",
@@ -3477,6 +3921,34 @@
       "5": 2834
     }
   },
+  "specializations/python-real-world-data-analysis": {
+    "key": "specializations/python-real-world-data-analysis",
+    "type": "specialization",
+    "title": "Python for Real-World Data Analysis",
+    "url": "https://www.coursera.org/specializations/python-real-world-data-analysis",
+    "courses": [
+      "learn/first-steps-in-python-with-jupyter-notebooks",
+      "learn/from-raw-to-ready-data-preparation-in-python",
+      "learn/seaborn-visualizing-basics-to-advanced-statistical-plots",
+      "learn/beyond-basics-advanced-data-analysis-with-python",
+      "learn/collaborate-and-code-github-with-python-and-jupyter",
+      "learn/hands-on-python-challenge-trendwave-media",
+      "learn/perform-exploratory-data-analysis-on-retail-data-with-python",
+      "learn/using-python-data-analyst",
+      "learn/analyze-social-media-python",
+      "learn/python-nltk-for-beginners-customer-satisfaction-analysis"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.3,
+    "ratings_total": 112,
+    "rating_counts": {
+      "1": 8,
+      "2": 4,
+      "3": 4,
+      "4": 21,
+      "5": 75
+    }
+  },
   "specializations/r-data-analytics-statistical-modeling-specialization": {
     "key": "specializations/r-data-analytics-statistical-modeling-specialization",
     "type": "specialization",
@@ -3497,6 +3969,27 @@
       "3": 0,
       "4": 0,
       "5": 14
+    }
+  },
+  "specializations/real-world-cloud-pm": {
+    "key": "specializations/real-world-cloud-pm",
+    "type": "specialization",
+    "title": "Real-World Cloud Product Management",
+    "url": "https://www.coursera.org/specializations/real-world-cloud-pm",
+    "courses": [
+      "learn/real-world-cloud-pm-1",
+      "learn/real-world-cloud-pm-2",
+      "learn/real-world-cloud-pm-3"
+    ],
+    "provider": "Advancing Women in Tech",
+    "coursera": 4.5,
+    "ratings_total": 124,
+    "rating_counts": {
+      "1": 5,
+      "2": 2,
+      "3": 5,
+      "4": 11,
+      "5": 101
     }
   },
   "specializations/reinforcement-learning": {
@@ -3554,6 +4047,28 @@
       "5": 82
     }
   },
+  "specializations/school-health-for-children-and-adolescents": {
+    "key": "specializations/school-health-for-children-and-adolescents",
+    "type": "specialization",
+    "title": "School Health for Children and Adolescents",
+    "url": "https://www.coursera.org/specializations/school-health-for-children-and-adolescents",
+    "courses": [
+      "learn/managing-asthma-allergies-diabetes-and-seizures-in-school",
+      "learn/managing-adhd-autism-learning-disabilities-and-concussion-in-school",
+      "learn/providing-social-emotional-behavioral-and-special-education-services-in-school",
+      "learn/healthy-practices-nutrition-physical-activity-community-family-participation"
+    ],
+    "provider": "University of Colorado System",
+    "coursera": 4.8,
+    "ratings_total": 4292,
+    "rating_counts": {
+      "1": 21,
+      "2": 20,
+      "3": 97,
+      "4": 561,
+      "5": 3593
+    }
+  },
   "specializations/singer-songwriter": {
     "key": "specializations/singer-songwriter",
     "type": "specialization",
@@ -3574,6 +4089,27 @@
       "3": 90,
       "4": 580,
       "5": 3834
+    }
+  },
+  "specializations/social-media-as-a-key-marketing-tool": {
+    "key": "specializations/social-media-as-a-key-marketing-tool",
+    "type": "specialization",
+    "title": "Social Media as a Marketing Tool in Business Communication",
+    "url": "https://www.coursera.org/specializations/social-media-as-a-key-marketing-tool",
+    "courses": [
+      "learn/the-social-media-landscape",
+      "learn/strategic-planning-for-social-media",
+      "learn/execution-and-evaluation-of-social-media"
+    ],
+    "provider": "University of Colorado Boulder",
+    "coursera": 4.9,
+    "ratings_total": 9,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 8
     }
   },
   "specializations/statistical-methods-for-computer-science": {
@@ -3641,6 +4177,46 @@
       "5": 114
     }
   },
+  "specializations/tally-financial-accounting-with-vat-compliance": {
+    "key": "specializations/tally-financial-accounting-with-vat-compliance",
+    "type": "specialization",
+    "title": "Financial Accounting with VAT Compliance (GCC Focus)",
+    "url": "https://www.coursera.org/specializations/tally-financial-accounting-with-vat-compliance",
+    "courses": [
+      "learn/tally-gcc-vat-fundamentals",
+      "learn/tally-gcc-vat-accounting-in-tallyprime",
+      "learn/tally-advanced-gccvat-compliance-and-return-filing-in-tallyprime"
+    ],
+    "provider": "Tally Education and Distribution Services Private Limited",
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 4
+    }
+  },
+  "specializations/the-creative-reset-clarity-productivity-and-structure": {
+    "key": "specializations/the-creative-reset-clarity-productivity-and-structure",
+    "type": "specialization",
+    "title": "The Creative Reset: Clarity, Productivity & Structure",
+    "url": "https://www.coursera.org/specializations/the-creative-reset-clarity-productivity-and-structure",
+    "courses": [
+      "learn/4-day-creative-reset-reduce-stress--boost-productivity",
+      "learn/defeat-procrastination-design-your-own-creative-workflow",
+      "learn/overwhelmed-to-organized-design-daily-structures-in-notion"
+    ],
+    "provider": "Skillshare",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 2,
+      "5": 1
+    }
+  },
   "specializations/the-principles-of-leadership": {
     "key": "specializations/the-principles-of-leadership",
     "type": "specialization",
@@ -3652,6 +4228,27 @@
       "learn/principles-playbook-pay-it-forward"
     ],
     "provider": "Marshall University"
+  },
+  "specializations/theology-spiritual-growth-divinity": {
+    "key": "specializations/theology-spiritual-growth-divinity",
+    "type": "specialization",
+    "title": "Theology for Personal Spiritual Growth",
+    "url": "https://www.coursera.org/specializations/theology-spiritual-growth-divinity",
+    "courses": [
+      "learn/christian-theology-virtues",
+      "learn/theology-arts-psalms",
+      "learn/theology-cultivating--scriptural-imagination"
+    ],
+    "provider": "Duke University",
+    "coursera": 4.6,
+    "ratings_total": 65,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 1,
+      "4": 10,
+      "5": 52
+    }
   },
   "specializations/tidyverse-data-science-r": {
     "key": "specializations/tidyverse-data-science-r",
