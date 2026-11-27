@@ -47,6 +47,12 @@ PROGRAMS_PATH = DATA_DIR / "programs.json"
 # courses into the queue, so this is the throttle on corpus growth.
 DISCOVER_PER_RUN = 20
 
+# Program pages fetched per run. Discovery adds 20 a night, so a warm cache fetches
+# about 20; the cap is a ceiling for the cold case, where a partial fetch must not
+# turn into a hundreds-of-requests burst. Published programs are fetched first and
+# carried forward when their page is missing, so a budget never costs the index.
+FETCH_PER_RUN = 200
+
 # A single program can move between fetches (Coursera edits a bundle or recounts
 # its rating). A tenth of the directory moving at once is the stale-cache
 # signature the write guard refuses; the floor keeps small indexes from refusing
@@ -135,11 +141,20 @@ def cached_grouping_keys(directory: Path = CACHE_DIR) -> list[str]:
     return list(dict.fromkeys(keys))
 
 
-def build_groupings(directory: Path = CACHE_DIR) -> dict[str, dict]:
+def build_groupings(
+    directory: Path = CACHE_DIR,
+    previous: dict | None = None,
+    retired: dict | None = None,
+) -> dict[str, dict]:
     """The derived program index, keyed by `type/slug`.
 
     A specialization that is also a crawl source has a base page plus a
     `.landing` copy; either can carry the course list, so try both.
+
+    `previous` is the published index: a program whose page is not cached keeps
+    its published entry instead of vanishing. That is what makes a fetch budget
+    free — a cold cache means stale numbers for a night, not a smaller directory
+    and not a refused write. A tombstoned key is never carried.
     """
     groupings = {}
     for key in cached_grouping_keys(directory):
@@ -151,6 +166,12 @@ def build_groupings(directory: Path = CACHE_DIR) -> dict[str, dict]:
             if grouping:
                 groupings[key] = grouping
                 break
+
+    for key, grouping in (previous or {}).items():
+        if key in groupings or (retired and key in retired):
+            continue
+        groupings[key] = grouping
+
     return groupings
 
 
@@ -214,12 +235,13 @@ def discover_candidates(
 def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH) -> list[str]:
     """Program keys to fetch when their pages are not cached yet.
 
-    `programs.json` holds the programs someone asked for; `groupings.json` holds
-    the ones already published. A fresh clone has an empty page cache, so without
-    the index a rebuild would only know about the seeds and drop every program it
-    already has.
+    `groupings.json` holds the ones already published; `programs.json` holds the
+    programs someone asked for. Published programs come first: a cold cache must
+    not lose them to a fetch budget, and a seed can wait a night. A fresh clone
+    has an empty page cache, so without the index a rebuild would only know about
+    the seeds and drop every program it already has.
     """
-    keys = []
+    keys = list(read_index(index_path))
     if path.exists():
         data = json.loads(path.read_text(encoding="utf-8"))
         for value in data:
@@ -227,7 +249,6 @@ def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH
             kind = key.split("/", 1)[0] if "/" in key else ""
             if kind in GROUPING_TYPES and key.count("/") == 1:
                 keys.append(key)
-    keys.extend(read_index(index_path))
     return list(dict.fromkeys(keys))
 
 
@@ -238,6 +259,7 @@ def fetch_missing(
     delay: float = 0.0,
     sleep=time.sleep,
     retired: dict | None = None,
+    limit: int | None = None,
     log=print,
 ) -> int:
     """Fetch seeded program pages that are not in the cache. Returns the count.
@@ -246,8 +268,11 @@ def fetch_missing(
     tombstoned in `retired` (when a dict is given) so discovery never pays for it
     again.
 
-    Prints the pending count and one line per fetched page: this loop is where a
-    run spends minutes in silence, and silence looks like a hang.
+    `limit` caps the pages fetched this run — the caller passes published keys
+    first, so a cold cache drains over several nights instead of hammering the
+    host with hundreds of requests at once. Prints the pending count and one line
+    per fetched page: this loop is where a run spends minutes in silence, and
+    silence looks like a hang.
     """
     pending = list(
         dict.fromkeys(
@@ -257,9 +282,15 @@ def fetch_missing(
             and not (load_page(key, cache_dir) or load_page(f"{key}.landing", cache_dir))
         )
     )
+    total = len(pending)
+    if limit:
+        pending = pending[:limit]
     if not pending:
         return 0
-    log(f"  fetching {len(pending)} program page(s)")
+    if len(pending) < total:
+        log(f"  fetching {len(pending)} of {total} program page(s); the rest next run")
+    else:
+        log(f"  fetching {len(pending)} program page(s)")
 
     fetched = 0
     for index, key in enumerate(pending, 1):
@@ -376,6 +407,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help=f"programs to discover this run (default {DISCOVER_PER_RUN})",
     )
     parser.add_argument(
+        "--fetch-limit",
+        type=int,
+        default=FETCH_PER_RUN,
+        help=f"program pages to fetch this run, 0 for no cap (default {FETCH_PER_RUN})",
+    )
+    parser.add_argument(
         "--force",
         action="store_true",
         help="write even when the index would lose programs",
@@ -410,7 +447,12 @@ def main(argv: list[str], on_refusal: Callable[[str], None] | None = None) -> in
 
     if options.fetch:
         try:
-            fetched = fetch_missing(load_seed_keys(), delay=1.5, retired=retired)
+            fetched = fetch_missing(
+                load_seed_keys(),
+                delay=1.5,
+                retired=retired,
+                limit=options.fetch_limit or None,
+            )
         except RateLimited as error:
             # 2, not 1: the index on disk is still valid, so a caller can carry on.
             print(f"Coursera rate limited the program fetch: {error}", file=sys.stderr)
@@ -419,15 +461,21 @@ def main(argv: list[str], on_refusal: Callable[[str], None] | None = None) -> in
         if len(retired) > known_retired:
             write_retired(retired)
 
-    groupings = build_groupings()
+    published = read_index()
+    groupings = build_groupings(previous=published, retired=retired)
     links = sum(len(grouping["courses"]) for grouping in groupings.values())
 
-    print(f"groupings: {len(groupings)} | course links: {links}")
+    carried = len(set(published) - set(cached_grouping_keys()))
+    extra = f" ({carried} carried: no cached page)" if carried else ""
+    print(f"groupings: {len(groupings)} | course links: {links}{extra}")
     if not options.write:
         print("report only. re-run with --write to store the index.")
         return 0
 
-    reason = refuse_reason(groupings, read_index(), force=options.force)
+    # Compare against what should survive: a tombstoned program is deliberately
+    # gone, not a shrinking cache.
+    expected = {key: entry for key, entry in published.items() if key not in retired}
+    reason = refuse_reason(groupings, expected, force=options.force)
     if reason:
         print(reason, file=sys.stderr)
         # The nightly's notification carries this now: "the index was refused"

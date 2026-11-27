@@ -662,6 +662,18 @@ def main(argv: list[str]) -> int:
     started = time.monotonic()
     interactive = sys.stdout.isatty()
 
+    planned = len(sources) - skipped
+    if options["limit"]:
+        planned = min(planned, options["limit"])
+    if planned:
+        verb = "re-parsing" if options["offline"] else "crawling"
+        pause = (
+            f", {options['delay']:g}s + jitter between requests"
+            if options["delay"] and not options["offline"]
+            else ""
+        )
+        print(f"{verb} {planned} course(s) of {len(sources)} listed{pause}")
+
     def report(done, total, key):
         state["drawn"] = True
         state["done"] = done
@@ -711,10 +723,12 @@ def main(argv: list[str]) -> int:
 
     stats = summarize(scores)
     verb = "reparsed" if options["offline"] else "fetched"
+    elapsed = time.monotonic() - started
+    spent = f"{elapsed:.0f}s" if elapsed < 60 else f"{elapsed / 60:.1f} min"
     print(
         f"listed {len(sources)} | skipped fresh {skipped} | {verb} {state['done']} "
         f"| records {stats['records']} | scored {stats['scored']} "
-        f"| no reviews {stats['no_reviews']} | errors {stats['errors']}"
+        f"| no reviews {stats['no_reviews']} | errors {stats['errors']} | {spent}"
     )
     for line in state["problems"]:
         print(line)
