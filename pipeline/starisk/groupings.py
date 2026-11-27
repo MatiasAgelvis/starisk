@@ -238,19 +238,31 @@ def fetch_missing(
     delay: float = 0.0,
     sleep=time.sleep,
     retired: dict | None = None,
+    log=print,
 ) -> int:
     """Fetch seeded program pages that are not in the cache. Returns the count.
 
     A 404/410 here means the program is gone, not that the run broke: it is
     tombstoned in `retired` (when a dict is given) so discovery never pays for it
     again.
+
+    Prints the pending count and one line per fetched page: this loop is where a
+    run spends minutes in silence, and silence looks like a hang.
     """
+    pending = list(
+        dict.fromkeys(
+            key
+            for key in keys
+            if not (retired and key in retired)
+            and not (load_page(key, cache_dir) or load_page(f"{key}.landing", cache_dir))
+        )
+    )
+    if not pending:
+        return 0
+    log(f"  fetching {len(pending)} program page(s)")
+
     fetched = 0
-    for key in keys:
-        if retired and key in retired:
-            continue
-        if load_page(key, cache_dir) or load_page(f"{key}.landing", cache_dir):
-            continue
+    for index, key in enumerate(pending, 1):
         try:
             html = fetch(f"https://www.coursera.org/{key}")
         except RateLimited:
@@ -268,6 +280,7 @@ def fetch_missing(
             continue
         store_page(key, html, cache_dir)
         fetched += 1
+        log(f"  [{index}/{len(pending)}] {key}")
         if delay:
             sleep(jitter(delay))
     return fetched
