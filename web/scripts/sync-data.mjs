@@ -17,6 +17,8 @@ const files = [
   // One small file instead of the crawl list and its tombstones: the crawl writes
   // what it did, so the site never has to infer it from the corpus.
   ['../../pipeline/data/stats.json', '../src/data/stats.json'],
+  // Internal: how much of each product family the corpus covers.
+  ['../../pipeline/data/completeness.json', '../src/data/completeness.json'],
   // Verified by hand: Coursera gives no flag for publisher accounts, so the site
   // reads a list somebody checked instead of guessing from the name.
   ['../../pipeline/data/publishers.json', '../src/data/publishers.json'],

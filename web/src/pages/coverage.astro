@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import completeness from '../data/completeness.json';
+
+type Family = {
+  kind: string;
+  label: string;
+  path: string;
+  total: number;
+  have: number;
+  scored?: number;
+};
+
+const families = (completeness.families as Family[]).map((row) => ({
+  ...row,
+  share: row.total ? (row.have / row.total) * 100 : 0,
+}));
+
+const generated = new Date(completeness.generatedAt).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<Base
+  title="Coverage — Starisk"
+  description="Internal: how much of each Coursera product family the corpus covers."
+  noindex
+>
+  <article class="mx-auto max-w-3xl">
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-base-content/50">Internal</p>
+      <h1 class="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+        Corpus coverage
+      </h1>
+      <p class="mt-3 text-base-content/75">
+        How much of each Coursera product family has been read into the corpus. The sitemap
+        gives the total; <code>scores.json</code> and <code>groupings.json</code> give what we
+        have.
+      </p>
+      <p class="mt-1 text-xs text-base-content/45">Measured {generated}.</p>
+    </header>
+
+    <table class="table mt-8">
+      <thead>
+        <tr>
+          <th class="font-semibold">Family</th>
+          <th class="text-right font-semibold">Have</th>
+          <th class="text-right font-semibold">Total</th>
+          <th class="w-[40%] font-semibold">Coverage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          families.map((row) => (
+            <tr>
+              <td>
+                <span class="font-medium">{row.label}</span>
+                {row.scored != null && (
+                  <span class="block text-xs text-base-content/50">
+                    {row.scored.toLocaleString('en-GB')} scored
+                  </span>
+                )}
+              </td>
+              <td class="text-right font-mono">{row.have.toLocaleString('en-GB')}</td>
+              <td class="text-right font-mono text-base-content/60">
+                {row.total.toLocaleString('en-GB')}
+              </td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <progress
+                    class="progress progress-neutral w-full"
+                    value={row.have}
+                    max={row.total || 1}
+                  />
+                  <span class="w-14 shrink-0 text-right font-mono text-xs text-base-content/60">
+                    {row.share.toFixed(1)}%
+                  </span>
+                </div>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <p class="mt-6 text-sm text-base-content/60">
+      Courses count once a page has been read; the scored figure is those with usable written
+      reviews. Program families count published entries in the derived index, not member
+      courses. Guided Projects, MasterTrack and Degrees are not in the pipeline yet.
+    </p>
+  </article>
+</Base>

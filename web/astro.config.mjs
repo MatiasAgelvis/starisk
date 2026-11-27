@@ -11,9 +11,14 @@ export default defineConfig({
   site: process.env.SITE_URL ?? DEFAULT_SITE,
   integrations: [
     svelte(),
-    // ~1,700 pages and, until now, nothing pointing a crawler at them. /request
-    // is noindex, so it stays out of the map.
-    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/request') }),
+    // ~1,700 pages and, until now, nothing pointing a crawler at them. Utility
+    // pages (/request, /coverage) are noindex and stay out of the map.
+    sitemap({
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        return !path.startsWith('/request') && !path.startsWith('/coverage');
+      },
+    }),
   ],
   vite: {
     plugins: [tailwindcss()],
