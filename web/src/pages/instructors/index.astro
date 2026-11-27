@@ -3,8 +3,9 @@ import Base from '../../layouts/Base.astro';
 import InstructorTable from '../../components/InstructorTable.svelte';
 import { buildInstructors } from '../../lib/instructors.js';
 import scores from '../../data/scores.json';
+import publishers from '../../data/publishers.json';
 
-const instructors = buildInstructors(scores);
+const instructors = buildInstructors(scores, publishers);
 
 // The island only needs the columns it draws; shipping each teacher's whole
 // catalogue would bloat the page for no benefit.
@@ -34,7 +35,7 @@ const rows = instructors.map((person) => ({
 }));
 
 const multi = instructors.filter((person) => person.courses.length > 1).length;
-const publishers = instructors.filter((person) => person.publisher).length;
+const accounts = instructors.filter((person) => person.publisher).length;
 ---
 
 <Base
@@ -64,10 +65,11 @@ const publishers = instructors.filter((person) => person.publisher).length;
         a course page with less on it, and it says so.
       </p>
       <p>
-        {publishers} of these entries are publisher accounts rather than people (Starweaver,
-        SkillUp, IBM Skills Network). Coursera files both as instructors and so do we — their
-        courses are scored the same way — but the table marks them, for the same reason a
-        course page says who you are actually learning from.
+        {accounts} of these entries are accounts rather than people — publisher teams
+        (Starweaver, SkillUp, IBM Skills Network) and one aggregate label. Coursera files
+        them as instructors and so do we; their courses are scored the same way, but the
+        table marks them, for the same reason a course page says who you are actually
+        learning from.
       </p>
       <p>
         None of this is an instructor rating. It is the same measurement as everywhere else on
