@@ -110067,5 +110067,455 @@
     ],
     "slug": "learn/optimize-agentic-ai-algorithms-for-peak-performance",
     "scrapedAt": "2026-11-26T12:42:37.761670+00:00"
+  },
+  "learn/optimize-ai-build-reusable-model-pipelines": {
+    "title": "Optimize AI: Build Reusable Model Pipelines",
+    "provider": "Coursera",
+    "description": "Optimize AI: Build Reusable Model Pipelines is an intermediate course for machine learning engineers and data scientists aiming to create efficient, scalable, and maintainable AI workflows. In a world of rapidly evolving models, choosing the right one is only the beginning. This course moves beyond model selection to focus on the critical next step: building standardized, reusable pipelines that ensure consistency and accelerate development.\n\nYou will learn to strategically evaluate the trade-offs between large, pre-trained models and smaller, custom-built alternatives, balancing performance with real-world constraints like inference speed and cost. Through hands-on labs, you will master the art of constructing modular and reproducible ML pipelines using Scikit-learn. The curriculum emphasizes best practices for model management and versioning, empowering you to design robust systems that are easy to update, debug, and deploy. By the end of this course, you will be equipped to move from ad-hoc model development to a systematic, pipeline-driven approach that is essential for building professional, production-ready AI solutions.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/optimize-ai-build-reusable-model-pipelines",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/optimize-python-for-agentic-ai": {
+    "title": "Optimize Python for Agentic AI",
+    "provider": "Coursera",
+    "description": "\"Optimize Python for Agentic AI\" is an intermediate course for developers who want to elevate their Python code from functional to professional-grade. In the world of AI, inefficient or unreadable code can cripple an agent's performance and slow down team collaboration. This course equips you with the essential software engineering practices to write Python that is both highly efficient and exceptionally clear.\n\nYou will learn to apply clean-code conventions, including PEP 8 standards, type hints, and descriptive docstrings, to produce readable and maintainable modules that your teammates can easily understand and build upon. Through hands-on labs, you will master the art of performance tuning by systematically using profiling tools like cProfile to analyze runtime behavior, pinpoint hidden bottlenecks, and refactor code for significant speed improvements. By the end of this course, you will be able to confidently balance readability with runtime efficiency, ensuring the AI systems you build are not only intelligent but also robust, scalable, and production-ready.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/optimize-python-for-agentic-ai",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/predict--validate-regression-models-in-r": {
+    "title": "Predict and Validate Regression Models in R",
+    "provider": "Coursera",
+    "description": "This course is your entry point into the world of predictive analytics with R. Designed for aspiring data analysts and business professionals, this course empowers you to build and interpret multiple linear regression models from the ground up. You will move beyond simply running code and learn to critically evaluate your model's performance. Through a series of hands-on learnings and real-world case studies, you will master the techniques to diagnose your model's statistical assumptions using residual plots and assess its reliability with k-fold cross-validation.\n\nBy the end of this course, you won't just build models—you'll build models you can trust. You'll leave with a validated, portfolio-ready project and the confidence to generate dependable forecasts that drive strategic business decisions.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/predict--validate-regression-models-in-r",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/sales-video-formats": {
+    "title": "5 Sales-Video Formats For A Website Or YouTube Monetization",
+    "provider": "Alex Genadinik",
+    "description": "Make highly-converting sales videos that will boost your sales on YouTube, your website and the effectiveness of your video ads on Facebook or other social sites\n\nIn this course you will learn to increase sales and sales conversion rates with video. The course goes over 5 different video formats, and explains when to use each of them, when each is most effective, and the pros and cons of each video format.\n\nThe second part of the course focuses on getting free and paid promotional strategies for your videos in YouTube so that you can get many views for your video.\n\nThe combination of many views and highly converting video formats will help you generate more revenue or open up new revenue streams for your business, and help you sell more products and fuel your business growth.\n\nI am sure you have been hearing all about how video is so effective at sales. Yet when most people try to promote something with video they have a hard time with it because they don't understand and don't execute the full strategy for the promotion to go correctly.\n\nThis is why you should get familiar with the video formats in this course, and get your own sales growing. So go ahead and sign up for the course, and let's start working on increasing your sales starting today.\n\nINSTRUCTOR BACKGROUND\n\nI've been an entrepreneur for 15+ years, have coached 1,000+ entrepreneurs in person, taught 100,000+ students, impacted millions of entrepreneurs worldwide creating 6 and 7-figure businesses in the process, and I would love to help you.\n\nI am an expert growth marketer, and I create winning marketing strategies for my clients all the time. Now it is your turn to grow your business, and fulfill your dreams.\n\nBONUSES INCLUDED\n\n* Lots of extra freebies, downloadable worksheets, and exercises to make the course more interactive and valuable\n\n* Personal invitation to my Facebook community after you complete the course\n\n* My list of 50 business-success skills when you complete the course\n\n* Be automatically entered to get chosen for my student of the month status and have your business featured \n\nRESPONSIVE AND CARING INSTRUCTOR: WORLD-CLASS STUDENT SUPPORT\n\nIf you have questions, know that I am here to help! I answer 99% of student questions within 24 hours. Many students tell me that other instructors don't respond. Well, I do because \n\n1) I care about my students.\n\n2) I feel a responsibility to make sure that students get their money's worth from the course.\n\nCERTIFICATE OF COMPLETION WHEN YOU FINISH THE COURSE   \n\nWhen you complete 100% of the videos in this course, you will be emailed a certificate of completion by Udemy so you can show it as proof of your expertise and that you have completed a certain number of hours of instruction in the course topic.\n\nMONEY-BACK GUARANTEE  \n\nThe course comes with an unconditional, Udemy-backed, 30-day money-back guarantee. This is not just a guarantee, it's my personal promise to you that I will go out of my way to help you succeed just like I've done for thousands of my other students. \n\nInvest in your future. Enroll now.",
+    "image": "/logos/alex-genadinik.png",
+    "coursera": null,
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Alex Genadinik",
+        "slug": "~198448869",
+        "url": "https://www.coursera.org/instructor/~198448869",
+        "page": "alex-genadinik",
+        "id": "198448869",
+        "role": null,
+        "department": null,
+        "learners": 66348,
+        "courses_taught": 153,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/dd/636033c0514cefb5ad4eeeb170215c/Untitled-design-10-.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "slug": "learn/sales-video-formats",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/secure-ai-api-and-dependency-risks": {
+    "title": "Secure AI: API and Dependency Risks",
+    "provider": "Coursera",
+    "description": "Secure AI: API and Dependency Risks is an intermediate course that moves you from developer to defender, teaching you the essential practices for building production-grade, secure AI.\n\nYou will learn to implement OWASP ASVS guidelines to harden API endpoints with critical controls like JWT authentication, input validation to prevent injection attacks, and rate limiting. Then, you will adopt an attacker’s mindset, using DAST tools like OWASP ZAP to verify your defenses are effective. Next, you will master the art of managing your software supply chain by analyzing dependency vulnerability reports, using the CVSS framework to prioritize real threats over noise, and formulating verified hotfix and rollback plans.\n\nThrough hands-on labs simulating real-world security incidents, you will leave this course ready to build, deploy, and maintain resilient AI services that can withstand modern threats.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/secure-ai-api-and-dependency-risks",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/secure-your-ai-threat-modeling": {
+    "title": "Secure Your AI: Threat Modeling",
+    "provider": "Coursera",
+    "description": "Secure Your AI: Threat Modeling is an intermediate course for architects and engineers tasked with protecting complex AI systems. This course moves beyond reactive security, teaching you to build resilience directly into your designs. You will master the critical architectural decision of secret management by performing a deep-dive comparison of self-hosted solutions like Vault and managed cloud services like AWS Secrets Manager. You will learn to create a full Total Cost of Ownership (TCO) analysis and use compliance and performance data to make a justifiable, portfolio-ready recommendation.\n\nNext, you'll learn to proactively hunt for vulnerabilities by deconstructing system architecture into Data Flow Diagrams and applying the industry-standard STRIDE framework. This systematic process will enable you to identify and mitigate critical threats like Spoofing and Information Disclosure before they can be exploited. Through hands-on, scenario-based projects, you will draft professional security documents, defend your decisions to a simulated review board, and leave the course with the skills to design, build, and maintain secure AI systems.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/secure-your-ai-threat-modeling",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/security-and-privacy-in-tor-network": {
+    "title": "Security and Privacy in TOR Network",
+    "provider": "University of Colorado System",
+    "description": "In this MOOC,  we will learn about TOR basic concept and see how they protect the security and privacy of users and resist censorship. We will examine how TOR realize the anonymity and utilize its service by downloading and using Tor browser software. A recent attack on TOR’s application flow control called sniper attacks is analyzed.  We introduce the hidden service provided by TOR and show how it can be denonymized.  We will learn how to setup a hidden server to provide web service on AWS instance. We will also learn the best practices and operational security in providing the hidden services.  We will learn how to manage the hidden server using Tor circuit and configure the web server not to reveal the software version information.  We also show how it can be defended.   To improve TOR’s performance, we discuss the cloud based TOR and their implementation. \nBy the end of this course, you should be able to utilize TOR browser to protect  your privacy, set up hidden service on current interface  that protect your servers and make it anonymous, you will choosing entry guards wisely since your adversary will try to attack them with DDoS traffic and force you to choose their relay as your entry and exit router. We will also learn the basic components of both censorship and censorship resistance systems, and the scheme deployed by these systems and their attacks.",
+    "image": "/logos/university-of-colorado-system.jpg",
+    "coursera": 4.1,
+    "starisk": 3.9,
+    "spread": 1.31,
+    "spread_weighted": 1.43,
+    "reviews": 7,
+    "review_counts": {
+      "1.0": 1,
+      "4.0": 3,
+      "5.0": 3
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "Professor is knowledgeable but difficult to understand due to broken English and nonsensical sentences. Quiz material comes from external sources, such as YouTube, forcing you to track down broken and missing links. Good luck following along unless you already have a strong foundation in Tor network concepts; in which case you probably don't need this course! The discussion forums are full of unanswered pleas for peer review without ANY discussion on actual content. I'm unenrolling. Good luck to everyone.",
+      "stars": 1.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 7,
+    "ratings_total": 36,
+    "rating_counts": {
+      "1": 4,
+      "2": 0,
+      "3": 3,
+      "4": 9,
+      "5": 20
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Edward Chow",
+        "slug": "~19863954",
+        "url": "https://www.coursera.org/instructor/~19863954",
+        "page": "edward-chow",
+        "id": "19863954",
+        "role": "Professor",
+        "department": "Computer Science",
+        "learners": 138721,
+        "courses_taught": 8,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/0e/0f8370add011e7ab4eab2cca74ea69/chowMC.jpg"
+      },
+      {
+        "name": "Greg Williams",
+        "slug": "gregwilliams",
+        "url": "https://www.coursera.org/instructor/gregwilliams",
+        "page": "gregwilliams",
+        "id": "21214258",
+        "role": "Lecturer",
+        "department": "Department of Computer Science",
+        "learners": 177426,
+        "courses_taught": 18,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/3e/0d1550974211e7b71b9976c38ffff7/uccs-Williams_Greg.jpg"
+      },
+      {
+        "name": "Richard White",
+        "slug": "~21251837",
+        "url": "https://www.coursera.org/instructor/~21251837",
+        "page": "richard-white",
+        "id": "21251837",
+        "role": "Assistant Research Professor",
+        "department": "Computer Science",
+        "learners": 59895,
+        "courses_taught": 7,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/c0/938eb0996211e7bd91d90d9f44a6f1/AAEAAQAAAAAAAAhDAAAAJDdjNmE3ODJlLTFlMjctNGRlZC1hM2JjLThkMGUwYTYyYzlkOQ.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Information Technology"
+    ],
+    "level": "Intermediate",
+    "enrollment": 6811,
+    "slug": "learn/security-and-privacy-in-tor-network",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/space": {
+    "title": "Digitalisation in Space Research",
+    "provider": "Technical University of Munich (TUM)",
+    "description": "This course provides an overview of the most important digital applications in the field of aerospace research. The course instructors discuss how digitalisation is impacting and changing both satellite-based and manned spaceflight research. One unit is specifically devoted to exploring the use of artificial intelligence in the evaluation of satellite data.",
+    "image": "/logos/technical-university-of-munich-tum.jpg",
+    "coursera": 4.8,
+    "starisk": 4.7,
+    "spread": 0.89,
+    "spread_weighted": 1.02,
+    "reviews": 19,
+    "review_counts": {
+      "1.0": 1,
+      "5.0": 18
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "I strongly recommend you move this course to a platform better than coursera.",
+      "stars": 1.0,
+      "likes": 1
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 25,
+    "ratings_total": 108,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 6,
+      "4": 8,
+      "5": 92
+    },
+    "instructors": [
+      {
+        "name": "Klaus Drechsler",
+        "slug": "~72192733",
+        "url": "https://www.coursera.org/instructor/~72192733",
+        "page": "klaus-drechsler",
+        "id": "72192733",
+        "role": "Prof. Dr.-Ing.",
+        "department": "Chair of Carbon Composites",
+        "learners": 29242,
+        "courses_taught": 4,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/4e/d03919f14c4d7e8751569e09970367/Prof_Drechsler_NEU_web.jpg"
+      },
+      {
+        "name": "Guenter W. Hein",
+        "slug": "guenterhein",
+        "url": "https://www.coursera.org/instructor/guenterhein",
+        "page": "guenterhein",
+        "id": "20138940",
+        "role": "Professor",
+        "department": "Departement for Satellite Navigation (Bundeswehr University Munich)",
+        "learners": 23711,
+        "courses_taught": 3,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/e4/56f3caa99147eb860d7499bcbb4c62/CPD_58955_Munich_Aerospace_Summit_187.jpg"
+      }
+    ],
+    "categories": [
+      "Physical Science and Engineering"
+    ],
+    "level": "Intermediate",
+    "enrollment": 6891,
+    "slug": "learn/space",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/statistical-tests-for-market-research": {
+    "title": "Statistical Tests for Market Research",
+    "provider": "Coursera",
+    "description": "This course builds essential statistical analysis capabilities for market research professionals. Learners will develop a strong understanding of statistical package functionality and master techniques for comparing group differences through hypothesis testing. You'll move beyond raw data to defensible insights by learning not just how to run a statistical test, but why it matters and what it means for the business.\n\nThrough practical, hands-on application in real-world scenarios—such as A/B testing and customer satisfaction analysis—you will build the analytical skills needed to draw statistically valid conclusions from research data. You will master the two-sample t-test in Microsoft Excel, learning to interpret key metrics like the p-value and translate them into clear, actionable business recommendations. This course provides the foundational skills to use statistical evidence to answer critical business questions, validate assumptions, and contribute to a culture of data-driven decision-making in your organization.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "starisk": 1.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "1.0": 1
+    },
+    "top_review": {
+      "kind": "dissent",
+      "text": "Clunky and Not helpful. In some parts, it relies on AI to detect answers to questions and can run into visibility issues where you provide the right answers but not in the file format it's expecting, so it fails you because it can't see the results. I've also been quizzed on topics that weren't covered in the material in this course, which seems like a significant miss from Coursera. More clarity as to where resources are and what is expected for grading is necessary.",
+      "stars": 1.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/statistical-tests-for-market-research",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/strategic-leadership-influence-thought-leadership": {
+    "title": "Strategic Leadership: Influence & Thought Leadership",
+    "provider": "Creo Incubator",
+    "description": "Strategic leadership today is not only about making decisions it’s about positioning, influence, and the ability to shape ideas that others trust and follow. \n\nIn CREO Strategic Leadership: Influence & Thought Leadership course, you will learn how to define a clear leadership lane, build credibility, and expand your impact through strategic communication, networks, and thought leadership.\n\nYou’ll start by strengthening your strategic positioning: clarifying your core leadership identity, reading your context, spotting high-value market gaps, and aligning opportunities with your long-term vision. \n\nNext, you’ll develop high-level influence techniques used by senior leaders mapping influence networks, using strong framing, building legitimacy through consistency, and leading meaning-making in uncertain or crisis moments.\n\nYou will then build an innovative content strategy that translates your thinking into content that resonates: connecting content to identity, publishing with intention, using digital awareness frameworks, and measuring impact beyond vanity metrics. \n\nFinally, you’ll scale your leadership presence globally by navigating cross-border relationships, building intellectual partnerships, and exploring sustainable monetization models that protect trust and align with long-term impact and sustainability.\n\nBy the end of the course, you’ll have a practical set of frameworks and tools to craft your leadership positioning, communicate with influence, build a consistent thought leadership presence, and grow your network and opportunities in a sustainable way.",
+    "image": "/logos/creo-incubator.png",
+    "coursera": null,
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Martine Abboud",
+        "slug": "~197137166",
+        "url": "https://www.coursera.org/instructor/~197137166",
+        "page": "martine-abboud",
+        "id": "197137166",
+        "role": null,
+        "department": null,
+        "learners": 13616,
+        "courses_taught": 49,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/28/cca368142049d1a8501b8eb0903d0c/160px-x-60px-jpg.jpg"
+      }
+    ],
+    "categories": [
+      "Business"
+    ],
+    "slug": "learn/strategic-leadership-influence-thought-leadership",
+    "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
   }
 }
