@@ -20,13 +20,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.6,
-    "ratings_total": 259936,
+    "ratings_total": 259941,
     "rating_counts": {
-      "1": 3301,
-      "2": 3400,
+      "1": 3302,
+      "2": 3401,
       "3": 10859,
       "4": 50090,
-      "5": 192286
+      "5": 192289
     }
   },
   "professional-certificates/ibm-enterprise-ai-transformation-and-consulting": {
@@ -44,12 +44,12 @@
       "learn/ai-transformation-advisory-package"
     ],
     "provider": "IBM",
-    "coursera": 3.4,
-    "ratings_total": 20,
+    "coursera": 3.1,
+    "ratings_total": 23,
     "rating_counts": {
       "1": 4,
       "2": 0,
-      "3": 4,
+      "3": 7,
       "4": 1,
       "5": 11
     }
@@ -322,13 +322,13 @@
     ],
     "provider": "The University of Sydney",
     "coursera": 4.9,
-    "ratings_total": 10654,
+    "ratings_total": 10655,
     "rating_counts": {
       "1": 141,
       "2": 28,
       "3": 109,
       "4": 606,
-      "5": 9770
+      "5": 9771
     }
   },
   "specializations/academic-writing-research-methods": {
@@ -532,13 +532,13 @@
     ],
     "provider": "University of California, Irvine",
     "coursera": 4.7,
-    "ratings_total": 906,
+    "ratings_total": 907,
     "rating_counts": {
       "1": 5,
       "2": 10,
       "3": 32,
       "4": 131,
-      "5": 728
+      "5": 729
     }
   },
   "specializations/accounts-payable-receivable-operations": {
@@ -744,13 +744,13 @@
     ],
     "provider": "Universidad de Palermo",
     "coursera": 4.8,
-    "ratings_total": 3979,
+    "ratings_total": 3982,
     "rating_counts": {
       "1": 51,
       "2": 29,
       "3": 98,
-      "4": 447,
-      "5": 3354
+      "4": 448,
+      "5": 3356
     }
   },
   "specializations/administracion-proyectos": {
@@ -787,13 +787,13 @@
     ],
     "provider": "Universidades Anáhuac",
     "coursera": 4.6,
-    "ratings_total": 83,
+    "ratings_total": 84,
     "rating_counts": {
       "1": 4,
       "2": 1,
       "3": 5,
       "4": 5,
-      "5": 68
+      "5": 69
     }
   },
   "specializations/administration-red-hat-linux-systems": {
@@ -1542,13 +1542,13 @@
     ],
     "provider": "Google Cloud",
     "coursera": 4.5,
-    "ratings_total": 2611,
+    "ratings_total": 2612,
     "rating_counts": {
       "1": 50,
       "2": 53,
       "3": 163,
       "4": 569,
-      "5": 1776
+      "5": 1777
     }
   },
   "specializations/advanced-marketing-optimization-strategy": {
@@ -1645,13 +1645,13 @@
     ],
     "provider": "Coursera",
     "coursera": 4.6,
-    "ratings_total": 58,
+    "ratings_total": 60,
     "rating_counts": {
       "1": 1,
       "2": 3,
       "3": 3,
-      "4": 7,
-      "5": 44
+      "4": 8,
+      "5": 45
     }
   },
   "specializations/advanced-python-scripting-for-cybersecurity": {
@@ -2111,14 +2111,14 @@
       "learn/youtube"
     ],
     "provider": "Alex Genadinik",
-    "coursera": 4.6,
-    "ratings_total": 21,
+    "coursera": 4.7,
+    "ratings_total": 22,
     "rating_counts": {
       "1": 0,
       "2": 0,
       "3": 3,
       "4": 0,
-      "5": 18
+      "5": 19
     }
   },
   "specializations/affinity-photo-editing-mastery": {
@@ -2268,13 +2268,13 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9666,
+    "ratings_total": 9668,
     "rating_counts": {
       "1": 96,
-      "2": 53,
+      "2": 54,
       "3": 192,
       "4": 1179,
-      "5": 8146
+      "5": 8147
     }
   },
   "specializations/ai-for-hr": {
@@ -2333,13 +2333,13 @@
     ],
     "provider": "Macquarie University",
     "coursera": 4.9,
-    "ratings_total": 28,
+    "ratings_total": 31,
     "rating_counts": {
       "1": 0,
       "2": 0,
       "3": 0,
       "4": 1,
-      "5": 27
+      "5": 30
     }
   },
   "specializations/ai-powered-marketing-analytics-with-google-analytics-4-ga4": {
@@ -2360,6 +2360,27 @@
       "3": 1,
       "4": 0,
       "5": 2
+    }
+  },
+  "specializations/aimachinelearninginfinance": {
+    "key": "specializations/aimachinelearninginfinance",
+    "type": "specialization",
+    "title": "Artificial Intelligence in Finance and Wealth Management",
+    "url": "https://www.coursera.org/specializations/aimachinelearninginfinance",
+    "courses": [
+      "learn/machine-learning-and-human-learning",
+      "learn/artificial-intelligence-in-financial-planning",
+      "learn/artificial-intelligence-in-wealth-management"
+    ],
+    "provider": "University of Illinois Urbana-Champaign",
+    "coursera": 4.2,
+    "ratings_total": 34,
+    "rating_counts": {
+      "1": 4,
+      "2": 2,
+      "3": 0,
+      "4": 6,
+      "5": 22
     }
   },
   "specializations/algorithms": {
@@ -2384,6 +2405,27 @@
       "5": 7972
     }
   },
+  "specializations/analisis-de-riesgos-de-desastres-y-cambio-climatico": {
+    "key": "specializations/analisis-de-riesgos-de-desastres-y-cambio-climatico",
+    "type": "specialization",
+    "title": "Análisis de riesgos de desastres y cambio climático",
+    "url": "https://www.coursera.org/specializations/analisis-de-riesgos-de-desastres-y-cambio-climatico",
+    "courses": [
+      "learn/riesgos-de-desastres-en-proyectos-de-infraestructura",
+      "learn/analisis-cualitativo-y-cuantitativo-del-riesgo-de-desastres",
+      "learn/toma-de-decisiones-y-gobernanza-del-riesgo-de-desastres"
+    ],
+    "provider": "Banco Interamericano de Desarrollo",
+    "coursera": 4.7,
+    "ratings_total": 49,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 0,
+      "4": 3,
+      "5": 43
+    }
+  },
   "specializations/applied-ai-cybersecurity": {
     "key": "specializations/applied-ai-cybersecurity",
     "type": "specialization",
@@ -2404,6 +2446,27 @@
       "5": 0
     }
   },
+  "specializations/blender-3d-modeling-rendering-games-animation": {
+    "key": "specializations/blender-3d-modeling-rendering-games-animation",
+    "type": "specialization",
+    "title": "Blender 3D Modeling & Rendering for Games & Animation",
+    "url": "https://www.coursera.org/specializations/blender-3d-modeling-rendering-games-animation",
+    "courses": [
+      "learn/3d-design-blender-learn-create-build",
+      "learn/blender-car-modeling-rendering-build-export",
+      "learn/blender-modeling-export-props-to-unreal"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 40,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 1,
+      "4": 2,
+      "5": 36
+    }
+  },
   "specializations/business-english": {
     "key": "specializations/business-english",
     "type": "specialization",
@@ -2418,13 +2481,13 @@
     ],
     "provider": "University of Washington",
     "coursera": 4.7,
-    "ratings_total": 6283,
+    "ratings_total": 6285,
     "rating_counts": {
       "1": 103,
       "2": 38,
       "3": 122,
       "4": 764,
-      "5": 5256
+      "5": 5258
     }
   },
   "specializations/cloud": {
@@ -2449,6 +2512,19 @@
       "5": 306
     }
   },
+  "specializations/comptia-securityplus-sy0701-training-labs": {
+    "key": "specializations/comptia-securityplus-sy0701-training-labs",
+    "type": "specialization",
+    "title": "CompTIA Security+ (SY0-701) Certification Training with Labs",
+    "url": "https://www.coursera.org/specializations/comptia-securityplus-sy0701-training-labs",
+    "courses": [
+      "learn/foundations-of-security-controls-cryptography",
+      "learn/cyber-threats-vulnerabilities-network-defense",
+      "learn/enterprise-security-operations-access-management",
+      "learn/secure-architecture-risk-governance"
+    ],
+    "provider": "KodeKloud"
+  },
   "specializations/computer-fundamentals": {
     "key": "specializations/computer-fundamentals",
     "type": "specialization",
@@ -2465,13 +2541,13 @@
     ],
     "provider": "Rice University",
     "coursera": 4.8,
-    "ratings_total": 6212,
+    "ratings_total": 6213,
     "rating_counts": {
       "1": 78,
       "2": 35,
       "3": 139,
       "4": 638,
-      "5": 5322
+      "5": 5323
     }
   },
   "specializations/cybersecurity-foundations": {
@@ -2562,6 +2638,29 @@
       "5": 447
     }
   },
+  "specializations/direccion-empresas": {
+    "key": "specializations/direccion-empresas",
+    "type": "specialization",
+    "title": "Claves de la Dirección de Empresas",
+    "url": "https://www.coursera.org/specializations/direccion-empresas",
+    "courses": [
+      "learn/contabilidad-financiera",
+      "learn/finanzas-operativas",
+      "learn/marketing-estrategico-competir-con-exito",
+      "learn/gestion-personas-equipos",
+      "learn/analisis-situaciones-negocio"
+    ],
+    "provider": "IESE Business School",
+    "coursera": 4.8,
+    "ratings_total": 4161,
+    "rating_counts": {
+      "1": 24,
+      "2": 10,
+      "3": 44,
+      "4": 488,
+      "5": 3595
+    }
+  },
   "specializations/embedded-systems-security": {
     "key": "specializations/embedded-systems-security",
     "type": "specialization",
@@ -2642,13 +2741,13 @@
     ],
     "provider": "Macquarie University",
     "coursera": 4.9,
-    "ratings_total": 83967,
+    "ratings_total": 83968,
     "rating_counts": {
       "1": 269,
       "2": 177,
       "3": 844,
       "4": 8807,
-      "5": 73870
+      "5": 73871
     }
   },
   "specializations/financial-reporting-cost-management-foundations": {
@@ -2718,6 +2817,27 @@
       "5": 2792
     }
   },
+  "specializations/healthcare-career-explorer-nursing": {
+    "key": "specializations/healthcare-career-explorer-nursing",
+    "type": "specialization",
+    "title": "Healthcare Career Explorer: Nursing Professions",
+    "url": "https://www.coursera.org/specializations/healthcare-career-explorer-nursing",
+    "courses": [
+      "learn/healthcare-career-explorer-certified-nursing-assistant",
+      "learn/healthcare-career-explorer-registered-nurse-rn",
+      "learn/healthcare-career-explorer-nurse-practitioner-np"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.2,
+    "ratings_total": 11,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 1,
+      "5": 8
+    }
+  },
   "specializations/holistic-mobile-app-design-and-development-cross-platform-excellence": {
     "key": "specializations/holistic-mobile-app-design-and-development-cross-platform-excellence",
     "type": "specialization",
@@ -2737,6 +2857,29 @@
       "3": 3,
       "4": 15,
       "5": 32
+    }
+  },
+  "specializations/holistic-weight-management": {
+    "key": "specializations/holistic-weight-management",
+    "type": "specialization",
+    "title": "Holistic Weight Management",
+    "url": "https://www.coursera.org/specializations/holistic-weight-management",
+    "courses": [
+      "learn/nutrition-and-medical-weight-loss",
+      "learn/psychology-of-weight-loss",
+      "learn/psychosocial-aspects-of-obesity",
+      "learn/impact-of-exercise-on-weight-loss",
+      "learn/fitness-coaching-strategies-for-weight-loss"
+    ],
+    "provider": "National Academy of Sports Medicine",
+    "coursera": 4.5,
+    "ratings_total": 40,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 1,
+      "4": 6,
+      "5": 31
     }
   },
   "specializations/homeland-security-cybersecurity": {
@@ -2783,6 +2926,49 @@
       "5": 24824
     }
   },
+  "specializations/infrastructure-automation-iac-terraform-ansible": {
+    "key": "specializations/infrastructure-automation-iac-terraform-ansible",
+    "type": "specialization",
+    "title": "Infrastructure Automation with Terraform and Ansible",
+    "url": "https://www.coursera.org/specializations/infrastructure-automation-iac-terraform-ansible",
+    "courses": [
+      "learn/terraform-iac-hcl-beginners",
+      "learn/terraform-advanced-state-management",
+      "learn/ansible-playbooks-modules-inventory-automation",
+      "learn/ansible-variables-roles-loops-conditionals",
+      "learn/terraform-ansible-aws-iac"
+    ],
+    "provider": "KodeKloud",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "specializations/international-trade-finance-risk-management": {
+    "key": "specializations/international-trade-finance-risk-management",
+    "type": "specialization",
+    "title": "International Trade Finance & Risk Management",
+    "url": "https://www.coursera.org/specializations/international-trade-finance-risk-management",
+    "courses": [
+      "learn/inland-trade-trade-finance-banking",
+      "learn/letters-of-credit-trade-finance-essentials",
+      "learn/master-trade-finance-international-trade-risks"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.9,
+    "ratings_total": 57,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 55
+    }
+  },
   "specializations/investment-management-python-machine-learning": {
     "key": "specializations/investment-management-python-machine-learning",
     "type": "specialization",
@@ -2824,6 +3010,27 @@
       "3": 2,
       "4": 7,
       "5": 79
+    }
+  },
+  "specializations/learn-english-now-basic-language-skills": {
+    "key": "specializations/learn-english-now-basic-language-skills",
+    "type": "specialization",
+    "title": "Learn English Now: Basic Language Skills",
+    "url": "https://www.coursera.org/specializations/learn-english-now-basic-language-skills",
+    "courses": [
+      "learn/english-basics-getting-started-and-introductions",
+      "learn/everyday-english-conversations-and-social-topics",
+      "learn/applied-english-experiences-and-expression"
+    ],
+    "provider": "Arizona State University",
+    "coursera": 4.7,
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 0,
+      "5": 5
     }
   },
   "specializations/learn-spanish": {
@@ -2891,6 +3098,28 @@
       "5": 1726
     }
   },
+  "specializations/microsoft-generative-and-agentic-ai-basics": {
+    "key": "specializations/microsoft-generative-and-agentic-ai-basics",
+    "type": "specialization",
+    "title": "Microsoft Generative and Agentic AI Basics",
+    "url": "https://www.coursera.org/specializations/microsoft-generative-and-agentic-ai-basics",
+    "courses": [
+      "learn/microsoft-getting-started-with-generative-ai-in-azure",
+      "learn/microsoft-working-with-large-language-models-using-azure",
+      "learn/microsoft-ai-agent-fundamentals",
+      "learn/microsoft-building-intelligent-agent-workflows"
+    ],
+    "provider": "Microsoft",
+    "coursera": 3.7,
+    "ratings_total": 72,
+    "rating_counts": {
+      "1": 14,
+      "2": 7,
+      "3": 3,
+      "4": 9,
+      "5": 39
+    }
+  },
   "specializations/microsoft-word-365": {
     "key": "specializations/microsoft-word-365",
     "type": "specialization",
@@ -2911,6 +3140,27 @@
       "5": 1
     }
   },
+  "specializations/mobilityfutures": {
+    "key": "specializations/mobilityfutures",
+    "type": "specialization",
+    "title": "Human Mobility in Future Cities",
+    "url": "https://www.coursera.org/specializations/mobilityfutures",
+    "courses": [
+      "learn/alternative-mobility-narratives",
+      "learn/unraveling-the-cycling-city",
+      "learn/being-smart-about-cycling-futures"
+    ],
+    "provider": "Enviolo",
+    "coursera": 4.9,
+    "ratings_total": 307,
+    "rating_counts": {
+      "1": 1,
+      "2": 2,
+      "3": 2,
+      "4": 30,
+      "5": 272
+    }
+  },
   "specializations/modern-contemporary-art-design": {
     "key": "specializations/modern-contemporary-art-design",
     "type": "specialization",
@@ -2923,13 +3173,13 @@
     ],
     "provider": "The Museum of Modern Art",
     "coursera": 4.8,
-    "ratings_total": 13417,
+    "ratings_total": 13418,
     "rating_counts": {
       "1": 83,
       "2": 81,
       "3": 319,
       "4": 1921,
-      "5": 11013
+      "5": 11014
     }
   },
   "specializations/music-production": {
@@ -2999,6 +3249,27 @@
       "5": 3060
     }
   },
+  "specializations/packt-blender-to-unreal-engine---become-a-dungeon-prop-artist": {
+    "key": "specializations/packt-blender-to-unreal-engine---become-a-dungeon-prop-artist",
+    "type": "specialization",
+    "title": "Blender to Unreal Engine - Become a Dungeon Prop Artist",
+    "url": "https://www.coursera.org/specializations/packt-blender-to-unreal-engine---become-a-dungeon-prop-artist",
+    "courses": [
+      "learn/packt-foundations-of-3d-modelling-in-blender-ugmas",
+      "learn/packt-intermediate-3d-modelling-and-game-asset-creation-inb1l",
+      "learn/packt-advanced-modelling-rendering-and-unreal-engine-integration-bbxp3"
+    ],
+    "provider": "Packt",
+    "coursera": 4.3,
+    "ratings_total": 46,
+    "rating_counts": {
+      "1": 5,
+      "2": 1,
+      "3": 0,
+      "4": 3,
+      "5": 37
+    }
+  },
   "specializations/packt-comptia-it-fundamentals-fc0-u61": {
     "key": "specializations/packt-comptia-it-fundamentals-fc0-u61",
     "type": "specialization",
@@ -3020,6 +3291,39 @@
       "5": 16
     }
   },
+  "specializations/packt-comptia-secai-plus-certification-prep-and-complete-training": {
+    "key": "specializations/packt-comptia-secai-plus-certification-prep-and-complete-training",
+    "type": "specialization",
+    "title": "CompTIA SecAI+ (CY0-001) Certification Exam Prep",
+    "url": "https://www.coursera.org/specializations/packt-comptia-secai-plus-certification-prep-and-complete-training",
+    "courses": [
+      "learn/packt-ai-foundations-and-secure-ai-fundamentals-owjco",
+      "learn/packt-ai-security-architecture-controls-and-defensive-operations-h3clw",
+      "learn/packt-advanced-ai-security-automation-governance-and-compliance-h3clw"
+    ],
+    "provider": "Packt",
+    "coursera": 4.8,
+    "ratings_total": 8,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 7
+    }
+  },
+  "specializations/packt-kubernetes-an-enterprise-guide": {
+    "key": "specializations/packt-kubernetes-an-enterprise-guide",
+    "type": "specialization",
+    "title": "Kubernetes – An Enterprise Guide",
+    "url": "https://www.coursera.org/specializations/packt-kubernetes-an-enterprise-guide",
+    "courses": [
+      "learn/packt-foundations-of-kubernetes-for-enterprise-environments-y9kg3",
+      "learn/packt-enterprise-security-and-access-management-in-kubernetes-ak1pm",
+      "learn/packt-advanced-operations-security-and-app-management-in-kubernetes-fjxeb"
+    ],
+    "provider": "Packt"
+  },
   "specializations/packt-leetcode-in-c-top-100-coding-interview-problems": {
     "key": "specializations/packt-leetcode-in-c-top-100-coding-interview-problems",
     "type": "specialization",
@@ -3040,6 +3344,27 @@
       "5": 3
     }
   },
+  "specializations/packt-pytorch-ultimate-2024---from-basics-to-cutting-edge": {
+    "key": "specializations/packt-pytorch-ultimate-2024---from-basics-to-cutting-edge",
+    "type": "specialization",
+    "title": "PyTorch Ultimate 2024 - From Basics to Cutting-Edge",
+    "url": "https://www.coursera.org/specializations/packt-pytorch-ultimate-2024---from-basics-to-cutting-edge",
+    "courses": [
+      "learn/packt-foundations-and-core-concepts-of-pytorch-jmkne",
+      "learn/packt-building-and-training-neural-networks-with-pytorch-jmkne",
+      "learn/packt-advanced-pytorch-techniques-and-applications-jmkne"
+    ],
+    "provider": "Packt",
+    "coursera": 4.6,
+    "ratings_total": 116,
+    "rating_counts": {
+      "1": 4,
+      "2": 2,
+      "3": 5,
+      "4": 17,
+      "5": 88
+    }
+  },
   "specializations/people-and-soft-skills-for-professional-success": {
     "key": "specializations/people-and-soft-skills-for-professional-success",
     "type": "specialization",
@@ -3055,13 +3380,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.7,
-    "ratings_total": 6689,
+    "ratings_total": 6693,
     "rating_counts": {
-      "1": 102,
+      "1": 103,
       "2": 79,
       "3": 204,
       "4": 1138,
-      "5": 5166
+      "5": 5169
     }
   },
   "specializations/principles-of-management": {
@@ -3121,10 +3446,10 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9169,
+    "ratings_total": 9170,
     "rating_counts": {
       "1": 93,
-      "2": 49,
+      "2": 50,
       "3": 175,
       "4": 1094,
       "5": 7758
@@ -3196,6 +3521,39 @@
       "5": 4656
     }
   },
+  "specializations/responsible-ai-leadership": {
+    "key": "specializations/responsible-ai-leadership",
+    "type": "specialization",
+    "title": "Responsible AI Leadership",
+    "url": "https://www.coursera.org/specializations/responsible-ai-leadership",
+    "courses": [
+      "learn/human-judgment-in-the-age-of-ai--algorithms",
+      "learn/ai-safety",
+      "learn/ai-implementation-for-people-managers"
+    ],
+    "provider": "Federico Garay"
+  },
+  "specializations/rutadeemprendimiento": {
+    "key": "specializations/rutadeemprendimiento",
+    "type": "specialization",
+    "title": "Ruta de Emprendimiento: Creatividad, Finanzas y Acción",
+    "url": "https://www.coursera.org/specializations/rutadeemprendimiento",
+    "courses": [
+      "learn/introduccion-al-emprendimiento-contexto-y-perfil-emprendedor",
+      "learn/finanzas-en-accion-estrategias-para-emprender-con-exito",
+      "learn/emprende-con-creatividad-ideas-innovadoras-y-exitosas"
+    ],
+    "provider": "Universidades Anáhuac",
+    "coursera": 4.7,
+    "ratings_total": 90,
+    "rating_counts": {
+      "1": 5,
+      "2": 0,
+      "3": 0,
+      "4": 3,
+      "5": 82
+    }
+  },
   "specializations/singer-songwriter": {
     "key": "specializations/singer-songwriter",
     "type": "specialization",
@@ -3262,6 +3620,27 @@
       "5": 933
     }
   },
+  "specializations/strategy-innovation-agile-organizations": {
+    "key": "specializations/strategy-innovation-agile-organizations",
+    "type": "specialization",
+    "title": "Strategy and Innovation for Agile Organizations",
+    "url": "https://www.coursera.org/specializations/strategy-innovation-agile-organizations",
+    "courses": [
+      "learn/agile-strategy-competitive-advantage",
+      "learn/customer-centric-business-innovation",
+      "learn/digital-transformation-agile-organizations"
+    ],
+    "provider": "Duke University",
+    "coursera": 4.6,
+    "ratings_total": 153,
+    "rating_counts": {
+      "1": 5,
+      "2": 2,
+      "3": 3,
+      "4": 29,
+      "5": 114
+    }
+  },
   "specializations/the-principles-of-leadership": {
     "key": "specializations/the-principles-of-leadership",
     "type": "specialization",
@@ -3296,5 +3675,17 @@
       "4": 28,
       "5": 125
     }
+  },
+  "specializations/wiley-cost-accounting-for-dummies": {
+    "key": "specializations/wiley-cost-accounting-for-dummies",
+    "type": "specialization",
+    "title": "Cost Accounting For Dummies",
+    "url": "https://www.coursera.org/specializations/wiley-cost-accounting-for-dummies",
+    "courses": [
+      "learn/wiley-cost-accounting-fundamentals-analysis-and-budgeting",
+      "learn/wiley-advanced-cost-allocation-and-decision-making-strategies",
+      "learn/wiley-specialized-costing-techniques-and-profit-optimization"
+    ],
+    "provider": "John Wiley & Sons"
   }
 }
