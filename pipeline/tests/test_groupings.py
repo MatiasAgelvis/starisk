@@ -12,6 +12,7 @@ from starisk.groupings import (
     extract_grouping,
     fetch_missing,
     grouping_key,
+    interleave,
     load_seed_keys,
     main,
     read_index,
@@ -19,6 +20,7 @@ from starisk.groupings import (
     refuse_reason,
     spread,
 )
+from starisk.sitemap import procert_slugs
 
 PAGE = (
     '<meta property="og:title" content="Algorithms">'
@@ -431,6 +433,54 @@ class DiscoverTest(unittest.TestCase):
 
         self.assertEqual(candidates, ["specializations/fresh"])
 
+    def test_the_kind_prefixes_the_candidate(self):
+        candidates = discover_candidates(
+            {},
+            [],
+            {},
+            ["google-data-analytics"],
+            limit=5,
+            kind="professional-certificates",
+        )
+
+        self.assertEqual(
+            candidates, ["professional-certificates/google-data-analytics"]
+        )
+
+
+class InterleaveTest(unittest.TestCase):
+    def test_round_robins_and_respects_the_shared_budget(self):
+        pools = [
+            ["specializations/a", "specializations/b"],
+            ["professional-certificates/p"],
+        ]
+
+        self.assertEqual(
+            interleave(pools, 3),
+            ["specializations/a", "professional-certificates/p", "specializations/b"],
+        )
+
+    def test_an_exhausted_source_does_not_block_the_other(self):
+        pools = [[], ["professional-certificates/p", "professional-certificates/q"]]
+
+        self.assertEqual(
+            interleave(pools, 2),
+            ["professional-certificates/p", "professional-certificates/q"],
+        )
+
+
+class ProcertSlugsTest(unittest.TestCase):
+    def test_keeps_professional_certificates_and_drops_marketing_pages(self):
+        xml = (
+            "<url><loc>https://www.coursera.org/professional-certificates/google-data-analytics</loc></url>"
+            "<url><loc>https://www.coursera.org/certificates/advance-your-career</loc></url>"
+        )
+
+        with TemporaryDirectory() as tmp:
+            slugs = procert_slugs(fetch=lambda url: xml, cache_path=Path(tmp) / "procert.txt")
+
+        self.assertEqual(slugs, ["google-data-analytics"])
+
     def test_reads_the_seed_list(self):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "programs.json"
@@ -502,22 +552,25 @@ class RefusalReportTest(unittest.TestCase):
 class SitemapRefreshTest(unittest.TestCase):
     def _discover(self, argv):
         with (
-            mock.patch("starisk.groupings.program_slugs", return_value=[]) as slugs,
+            mock.patch("starisk.groupings.program_slugs", return_value=[]) as spec,
+            mock.patch("starisk.groupings.procert_slugs", return_value=[]) as cert,
             mock.patch("starisk.groupings.read_index", return_value={}),
             mock.patch("starisk.groupings.read_seeds", return_value=[]),
             mock.patch("starisk.groupings.cached_grouping_keys", return_value=[]),
             mock.patch("starisk.groupings.build_groupings", return_value={}),
         ):
             main(argv)
-        return slugs
+        return spec, cert
 
-    def test_discovery_reuses_the_cached_sitemap_by_default(self):
-        slugs = self._discover(["--discover"])
-        slugs.assert_called_once_with(refresh=False)
+    def test_discovery_reuses_the_cached_sitemaps_by_default(self):
+        spec, cert = self._discover(["--discover"])
+        spec.assert_called_once_with(refresh=False)
+        cert.assert_called_once_with(refresh=False)
 
-    def test_discovery_can_refresh_the_sitemap(self):
-        slugs = self._discover(["--discover", "--refresh"])
-        slugs.assert_called_once_with(refresh=True)
+    def test_discovery_can_refresh_the_sitemaps(self):
+        spec, cert = self._discover(["--discover", "--refresh"])
+        spec.assert_called_once_with(refresh=True)
+        cert.assert_called_once_with(refresh=True)
 
 
 if __name__ == "__main__":
