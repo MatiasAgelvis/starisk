@@ -2277,6 +2277,18 @@
       "5": 8147
     }
   },
+  "specializations/ai-for-creators-strategy-content-automation": {
+    "key": "specializations/ai-for-creators-strategy-content-automation",
+    "type": "specialization",
+    "title": "AI for Creators: Strategy, Content & Automation",
+    "url": "https://www.coursera.org/specializations/ai-for-creators-strategy-content-automation",
+    "courses": [
+      "learn/unlock-your-creative-potential-with-ai-chatgpt-for-creators",
+      "learn/youtube-channel-growth-use-chatgpt-to-level-up-your-content",
+      "learn/build-your-own-creative-assistant"
+    ],
+    "provider": "Skillshare"
+  },
   "specializations/ai-for-hr": {
     "key": "specializations/ai-for-hr",
     "type": "specialization",
@@ -2671,6 +2683,27 @@
       "5": 637
     }
   },
+  "specializations/data-analysis-numpy-pandas": {
+    "key": "specializations/data-analysis-numpy-pandas",
+    "type": "specialization",
+    "title": "Data Analysis with NumPy and Pandas",
+    "url": "https://www.coursera.org/specializations/data-analysis-numpy-pandas",
+    "courses": [
+      "learn/pandas-python-analyze-transform-export-data",
+      "learn/numpy-pandas-analyze-transform-data",
+      "learn/numpy-pandas-analyze-manage-retail-data"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 31,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 28
+    }
+  },
   "specializations/data-analysis-visualization-excel": {
     "key": "specializations/data-analysis-visualization-excel",
     "type": "specialization",
@@ -2714,6 +2747,37 @@
       "3": 26,
       "4": 63,
       "5": 213
+    }
+  },
+  "specializations/data-visualization-business-intelligence": {
+    "key": "specializations/data-visualization-business-intelligence",
+    "type": "specialization",
+    "title": "Data Visualization & Business Intelligence",
+    "url": "https://www.coursera.org/specializations/data-visualization-business-intelligence",
+    "courses": [
+      "learn/charts-visualize-data-like-a-pro",
+      "learn/present-compelling-data-stories-with-excel",
+      "learn/conditional-formatting-tables-charts-microsoft-excel",
+      "learn/create-charts-dashboards-using-microsoft-excel",
+      "learn/dynamic-dashboards-report-and-visualize-data",
+      "learn/microsoft-powerpoint-how-to-customize-your-slides-and-visualize-your-data",
+      "learn/powerbi-visualize--publish-data",
+      "learn/model-power-bi-data-with-security",
+      "learn/design-impactful-dashboards-visualize-and-evaluate-data",
+      "learn/microsoft-copilot-for-power-bi-ai-powered-report-insights",
+      "learn/powerbi-for-beginners-data-transformation",
+      "learn/power-bi-for-beginners-interactive-dashboard-fundamentals",
+      "learn/powerbi-for-beginners-build-your-first-report"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.6,
+    "ratings_total": 2007,
+    "rating_counts": {
+      "1": 58,
+      "2": 23,
+      "3": 71,
+      "4": 357,
+      "5": 1498
     }
   },
   "specializations/deep-learning": {
@@ -3039,6 +3103,30 @@
       "5": 747
     }
   },
+  "specializations/hr-training-talent-management": {
+    "key": "specializations/hr-training-talent-management",
+    "type": "specialization",
+    "title": "HR Training and Talent Management",
+    "url": "https://www.coursera.org/specializations/hr-training-talent-management",
+    "courses": [
+      "learn/strategic-hr-management-business-strategy",
+      "learn/talent-acquisition-recruitment-planning",
+      "learn/effective-job-descriptions-recruitment",
+      "learn/talent-acquisition-recruitment-strategies",
+      "learn/employee-evaluation-appraisal-techniques",
+      "learn/succession-planning-leadership-strategy"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.9,
+    "ratings_total": 26,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 1,
+      "5": 24
+    }
+  },
   "specializations/improve-english": {
     "key": "specializations/improve-english",
     "type": "specialization",
@@ -3256,6 +3344,19 @@
       "4": 728,
       "5": 3447
     }
+  },
+  "specializations/master-go-programming-concurrency": {
+    "key": "specializations/master-go-programming-concurrency",
+    "type": "specialization",
+    "title": "Master Go Programming and Concurrency",
+    "url": "https://www.coursera.org/specializations/master-go-programming-concurrency",
+    "courses": [
+      "learn/build-go-programs-core-fundamentals",
+      "learn/apply-control-flow-data-structures-go",
+      "learn/implement-error-handling-go-concurrency",
+      "learn/manage-concurrent-state-go-utilities"
+    ],
+    "provider": "EDUCBA"
   },
   "specializations/mathematics-machine-learning": {
     "key": "specializations/mathematics-machine-learning",
@@ -3513,6 +3614,26 @@
       "5": 7
     }
   },
+  "specializations/packt-data-structures-and-algorithms-in-java-150-leetcode-problems": {
+    "key": "specializations/packt-data-structures-and-algorithms-in-java-150-leetcode-problems",
+    "type": "specialization",
+    "title": "Data Structures & Algorithms in Java + 150 Leetcode Problems",
+    "url": "https://www.coursera.org/specializations/packt-data-structures-and-algorithms-in-java-150-leetcode-problems",
+    "courses": [
+      "learn/packt-foundations-of-data-structures-and-algorithms-pnfqd",
+      "learn/packt-advanced-data-structures-patterns-and-recursion-techniques-pnfqd",
+      "learn/packt-advanced-algorithms-dynamic-programming-and-graph-algorithms-pnfqd"
+    ],
+    "provider": "Packt",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
   "specializations/packt-kubernetes-an-enterprise-guide": {
     "key": "specializations/packt-kubernetes-an-enterprise-guide",
     "type": "specialization",
@@ -3543,6 +3664,27 @@
       "3": 0,
       "4": 0,
       "5": 3
+    }
+  },
+  "specializations/packt-md-102-endpoint-administrator": {
+    "key": "specializations/packt-md-102-endpoint-administrator",
+    "type": "specialization",
+    "title": "MD-102: Endpoint Administrator",
+    "url": "https://www.coursera.org/specializations/packt-md-102-endpoint-administrator",
+    "courses": [
+      "learn/packt-deploying-windows-clients-and-managing-identities-nu9a7",
+      "learn/packt-managing-security-and-enrollment-with-intune-pqxyu",
+      "learn/packt-application-deployment-and-management-with-intune-pqxyu"
+    ],
+    "provider": "Packt",
+    "coursera": 4.8,
+    "ratings_total": 46,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 4,
+      "5": 41
     }
   },
   "specializations/packt-node-js-cookbook": {
@@ -3609,6 +3751,29 @@
       "3": 0,
       "4": 2,
       "5": 2
+    }
+  },
+  "specializations/pearson-comptia-cybersecurity-analyst-cysa-cs0-003": {
+    "key": "specializations/pearson-comptia-cybersecurity-analyst-cysa-cs0-003",
+    "type": "specialization",
+    "title": "CompTIA Cybersecurity Analyst (CySA+) CS0-003",
+    "url": "https://www.coursera.org/specializations/pearson-comptia-cybersecurity-analyst-cysa-cs0-003",
+    "courses": [
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-1-tkhzg",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-2-jt58z",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-3-cwosx",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-4-6orxd",
+      "learn/pearson-comptia-cybersecurity-analyst-cysa-cs0-003-video-course-5-xyh21"
+    ],
+    "provider": "Pearson",
+    "coursera": 4.5,
+    "ratings_total": 45,
+    "rating_counts": {
+      "1": 3,
+      "2": 0,
+      "3": 0,
+      "4": 5,
+      "5": 37
     }
   },
   "specializations/people-and-soft-skills-for-professional-success": {
@@ -4032,6 +4197,26 @@
       "5": 4
     }
   },
+  "specializations/the-creative-reset-clarity-productivity-and-structure": {
+    "key": "specializations/the-creative-reset-clarity-productivity-and-structure",
+    "type": "specialization",
+    "title": "The Creative Reset: Clarity, Productivity & Structure",
+    "url": "https://www.coursera.org/specializations/the-creative-reset-clarity-productivity-and-structure",
+    "courses": [
+      "learn/4-day-creative-reset-reduce-stress--boost-productivity",
+      "learn/defeat-procrastination-design-your-own-creative-workflow",
+      "learn/overwhelmed-to-organized-design-daily-structures-in-notion"
+    ],
+    "provider": "Skillshare",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 2,
+      "5": 1
+    }
+  },
   "specializations/the-principles-of-leadership": {
     "key": "specializations/the-principles-of-leadership",
     "type": "specialization",
@@ -4043,6 +4228,27 @@
       "learn/principles-playbook-pay-it-forward"
     ],
     "provider": "Marshall University"
+  },
+  "specializations/theology-spiritual-growth-divinity": {
+    "key": "specializations/theology-spiritual-growth-divinity",
+    "type": "specialization",
+    "title": "Theology for Personal Spiritual Growth",
+    "url": "https://www.coursera.org/specializations/theology-spiritual-growth-divinity",
+    "courses": [
+      "learn/christian-theology-virtues",
+      "learn/theology-arts-psalms",
+      "learn/theology-cultivating--scriptural-imagination"
+    ],
+    "provider": "Duke University",
+    "coursera": 4.6,
+    "ratings_total": 65,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 1,
+      "4": 10,
+      "5": 52
+    }
   },
   "specializations/tidyverse-data-science-r": {
     "key": "specializations/tidyverse-data-science-r",
