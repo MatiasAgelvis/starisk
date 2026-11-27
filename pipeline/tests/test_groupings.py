@@ -2,6 +2,7 @@ import json
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest import mock
 
 from starisk.cache import load_page, store_page
 from starisk.fetch import Retired
@@ -12,6 +13,7 @@ from starisk.groupings import (
     fetch_missing,
     grouping_key,
     load_seed_keys,
+    main,
     read_index,
     read_seeds,
     refuse_reason,
@@ -232,14 +234,14 @@ class RefuseReasonTest(unittest.TestCase):
     def test_force_overrides(self):
         self.assertIsNone(refuse_reason({}, {"a": {}}, force=True))
 
-    def test_a_program_that_lost_ratings_is_refused(self):
-        reason = refuse_reason(
-            {"specializations/a": {"ratings_total": 900}},
-            {"specializations/a": {"ratings_total": 1000}},
+    def test_one_program_can_lose_ratings(self):
+        # Coursera recounts a bundle; that is news, not corruption.
+        self.assertIsNone(
+            refuse_reason(
+                {"specializations/a": {"ratings_total": 900}},
+                {"specializations/a": {"ratings_total": 1000}},
+            )
         )
-
-        self.assertIn("fell", reason)
-        self.assertIn("ratings", reason)
 
     def test_a_program_that_gained_ratings_is_written(self):
         self.assertIsNone(
@@ -249,21 +251,44 @@ class RefuseReasonTest(unittest.TestCase):
             )
         )
 
-    def test_a_lower_bundle_rating_is_refused(self):
-        reason = refuse_reason(
-            {"specializations/a": {"coursera": 4.5}},
-            {"specializations/a": {"coursera": 4.7}},
+    def test_one_bundle_rating_can_move(self):
+        self.assertIsNone(
+            refuse_reason(
+                {"specializations/a": {"coursera": 3.1}},
+                {"specializations/a": {"coursera": 3.4}},
+            )
         )
 
-        self.assertIn("bundle rating", reason)
-
-    def test_a_changed_course_list_is_refused(self):
-        reason = refuse_reason(
-            {"specializations/a": {"courses": ["learn/x"]}},
-            {"specializations/a": {"courses": ["learn/x", "learn/y"]}},
+    def test_one_course_list_can_change(self):
+        self.assertIsNone(
+            refuse_reason(
+                {"specializations/a": {"courses": ["learn/x"]}},
+                {"specializations/a": {"courses": ["learn/x", "learn/y"]}},
+            )
         )
 
-        self.assertIn("course list", reason)
+    def test_widespread_movement_is_refused(self):
+        # The actual stale-cache signature: a batch of programs all dropping at
+        # once, not one bundle Coursera recounted.
+        previous = {f"specializations/p{index}": {"ratings_total": 100} for index in range(10)}
+        new = {
+            key: {"ratings_total": 90 if index < 6 else 100}
+            for index, key in enumerate(previous)
+        }
+
+        reason = refuse_reason(new, previous)
+
+        self.assertIn("6 of 10", reason)
+        self.assertIn("stale cache", reason)
+
+    def test_a_small_index_tolerates_a_few_moves(self):
+        previous = {f"specializations/p{index}": {"ratings_total": 100} for index in range(3)}
+        new = {
+            key: {"ratings_total": 90 if index < 2 else 100}
+            for index, key in enumerate(previous)
+        }
+
+        self.assertIsNone(refuse_reason(new, previous))
 
     def test_a_dropped_program_is_refused_even_when_the_count_matches(self):
         reason = refuse_reason(
@@ -389,6 +414,24 @@ class LoadSlugsTest(unittest.TestCase):
             path.write_text("{not json", encoding="utf-8")
 
             self.assertEqual(read_index(path), {})
+
+
+class RefusalReportTest(unittest.TestCase):
+    def test_main_hands_the_refusal_reason_to_its_caller(self):
+        reasons = []
+
+        with (
+            mock.patch("starisk.groupings.build_groupings", return_value={}),
+            mock.patch(
+                "starisk.groupings.read_index",
+                return_value={"specializations/a": {}},
+            ),
+        ):
+            code = main(["--write"], on_refusal=reasons.append)
+
+        self.assertEqual(code, 1)
+        self.assertEqual(len(reasons), 1)
+        self.assertIn("page cache", reasons[0])
 
 
 if __name__ == "__main__":
