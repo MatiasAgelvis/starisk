@@ -115,6 +115,18 @@ class CrawlTest(unittest.TestCase):
             expected,
         )
 
+    def test_a_guided_project_is_scored_with_its_own_type(self):
+        scores = run_crawl(
+            ["projects/getting-started", "learn/good"],
+            fetch=lambda url: self.good_html,
+            delay=0,
+            now=STAMP,
+            sleep=lambda _: None,
+        )
+
+        self.assertEqual(scores["projects/getting-started"]["type"], "project")
+        self.assertEqual(scores["learn/good"]["type"], "course")
+
     def test_scores_successes_and_records_errors(self):
         def fake_fetch(url):
             if "good" in url:
@@ -260,7 +272,7 @@ class RetiredCrawlTest(unittest.TestCase):
 
         self.assertEqual(list(scores), ["learn/good"])
         self.assertFalse(any("specializations" in url for url in calls))
-        self.assertTrue(any("non-course" in line for line in problems))
+        self.assertTrue(any("non-scorable" in line for line in problems))
 
     def test_a_retired_course_does_not_consume_the_budget(self):
         calls = []

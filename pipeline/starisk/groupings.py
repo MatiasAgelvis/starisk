@@ -11,10 +11,11 @@ review widget belongs to whichever course is selected), so no score is derived
 here. What is stored is the bundle's own aggregate — Coursera's pooled rating and
 the population behind it — which is the one number that is the program's own.
 
-No network: it reads the page cache. Program pages are fetched by `expand` (for
-specializations) or added explicitly (for Professional Certificates). `--discover`
-walks Coursera's specialization sitemap to add the next few program seeds, which
-is how the directory grows without an editorial list.
+No network: it reads the page cache. `--fetch` downloads seed pages that are not
+cached yet; `--discover` walks Coursera's sitemap for both program types
+(specializations and Professional Certificates), and specific pages can also be
+seeded explicitly in `programs.json`. That is how the directory grows without an
+editorial list.
 """
 
 from __future__ import annotations
@@ -38,12 +39,13 @@ from .adapter import (
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import DATA_DIR, load_retired, write_atomic, write_retired
 from .fetch import RateLimited, Retired, fetch_page, jitter
-from .sitemap import program_slugs
+from .sitemap import procert_slugs, program_slugs
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
 PROGRAMS_PATH = DATA_DIR / "programs.json"
 
-# Programs discovered per run. One request each, and each brings a handful of
+# Programs discovered per run, across both sitemaps (specializations and
+# Professional Certificates). One request each, and each brings a handful of
 # courses into the queue, so this is the throttle on corpus growth.
 DISCOVER_PER_RUN = 20
 
@@ -109,14 +111,14 @@ def extract_grouping(html: str, key: str) -> dict | None:
     if not title:
         return None
 
+    details = extract_details(html)
     grouping = {
         "key": key,
         "type": _TYPE_LABELS[kind],
         "title": title,
-        "url": f"https://www.coursera.org/{key}",
+        "url": details.get("url") or f"https://www.coursera.org/{key}",
         "courses": courses,
     }
-    details = extract_details(html)
     provider = details.get("provider")
     if provider:
         grouping["provider"] = provider
@@ -172,7 +174,34 @@ def build_groupings(
             continue
         groupings[key] = grouping
 
-    return groupings
+    return _dedupe_by_url(groupings)
+
+
+def _dedupe_by_url(groupings: dict[str, dict]) -> dict[str, dict]:
+    """Drop localized alias pages that resolve to the same canonical program.
+
+    Coursera lists translations in the sitemap (`.../analytique-des-donnees-google`)
+    but serves the English page, whose JSON-LD `url` is the canonical slug. Without
+    this, the directory shows the same bundle twice under different keys.
+    """
+    kept: dict[str, dict] = {}
+    by_url: dict[str, str] = {}
+    for key, grouping in groupings.items():
+        url = grouping.get("url")
+        if not url:
+            kept[key] = grouping
+            continue
+        canonical = url.split("coursera.org/", 1)[-1].strip("/")
+        other = by_url.get(url)
+        if other is None:
+            kept[key] = grouping
+            by_url[url] = key
+            continue
+        if key == canonical and other != canonical:
+            kept.pop(other, None)
+            kept[key] = grouping
+            by_url[url] = key
+    return kept
 
 
 def read_seeds(path: Path = PROGRAMS_PATH) -> list[str]:
@@ -206,6 +235,7 @@ def discover_candidates(
     slugs: list[str],
     limit: int = DISCOVER_PER_RUN,
     cached: Iterable[str] = (),
+    kind: str = "specializations",
 ) -> list[str]:
     """The next program pages nobody has fetched yet, in the order given.
 
@@ -223,13 +253,25 @@ def discover_candidates(
     known = set(index) | set(seeds) | set(retired) | set(cached)
     candidates = []
     for slug in slugs:
-        key = f"specializations/{slug}"
+        key = f"{kind}/{slug}"
         if key in known:
             continue
         candidates.append(key)
         if len(candidates) >= limit:
             break
     return candidates
+
+
+def interleave(pools: list[list[str]], limit: int) -> list[str]:
+    """Take from each source in turn, so neither starves the other's budget."""
+    chosen: list[str] = []
+    while len(chosen) < limit and any(pools):
+        for pool in pools:
+            if len(chosen) >= limit:
+                break
+            if pool:
+                chosen.append(pool.pop(0))
+    return chosen
 
 
 def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH) -> list[str]:
@@ -250,6 +292,21 @@ def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH
             if kind in GROUPING_TYPES and key.count("/") == 1:
                 keys.append(key)
     return list(dict.fromkeys(keys))
+
+
+def _canonical_key(html: str) -> str | None:
+    """The canonical program key named by the page, when it differs from its slug.
+
+    Coursera lists localized aliases in the sitemap but serves the English page,
+    whose JSON-LD `url` is the canonical slug. Caching that page under both keys
+    keeps the alias from ever being published as a second program.
+    """
+    url = extract_details(html).get("url")
+    if not url or "coursera.org/" not in url:
+        return None
+    path = url.split("coursera.org/", 1)[-1].strip("/")
+    kind = path.split("/", 1)[0]
+    return path if kind in GROUPING_TYPES and path.count("/") == 1 else None
 
 
 def fetch_missing(
@@ -310,6 +367,9 @@ def fetch_missing(
             print(f"  ! seed failed ({key}): {error}")
             continue
         store_page(key, html, cache_dir)
+        canonical = _canonical_key(html)
+        if canonical and canonical != key:
+            store_page(canonical, html, cache_dir)
         fetched += 1
         log(f"  [{index}/{len(pending)}] {key}")
         if delay:
@@ -401,10 +461,15 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="seed the next programs from the sitemap (writes programs.json with --write)",
     )
     parser.add_argument(
+        "--refresh",
+        action="store_true",
+        help="re-download the program sitemaps before discovering",
+    )
+    parser.add_argument(
         "--discover-limit",
         type=int,
         default=DISCOVER_PER_RUN,
-        help=f"programs to discover this run (default {DISCOVER_PER_RUN})",
+        help=f"programs to discover this run across both sources (default {DISCOVER_PER_RUN})",
     )
     parser.add_argument(
         "--fetch-limit",
@@ -427,18 +492,36 @@ def main(argv: list[str], on_refusal: Callable[[str], None] | None = None) -> in
 
     if options.discover:
         seeds = read_seeds()
-        slugs = spread(program_slugs())
-        candidates = discover_candidates(
-            read_index(),
-            seeds,
-            retired,
-            slugs,
-            options.discover_limit,
-            cached=cached_grouping_keys(),
+        index = read_index()
+        cached = cached_grouping_keys()
+        sources = [
+            ("specializations", program_slugs(refresh=options.refresh)),
+            ("professional-certificates", procert_slugs(refresh=options.refresh)),
+        ]
+        # Each source is sampled in its own spread order, then the shared budget is
+        # taken round-robin so the large catalogue cannot starve the small one.
+        pools = [
+            discover_candidates(
+                index,
+                seeds,
+                retired,
+                spread(slugs),
+                options.discover_limit,
+                cached=cached,
+                kind=kind,
+            )
+            for kind, slugs in sources
+        ]
+        candidates = interleave(pools, options.discover_limit)
+        counts = {
+            kind: sum(1 for key in candidates if key.startswith(kind + "/"))
+            for kind, _ in sources
+        }
+        summary = ", ".join(
+            f"{counts.get(kind, 0)} {kind} from {len(slugs)} slug(s)"
+            for kind, slugs in sources
         )
-        print(
-            f"discovered {len(candidates)} program(s) from {len(slugs)} sitemap slug(s)"
-        )
+        print(f"discovered {len(candidates)} program(s): {summary}")
         for key in candidates:
             print(f"  + {key}")
         if candidates and options.write:

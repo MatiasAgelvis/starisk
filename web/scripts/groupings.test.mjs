@@ -233,6 +233,18 @@ test('keeps unscored and missing courses in the list', () => {
   assert.equal(program.courses[2].starisk, undefined);
 });
 
+test('marks a never-crawled member so the page can fold it', () => {
+  const program = buildGroupings(groupings, scores).find(
+    (row) => row.key === 'specializations/a',
+  );
+  const byKey = new Map(program.courses.map((course) => [course.key, course]));
+
+  assert.equal(byKey.get('learn/one').read, true);
+  assert.equal(byKey.get('learn/missing').read, false);
+  // Folding and the summary line must agree on how many are missing.
+  assert.equal(program.courses.filter((course) => !course.read).length, program.unread);
+});
+
 test('sorts scored programs first and labels both program types', () => {
   const programs = buildGroupings(groupings, scores);
 

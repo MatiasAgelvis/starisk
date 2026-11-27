@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-11-27T14:35:12.336856+00:00",
+  "families": [
+    {
+      "kind": "courses",
+      "label": "Courses",
+      "path": "learn",
+      "total": 22767,
+      "have": 2089,
+      "scored": 1535
+    },
+    {
+      "kind": "specializations",
+      "label": "Specializations",
+      "path": "specializations",
+      "total": 3606,
+      "have": 198
+    },
+    {
+      "kind": "professional-certificates",
+      "label": "Professional Certificates",
+      "path": "professional-certificates",
+      "total": 308,
+      "have": 2
+    },
+    {
+      "kind": "projects",
+      "label": "Guided Projects",
+      "path": "projects",
+      "total": 2188,
+      "have": 0
+    },
+    {
+      "kind": "mastertrack",
+      "label": "MasterTrack",
+      "path": "mastertrack",
+      "total": 30,
+      "have": 0
+    },
+    {
+      "kind": "degrees",
+      "label": "Degrees",
+      "path": "degrees",
+      "total": 63,
+      "have": 0
+    }
+  ]
+}

@@ -22,7 +22,8 @@ on it.
 
     python -m starisk.nightly --dry-run     # config, connectivity, smoke; no writes
     python -m starisk.nightly --limit 100
-    python -m starisk.nightly --no-push     # rehearsal: commit on the branch, stop
+    python -m starisk.nightly --no-git      # rehearsal: run it, publish nothing
+    python -m starisk.nightly --no-push     # commit on the branch, stop
 
 Exit codes are the interface to the timer and the health check:
 
@@ -45,6 +46,7 @@ import urllib.request
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from functools import partial
 from pathlib import Path
 
 from . import crawl, demand, expand, groupings, logo_hires, logos, smoke
@@ -150,6 +152,8 @@ def decide(
     summary: dict,
     before: dict,
     adapter_ok: bool = True,
+    *,
+    rehearsal: bool = False,
 ) -> Decision:
     if not adapter_ok:
         return Decision(SMOKE, "the live adapter check failed")
@@ -172,6 +176,12 @@ def decide(
         return Decision(GATE, f"{errors} of {batch} fetched records have errors")
     if summary["rate_limited"]:
         return Decision(PARTIAL, "Coursera rate-limited the crawl")
+    # A rehearsal publishes nothing, so its verdict must not claim it committed.
+    if rehearsal:
+        verdict = "rehearsal: nothing published"
+        if errors:
+            verdict += f"; {errors} record(s) with errors"
+        return Decision(PARTIAL if errors else OK, verdict)
     if errors:
         return Decision(PARTIAL, f"committed with {errors} record(s) with errors")
     return Decision(OK, "committed")
@@ -498,6 +508,7 @@ def finish(
     commit_hash: str | None = None,
     pr_url: str | None = None,
     rate_limited: bool = False,
+    persist: bool = True,
 ) -> int:
     record = {
         "started": started,
@@ -516,7 +527,12 @@ def finish(
             "added": len(summary["added"]),
             "rescored": len(summary["updated"]),
         }
-    write_last_run(record)
+    if persist:
+        write_last_run(record)
+    else:
+        # A rehearsal is not a run: leaving the record alone keeps `ops:last` and
+        # the cooldown describing the last thing that actually published.
+        print("[nightly] rehearsal: no run record written")
 
     if code == NOTHING:
         # Silent by design: the heartbeat file above is the sign of life.
@@ -572,20 +588,23 @@ def dry_run(options) -> int:
 
 def run(options) -> int:
     started = now()
+    # A rehearsal publishes nothing, so no return below may leave a run record
+    # behind: `ops:last` and the cooldown must keep describing the real runs.
+    done = partial(finish, persist=not options.no_git)
     if options.env_file:
         env, error = apply_env_file(options.env_file)
         if error:
-            return finish(env, started, CONFIG, error)
+            return done(env, started, CONFIG, error)
     else:
         env = dict(os.environ)
 
     missing = missing_config(env, options)
     if missing:
-        return finish(env, started, CONFIG, f"missing config: {', '.join(missing)}")
+        return done(env, started, CONFIG, f"missing config: {', '.join(missing)}")
 
     with single_run() as alone:
         if not alone:
-            return finish(env, started, FAILED, "another run holds the lock")
+            return done(env, started, FAILED, "another run holds the lock")
 
         if options.dry_run:
             return dry_run(options)
@@ -598,7 +617,7 @@ def run(options) -> int:
         if not (options.no_cooldown or options.offline):
             reason = cooldown_reason(load_last_run())
             if reason:
-                return finish(env, started, COOLDOWN, reason)
+                return done(env, started, COOLDOWN, reason)
 
         before = load_scores()
         rate_limited = False
@@ -618,7 +637,7 @@ def run(options) -> int:
 
         report = smoke.run()
         if not report.ok:
-            return finish(
+            return done(
                 env,
                 started,
                 SMOKE,
@@ -626,11 +645,13 @@ def run(options) -> int:
             )
 
         # Offline keeps to the page cache: expansion only fetches, and discovery has
-        # no network to walk the sitemap with.
+        # no network to walk the sitemap with. Online, discovery refreshes the sitemap
+        # first — it is now the only place that re-downloads it, so programs created
+        # later are still found.
         index_args = (
             ["--fetch", "--write"]
             if options.offline
-            else ["--discover", "--fetch", "--write"]
+            else ["--discover", "--refresh", "--fetch", "--write"]
         )
         if options.force_index:
             # Used by hand after reading the refusal: the numbers are legitimately
@@ -651,7 +672,7 @@ def run(options) -> int:
             detail = refusal[0] if refusal else "reason unknown"
             print(f"[nightly] the program index was refused ({detail}); keeping the current one")
         elif index_code != 0:
-            return finish(env, started, FAILED, "the program index rebuild failed")
+            return done(env, started, FAILED, "the program index rebuild failed")
 
         if options.offline:
             print("[nightly] offline: skipping the source expansion")
@@ -661,9 +682,7 @@ def run(options) -> int:
             # courses. Programs are the bounded, deliberate lever, so they are what
             # runs unattended; `--instructors` stays available by hand.
             try:
-                grown = expand.main(
-                    ["--refresh", "--write", "--programs", "--specializations"]
-                )
+                grown = expand.main(["--write", "--programs"])
             except Exception as error:  # noqa: BLE001 - discovery is an input, not a prerequisite
                 print(f"[nightly] the expansion failed: {error}")
                 grown = 1
@@ -674,28 +693,30 @@ def run(options) -> int:
         if options.limit:
             argv += ["--limit", str(options.limit)]
         if crawl.main(argv) != 0:
-            return finish(env, started, FAILED, "the crawl exited non-zero")
+            return done(env, started, FAILED, "the crawl exited non-zero")
 
         for module in (logos, logo_hires):
             if module.main([]) != 0:
-                return finish(env, started, FAILED, f"{module.__name__} exited non-zero")
+                return done(env, started, FAILED, f"{module.__name__} exited non-zero")
 
         synced = subprocess.run(("node", "web/scripts/sync-data.mjs"), cwd=REPO)
         if synced.returncode != 0:
-            return finish(env, started, FAILED, "copying the data into the site failed")
+            return done(env, started, FAILED, "copying the data into the site failed")
 
         after = load_scores()
         new_paths = [path for path in changed() if path not in baseline]
         summary = diff_summary(before, after)
         rate_limited = rate_limited or summary["rate_limited"]
-        decision = decide(new_paths, summary, crawl.summarize(before))
+        decision = decide(
+            new_paths, summary, crawl.summarize(before), rehearsal=options.no_git
+        )
         refusal_detail = refusal[0] if refusal else "reason unknown"
         if index_refused and decision.code == OK:
             # Commit the night's data, but say out loud that the index was not
             # refreshed: a silent refusal is how a directory stalls unseen.
             decision = Decision(PARTIAL, f"program index refused: {refusal_detail}")
         elif index_refused and decision.code == NOTHING:
-            return finish(
+            return done(
                 env,
                 started,
                 PARTIAL,
@@ -718,14 +739,14 @@ def run(options) -> int:
                     commit_body(summary, decision),
                 )
             except GitError as error:
-                return finish(env, started, GIT, f"commit failed: {error}", summary=summary)
+                return done(env, started, GIT, f"commit failed: {error}", summary=summary)
             if not options.no_push:
                 try:
                     push(env, branch)
                 except (GitError, KeyError) as error:
                     # The crawl's output is already in the state volume, so this is
                     # not a lost night: the next run publishes it. Partial, not git.
-                    return finish(
+                    return done(
                         env,
                         started,
                         PARTIAL,
@@ -751,7 +772,7 @@ def run(options) -> int:
             for problem in report.site:
                 print(f"[nightly]   ! {problem}")
 
-        return finish(
+        return done(
             env,
             started,
             decision.code,

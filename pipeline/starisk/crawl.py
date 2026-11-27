@@ -71,6 +71,16 @@ LOW_SAMPLE = 15
 # Long enough to hold most reviews whole; still an excerpt, not a repost.
 TOP_REVIEW_LIMIT = 1200
 
+# The families the crawler can score from a reviews page. The key prefix is the
+# URL segment; the value is what records and the dataset call the family. A
+# missing `type` on an older record means `course` (the only thing that existed).
+SCORED_TYPES = {"learn": "course", "projects": "project"}
+
+
+def type_of(key: str) -> str:
+    return SCORED_TYPES.get(key.split("/", 1)[0], "course")
+
+
 _SOURCE_PATTERN = re.compile(r"coursera\.org/([^/?#]+)/([^/?#]+)")
 
 
@@ -321,14 +331,15 @@ def crawl(
             problems.append(line)
 
     work = order_by_staleness(unique_sources(sources), scores)
-    # V1 is courses-only (D17). A program page has no written reviews of its own —
-    # Coursera renders the widget of whichever course is selected — so fetching one
-    # as a course would store that course's reviews under the program's key.
-    not_courses = [key for key in work if not key.startswith("learn/")]
-    if not_courses:
-        work = [key for key in work if key.startswith("learn/")]
+    # Program pages have no written reviews of their own — Coursera renders the
+    # widget of whichever course is selected — so fetching one as a course would
+    # store that course's reviews under the program's key. Only the scored families
+    # (courses, Guided Projects) are allowed through.
+    skipped = [key for key in work if key.split("/", 1)[0] not in SCORED_TYPES]
+    if skipped:
+        work = [key for key in work if key.split("/", 1)[0] in SCORED_TYPES]
         note(
-            f"skipped {len(not_courses)} non-course source(s), e.g. {not_courses[0]} "
+            f"skipped {len(skipped)} non-scorable source(s), e.g. {skipped[0]} "
             "(programs are not crawled as courses)"
         )
     # A retired course is gone for good, so it must not take a slot in the budget.
@@ -376,12 +387,14 @@ def crawl(
                 # Stop the run. The next one starts with this course, because it is
                 # the stalest one left.
                 record = scores.get(key) or {}
+                record["type"] = type_of(key)
                 record["error"] = f"rate limited: {error}"
                 scores[key] = record
                 note(f"rate limited at {key}: {error}")
                 break
             except Exception as error:  # noqa: BLE001 - one bad course must not stop the crawl
                 record = scores.get(key) or {}
+                record["type"] = type_of(key)
                 record["error"] = f"fetch: {error}"
                 scores[key] = record
                 note(f"error {key}: fetch: {error}")
@@ -402,12 +415,14 @@ def crawl(
         previous = scores.get(key) or {}
         if result is None:
             # Never overwrite a good record with a failed parse.
+            previous["type"] = type_of(key)
             previous["error"] = "no reviews parsed (markup changed?)"
             scores[key] = previous
             note(f"error {key}: no reviews parsed (markup changed?)")
         elif result.get("no_reviews") and "starisk" in previous:
             # Fail safe: a course that once had readable reviews should not lose
             # its score because Coursera is showing the empty state today.
+            previous["type"] = type_of(key)
             previous["scrapedAt"] = previous.get("scrapedAt", stamp) if offline else stamp
             scores[key] = previous
         else:
@@ -451,7 +466,12 @@ def crawl(
             # Re-parsing a cached page is not a fresh scrape: keep the old stamp.
             keep_local_image(result, previous)
             stamped = previous.get("scrapedAt", stamp) if offline else stamp
-            scores[key] = {**result, "slug": key, "scrapedAt": stamped}
+            scores[key] = {
+                **result,
+                "type": type_of(key),
+                "slug": key,
+                "scrapedAt": stamped,
+            }
 
         if rate_limited:
             break

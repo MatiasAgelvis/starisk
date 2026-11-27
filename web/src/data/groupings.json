@@ -1,4 +1,315 @@
 {
+  "professional-certificates/aapc-medical-biller": {
+    "key": "professional-certificates/aapc-medical-biller",
+    "type": "professional-certificate",
+    "title": "AAPC Medical Biller",
+    "url": "https://www.coursera.org/professional-certificates/aapc-medical-biller",
+    "courses": [
+      "learn/introduction-to-certified-professional-biller",
+      "learn/cbp-coding-medical",
+      "learn/the-billing-and-collection-process",
+      "learn/insurance-specifics"
+    ],
+    "provider": "AAPC",
+    "coursera": 4.6,
+    "ratings_total": 281,
+    "rating_counts": {
+      "1": 12,
+      "2": 2,
+      "3": 5,
+      "4": 33,
+      "5": 229
+    }
+  },
+  "professional-certificates/aws-security-engineer-advanced": {
+    "key": "professional-certificates/aws-security-engineer-advanced",
+    "type": "professional-certificate",
+    "title": "AWS Security Engineer Advanced",
+    "url": "https://www.coursera.org/professional-certificates/aws-security-engineer-advanced",
+    "courses": [
+      "learn/aws-security-engineer-introduction-to-aws-cloud-security-and-role-workflow",
+      "learn/aws-security-engineer-cloud-governance-compliance-and-security-strategy",
+      "learn/aws-lab-automate-infrastructure-compliance-with-aws-config",
+      "learn/aws-security-engineer-centralized-account-management",
+      "learn/aws-security-engineer-implementing-aws-identity-and-access-management",
+      "learn/aws-lab-troubleshooting-iam-access-issues",
+      "learn/aws-security-engineer-network-security-and-secure-hybrid-connectivity",
+      "learn/implementing-and-controlling-network-traffic-on-aws",
+      "learn/threat-hunting-with-aws-network-firewall-deployment",
+      "learn/filtering-and-blocking-web-incursions-with-aws-waf",
+      "learn/aws-security-engineer-edge-security",
+      "learn/aws-security-engineer-application-and-compute-security",
+      "learn/aws-security-engineer-protecting-and-encrypting-data",
+      "learn/using-data-encryption-in-aws",
+      "learn/aws-security-engineer-detection-and-response-services",
+      "learn/security-monitoring-with-amazon-cloudwatch",
+      "learn/aws-security-engineer-incident-response-planning-and-execution",
+      "learn/aws-security-incident-response-in-practice"
+    ],
+    "provider": "Amazon Web Services",
+    "ratings_total": 2,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "professional-certificates/beginners-guide-to-c-sharp-fundamentals": {
+    "key": "professional-certificates/beginners-guide-to-c-sharp-fundamentals",
+    "type": "professional-certificate",
+    "title": "Beginners Guide to C# Fundamentals",
+    "url": "https://www.coursera.org/professional-certificates/beginners-guide-to-c-sharp-fundamentals",
+    "courses": [
+      "learn/c-sharp-programming-fundamentals-and-development-environment",
+      "learn/advanced-c-language-features--object-oriented-programming",
+      "learn/professional-c-development-practices",
+      "learn/gui-development-and-ai-enhanced-programming"
+    ],
+    "provider": "Microsoft",
+    "coursera": 4.6,
+    "ratings_total": 14,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 13
+    }
+  },
+  "professional-certificates/dell-technologies-sales-rep": {
+    "key": "professional-certificates/dell-technologies-sales-rep",
+    "type": "professional-certificate",
+    "title": "Dell Technologies IT Sales Representative",
+    "url": "https://www.coursera.org/professional-certificates/dell-technologies-sales-rep",
+    "courses": [
+      "learn/dell-technologies-introduction-to-it-sales",
+      "learn/dell-technologies-becoming-an-effective-seller",
+      "learn/dell-technologies-establishing-your-sales-strategy",
+      "learn/dell-technologies-closing-the-deal"
+    ],
+    "provider": "Dell",
+    "coursera": 4.3,
+    "ratings_total": 13,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 12
+    }
+  },
+  "professional-certificates/epic-games-game-design-professional-certificate": {
+    "key": "professional-certificates/epic-games-game-design-professional-certificate",
+    "type": "professional-certificate",
+    "title": "Epic Games Game Design",
+    "url": "https://www.coursera.org/professional-certificates/epic-games-game-design-professional-certificate",
+    "courses": [
+      "learn/introduction-to-game-design",
+      "learn/unreal-engine-fundamentals",
+      "learn/level-design",
+      "learn/blueprint-scripting",
+      "learn/game-visual-development-and-audio-design",
+      "learn/user-interface-in-game-design",
+      "learn/user-experience-in-game-design",
+      "learn/game-development-and-prototyping"
+    ],
+    "provider": "Epic Games",
+    "coursera": 4.3,
+    "ratings_total": 864,
+    "rating_counts": {
+      "1": 52,
+      "2": 38,
+      "3": 76,
+      "4": 138,
+      "5": 560
+    }
+  },
+  "professional-certificates/goodwill-career-coach-and-navigator": {
+    "key": "professional-certificates/goodwill-career-coach-and-navigator",
+    "type": "professional-certificate",
+    "title": "Goodwill® Career Coach and Navigator",
+    "url": "https://www.coursera.org/professional-certificates/goodwill-career-coach-and-navigator",
+    "courses": [
+      "learn/foundations-of-career-navigating-and-coaching",
+      "learn/client-intake-assessments-skill-analysis-and-planning",
+      "learn/supporting-clients",
+      "learn/career-support-community-and-resources"
+    ],
+    "provider": "Goodwill Industries International",
+    "coursera": 4.7,
+    "ratings_total": 581,
+    "rating_counts": {
+      "1": 7,
+      "2": 6,
+      "3": 20,
+      "4": 88,
+      "5": 460
+    }
+  },
+  "professional-certificates/google-cloud-data-analytics-certificate": {
+    "key": "professional-certificates/google-cloud-data-analytics-certificate",
+    "type": "professional-certificate",
+    "title": "Google Cloud Data Analytics",
+    "url": "https://www.coursera.org/professional-certificates/google-cloud-data-analytics-certificate",
+    "courses": [
+      "learn/introduction-to-data-analytics-in-google-cloud",
+      "learn/data-management-and-storage-in-the-cloud",
+      "learn/data-transformation-in-the-cloud",
+      "learn/the-power-of-storytelling-how-to-visualize-data-in-the-cloud",
+      "learn/put-it-all-together-prepare-for-a-cloud-data-analyst-job"
+    ],
+    "provider": "Google Cloud",
+    "coursera": 4.4,
+    "ratings_total": 327,
+    "rating_counts": {
+      "1": 24,
+      "2": 2,
+      "3": 10,
+      "4": 43,
+      "5": 248
+    }
+  },
+  "professional-certificates/google-data-analytics": {
+    "key": "professional-certificates/google-data-analytics",
+    "type": "professional-certificate",
+    "title": "Google Data Analytics",
+    "url": "https://www.coursera.org/professional-certificates/google-data-analytics",
+    "courses": [
+      "learn/foundations-data",
+      "learn/ask-questions-make-decisions",
+      "learn/data-preparation",
+      "learn/process-data",
+      "learn/analyze-data",
+      "learn/visualize-data",
+      "learn/introduction-to-data-analysis-using-python",
+      "learn/google-data-analytics-capstone",
+      "learn/accelerate-your-job-search-with-ai"
+    ],
+    "provider": "Google",
+    "coursera": 4.8,
+    "ratings_total": 250825,
+    "rating_counts": {
+      "1": 1588,
+      "2": 1583,
+      "3": 5798,
+      "4": 34996,
+      "5": 206860
+    }
+  },
+  "professional-certificates/google-it-support": {
+    "key": "professional-certificates/google-it-support",
+    "type": "professional-certificate",
+    "title": "Google IT Support",
+    "url": "https://www.coursera.org/professional-certificates/google-it-support",
+    "courses": [
+      "learn/technical-support-fundamentals",
+      "learn/computer-networking",
+      "learn/os-power-user",
+      "learn/system-administration-it-infrastructure-services",
+      "learn/it-security",
+      "learn/accelerate-your-job-search-with-ai"
+    ],
+    "provider": "Google",
+    "coursera": 4.8,
+    "ratings_total": 306437,
+    "rating_counts": {
+      "1": 1653,
+      "2": 1498,
+      "3": 6500,
+      "4": 41410,
+      "5": 255376
+    }
+  },
+  "professional-certificates/google-ux-design": {
+    "key": "professional-certificates/google-ux-design",
+    "type": "professional-certificate",
+    "title": "Google UX Design",
+    "url": "https://www.coursera.org/professional-certificates/google-ux-design",
+    "courses": [
+      "learn/foundations-user-experience-design",
+      "learn/start-ux-design-process",
+      "learn/wireframes-low-fidelity-prototypes",
+      "learn/conduct-ux-research",
+      "learn/high-fidelity-designs-prototype",
+      "learn/responsive-web-design-adobe-xd",
+      "learn/ux-design-jobs",
+      "learn/accelerate-your-job-search-with-ai"
+    ],
+    "provider": "Google",
+    "coursera": 4.8,
+    "ratings_total": 129265,
+    "rating_counts": {
+      "1": 586,
+      "2": 468,
+      "3": 1982,
+      "4": 15147,
+      "5": 111082
+    }
+  },
+  "professional-certificates/human-centered-ai-transformation-strategy-ethics": {
+    "key": "professional-certificates/human-centered-ai-transformation-strategy-ethics",
+    "type": "professional-certificate",
+    "title": "Human-Centered AI Transformation: Strategy & Ethics",
+    "url": "https://www.coursera.org/professional-certificates/human-centered-ai-transformation-strategy-ethics",
+    "courses": [
+      "learn/coursera-ai-workflow-optimization",
+      "learn/coursera-human-ai-systems-integration",
+      "learn/coursera-ai-ethics-responsible-use",
+      "learn/coursera-ai-strategy-transformation",
+      "learn/coursera-launching-ai-transformation-leadership-career"
+    ],
+    "provider": "Coursera"
+  },
+  "professional-certificates/ibm-building-and-managing-agentic-teams": {
+    "key": "professional-certificates/ibm-building-and-managing-agentic-teams",
+    "type": "professional-certificate",
+    "title": "IBM Building and Managing Agentic Teams",
+    "url": "https://www.coursera.org/professional-certificates/ibm-building-and-managing-agentic-teams",
+    "courses": [
+      "learn/foundations-of-agentic-teams",
+      "learn/designing-human-ai-collaboration-and-first-agents",
+      "learn/deploying-and-orchestrating-ai-agents",
+      "learn/oversight-accountability-trust-and-responsible-ai",
+      "learn/performance-management-and-capstone-leadership"
+    ],
+    "provider": "IBM",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    }
+  },
+  "professional-certificates/ibm-business-analyst-professional-certificate": {
+    "key": "professional-certificates/ibm-business-analyst-professional-certificate",
+    "type": "professional-certificate",
+    "title": "IBM Business Analyst",
+    "url": "https://www.coursera.org/professional-certificates/ibm-business-analyst-professional-certificate",
+    "courses": [
+      "learn/introduction-to-business-analysis",
+      "learn/excel-basics-data-analysis-ibm",
+      "learn/data-visualization-dashboards-excel-cognos",
+      "learn/business-analysis-process-modeling-requirements-gathering",
+      "learn/business-analysis-project-and-stakeholder-management",
+      "learn/business-analysis-preparation-exam-for-ecba-certification",
+      "learn/capstone-project-applying-business-analysis-skills",
+      "learn/generative-ai-revolutionizing-business-analysis-techniques"
+    ],
+    "provider": "IBM",
+    "coursera": 4.7,
+    "ratings_total": 16396,
+    "rating_counts": {
+      "1": 186,
+      "2": 129,
+      "3": 401,
+      "4": 2692,
+      "5": 12988
+    }
+  },
   "professional-certificates/ibm-data-science": {
     "key": "professional-certificates/ibm-data-science",
     "type": "professional-certificate",
@@ -20,13 +331,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.6,
-    "ratings_total": 259941,
+    "ratings_total": 259820,
     "rating_counts": {
-      "1": 3302,
-      "2": 3401,
-      "3": 10859,
-      "4": 50090,
-      "5": 192289
+      "1": 3299,
+      "2": 3398,
+      "3": 10855,
+      "4": 50080,
+      "5": 192188
     }
   },
   "professional-certificates/ibm-enterprise-ai-transformation-and-consulting": {
@@ -44,14 +355,301 @@
       "learn/ai-transformation-advisory-package"
     ],
     "provider": "IBM",
-    "coursera": 3.1,
-    "ratings_total": 23,
+    "coursera": 3.4,
+    "ratings_total": 10,
     "rating_counts": {
-      "1": 4,
+      "1": 2,
       "2": 0,
-      "3": 7,
+      "3": 0,
+      "4": 0,
+      "5": 8
+    }
+  },
+  "professional-certificates/ibm-it-systems-administration-and-cloud-operations": {
+    "key": "professional-certificates/ibm-it-systems-administration-and-cloud-operations",
+    "type": "professional-certificate",
+    "title": "IBM IT Systems Administration and Cloud Operations",
+    "url": "https://www.coursera.org/professional-certificates/ibm-it-systems-administration-and-cloud-operations",
+    "courses": [
+      "learn/foundations-of-it-systems-administration",
+      "learn/linux-administration-with-red-hat-enterprise-linux",
+      "learn/windows-server-administration",
+      "learn/identity-access-and-storage-across-linux-and-windows",
+      "learn/cloud-infrastructure-and-virtualization-with-ibm-cloud",
+      "learn/monitoring-troubleshooting-and-automation",
+      "learn/capstone-operate-a-cloud-enabled-environment-end-to-end"
+    ],
+    "provider": "IBM",
+    "ratings_total": 8,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 7
+    }
+  },
+  "professional-certificates/ibm-product-owner": {
+    "key": "professional-certificates/ibm-product-owner",
+    "type": "professional-certificate",
+    "title": "IBM Product Owner",
+    "url": "https://www.coursera.org/professional-certificates/ibm-product-owner",
+    "courses": [
+      "learn/product-owner-unleashing-the-power-of-scrum",
+      "learn/agile-development-and-scrum",
+      "learn/information-technology-it-fundamentals-for-everyone",
+      "learn/product-owner-communications-stakeholder-management",
+      "learn/product-owner-essential-skills-and-tools-for-innovation",
+      "learn/practice-exam-for-scrum-org-pspo1-certification",
+      "learn/product-owner-capstone",
+      "learn/generative-ai-introduction-and-applications",
+      "learn/gen-ai-revolutionizing-the-product-owner-role"
+    ],
+    "provider": "IBM",
+    "coursera": 4.7,
+    "ratings_total": 8152,
+    "rating_counts": {
+      "1": 124,
+      "2": 92,
+      "3": 238,
+      "4": 1156,
+      "5": 6542
+    }
+  },
+  "professional-certificates/llm-engineering-that-works-prompting-tuning-and-retrieval": {
+    "key": "professional-certificates/llm-engineering-that-works-prompting-tuning-and-retrieval",
+    "type": "professional-certificate",
+    "title": "LLM Engineering That Works: Prompting, Tuning, and Retrieval",
+    "url": "https://www.coursera.org/professional-certificates/llm-engineering-that-works-prompting-tuning-and-retrieval",
+    "courses": [
+      "learn/production-ai-model-development-ethics-t3",
+      "learn/building-reliable-llm-systems1",
+      "learn/testing-and-refining-llm-applications1",
+      "learn/designing-production-llm-architectures1",
+      "learn/evaluating-llm-performance-and-efficiency1",
+      "learn/advancing-your-career-in-production-ai"
+    ],
+    "provider": "Coursera",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 2,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "professional-certificates/microsoft-aspnet-core-developer": {
+    "key": "professional-certificates/microsoft-aspnet-core-developer",
+    "type": "professional-certificate",
+    "title": "Microsoft Getting Started with ASP.NET Core",
+    "url": "https://www.coursera.org/professional-certificates/microsoft-aspnet-core-developer",
+    "courses": [
+      "learn/introduction-to-aspdotnet-core-framework",
+      "learn/data-management-and-application-features",
+      "learn/security-testing-and-development"
+    ],
+    "provider": "Microsoft",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 3
+    }
+  },
+  "professional-certificates/microsoft-data-architecture-for-modern-data-stacks": {
+    "key": "professional-certificates/microsoft-data-architecture-for-modern-data-stacks",
+    "type": "professional-certificate",
+    "title": "Microsoft Data Architecture for Modern Data Stacks",
+    "url": "https://www.coursera.org/professional-certificates/microsoft-data-architecture-for-modern-data-stacks",
+    "courses": [
+      "learn/modern-data-architecture-fundamentals-microsoft-fabric",
+      "learn/building-data-lakes-lakehouses-microsoft-fabric",
+      "learn/data-warehousing-pipeline-development-microsoft-fabric",
+      "learn/data-governance-security-real-time-analytics-microsoft-fabric",
+      "learn/advanced-analytics-ai-integration-optimization-microsoft-fabric"
+    ],
+    "provider": "Microsoft",
+    "coursera": 3.5,
+    "ratings_total": 14,
+    "rating_counts": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 2,
+      "5": 7
+    }
+  },
+  "professional-certificates/microsoft-deep-learning-engineering-with-azure": {
+    "key": "professional-certificates/microsoft-deep-learning-engineering-with-azure",
+    "type": "professional-certificate",
+    "title": "Microsoft Deep Learning Engineering with Azure",
+    "url": "https://www.coursera.org/professional-certificates/microsoft-deep-learning-engineering-with-azure",
+    "courses": [
+      "learn/deep-learning-foundations-and-azure-environments",
+      "learn/core-neural-architectures-and-generative-models",
+      "learn/experiment-management-tuning-and-debugging",
+      "learn/distributed-training-and-advanced-application",
+      "learn/model-optimization-inference-and-end-to-end-engineering",
+      "learn/launch-your-deep-learning-career"
+    ],
+    "provider": "Microsoft"
+  },
+  "professional-certificates/microsoft-go-to-market-strategy": {
+    "key": "professional-certificates/microsoft-go-to-market-strategy",
+    "type": "professional-certificate",
+    "title": "Microsoft Go-To-Market Strategy",
+    "url": "https://www.coursera.org/professional-certificates/microsoft-go-to-market-strategy",
+    "courses": [
+      "learn/market-strategy-and-targeting",
+      "learn/competitive-messaging-and-content",
+      "learn/campaign-execution-and-automation",
+      "learn/performance-analytics-and-optimization",
+      "learn/launch-your-gtm-career"
+    ],
+    "provider": "Microsoft",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
+  "professional-certificates/microsoft-hr-manager": {
+    "key": "professional-certificates/microsoft-hr-manager",
+    "type": "professional-certificate",
+    "title": "Microsoft HR Manager",
+    "url": "https://www.coursera.org/professional-certificates/microsoft-hr-manager",
+    "courses": [
+      "learn/hr-data-and-technology",
+      "learn/process-and-policy-execution",
+      "learn/employee-development-and-well-being",
+      "learn/al-driven-hr-operations",
+      "learn/strategic-hr-leadership",
+      "learn/launching-your-hr-manager-career"
+    ],
+    "provider": "Microsoft",
+    "coursera": 4.5,
+    "ratings_total": 12,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
       "4": 1,
-      "5": 11
+      "5": 10
+    }
+  },
+  "professional-certificates/microsoft-sales-toolkit-with-generative-ai": {
+    "key": "professional-certificates/microsoft-sales-toolkit-with-generative-ai",
+    "type": "professional-certificate",
+    "title": "Microsoft Sales Toolkit with Generative AI",
+    "url": "https://www.coursera.org/professional-certificates/microsoft-sales-toolkit-with-generative-ai",
+    "courses": [
+      "learn/introduction-to-sales-and-aifundamentals",
+      "learn/ai-enhanced-prospecting-and-sales-techniques",
+      "learn/crm-integration-and-ai-for-customer-management",
+      "learn/efficient-workflows-and-sales-operations",
+      "learn/ethical-selling-and-market-adaptation"
+    ],
+    "provider": "Microsoft",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
+  "professional-certificates/product-marketing-manager-with-ai": {
+    "key": "professional-certificates/product-marketing-manager-with-ai",
+    "type": "professional-certificate",
+    "title": "Product Marketing Manager with AI Professional Certificate",
+    "url": "https://www.coursera.org/professional-certificates/product-marketing-manager-with-ai",
+    "courses": [
+      "learn/brand-strategy-and-messaging",
+      "learn/market-intelligence-and-audience-insights",
+      "learn/gtm-planning-and-campaign-execution",
+      "learn/marketing-data-and-performance-measurement",
+      "learn/ai-strategy-and-marketing-leadership"
+    ],
+    "provider": "Coursera",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "professional-certificates/sas-statistical-business-analyst": {
+    "key": "professional-certificates/sas-statistical-business-analyst",
+    "type": "professional-certificate",
+    "title": "SAS Statistical Business Analyst",
+    "url": "https://www.coursera.org/professional-certificates/sas-statistical-business-analyst",
+    "courses": [
+      "learn/statistical-analysis-hypothesis-testing-sas",
+      "learn/regression-modeling-sas",
+      "learn/sas-predictive-modeling-using-logistic-regression"
+    ],
+    "provider": "SAS",
+    "coursera": 4.6,
+    "ratings_total": 293,
+    "rating_counts": {
+      "1": 7,
+      "2": 4,
+      "3": 6,
+      "4": 47,
+      "5": 229
+    }
+  },
+  "professional-certificates/tally-bookkeeper": {
+    "key": "professional-certificates/tally-bookkeeper",
+    "type": "professional-certificate",
+    "title": "Tally Bookkeeper",
+    "url": "https://www.coursera.org/professional-certificates/tally-bookkeeper",
+    "courses": [
+      "learn/accounting-and-reporting-fundamentals",
+      "learn/accounts-payable-and-receivable-management",
+      "learn/statutory-and-taxation"
+    ],
+    "provider": "Tally Education and Distribution Services Private Limited",
+    "coursera": 4.5,
+    "ratings_total": 326,
+    "rating_counts": {
+      "1": 18,
+      "2": 5,
+      "3": 9,
+      "4": 49,
+      "5": 245
+    }
+  },
+  "professional-certificates/xbox-graphic-designer": {
+    "key": "professional-certificates/xbox-graphic-designer",
+    "type": "professional-certificate",
+    "title": "Xbox Graphic Designer",
+    "url": "https://www.coursera.org/professional-certificates/xbox-graphic-designer",
+    "courses": [
+      "learn/xbox-fundamentals-of-graphic-design",
+      "learn/xbox-brand-identity-and-vector-graphics",
+      "learn/xbox-interaction-design-and-ux-ui-principles",
+      "learn/xbox-digital-and-print-media-design",
+      "learn/xbox-designing-with-genai-and-capstone-project"
+    ],
+    "provider": "Xbox",
+    "coursera": 4.5,
+    "ratings_total": 141,
+    "rating_counts": {
+      "1": 9,
+      "2": 3,
+      "3": 5,
+      "4": 13,
+      "5": 111
     }
   },
   "specializations/-finance": {
@@ -2268,13 +2866,13 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9668,
+    "ratings_total": 9609,
     "rating_counts": {
-      "1": 96,
-      "2": 54,
-      "3": 192,
-      "4": 1179,
-      "5": 8147
+      "1": 93,
+      "2": 51,
+      "3": 189,
+      "4": 1169,
+      "5": 8107
     }
   },
   "specializations/ai-for-creators-strategy-content-automation": {
@@ -2322,6 +2920,28 @@
     ],
     "provider": "AI Business School"
   },
+  "specializations/ai-for-marketing-and-sales": {
+    "key": "specializations/ai-for-marketing-and-sales",
+    "type": "specialization",
+    "title": "AI for Marketing and Sales",
+    "url": "https://www.coursera.org/specializations/ai-for-marketing-and-sales",
+    "courses": [
+      "learn/chatgpt-midjourney-gemini-deepseek-marketing-tools",
+      "learn/ai-powered-marketing-with-microsoft-copilot",
+      "learn/generative-ai-for-seo-be-the-1-answer-in-ai-search",
+      "learn/email-marketing-boost-sales-with-high-converting-campaigns"
+    ],
+    "provider": "SkillsBooster Academy",
+    "coursera": 4.5,
+    "ratings_total": 32,
+    "rating_counts": {
+      "1": 0,
+      "2": 2,
+      "3": 3,
+      "4": 2,
+      "5": 25
+    }
+  },
   "specializations/ai-healthcare": {
     "key": "specializations/ai-healthcare",
     "type": "specialization",
@@ -2336,13 +2956,13 @@
     ],
     "provider": "Stanford Online",
     "coursera": 4.7,
-    "ratings_total": 3422,
+    "ratings_total": 3408,
     "rating_counts": {
-      "1": 38,
+      "1": 37,
       "2": 31,
       "3": 102,
       "4": 517,
-      "5": 2734
+      "5": 2721
     }
   },
   "specializations/ai-marketing-mastery": {
@@ -2445,12 +3065,12 @@
     ],
     "provider": "Stanford Online",
     "coursera": 4.8,
-    "ratings_total": 9458,
+    "ratings_total": 9457,
     "rating_counts": {
       "1": 77,
       "2": 45,
       "3": 163,
-      "4": 1201,
+      "4": 1200,
       "5": 7972
     }
   },
@@ -2473,6 +3093,28 @@
       "3": 0,
       "4": 3,
       "5": 43
+    }
+  },
+  "specializations/analysing-numeric-digital-literacies": {
+    "key": "specializations/analysing-numeric-digital-literacies",
+    "type": "specialization",
+    "title": "Analysing: Numeric and digital literacies",
+    "url": "https://www.coursera.org/specializations/analysing-numeric-digital-literacies",
+    "courses": [
+      "learn/management-accounting",
+      "learn/corporate-finance-know-your-numbers-2",
+      "learn/business-intelligence-data-analytics",
+      "learn/marketing-analytics-customers"
+    ],
+    "provider": "Macquarie University",
+    "coursera": 4.6,
+    "ratings_total": 1291,
+    "rating_counts": {
+      "1": 21,
+      "2": 19,
+      "3": 51,
+      "4": 235,
+      "5": 965
     }
   },
   "specializations/applied-ai-cybersecurity": {
@@ -2515,6 +3157,28 @@
       "5": 1
     }
   },
+  "specializations/backend-as-a-service": {
+    "key": "specializations/backend-as-a-service",
+    "type": "specialization",
+    "title": "Backend as a Service",
+    "url": "https://www.coursera.org/specializations/backend-as-a-service",
+    "courses": [
+      "learn/intro-to-sql",
+      "learn/intro-to-supabase",
+      "learn/learn-firebase",
+      "learn/build-a-mobile-app-with-firebase"
+    ],
+    "provider": "Scrimba",
+    "coursera": 4.4,
+    "ratings_total": 47,
+    "rating_counts": {
+      "1": 3,
+      "2": 2,
+      "3": 1,
+      "4": 9,
+      "5": 32
+    }
+  },
   "specializations/blender-3d-modeling-rendering-games-animation": {
     "key": "specializations/blender-3d-modeling-rendering-games-animation",
     "type": "specialization",
@@ -2536,6 +3200,49 @@
       "5": 36
     }
   },
+  "specializations/blockchain-financial-services": {
+    "key": "specializations/blockchain-financial-services",
+    "type": "specialization",
+    "title": "Blockchain Revolution in Financial Services",
+    "url": "https://www.coursera.org/specializations/blockchain-financial-services",
+    "courses": [
+      "learn/intro-blockchain-financial-services",
+      "learn/blockchain-crypto-decentralized-finance",
+      "learn/blockchain-transformations-financial-services",
+      "learn/blockchain-strategic-action-plan"
+    ],
+    "provider": "INSEAD",
+    "coursera": 4.7,
+    "ratings_total": 1343,
+    "rating_counts": {
+      "1": 9,
+      "2": 13,
+      "3": 59,
+      "4": 232,
+      "5": 1030
+    }
+  },
+  "specializations/business-analysis-excel-tools-and-ccba-training": {
+    "key": "specializations/business-analysis-excel-tools-and-ccba-training",
+    "type": "specialization",
+    "title": "Business Analysis Excel Tools and CCBA Training",
+    "url": "https://www.coursera.org/specializations/business-analysis-excel-tools-and-ccba-training",
+    "courses": [
+      "learn/business-analytics-using-excel",
+      "learn/project-management-tools-techniques-and-agile-frameworks",
+      "learn/ccba-certification-business-analysis-essentials"
+    ],
+    "provider": "Simplilearn",
+    "coursera": 4.4,
+    "ratings_total": 62,
+    "rating_counts": {
+      "1": 5,
+      "2": 1,
+      "3": 1,
+      "4": 9,
+      "5": 46
+    }
+  },
   "specializations/business-english": {
     "key": "specializations/business-english",
     "type": "specialization",
@@ -2550,13 +3257,34 @@
     ],
     "provider": "University of Washington",
     "coursera": 4.7,
-    "ratings_total": 6285,
+    "ratings_total": 6286,
     "rating_counts": {
       "1": 103,
       "2": 38,
       "3": 122,
       "4": 764,
-      "5": 5258
+      "5": 5259
+    }
+  },
+  "specializations/climate-change-leadership-community-resilience": {
+    "key": "specializations/climate-change-leadership-community-resilience",
+    "type": "specialization",
+    "title": "Climate Change Leadership for Community Resilience",
+    "url": "https://www.coursera.org/specializations/climate-change-leadership-community-resilience",
+    "courses": [
+      "learn/climate-science-everyone",
+      "learn/environmental-leadership-climate",
+      "learn/climate-change-community-solutions"
+    ],
+    "provider": "Duke University",
+    "coursera": 4.9,
+    "ratings_total": 48,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 1,
+      "4": 1,
+      "5": 46
     }
   },
   "specializations/cloud": {
@@ -2610,13 +3338,13 @@
     ],
     "provider": "Rice University",
     "coursera": 4.8,
-    "ratings_total": 6213,
+    "ratings_total": 6211,
     "rating_counts": {
       "1": 78,
       "2": 35,
       "3": 139,
       "4": 638,
-      "5": 5323
+      "5": 5321
     }
   },
   "specializations/construction-practices-in-deep-excavations-and-tunnels": {
@@ -2660,6 +3388,31 @@
       "3": 133,
       "4": 747,
       "5": 4054
+    }
+  },
+  "specializations/creativity-and-writing": {
+    "key": "specializations/creativity-and-writing",
+    "type": "specialization",
+    "title": "Writing poetry and other creative writing, and promoting it",
+    "url": "https://www.coursera.org/specializations/creativity-and-writing",
+    "courses": [
+      "learn/increase-creativity",
+      "learn/write-poetry",
+      "learn/procrastination",
+      "learn/unbreakable-motivation",
+      "learn/habits",
+      "learn/book-deal",
+      "learn/bestseller-on-amazon-for-books"
+    ],
+    "provider": "Alex Genadinik",
+    "coursera": 4.2,
+    "ratings_total": 10,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 1,
+      "4": 1,
+      "5": 7
     }
   },
   "specializations/cybersecurity-foundations": {
@@ -2718,13 +3471,35 @@
     ],
     "provider": "Logical Operations",
     "coursera": 4.3,
-    "ratings_total": 40,
+    "ratings_total": 41,
     "rating_counts": {
       "1": 4,
       "2": 1,
       "3": 1,
       "4": 2,
-      "5": 32
+      "5": 33
+    }
+  },
+  "specializations/data-analytics-and-visualization": {
+    "key": "specializations/data-analytics-and-visualization",
+    "type": "specialization",
+    "title": "Data Analytics and Visualization",
+    "url": "https://www.coursera.org/specializations/data-analytics-and-visualization",
+    "courses": [
+      "learn/introduction-to-data-analytics-on-google-cloud",
+      "learn/bigquery-for-data-analysts",
+      "learn/analyzing-visualizing-data-google-way",
+      "learn/googlecloud-how-to-build-a-bi-dashboard-using-google-data-studio-and-bigqu-cfi1a"
+    ],
+    "provider": "Google Cloud",
+    "coursera": 4.2,
+    "ratings_total": 141,
+    "rating_counts": {
+      "1": 12,
+      "2": 5,
+      "3": 5,
+      "4": 30,
+      "5": 89
     }
   },
   "specializations/data-science-fundamentals": {
@@ -2794,13 +3569,35 @@
     ],
     "provider": "DeepLearning.AI",
     "coursera": 4.8,
-    "ratings_total": 311509,
+    "ratings_total": 311483,
     "rating_counts": {
-      "1": 506,
+      "1": 505,
       "2": 757,
       "3": 4492,
-      "4": 33308,
-      "5": 272446
+      "4": 33305,
+      "5": 272424
+    }
+  },
+  "specializations/design-of-ventilation-and-air-conditioning-system-for-buildings": {
+    "key": "specializations/design-of-ventilation-and-air-conditioning-system-for-buildings",
+    "type": "specialization",
+    "title": "Design of Ventilation& Air conditioning System for Buildings",
+    "url": "https://www.coursera.org/specializations/design-of-ventilation-and-air-conditioning-system-for-buildings",
+    "courses": [
+      "learn/designing-air-conditioning-systems-and-heat-load-calculation",
+      "learn/ventilation-life-safety-and-smoke-extraction-in-building",
+      "learn/air-conditioning-equipment-selection--design-and-sizing",
+      "learn/cutting-edge-technology-in-air-conditioning-system"
+    ],
+    "provider": "L&T EduTech",
+    "coursera": 4.5,
+    "ratings_total": 129,
+    "rating_counts": {
+      "1": 6,
+      "2": 2,
+      "3": 8,
+      "4": 16,
+      "5": 97
     }
   },
   "specializations/differential-calculus-data-modeling": {
@@ -2816,13 +3613,13 @@
     ],
     "provider": "Johns Hopkins University",
     "coursera": 4.8,
-    "ratings_total": 525,
+    "ratings_total": 524,
     "rating_counts": {
       "1": 3,
       "2": 6,
       "3": 13,
       "4": 56,
-      "5": 447
+      "5": 446
     }
   },
   "specializations/direccion-empresas": {
@@ -2848,6 +3645,28 @@
       "5": 3595
     }
   },
+  "specializations/e-commerce-y-marketing-digital-con-ia-para-crecimiento-comercial": {
+    "key": "specializations/e-commerce-y-marketing-digital-con-ia-para-crecimiento-comercial",
+    "type": "specialization",
+    "title": "E-commerce y marketing digital con IA",
+    "url": "https://www.coursera.org/specializations/e-commerce-y-marketing-digital-con-ia-para-crecimiento-comercial",
+    "courses": [
+      "learn/fundamentos-del-marketing",
+      "learn/e-business-negocios-online",
+      "learn/marketing-digital-ecommerce",
+      "learn/inteligencia-artificial-aplicada-al-marketing"
+    ],
+    "provider": "Universidad de Palermo",
+    "coursera": 4.8,
+    "ratings_total": 823,
+    "rating_counts": {
+      "1": 4,
+      "2": 11,
+      "3": 25,
+      "4": 112,
+      "5": 671
+    }
+  },
   "specializations/embedded-systems-security": {
     "key": "specializations/embedded-systems-security",
     "type": "specialization",
@@ -2861,13 +3680,13 @@
     ],
     "provider": "28DIGITAL",
     "coursera": 4.3,
-    "ratings_total": 1415,
+    "ratings_total": 1413,
     "rating_counts": {
-      "1": 58,
+      "1": 57,
       "2": 50,
       "3": 99,
       "4": 337,
-      "5": 871
+      "5": 870
     }
   },
   "specializations/entrepreneurial-finance": {
@@ -2915,6 +3734,28 @@
       "5": 16
     }
   },
+  "specializations/exam-prep-az-500-microsoft-azure-security-engineer-associate": {
+    "key": "specializations/exam-prep-az-500-microsoft-azure-security-engineer-associate",
+    "type": "specialization",
+    "title": "Microsoft Azure Security Engineer Professional",
+    "url": "https://www.coursera.org/specializations/exam-prep-az-500-microsoft-azure-security-engineer-associate",
+    "courses": [
+      "learn/azure-identity-and-access-management",
+      "learn/azure-network-security",
+      "learn/azure-compute-storage-and-database-security",
+      "learn/azure-security-operations-management"
+    ],
+    "provider": "Whizlabs",
+    "coursera": 4.4,
+    "ratings_total": 28,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 9,
+      "5": 16
+    }
+  },
   "specializations/excel": {
     "key": "specializations/excel",
     "type": "specialization",
@@ -2928,13 +3769,13 @@
     ],
     "provider": "Macquarie University",
     "coursera": 4.9,
-    "ratings_total": 83968,
+    "ratings_total": 83888,
     "rating_counts": {
-      "1": 269,
+      "1": 265,
       "2": 177,
       "3": 844,
-      "4": 8807,
-      "5": 73871
+      "4": 8800,
+      "5": 73802
     }
   },
   "specializations/financial-reporting-cost-management-foundations": {
@@ -2970,6 +3811,47 @@
     ],
     "provider": "Madecraft"
   },
+  "specializations/generative-ai-development-with-hugging-face": {
+    "key": "specializations/generative-ai-development-with-hugging-face",
+    "type": "specialization",
+    "title": "Generative AI Development with Hugging Face",
+    "url": "https://www.coursera.org/specializations/generative-ai-development-with-hugging-face",
+    "courses": [
+      "learn/building-ai-apps-with-hugging-face-spaces-and-gradio",
+      "learn/getting-started-with-hugging-face-transformers-1",
+      "learn/introduction-to-multimodal-ai-with-hugging-face"
+    ],
+    "provider": "Hugging Face",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    }
+  },
+  "specializations/generative-ai-for-software-developers": {
+    "key": "specializations/generative-ai-for-software-developers",
+    "type": "specialization",
+    "title": "Generative AI for Software Developers",
+    "url": "https://www.coursera.org/specializations/generative-ai-for-software-developers",
+    "courses": [
+      "learn/generative-ai-introduction-and-applications",
+      "learn/generative-ai-prompt-engineering-for-everyone",
+      "learn/generative-ai-elevate-software-development-career"
+    ],
+    "provider": "IBM",
+    "coursera": 4.7,
+    "ratings_total": 13258,
+    "rating_counts": {
+      "1": 196,
+      "2": 139,
+      "3": 396,
+      "4": 2020,
+      "5": 10507
+    }
+  },
   "specializations/genomic-data-science": {
     "key": "specializations/genomic-data-science",
     "type": "specialization",
@@ -2985,13 +3867,13 @@
     ],
     "provider": "Johns Hopkins University",
     "coursera": 4.5,
-    "ratings_total": 9023,
+    "ratings_total": 9016,
     "rating_counts": {
       "1": 194,
-      "2": 219,
-      "3": 642,
-      "4": 2307,
-      "5": 5661
+      "2": 218,
+      "3": 641,
+      "4": 2306,
+      "5": 5657
     }
   },
   "specializations/good-with-words": {
@@ -3072,10 +3954,10 @@
     ],
     "provider": "National Academy of Sports Medicine",
     "coursera": 4.5,
-    "ratings_total": 40,
+    "ratings_total": 41,
     "rating_counts": {
       "1": 2,
-      "2": 0,
+      "2": 1,
       "3": 1,
       "4": 6,
       "5": 31
@@ -3103,6 +3985,30 @@
       "5": 747
     }
   },
+  "specializations/housing-finance-property-valuation": {
+    "key": "specializations/housing-finance-property-valuation",
+    "type": "specialization",
+    "title": "Housing Finance and Property Valuation",
+    "url": "https://www.coursera.org/specializations/housing-finance-property-valuation",
+    "courses": [
+      "learn/mortgage-advisor-training-home-loan-real-estate",
+      "learn/real-estate-finance-mortgage-advisory",
+      "learn/mortgage-advisory-property-valuation",
+      "learn/mortgage-loans-property-law-housing-finance",
+      "learn/real-estate-investment-analysis-modeling",
+      "learn/real-estate-investment-trust-financial-modeling"
+    ],
+    "provider": "EDUCBA",
+    "coursera": 4.8,
+    "ratings_total": 17,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 16
+    }
+  },
   "specializations/hr-training-talent-management": {
     "key": "specializations/hr-training-talent-management",
     "type": "specialization",
@@ -3127,6 +4033,49 @@
       "5": 24
     }
   },
+  "specializations/image-processing": {
+    "key": "specializations/image-processing",
+    "type": "specialization",
+    "title": "Image Processing for Engineering and Science",
+    "url": "https://www.coursera.org/specializations/image-processing",
+    "courses": [
+      "learn/introduction-image-processing",
+      "learn/image-segmentation",
+      "learn/automating-image-processing"
+    ],
+    "provider": "MathWorks",
+    "coursera": 4.7,
+    "ratings_total": 304,
+    "rating_counts": {
+      "1": 6,
+      "2": 1,
+      "3": 3,
+      "4": 40,
+      "5": 254
+    }
+  },
+  "specializations/impact-investing": {
+    "key": "specializations/impact-investing",
+    "type": "specialization",
+    "title": "L'investissement à impact, la finance qui change le monde",
+    "url": "https://www.coursera.org/specializations/impact-investing",
+    "courses": [
+      "learn/investing-fondamentaux",
+      "learn/impact-investing-etre-acteur",
+      "learn/impactinvestinginnover",
+      "learn/financer-un-projet"
+    ],
+    "provider": "ESSEC Business School",
+    "coursera": 4.6,
+    "ratings_total": 412,
+    "rating_counts": {
+      "1": 2,
+      "2": 1,
+      "3": 17,
+      "4": 105,
+      "5": 287
+    }
+  },
   "specializations/improve-english": {
     "key": "specializations/improve-english",
     "type": "specialization",
@@ -3140,13 +4089,13 @@
     ],
     "provider": "Georgia Institute of Technology",
     "coursera": 4.7,
-    "ratings_total": 30710,
+    "ratings_total": 30693,
     "rating_counts": {
-      "1": 375,
-      "2": 203,
-      "3": 739,
-      "4": 4569,
-      "5": 24824
+      "1": 370,
+      "2": 202,
+      "3": 738,
+      "4": 4568,
+      "5": 24815
     }
   },
   "specializations/infrastructure-automation-iac-terraform-ansible": {
@@ -3213,6 +4162,52 @@
       "5": 55
     }
   },
+  "specializations/internet-of-things-iot-practitioner-itp110": {
+    "key": "specializations/internet-of-things-iot-practitioner-itp110",
+    "type": "specialization",
+    "title": "Internet of Things (IoT) Practitioner (Exam ITP-110)",
+    "url": "https://www.coursera.org/specializations/internet-of-things-iot-practitioner-itp110",
+    "courses": [
+      "learn/internet-of-things-iot-foundations-design-development-cnx0002",
+      "learn/internet-of-things-iot-connectivity-data-intelligence-cnx0002",
+      "learn/internet-of-things-iot-governance-real-world-implementation-cnx0002"
+    ],
+    "provider": "CertNexus",
+    "ratings_total": 2,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 2
+    }
+  },
+  "specializations/introduction-sociology": {
+    "key": "specializations/introduction-sociology",
+    "type": "specialization",
+    "title": "Introduction to Sociology",
+    "url": "https://www.coursera.org/specializations/introduction-sociology",
+    "courses": [
+      "learn/sociological-perspectives-culture-and-research",
+      "learn/socialization-social-structure-deviance-and-control",
+      "learn/social-stratification-gender-dynamics-and-racial-identities",
+      "learn/aging-and-family-structures",
+      "learn/the-economy-and-politics",
+      "learn/education-and-religion",
+      "learn/population-and-urbanization",
+      "learn/collective-behavior-social-movements-and-social-change"
+    ],
+    "provider": "Pearson",
+    "coursera": 4.4,
+    "ratings_total": 8,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 1,
+      "4": 0,
+      "5": 6
+    }
+  },
   "specializations/introduction-to-cosmetic-science": {
     "key": "specializations/introduction-to-cosmetic-science",
     "type": "specialization",
@@ -3248,13 +4243,35 @@
     ],
     "provider": "EDHEC Business School",
     "coursera": 4.6,
-    "ratings_total": 2566,
+    "ratings_total": 2565,
     "rating_counts": {
       "1": 75,
       "2": 79,
       "3": 139,
       "4": 357,
-      "5": 1916
+      "5": 1915
+    }
+  },
+  "specializations/java-database-connectivity": {
+    "key": "specializations/java-database-connectivity",
+    "type": "specialization",
+    "title": "Java Database Connectivity",
+    "url": "https://www.coursera.org/specializations/java-database-connectivity",
+    "courses": [
+      "learn/java-database-connectivity-introduction",
+      "learn/java-database-connectivity-prepared-statements",
+      "learn/java-database-connectivity-sql-primer",
+      "learn/java-database-connectivity-jakarta-persistence"
+    ],
+    "provider": "LearnQuest",
+    "coursera": 4.7,
+    "ratings_total": 66,
+    "rating_counts": {
+      "1": 2,
+      "2": 2,
+      "3": 4,
+      "4": 4,
+      "5": 54
     }
   },
   "specializations/leadership-nursing-informatics": {
@@ -3301,6 +4318,19 @@
       "5": 79
     }
   },
+  "specializations/lean-manufacturing-operations-ai": {
+    "key": "specializations/lean-manufacturing-operations-ai",
+    "type": "specialization",
+    "title": "Lean Manufacturing and Operations with AI",
+    "url": "https://www.coursera.org/specializations/lean-manufacturing-operations-ai",
+    "courses": [
+      "learn/ai-powered-lean-manufacturing-digital-muda",
+      "learn/augmented-kaizen-ai-root-cause-analysis",
+      "learn/intelligent-jidoka-smart-manufacturing",
+      "learn/lean-ai-value-streams-mlops"
+    ],
+    "provider": "The Skill Valley"
+  },
   "specializations/learn-english-now-basic-language-skills": {
     "key": "specializations/learn-english-now-basic-language-skills",
     "type": "specialization",
@@ -3336,13 +4366,56 @@
     ],
     "provider": "University of California, Davis",
     "coursera": 4.5,
-    "ratings_total": 4562,
+    "ratings_total": 4558,
     "rating_counts": {
-      "1": 173,
+      "1": 171,
       "2": 67,
       "3": 147,
       "4": 728,
-      "5": 3447
+      "5": 3445
+    }
+  },
+  "specializations/lfcs-linux-system-administrator-certification": {
+    "key": "specializations/lfcs-linux-system-administrator-certification",
+    "type": "specialization",
+    "title": "Complete LFCS Linux System Administrator Certification",
+    "url": "https://www.coursera.org/specializations/lfcs-linux-system-administrator-certification",
+    "courses": [
+      "learn/lfcs-essential-commands-and-operations",
+      "learn/lfcs-service-deployment-system-security",
+      "learn/lfcs-networking-and-identity-management",
+      "learn/lfcs-storage-management-and-filesystems"
+    ],
+    "provider": "KodeKloud",
+    "ratings_total": 2,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "specializations/liderando-equipos-de-trabajo": {
+    "key": "specializations/liderando-equipos-de-trabajo",
+    "type": "specialization",
+    "title": "Liderando Equipos de Trabajo",
+    "url": "https://www.coursera.org/specializations/liderando-equipos-de-trabajo",
+    "courses": [
+      "learn/liderazgo-efectivo-desarrollo-de-habilidades-directivas",
+      "learn/motivacion-de-equipos-gestion-del-talento-humano",
+      "learn/gestion-talento",
+      "learn/gestion-de-la-diversidad"
+    ],
+    "provider": "Universidad de Palermo",
+    "coursera": 4.7,
+    "ratings_total": 364,
+    "rating_counts": {
+      "1": 3,
+      "2": 6,
+      "3": 13,
+      "4": 48,
+      "5": 294
     }
   },
   "specializations/master-go-programming-concurrency": {
@@ -3370,13 +4443,37 @@
     ],
     "provider": "Imperial College London",
     "coursera": 4.6,
-    "ratings_total": 21604,
+    "ratings_total": 21596,
     "rating_counts": {
-      "1": 413,
+      "1": 412,
       "2": 401,
       "3": 1013,
-      "4": 4257,
-      "5": 15520
+      "4": 4254,
+      "5": 15516
+    }
+  },
+  "specializations/mbe-mastering-business-essentials": {
+    "key": "specializations/mbe-mastering-business-essentials",
+    "type": "specialization",
+    "title": "MBE Mastering Business Essentials",
+    "url": "https://www.coursera.org/specializations/mbe-mastering-business-essentials",
+    "courses": [
+      "learn/mastering-business-essentials-introduction",
+      "learn/mastering-business-essentials-strategy",
+      "learn/mastering-business-essentials-accounting",
+      "learn/mastering-business-essentials-marketing",
+      "learn/mastering-business-essentials-finance",
+      "learn/mastering-business-essentials-operation"
+    ],
+    "provider": "Emory University",
+    "coursera": 4.9,
+    "ratings_total": 183,
+    "rating_counts": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 8,
+      "5": 171
     }
   },
   "specializations/medical-billing-coding-fundamentals": {
@@ -3391,13 +4488,13 @@
     ],
     "provider": "MedCerts",
     "coursera": 4.7,
-    "ratings_total": 2038,
+    "ratings_total": 2028,
     "rating_counts": {
       "1": 39,
       "2": 12,
       "3": 52,
-      "4": 209,
-      "5": 1726
+      "4": 208,
+      "5": 1717
     }
   },
   "specializations/microsoft-generative-and-agentic-ai-basics": {
@@ -3475,13 +4572,13 @@
     ],
     "provider": "The Museum of Modern Art",
     "coursera": 4.8,
-    "ratings_total": 13418,
+    "ratings_total": 13405,
     "rating_counts": {
       "1": 83,
       "2": 81,
       "3": 319,
-      "4": 1921,
-      "5": 11014
+      "4": 1919,
+      "5": 11003
     }
   },
   "specializations/music-production": {
@@ -3497,13 +4594,13 @@
     ],
     "provider": "Berklee",
     "coursera": 4.8,
-    "ratings_total": 3958,
+    "ratings_total": 3955,
     "rating_counts": {
-      "1": 35,
+      "1": 34,
       "2": 32,
       "3": 88,
-      "4": 459,
-      "5": 3344
+      "4": 458,
+      "5": 3343
     }
   },
   "specializations/object-oriented-programming-s12n": {
@@ -3542,13 +4639,55 @@
     ],
     "provider": "The Linux Foundation",
     "coursera": 4.6,
-    "ratings_total": 4274,
+    "ratings_total": 4272,
     "rating_counts": {
       "1": 65,
       "2": 68,
       "3": 211,
       "4": 870,
-      "5": 3060
+      "5": 3058
+    }
+  },
+  "specializations/packt-ai-game-development-essentials-with-unity-6": {
+    "key": "specializations/packt-ai-game-development-essentials-with-unity-6",
+    "type": "specialization",
+    "title": "AI Game Development Essentials with Unity 6",
+    "url": "https://www.coursera.org/specializations/packt-ai-game-development-essentials-with-unity-6",
+    "courses": [
+      "learn/packt-foundations-of-ai-in-game-development-je46i",
+      "learn/packt-implementing-movement-and-decision-making-systems-fukhi",
+      "learn/packt-advanced-ai-techniques-and-behavior-in-unity-q6rqa"
+    ],
+    "provider": "Packt",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
+  },
+  "specializations/packt-big-data-foundations-with-hadoop-and-spark": {
+    "key": "specializations/packt-big-data-foundations-with-hadoop-and-spark",
+    "type": "specialization",
+    "title": "Big Data Foundations with Hadoop and Spark",
+    "url": "https://www.coursera.org/specializations/packt-big-data-foundations-with-hadoop-and-spark",
+    "courses": [
+      "learn/packt-the-ultimate-hands-on-hadoop-enniy",
+      "learn/packt-apache-spark-with-scala-hands-on-with-big-data-hilnz",
+      "learn/packt-streaming-big-data-with-spark-streaming-scala-and-spark-3-09ksx",
+      "learn/packt-apache-kafka-series-learn-apache-kafka-for-beginners-v3-cjher"
+    ],
+    "provider": "Packt",
+    "coursera": 4.7,
+    "ratings_total": 21,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 3,
+      "5": 17
     }
   },
   "specializations/packt-blender-to-unreal-engine---become-a-dungeon-prop-artist": {
@@ -3666,6 +4805,27 @@
       "5": 3
     }
   },
+  "specializations/packt-mastering-java-from-beginner-to-intermediate": {
+    "key": "specializations/packt-mastering-java-from-beginner-to-intermediate",
+    "type": "specialization",
+    "title": "Mastering Java - From Beginner to Intermediate",
+    "url": "https://www.coursera.org/specializations/packt-mastering-java-from-beginner-to-intermediate",
+    "courses": [
+      "learn/packt-java-fundamentals-getting-started-with-java-aizth",
+      "learn/packt-java-control-flow-ide-and-object-oriented-programming-tbejc",
+      "learn/packt-oop-concepts-collections-and-data-structures-c8cgi"
+    ],
+    "provider": "Packt",
+    "coursera": 4.8,
+    "ratings_total": 6,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 5
+    }
+  },
   "specializations/packt-md-102-endpoint-administrator": {
     "key": "specializations/packt-md-102-endpoint-administrator",
     "type": "specialization",
@@ -3732,6 +4892,27 @@
     ],
     "provider": "Packt"
   },
+  "specializations/packt-selenium-webdriver-4-with-python-zero-to-hero": {
+    "key": "specializations/packt-selenium-webdriver-4-with-python-zero-to-hero",
+    "type": "specialization",
+    "title": "Selenium WebDriver 4 with Python - Zero To Hero",
+    "url": "https://www.coursera.org/specializations/packt-selenium-webdriver-4-with-python-zero-to-hero",
+    "courses": [
+      "learn/packt-foundations-of-python-and-selenium-webdriver-u32cp",
+      "learn/packt-intermediate-selenium-webdriver-and-automation-4toso",
+      "learn/packt-advanced-automation-frameworks-and-continuous-integration-u32cp"
+    ],
+    "provider": "Packt",
+    "coursera": 4.5,
+    "ratings_total": 14,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 4,
+      "5": 9
+    }
+  },
   "specializations/pearson-building-linux-servers-dhcp-dns-and-directory-services": {
     "key": "specializations/pearson-building-linux-servers-dhcp-dns-and-directory-services",
     "type": "specialization",
@@ -3791,13 +4972,13 @@
     ],
     "provider": "IBM",
     "coursera": 4.7,
-    "ratings_total": 6693,
+    "ratings_total": 6631,
     "rating_counts": {
-      "1": 103,
+      "1": 101,
       "2": 79,
-      "3": 204,
-      "4": 1138,
-      "5": 5169
+      "3": 202,
+      "4": 1134,
+      "5": 5115
     }
   },
   "specializations/personal-finance-strategy": {
@@ -3890,13 +5071,13 @@
     ],
     "provider": "Vanderbilt University",
     "coursera": 4.8,
-    "ratings_total": 9170,
+    "ratings_total": 9154,
     "rating_counts": {
       "1": 93,
-      "2": 50,
-      "3": 175,
-      "4": 1094,
-      "5": 7758
+      "2": 48,
+      "3": 173,
+      "4": 1092,
+      "5": 7748
     }
   },
   "specializations/public-speaking": {
@@ -3912,13 +5093,34 @@
     ],
     "provider": "University of Washington",
     "coursera": 4.7,
-    "ratings_total": 3412,
+    "ratings_total": 3398,
     "rating_counts": {
-      "1": 57,
+      "1": 56,
       "2": 17,
       "3": 63,
-      "4": 441,
-      "5": 2834
+      "4": 440,
+      "5": 2822
+    }
+  },
+  "specializations/python-data-engineering": {
+    "key": "specializations/python-data-engineering",
+    "type": "specialization",
+    "title": "Applied Python Data Engineering",
+    "url": "https://www.coursera.org/specializations/python-data-engineering",
+    "courses": [
+      "learn/spark-hadoop-snowflake-data-engineering",
+      "learn/virtualization-docker-kubernetes-data-engineering",
+      "learn/data-visualization-python"
+    ],
+    "provider": "Duke University",
+    "coursera": 3.9,
+    "ratings_total": 154,
+    "rating_counts": {
+      "1": 17,
+      "2": 12,
+      "3": 15,
+      "4": 27,
+      "5": 83
     }
   },
   "specializations/python-real-world-data-analysis": {
@@ -3947,6 +5149,29 @@
       "3": 4,
       "4": 21,
       "5": 75
+    }
+  },
+  "specializations/python": {
+    "key": "specializations/python",
+    "type": "specialization",
+    "title": "Python for Everybody",
+    "url": "https://www.coursera.org/specializations/python",
+    "courses": [
+      "learn/python",
+      "learn/python-data",
+      "learn/python-network-data",
+      "learn/python-databases",
+      "learn/python-data-visualization"
+    ],
+    "provider": "University of Michigan",
+    "coursera": 4.8,
+    "ratings_total": 411947,
+    "rating_counts": {
+      "1": 1319,
+      "2": 1061,
+      "3": 6006,
+      "4": 52280,
+      "5": 351281
     }
   },
   "specializations/r-data-analytics-statistical-modeling-specialization": {
@@ -4005,13 +5230,13 @@
     ],
     "provider": "University of Alberta",
     "coursera": 4.7,
-    "ratings_total": 5687,
+    "ratings_total": 5679,
     "rating_counts": {
       "1": 45,
       "2": 31,
       "3": 162,
-      "4": 793,
-      "5": 4656
+      "4": 792,
+      "5": 4649
     }
   },
   "specializations/responsible-ai-leadership": {
@@ -4069,6 +5294,91 @@
       "5": 3593
     }
   },
+  "specializations/science-of-change": {
+    "key": "specializations/science-of-change",
+    "type": "specialization",
+    "title": "The Science of Change",
+    "url": "https://www.coursera.org/specializations/science-of-change",
+    "courses": [
+      "learn/the-science-and-neuroscience-of-change",
+      "learn/core-change-principles",
+      "learn/kotter-accelerators-1-4",
+      "learn/kotter-accelerators-5-8"
+    ],
+    "provider": "Kotter",
+    "coursera": 4.6,
+    "ratings_total": 147,
+    "rating_counts": {
+      "1": 5,
+      "2": 2,
+      "3": 5,
+      "4": 18,
+      "5": 117
+    }
+  },
+  "specializations/securing-the-assets-bitcoin-security": {
+    "key": "specializations/securing-the-assets-bitcoin-security",
+    "type": "specialization",
+    "title": "Securing the Assets: Bitcoin Security",
+    "url": "https://www.coursera.org/specializations/securing-the-assets-bitcoin-security",
+    "courses": [
+      "learn/bitcoin-security-foundations",
+      "learn/bitcoin-transaction-network-security",
+      "learn/bitcoin-threats-future-security"
+    ],
+    "provider": "AI CERTs",
+    "ratings_total": 2,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 0
+    }
+  },
+  "specializations/semiconductor-characterization": {
+    "key": "specializations/semiconductor-characterization",
+    "type": "specialization",
+    "title": "Semiconductor Characterization",
+    "url": "https://www.coursera.org/specializations/semiconductor-characterization",
+    "courses": [
+      "learn/fundamentals-of-semiconductor-characterization",
+      "learn/electrical-characterization-diodes",
+      "learn/electrical-characterization-mosfets",
+      "learn/electron-and-ion-beam-characterization",
+      "learn/optical-and-x-ray-characterization"
+    ],
+    "provider": "Arizona State University",
+    "coursera": 4.8,
+    "ratings_total": 181,
+    "rating_counts": {
+      "1": 2,
+      "2": 1,
+      "3": 3,
+      "4": 19,
+      "5": 156
+    }
+  },
+  "specializations/shoulder-rehabilitation": {
+    "key": "specializations/shoulder-rehabilitation",
+    "type": "specialization",
+    "title": "Comprehensive Shoulder Rehabilitation",
+    "url": "https://www.coursera.org/specializations/shoulder-rehabilitation",
+    "courses": [
+      "learn/clinical-rehab-strategies-for-shoulder-dysfunction",
+      "learn/rotator-cuff-assessment-and-treatment-techniques",
+      "learn/massage-therapy-treatment-for-frozen-shoulder"
+    ],
+    "provider": "Niel Asher Education",
+    "ratings_total": 3,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1,
+      "5": 2
+    }
+  },
   "specializations/singer-songwriter": {
     "key": "specializations/singer-songwriter",
     "type": "specialization",
@@ -4082,13 +5392,68 @@
     ],
     "provider": "Berklee",
     "coursera": 4.8,
-    "ratings_total": 4600,
+    "ratings_total": 4572,
     "rating_counts": {
-      "1": 59,
+      "1": 57,
       "2": 37,
       "3": 90,
       "4": 580,
-      "5": 3834
+      "5": 3808
+    }
+  },
+  "specializations/skillup-build-foundations-in-healthcare-systems-technology": {
+    "key": "specializations/skillup-build-foundations-in-healthcare-systems-technology",
+    "type": "specialization",
+    "title": "SkillUp Build Foundations in Healthcare Systems & Technology",
+    "url": "https://www.coursera.org/specializations/skillup-build-foundations-in-healthcare-systems-technology",
+    "courses": [
+      "learn/explore-healthcare-systems-delivery-administration",
+      "learn/apply-healthcare-technology-ehrs-data-ai",
+      "learn/capstone-optimize-healthcare-operations-with-informatics"
+    ],
+    "provider": "SkillUp"
+  },
+  "specializations/social-determinants-on-health": {
+    "key": "specializations/social-determinants-on-health",
+    "type": "specialization",
+    "title": "The Influence of Social Determinants on Health",
+    "url": "https://www.coursera.org/specializations/social-determinants-on-health",
+    "courses": [
+      "learn/social-determinants-of-health",
+      "learn/the-influence-of-social-context-on-health",
+      "learn/assessing-and-improving-community-health"
+    ],
+    "provider": "University of Michigan",
+    "coursera": 4.6,
+    "ratings_total": 89,
+    "rating_counts": {
+      "1": 2,
+      "2": 2,
+      "3": 4,
+      "4": 12,
+      "5": 69
+    }
+  },
+  "specializations/social-impact-and-public-policy": {
+    "key": "specializations/social-impact-and-public-policy",
+    "type": "specialization",
+    "title": "Social Impact & Public Policy",
+    "url": "https://www.coursera.org/specializations/social-impact-and-public-policy",
+    "courses": [
+      "learn/using-public-policy-for-social-change",
+      "learn/social-work-practice-advocating-social-justice-and-change",
+      "learn/community-organizing",
+      "learn/sustainability-leadership-development"
+    ],
+    "provider": "University of Michigan",
+    "coursera": 4.8,
+    "ratings_total": 987,
+    "rating_counts": {
+      "1": 8,
+      "2": 2,
+      "3": 17,
+      "4": 136,
+      "5": 824
     }
   },
   "specializations/social-media-as-a-key-marketing-tool": {
@@ -4133,6 +5498,27 @@
       "5": 7
     }
   },
+  "specializations/statistical-modeling-for-data-science-applications": {
+    "key": "specializations/statistical-modeling-for-data-science-applications",
+    "type": "specialization",
+    "title": "Statistical Modeling for Data Science Applications",
+    "url": "https://www.coursera.org/specializations/statistical-modeling-for-data-science-applications",
+    "courses": [
+      "learn/modern-regression-analysis-in-r",
+      "learn/anova-and-experimental-design",
+      "learn/generalized-linear-models-and-nonparametric-regression"
+    ],
+    "provider": "University of Colorado Boulder",
+    "coursera": 4.2,
+    "ratings_total": 90,
+    "rating_counts": {
+      "1": 10,
+      "2": 5,
+      "3": 5,
+      "4": 5,
+      "5": 65
+    }
+  },
   "specializations/statistical-thermodynamics-engineering": {
     "key": "specializations/statistical-thermodynamics-engineering",
     "type": "specialization",
@@ -4175,6 +5561,27 @@
       "3": 3,
       "4": 29,
       "5": 114
+    }
+  },
+  "specializations/sustainable-circular-product-development": {
+    "key": "specializations/sustainable-circular-product-development",
+    "type": "specialization",
+    "title": "Sustainable and Circular Product Development",
+    "url": "https://www.coursera.org/specializations/sustainable-circular-product-development",
+    "courses": [
+      "learn/product-design-for-circular-economy",
+      "learn/packaging-design-for-the-circular-economy",
+      "learn/circular-product-design-frameworks-and-certifications"
+    ],
+    "provider": "University of Colorado Boulder",
+    "coursera": 4.8,
+    "ratings_total": 53,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 49
     }
   },
   "specializations/tally-financial-accounting-with-vat-compliance": {
@@ -4273,6 +5680,18 @@
       "5": 125
     }
   },
+  "specializations/unity-shader-programming-visual-effects": {
+    "key": "specializations/unity-shader-programming-visual-effects",
+    "type": "specialization",
+    "title": "Unity Shader Programming and Visual Effects",
+    "url": "https://www.coursera.org/specializations/unity-shader-programming-visual-effects",
+    "courses": [
+      "learn/apply-unity-shader-fundamentals-lighting",
+      "learn/develop-vertex-shaders-screen-effects",
+      "learn/create-advanced-unity-shader-effects"
+    ],
+    "provider": "EDUCBA"
+  },
   "specializations/wiley-cost-accounting-for-dummies": {
     "key": "specializations/wiley-cost-accounting-for-dummies",
     "type": "specialization",
@@ -4284,5 +5703,46 @@
       "learn/wiley-specialized-costing-techniques-and-profit-optimization"
     ],
     "provider": "John Wiley & Sons"
+  },
+  "specializations/wine-tasting-sensory-techniques-for-wine-analysis": {
+    "key": "specializations/wine-tasting-sensory-techniques-for-wine-analysis",
+    "type": "specialization",
+    "title": "Wine Tasting: Sensory Techniques for Wine Analysis",
+    "url": "https://www.coursera.org/specializations/wine-tasting-sensory-techniques-for-wine-analysis",
+    "courses": [
+      "learn/wine-tasting-intro-to-wine-analysis",
+      "learn/wine-tasting-flavor-and-aroma",
+      "learn/common-wine-faults",
+      "learn/food-and-wine-pairing"
+    ],
+    "provider": "University of California, Davis",
+    "ratings_total": 4,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
+  "specializations/writing-secure-code-android": {
+    "key": "specializations/writing-secure-code-android",
+    "type": "specialization",
+    "title": "Writing Secure Code for Android",
+    "url": "https://www.coursera.org/specializations/writing-secure-code-android",
+    "courses": [
+      "learn/secure-coding-input-validation-android",
+      "learn/memory-encryption-and-protecting-data-android",
+      "learn/android-access-control-software-protection-system-integrity"
+    ],
+    "provider": "Infosec",
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    }
   }
 }

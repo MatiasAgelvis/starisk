@@ -30,6 +30,11 @@ description = "Inspect the page cache: counts and sizes, or a full reparse"
 dir = "pipeline"
 run = "python -m starisk.cache"
 
+[tasks."pipeline:completeness"]
+description = "Coverage per Coursera product family; --write to store it for /coverage"
+dir = "pipeline"
+run = "python -m starisk.completeness"
+
 [tasks."pipeline:crawl"]
 description = "Crawl the courses listed in pipeline/data/sources.json, then localise logos"
 dir = "pipeline"
@@ -49,10 +54,14 @@ python -m starisk.groupings --fetch --write || [ $? -eq 2 ]
 """
 
 [tasks."pipeline:all"]
-description = "Read the queue, expand the list, crawl and localise, rebuild the index, then sync the site"
+description = "One full run: queue, discover, expand, crawl, localise, rebuild, sync"
 dir = "pipeline"
 # Composed rather than copied, so the order and the derived steps live in one
-# place. The shebang keeps `-- --limit 20` flowing to `pipeline:crawl`.
+# place. Discovery comes before expansion because `expand --programs` reads the
+# groupings.json that discovery rewrites; this is the nightly's order too.
+# groupings.json is derived from the page cache, so a full run you intend to
+# commit belongs where that cache lives (the crawl box), not a partial laptop one.
+# The shebang keeps `-- --limit 20` flowing to `pipeline:crawl`.
 run = """
 #!/bin/sh
 set -e
@@ -60,7 +69,8 @@ set -e
 # stop a run that already has sources. STARISK_ENV_FILE picks the database.
 mise run pipeline:demand -- --env-file "${STARISK_ENV_FILE:-.env.prod}" --write \\
   || echo "[all] the queue read failed; crawling the sources we already have"
-mise run pipeline:expand -- --write
+mise run pipeline:discover
+mise run pipeline:expand -- --write --programs --instructors
 mise run pipeline:crawl -- "$@"
 mise run web:sync
 """
@@ -103,6 +113,11 @@ python -m starisk.logo_hires
 description = "Rebuild data/groupings.json from cached program pages"
 dir = "pipeline"
 run = "python -m starisk.groupings --write"
+
+[tasks."pipeline:discover"]
+description = "Discover the next programs from the sitemap, fetch their pages, rebuild the index"
+dir = "pipeline"
+run = "python -m starisk.groupings --discover --refresh --fetch --write"
 
 [tasks."pipeline:seed-programs"]
 description = "Fetch seeded program pages, then rebuild data/groupings.json"

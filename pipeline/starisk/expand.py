@@ -1,11 +1,9 @@
 """Grow data/sources.json from pages that already list courses.
 
-The crawl list is curated, but three kinds of page hand out more of it for the
-price of one request each (or none at all):
+The crawl list is curated, but two kinds of page hand out more of it:
 
-  specializations  a certificate -> the courses the specialization is made of
-  instructors      a teacher already indexed -> everything else they teach
-  programs         the derived program index -> the courses of a bundle we publish
+  instructors  a teacher already indexed -> everything else they teach
+  programs     the derived program index -> the courses of a bundle we publish
 
 Programs carry no request cost: `groupings.json` already holds the membership, so
 the lever just makes sure every course in a published bundle is queued. That is
@@ -15,12 +13,12 @@ publish, not everything a publisher ever taught.
 Neither lever is "crawl Coursera": the sitemap has ~23k courses and this stays
 explicit and small.
 
-The nightly runs **specializations** and **programs** only. Instructor profiles are
-a catalogue rather than a curriculum — one scored course hands over everything the
-person teaches — so that lever stays manual (`--instructors`).
+The nightly runs **programs** only. Instructor profiles are a catalogue rather than
+a curriculum — one scored course hands over everything the person teaches — so that
+lever stays manual (`--instructors`).
 
     cd pipeline
-    python3 -m starisk.expand                 # report every lever, write nothing
+    python3 -m starisk.expand                 # report both levers, write nothing
     python3 -m starisk.expand --write         # extend data/sources.json
     python3 -m starisk.expand --programs      # one lever only
     python3 -m starisk.expand --limit 10      # at most 10 parent pages
@@ -35,39 +33,19 @@ import sys
 import time
 from pathlib import Path
 
-from .adapter import extract_instructor_courses, extract_specialization_courses
+from .adapter import extract_instructor_courses
 from .cache import CACHE_DIR, load_page, store_page
 from .crawl import SCORES_PATH, SOURCES_PATH, load_retired, normalize_source, write_atomic
 from .fetch import JITTER, fetch_page, jitter
 from .groupings import read_index
-from .link import CALIBRATION_PATH, candidates, clean_title, page_title, tokens
-from .sitemap import PROGRAM_SITEMAP_CACHE, program_slugs
 
-SPECIALIZATION_URL = "https://www.coursera.org/specializations/{slug}"
 INSTRUCTOR_URL = "https://www.coursera.org/instructor/{slug}"
-SITEMAP_CACHE = PROGRAM_SITEMAP_CACHE
 
 DELAY = 1.5
 
-_SPECIALIZATION = re.compile(r"\s+Specialization$", re.IGNORECASE)
-
-
-def bare_title(title: str) -> str:
-    """\"Deep Learning Specialization\" and \"Deep Learning\" are the same thing."""
-    return _SPECIALIZATION.sub("", clean_title(title))
-
-
-def load_slugs(
-    fetch=fetch_page,
-    refresh: bool = False,
-    cache_path: Path = SITEMAP_CACHE,
-) -> list[str]:
-    """Specialization slugs from Coursera's sitemap, cached to disk."""
-    return program_slugs(fetch=fetch, refresh=refresh, cache_path=cache_path)
-
 
 def _page(key: str, url: str, fetch, delay, sleep, cache_dir) -> str | None:
-    """Cached GET. Instructor and specialization pages are fetched once."""
+    """Cached GET. Instructor profile pages are fetched once."""
     html = load_page(key, cache_dir)
     if html is not None:
         return html
@@ -79,27 +57,6 @@ def _page(key: str, url: str, fetch, delay, sleep, cache_dir) -> str | None:
     if delay:
         sleep(jitter(delay))
     return html
-
-
-def resolve_specialization(
-    entry: dict,
-    slugs: list[str],
-    fetch=fetch_page,
-    delay: float = DELAY,
-    sleep=time.sleep,
-    cache_dir: Path = CACHE_DIR,
-) -> tuple[str | None, str | None]:
-    """Find the specialization slug for a certificate, confirmed by `og:title`.
-
-    The title check is the same rule as the course mapping: a wrong slug is worse
-    than a missing one, so a candidate only wins if the page names itself exactly.
-    """
-    wanted = tokens(bare_title(entry["title"]))
-    for slug, _value in candidates(bare_title(entry["title"]), slugs, limit=3):
-        html = _page(f"specializations/{slug}", SPECIALIZATION_URL.format(slug=slug), fetch, delay, sleep, cache_dir)
-        if html and tokens(bare_title(page_title(html))) == wanted:
-            return slug, html
-    return None, None
 
 
 def indexed_instructors(scores: dict) -> dict[str, dict]:
@@ -194,18 +151,14 @@ def instructor_courses(
 
 def plan(
     scores: dict,
-    entries: list[dict],
     existing=(),
     fetch=fetch_page,
     delay: float = 0.0,
     sleep=time.sleep,
     cache_dir: Path = CACHE_DIR,
-    slug_cache: Path = SITEMAP_CACHE,
-    specializations: bool = True,
     instructors: bool = False,
     programs: bool = False,
     limit: int | None = None,
-    refresh: bool = False,
     log=None,
     retired=(),
     program_index: dict | None = None,
@@ -231,35 +184,6 @@ def plan(
     def progress(index: int, total: int, line: str) -> str:
         elapsed = time.monotonic() - started
         return f"[{index}/{total} {elapsed:5.1f}s] {line.strip()}"
-
-    if specializations:
-        report("specializations: reading sitemap...")
-        slugs = load_slugs(fetch=fetch, refresh=refresh, cache_path=slug_cache)
-        certificates = [
-            entry
-            for entry in entries
-            if entry.get("issuer") == "Coursera" and entry.get("type") == "specialization"
-        ]
-        report(f"specializations: {len(slugs)} slugs in the sitemap")
-        resolved = 0
-        for index, entry in enumerate(certificates, 1):
-            if budget is not None and budget <= 0:
-                report("  (budget reached)")
-                break
-            if budget is not None:
-                budget -= 1
-            slug, html = resolve_specialization(entry, slugs, fetch, delay, sleep, cache_dir)
-            if not html:
-                line = f"  miss   {entry['title'][:52]}"
-                report(line, progress(index, len(certificates), line))
-                continue
-            resolved += 1
-            courses = extract_specialization_courses(html)
-            for course in courses:
-                found.setdefault(f"learn/{course}", []).append(f"specialization:{slug}")
-            line = f"  ok     {entry['title'][:52]:54} {slug:30} {len(courses)} courses"
-            report(line, progress(index, len(certificates), line))
-        report(f"  resolved {resolved}/{len(certificates)} certificates")
 
     if instructors:
         people = indexed_instructors(scores)
@@ -328,15 +252,9 @@ def plan(
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="python -m starisk.expand",
-        description="Grow data/sources.json from specializations, instructors and programs.",
+        description="Grow data/sources.json from instructors and programs.",
     )
     parser.add_argument("--write", action="store_true", help="extend data/sources.json")
-    parser.add_argument("--refresh", action="store_true", help="re-download the sitemap")
-    parser.add_argument(
-        "--specializations",
-        action="store_true",
-        help="use only the specialization lever",
-    )
     parser.add_argument(
         "--instructors",
         action="store_true",
@@ -354,29 +272,21 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str]) -> int:
     options = parse_args(argv)
 
-    entries = (
-        json.loads(CALIBRATION_PATH.read_text(encoding="utf-8"))
-        if CALIBRATION_PATH.exists()
-        else []
-    )
     scores = (
         json.loads(SCORES_PATH.read_text(encoding="utf-8")) if SCORES_PATH.exists() else {}
     )
     sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8")) if SOURCES_PATH.exists() else []
 
-    # No lever flag means every lever, which is what the nightly runs.
-    chosen = options.specializations or options.instructors or options.programs
+    # No lever flag means both levers.
+    chosen = options.instructors or options.programs
 
     new, _lines = plan(
         scores,
-        entries,
         existing=sources,
         delay=DELAY,
-        specializations=options.specializations or not chosen,
         instructors=options.instructors or not chosen,
         programs=options.programs or not chosen,
         limit=options.limit,
-        refresh=options.refresh,
         log=lambda line: print(line, flush=True),
         retired=load_retired(),
     )

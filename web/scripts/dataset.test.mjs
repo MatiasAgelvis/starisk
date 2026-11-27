@@ -54,6 +54,7 @@ test('carries the measurements and the identifiers', () => {
   const course = dataset.courses[0];
 
   assert.equal(course.key, 'learn/a');
+  assert.equal(course.type, 'course');
   assert.equal(course.coursera, 4.5);
   assert.equal(course.starisk, 3.9);
   assert.equal(course.reviewsRead, 20);
@@ -86,6 +87,7 @@ test('never includes third-party prose, marks or photos', () => {
     'spread',
     'starisk',
     'title',
+    'type',
   ]);
 });
 
@@ -109,10 +111,12 @@ test('programs carry membership and a derived average', () => {
 test('counts and licence describe the file', () => {
   assert.equal(dataset.schema, 1);
   assert.equal(dataset.generatedAt, '2026-11-25T12:00:00Z');
+  assert.equal(dataset.asOf, '2026-11-25T00:00:00Z');
   assert.equal(dataset.license.data, 'CC BY 4.0');
   assert.ok(dataset.license.attribution.includes('starisk.matiasagelvis.com'));
   assert.deepEqual(dataset.counts, {
     courses: 2,
+    projects: 0,
     scored: 1,
     noReviews: 1,
     reviewsRead: 20,

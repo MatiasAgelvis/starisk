@@ -1,10 +1,14 @@
 #!/bin/sh
-# One run of the nightly job, from nothing.
+# One run of the nightly job.
 #
-# The checkout is a build step: cloned here, used, and thrown away with the
-# container. The corpus is not carried anywhere either — it comes from `develop`
-# with the clone, and goes back out as a branch. Only two things survive, and
-# neither is authoritative: the page cache (best effort) and the run record.
+# This file is cloned at runtime, so changes here — cache paths, flags, defaults —
+# take effect on the next run. Only `ops/bootstrap.sh` and the Dockerfile need an
+# image rebuild.
+#
+# The checkout is a build step: cloned by the bootstrap, used, and thrown away
+# with the container. The corpus is not carried anywhere either — it comes from
+# the branch with the clone, and goes back out as a branch. Only two things
+# survive, and neither is authoritative: the page cache and the run record.
 set -eu
 
 # Line-buffer stdout even when it is piped to logger: a nightly that looks stuck
@@ -12,20 +16,18 @@ set -eu
 export PYTHONUNBUFFERED=1
 
 WORK=${STARISK_WORK:-/work}
-REPO_SLUG=${GITHUB_REPO:-MatiasAgelvis/starisk}
-# The branch to crawl from. `develop` in production; override it to run the
-# container against an unmerged branch without merging anything.
-BRANCH=${STARISK_BRANCH:-develop}
 
+# The image may or may not set these. Setting them here means a stale image can
+# still find the persistent volume; an env file still overrides both.
 : "${STARISK_CACHE:=/state/cache}"
 : "${STARISK_LOGS:=/state/logs}"
 export STARISK_CACHE STARISK_LOGS
 mkdir -p "$STARISK_CACHE" "$STARISK_LOGS"
 
-if [ ! -d "$WORK/.git" ]; then
-  echo "[entrypoint] cloning https://github.com/$REPO_SLUG.git ($BRANCH)"
-  git clone --depth 1 --branch "$BRANCH" "https://github.com/$REPO_SLUG.git" "$WORK"
-fi
+# A cold cache is not fatal, but a cold cache every night is: print it once, at
+# the top, so a mis-mounted volume is visible before the run spends its budget.
+pages=$(ls "$STARISK_CACHE/pages" 2>/dev/null | wc -l | tr -d ' ')
+echo "[entrypoint] cache $STARISK_CACHE ($pages page(s))"
 
 cd "$WORK/pipeline"
 exec python -m starisk.nightly "$@"

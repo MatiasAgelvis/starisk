@@ -20,6 +20,10 @@ export function getStaticPaths() {
 const { program } = Astro.props;
 const average = program.average;
 const type = typeLabel(program.type);
+// A never-crawled member has no title or provider to draw, so the table lists the
+// members we have a record for and the rest become one counted line underneath.
+const listed = program.courses.filter((course) => course.read);
+const folded = program.courses.length - listed.length;
 // A program has no written reviews of its own, so the comparison only exists for
 // complete sets: a partial average would be one or two courses held up against
 // the bundle's whole rating population.
@@ -143,15 +147,28 @@ const description =
       <h2 class="font-display text-xl font-bold">
         The {program.total === 1 ? 'course' : 'courses'}
       </h2>
-      <div class="mt-4">
-        <ScoreTable
-          client:visible
-          rows={program.courses}
-          showFilters={false}
-          compact={true}
-          defaultSortKey="starisk"
-        />
-      </div>
+      {
+        listed.length > 0 && (
+          <div class="mt-4">
+            <ScoreTable
+              client:visible
+              rows={listed}
+              showFilters={false}
+              compact={true}
+              defaultSortKey="starisk"
+            />
+          </div>
+        )
+      }
+      {
+        folded > 0 && (
+          <p class="mt-3 text-xs text-base-content/50">
+            {folded === 1
+              ? 'One more course is not read yet; it joins this list as the crawl reaches it.'
+              : `${folded} more courses are not read yet; they join this list as the crawl reaches them.`}
+          </p>
+        )
+      }
     </section>
 
     <section class="mt-10 space-y-3 text-sm text-base-content/60">

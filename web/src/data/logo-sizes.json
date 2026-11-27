@@ -366,5 +366,29 @@
   "kodekloud": {
     "tile": "/logos/tile/kodekloud.png",
     "full": "/logos/full/kodekloud.png"
+  },
+  "national-academy-of-sports-medicine": {
+    "tile": "/logos/tile/national-academy-of-sports-medicine.png",
+    "full": "/logos/full/national-academy-of-sports-medicine.png"
+  },
+  "microsoft": {
+    "tile": "/logos/tile/microsoft.jpg",
+    "full": "/logos/full/microsoft.jpg"
+  },
+  "john-wiley-sons": {
+    "tile": "/logos/tile/john-wiley-sons.png",
+    "full": "/logos/full/john-wiley-sons.png"
+  },
+  "olay": {
+    "tile": "/logos/tile/olay.png",
+    "full": "/logos/full/olay.png"
+  },
+  "universidad-nacional-autonoma-de-mexico": {
+    "tile": "/logos/tile/universidad-nacional-autonoma-de-mexico.jpg",
+    "full": "/logos/full/universidad-nacional-autonoma-de-mexico.jpg"
+  },
+  "madecraft": {
+    "tile": "/logos/tile/madecraft.png",
+    "full": "/logos/full/madecraft.png"
   }
 }

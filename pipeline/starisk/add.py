@@ -28,8 +28,9 @@ from .fetch import fetch_page
 
 _SLUG = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
-# v1 scores courses; specializations are crawlable but not scored as a unit (D17).
-_TYPES = frozenset({"learn", "specializations"})
+# Scored families plus specializations (crawlable, not scored as a unit). The
+# crawler decides what it can score; this only validates a pasted link.
+_TYPES = frozenset({"learn", "specializations", "projects"})
 
 
 def sources_from_text(text: str) -> list[str]:

@@ -16,6 +16,11 @@ from .paths import CACHE_DIR
 
 PROGRAM_SITEMAP_URL = "https://www.coursera.org/sitemap~www~specializations.xml"
 PROGRAM_SITEMAP_CACHE = CACHE_DIR / "coursera-specializations.txt"
+# Professional Certificates share the specialization page shape (a course list
+# under `sdp-course-list-link`), but live in their own sitemap. The other entries
+# there are `/certificates/...` marketing pages, so the marker filters them out.
+PROCERT_SITEMAP_URL = "https://www.coursera.org/sitemap~www~certificates.xml"
+PROCERT_SITEMAP_CACHE = CACHE_DIR / "coursera-professional-certificates.txt"
 
 _LOC = re.compile(r"<loc>([^<]+)</loc>")
 
@@ -68,6 +73,21 @@ def program_slugs(
     return load_slugs(
         PROGRAM_SITEMAP_URL,
         "/specializations/",
+        cache_path,
+        fetch=fetch,
+        refresh=refresh,
+    )
+
+
+def procert_slugs(
+    fetch=fetch_page,
+    refresh: bool = False,
+    cache_path: Path = PROCERT_SITEMAP_CACHE,
+) -> list[str]:
+    """Professional Certificate slugs, the second program source."""
+    return load_slugs(
+        PROCERT_SITEMAP_URL,
+        "/professional-certificates/",
         cache_path,
         fetch=fetch,
         refresh=refresh,

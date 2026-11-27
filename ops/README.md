@@ -134,8 +134,9 @@ snapshot anyway.
   carries it forward), so the budget costs freshness, never the directory.
   `--fetch-limit 0` lifts the cap.
 - **Updating the job.** Merge to `develop`. The next run clones it, so the code
-  that runs is the code you merged. Rebuild the image only when the entrypoint or
-  runtimes change: `sudo ./ops/setup.sh --env .env`, or
+  that runs is the code you merged — and the cloned `ops/entrypoint.sh` means
+  cache paths, flags and defaults ship the same way. Rebuild the image only when
+  `ops/bootstrap.sh` or the runtimes change: `sudo ./ops/setup.sh --env .env`, or
   `docker build -f ops/Dockerfile -t starisk-nightly .`.
 
 ## Exit codes
