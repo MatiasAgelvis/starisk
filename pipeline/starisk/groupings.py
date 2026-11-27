@@ -111,14 +111,14 @@ def extract_grouping(html: str, key: str) -> dict | None:
     if not title:
         return None
 
+    details = extract_details(html)
     grouping = {
         "key": key,
         "type": _TYPE_LABELS[kind],
         "title": title,
-        "url": f"https://www.coursera.org/{key}",
+        "url": details.get("url") or f"https://www.coursera.org/{key}",
         "courses": courses,
     }
-    details = extract_details(html)
     provider = details.get("provider")
     if provider:
         grouping["provider"] = provider
@@ -174,7 +174,34 @@ def build_groupings(
             continue
         groupings[key] = grouping
 
-    return groupings
+    return _dedupe_by_url(groupings)
+
+
+def _dedupe_by_url(groupings: dict[str, dict]) -> dict[str, dict]:
+    """Drop localized alias pages that resolve to the same canonical program.
+
+    Coursera lists translations in the sitemap (`.../analytique-des-donnees-google`)
+    but serves the English page, whose JSON-LD `url` is the canonical slug. Without
+    this, the directory shows the same bundle twice under different keys.
+    """
+    kept: dict[str, dict] = {}
+    by_url: dict[str, str] = {}
+    for key, grouping in groupings.items():
+        url = grouping.get("url")
+        if not url:
+            kept[key] = grouping
+            continue
+        canonical = url.split("coursera.org/", 1)[-1].strip("/")
+        other = by_url.get(url)
+        if other is None:
+            kept[key] = grouping
+            by_url[url] = key
+            continue
+        if key == canonical and other != canonical:
+            kept.pop(other, None)
+            kept[key] = grouping
+            by_url[url] = key
+    return kept
 
 
 def read_seeds(path: Path = PROGRAMS_PATH) -> list[str]:
