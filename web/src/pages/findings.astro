@@ -80,14 +80,14 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
 ---
 
 <Base title="Findings — Starisk" description={description}>
-  <article class="mx-auto max-w-4xl">
+  <article class="mx-auto max-w-3xl">
     <BackLink fallback="/" />
 
     <header class="mt-4">
       <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">
         The gap, plotted
       </h1>
-      <p class="mt-3 max-w-2xl text-base-content/75">
+      <p class="mt-3 text-base-content/75">
         Coursera's headline rating is an average of every star a course ever received. Starisk is
         what the most-upvoted written reviews say. Put {rated.length} courses of both on the same
         axes and the two stopped being the same measurement a long time ago.
@@ -116,7 +116,7 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
 
     <section class="mt-10">
       <h2 class="font-display text-xl font-bold">Two distributions, one axis</h2>
-      <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+      <p class="mt-2 text-sm text-base-content/60">
         Share of courses at each star rating. Coursera's ratings sit almost entirely in the
         top bucket; ours use the whole range.
       </p>
@@ -327,7 +327,7 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
 
     <section class="mt-12">
       <h2 class="font-display text-xl font-bold">The same scale, all {rated.length} of them</h2>
-      <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+      <p class="mt-2 text-sm text-base-content/60">
         One dot per course, both axes 1–5. On the diagonal the two agree; below it the headline is
         kinder than the reviews.
       </p>
@@ -335,7 +335,7 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
       <figure class="mt-4">
         <svg
           viewBox={`0 0 ${SW} ${S_HEIGHT}`}
-          class="mx-auto h-auto w-full max-w-[560px]"
+          class="mx-auto h-auto w-full max-w-[620px]"
           role="img"
           aria-label={`Scatter of ${rated.length} courses: Coursera rating against Starisk score. One course in ${clashIn} gets a different star rating from Starisk than from Coursera.`}
         >
