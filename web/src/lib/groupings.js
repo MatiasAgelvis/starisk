@@ -35,6 +35,10 @@ export function buildGroupings(groupings, scores) {
     const members = (group.courses ?? []).map((courseKey) => ({
       key: courseKey,
       ...(scores[courseKey] ?? {}),
+      // A member we have never crawled has no record at all: no title, no
+      // provider, no score. Program pages fold those into one counted line
+      // instead of drawing rows that read as broken.
+      read: Boolean(scores[courseKey]?.title),
     }));
     const scored = members.filter((course) => typeof course.starisk === 'number');
     const reviews = scored.reduce((total, course) => total + (course.reviews ?? 0), 0);
