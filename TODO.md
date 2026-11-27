@@ -43,10 +43,10 @@ moves these; `pipeline/data/stats.json` has the counts it wrote.
 
 ## Coverage
 
-Grow along the two existing edges (`mise run pipeline:expand`), not by sampling the
-sitemap: the teacher graph has been the productive one, the specialization lever
-much less so. 2,261 sources listed against 2,089 records — the gap is courses that
-were listed but never scored (554 have no written reviews at all).
+Grow along the edges that already exist (`mise run pipeline:expand`): the teacher
+graph has been the productive one, and program discovery adds the directory.
+2,261 sources listed against 2,089 records — the gap is courses that were listed but
+never scored (554 have no written reviews at all).
 
 - **Program memberships drift slowly, and no program page is ever re-read.**
   Coursera usually replaces a course or ships a new program (which discovery finds),
@@ -55,9 +55,7 @@ were listed but never scored (554 have no written reviews at all).
   fetched its membership is frozen. A full yearly refresh needs either a `--refetch`
   flag on `groupings` (re-download published program pages, with the movement guard
   still refusing widespread change) or clearing `cache/pages/specializations/*` and
-  re-running `pipeline:seed-programs` (one night of requests). The calibration-cert
-  lever (`expand --specializations`) only ever covered my own certificates, not the
-  published directory; it no longer runs in the nightly.
+  re-running `pipeline:seed-programs` (one night of requests).
 
 - **Program coverage: 200 of ~3,604 sitemap slugs.** Discovery samples the sitemap
   20 a night (stable hash order, so it spreads across the catalogue instead of
