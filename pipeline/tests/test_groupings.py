@@ -499,5 +499,26 @@ class RefusalReportTest(unittest.TestCase):
         self.assertIn("page cache", reasons[0])
 
 
+class SitemapRefreshTest(unittest.TestCase):
+    def _discover(self, argv):
+        with (
+            mock.patch("starisk.groupings.program_slugs", return_value=[]) as slugs,
+            mock.patch("starisk.groupings.read_index", return_value={}),
+            mock.patch("starisk.groupings.read_seeds", return_value=[]),
+            mock.patch("starisk.groupings.cached_grouping_keys", return_value=[]),
+            mock.patch("starisk.groupings.build_groupings", return_value={}),
+        ):
+            main(argv)
+        return slugs
+
+    def test_discovery_reuses_the_cached_sitemap_by_default(self):
+        slugs = self._discover(["--discover"])
+        slugs.assert_called_once_with(refresh=False)
+
+    def test_discovery_can_refresh_the_sitemap(self):
+        slugs = self._discover(["--discover", "--refresh"])
+        slugs.assert_called_once_with(refresh=True)
+
+
 if __name__ == "__main__":
     unittest.main()
