@@ -22,9 +22,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import sys
 import time
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -45,6 +46,13 @@ PROGRAMS_PATH = DATA_DIR / "programs.json"
 # Programs discovered per run. One request each, and each brings a handful of
 # courses into the queue, so this is the throttle on corpus growth.
 DISCOVER_PER_RUN = 20
+
+# A single program can move between fetches (Coursera edits a bundle or recounts
+# its rating). A tenth of the directory moving at once is the stale-cache
+# signature the write guard refuses; the floor keeps small indexes from refusing
+# on one edit.
+MAX_MOVED_SHARE = 0.1
+MIN_MOVED = 5
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
 
@@ -280,10 +288,13 @@ def refuse_reason(new: dict, previous: dict, force: bool = False) -> str | None:
     """Why writing this index would be unsafe, or None when it is fine.
 
     The index is derived from cached pages, so it may only ever say *more* than
-    the version on disk. A smaller rebuild means the cache is missing pages, and
-    a program that lost ratings or courses means the pages behind it are older
-    than the ones that produced the published index. Both are the signature of a
-    stale cache, not news from Coursera, so they need `--force` to publish.
+    the version on disk: a smaller rebuild means the cache is missing pages, and
+    that is always refused.
+
+    Per-program movement is different. Coursera edits bundles and recounts
+    ratings, so one program changing between fetches is news, not corruption.
+    A *batch* of them moving at once — course lists and counts both — is the
+    stale-cache signature the guard exists for. Only that is refused.
     """
     if force:
         return None
@@ -294,6 +305,7 @@ def refuse_reason(new: dict, previous: dict, force: bool = False) -> str | None:
             "is incomplete. Re-run with --fetch, or --force if the drop is real."
         )
 
+    moved: list[tuple[str, str]] = []
     for key, old in previous.items():
         entry = new.get(key)
         if entry is None:
@@ -303,13 +315,9 @@ def refuse_reason(new: dict, previous: dict, force: bool = False) -> str | None:
             )
 
         if (entry.get("courses") or []) != (old.get("courses") or []):
-            return (
-                f"refusing to write {key}: its course list changed. That is a different "
-                "page than the one this index was built from — re-fetch or --force."
-            )
+            moved.append((key, "its course list changed"))
+            continue
 
-        # Counts only ever grow as a bundle ages. A fall means the page behind it
-        # is older than the one that produced the index we already published.
         for field, label in (("ratings_total", "ratings"), ("coursera", "bundle rating")):
             before, after = old.get(field), entry.get(field)
             if (
@@ -317,10 +325,17 @@ def refuse_reason(new: dict, previous: dict, force: bool = False) -> str | None:
                 and isinstance(after, (int, float))
                 and after < before
             ):
-                return (
-                    f"refusing to write {key}: its {label} fell from {before} to {after}. "
-                    "That is the signature of a stale cache, not a recount — --force if real."
-                )
+                moved.append((key, f"its {label} fell from {before} to {after}"))
+                break
+
+    limit = max(MIN_MOVED, math.ceil(len(previous) * MAX_MOVED_SHARE))
+    if len(moved) > limit:
+        key, why = moved[0]
+        return (
+            f"refusing to write: {len(moved)} of {len(previous)} programs moved "
+            f"({key}: {why}). Widespread movement is the signature of a stale cache, "
+            "not news from Coursera — --force if real."
+        )
 
     return None
 
@@ -355,7 +370,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str]) -> int:
+def main(argv: list[str], on_refusal: Callable[[str], None] | None = None) -> int:
     options = parse_args(argv)
     retired = load_retired()
     known_retired = len(retired)
@@ -402,6 +417,10 @@ def main(argv: list[str]) -> int:
     reason = refuse_reason(groupings, read_index(), force=options.force)
     if reason:
         print(reason, file=sys.stderr)
+        # The nightly's notification carries this now: "the index was refused"
+        # without naming the program is not something anyone can act on.
+        if on_refusal is not None:
+            on_refusal(reason)
         return 1
 
     write_atomic(GROUPINGS_PATH, groupings)
