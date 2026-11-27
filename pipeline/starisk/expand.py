@@ -113,6 +113,58 @@ def indexed_instructors(scores: dict) -> dict[str, dict]:
     return people
 
 
+PUBLISHERS_PATH = SCORES_PATH.parent / "publishers.json"
+
+
+def read_publishers(path: Path = PUBLISHERS_PATH) -> set[str]:
+    """The verified publisher slugs. A missing or broken file means an empty list."""
+    if not path.exists():
+        return set()
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return set()
+    return set(data) if isinstance(data, dict) else set()
+
+
+def _norm(value: object) -> str:
+    return re.sub(r"[^a-z0-9]", "", str(value or "").lower())
+
+
+def publisher_candidates(scores: dict, known: set[str]) -> list[tuple[str, str]]:
+    """Instructor slugs that look like their provider, outside the verified list.
+
+    Coursera offers no flag for publisher accounts and calls every profile a
+    `Person`, so a name that is the partner's name is the only automatic signal.
+    It is a review queue, not a decision: each candidate still needs its profile
+    read by hand before it joins `data/publishers.json`.
+    """
+    providers: dict[str, set[str]] = {}
+    names: dict[str, str] = {}
+    for record in scores.values():
+        provider = _norm(record.get("provider"))
+        if not provider:
+            continue
+        for person in record.get("instructors") or []:
+            # The site keys teachers by `page`; `slug` is Coursera's raw handle
+            # (`~136048342`), which is a different string for the same account.
+            key = person.get("page") or person.get("slug") or person.get("name")
+            if not key:
+                continue
+            providers.setdefault(key, set()).add(provider)
+            names.setdefault(key, person.get("name") or key)
+
+    found = []
+    for key, values in providers.items():
+        if key in known:
+            continue
+        page = _norm(key)
+        name = _norm(names[key])
+        if any(page == value or name == value or name.startswith(value) for value in values):
+            found.append((key, names[key]))
+    return sorted(found)
+
+
 def instructor_courses(
     slugs: list[str],
     fetch=fetch_page,
@@ -211,6 +263,11 @@ def plan(
 
     if instructors:
         people = indexed_instructors(scores)
+        candidates = publisher_candidates(scores, read_publishers())
+        if candidates:
+            report(f"instructors: {len(candidates)} possible publisher account(s) to review:")
+            for slug, name in candidates[:10]:
+                report(f"  ? {name} ({slug})")
         report(f"instructors: {len(people)} indexed")
         visited = 0
         for index, (slug, person) in enumerate(people.items(), 1):
