@@ -14,15 +14,6 @@ Current shape (2026-11-26): **1,969 courses indexed, 1,453 scored, 759 low-sampl
   moves only low-sample courses, but calibration can't judge it: 29 labelled
   courses, 2 of them low-sample. Needed: ~10 blind labels on low-sample courses.
   Then `k` stops being a guess.
-- **Publisher accounts are inferred, not verified.** The teacher directory marks an
-  entry as a publisher when its page or display name matches the provider's name.
-  Coursera offers no flag to read: its JSON-LD types every profile — SkillUp, IBM
-  Skills Network — as `Person`. The rule catches the 11 obvious ones but misses
-  aggregate accounts: "Professionals in the Industry" (491 courses) survives as a
-  person. Store the verified set in `pipeline/data/publishers.json` (12 slugs, one
-  line of evidence each), keep the name rule as a candidate finder that prints for
-  review during `expand --instructors`, and have `buildInstructors` read the file
-  instead of guessing at build time.
 
 ## Front end
 

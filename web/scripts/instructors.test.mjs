@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 import { buildInstructors, initials, teacherIndex } from '../src/lib/instructors.js';
@@ -105,14 +106,14 @@ test('the lookup index is keyed by slug and skips people without one', () => {
   assert.equal(index.bob, undefined);
 });
 
-test('marks publisher accounts, not people who mention the partner', () => {
+test('publisher labels come from the verified list, not the name', () => {
   const catalog = {
     'learn/x': {
       title: 'X',
       starisk: 4,
       reviews: 1,
-      provider: 'Starweaver',
-      instructors: [{ page: 'starweaver', name: 'Starweaver' }],
+      provider: 'SkillUp',
+      instructors: [{ page: 'skillup', name: 'SkillUp' }],
     },
     'learn/y': {
       title: 'Y',
@@ -121,33 +122,33 @@ test('marks publisher accounts, not people who mention the partner', () => {
       provider: 'IBM',
       instructors: [{ page: 'ibm-skills-network', name: 'IBM Skills Network Team' }],
     },
-    'learn/z': {
-      title: 'Z',
-      starisk: 4,
-      reviews: 1,
-      provider: 'Coursera',
-      instructors: [
-        { page: 'jeff', name: 'Jeff Maggioncalda, Coursera CEO', role: 'Coursera CEO' },
-      ],
-    },
-    'learn/w': {
-      title: 'W',
-      starisk: 4,
-      reviews: 1,
-      provider: 'DeepLearning.AI',
-      instructors: [{ page: 'andrewng', name: 'Andrew Ng' }],
-    },
   };
+
+  // Only skillup is on the list; the name looks like its provider, but looking
+  // like a provider is not evidence — the pipeline proposes candidates, a human
+  // verifies them, and the site reads the result.
   const pages = Object.fromEntries(
-    buildInstructors(catalog).map((person) => [person.page, person]),
+    buildInstructors(catalog, { skillup: 'profile is the partner name' }).map((person) => [
+      person.page,
+      person,
+    ]),
   );
 
-  assert.equal(pages.starweaver.publisher, true);
-  assert.equal(pages['ibm-skills-network'].publisher, true);
-  // A title that happens to name the partner is still a person.
-  assert.equal(pages.jeff.publisher, false);
-  assert.equal(pages.andrewng.publisher, false);
+  assert.equal(pages.skillup.publisher, true);
+  assert.equal(pages['ibm-skills-network'].publisher, false);
   assert.equal(byPage['ada-lovelace'].publisher, false);
+});
+
+test('the verified publisher list is well formed', () => {
+  const data = JSON.parse(
+    readFileSync(new URL('../src/data/publishers.json', import.meta.url), 'utf8'),
+  );
+  const slugs = Object.keys(data);
+
+  assert.ok(slugs.length >= 12);
+  assert.ok(slugs.includes('professionals-in-the-industry'));
+  assert.ok(slugs.every((slug) => /^[a-z0-9~-]+$/.test(slug)));
+  assert.ok(slugs.every((slug) => typeof data[slug] === 'string' && data[slug].trim()));
 });
 
 test('initials drop titles and credentials', () => {
