@@ -60,13 +60,6 @@ const categories = record.categories ?? [];
 // build time from the same index the programs directory uses.
 const memberships = buildMemberships(groupings, courses).get(key) ?? [];
 
-// What the ~20 reviews we read actually rated it — not the population.
-const sampleCounts = record.review_counts ?? {};
-const sampleTotal = Object.values(sampleCounts).reduce((a: number, b: number) => a + b, 0);
-const sampleCritical = Object.entries(sampleCounts)
-  .filter(([star]) => Number(star) <= 3)
-  .reduce((total, [, count]) => total + (count as number), 0);
-
 // Coursera publishes its whole rating distribution in the page data. That is the
 // population — every rating ever — and it is more honest than any sample we read.
 const counts = record.rating_counts ?? null;
@@ -231,9 +224,7 @@ const about = splitDescription(aboutText);
           </h2>
           <p class="mt-1 text-sm text-base-content/60">
             {top.kind === 'consensus'
-              ? sampleCritical > 0
-                ? `${sampleCritical} of the ${sampleTotal} reviews we read rated it 3★ or lower, but none of them wrote a comment. This is the most-upvoted review.`
-                : `Every one of the ${sampleTotal} reviews we read gave it 4★ or more. This is the most-upvoted one.`
+              ? 'The most-upvoted review.'
               : 'The most-upvoted critical review.'}
           </p>
           <figure
@@ -272,26 +263,23 @@ const about = splitDescription(aboutText);
       )
     }
 
-    <section class="mt-10 text-sm text-base-content/60">
-      <p>
-        Starisk reads the reviews learners voted most helpful, and weights each by the square root of
-        its votes: a review with 80 upvotes counts about five times one with 2. Unvoted reviews are
-        not skipped out of laziness — by this model they carry no evidence that other students
-        endorsed them.
-      </p>
-      <p class="mt-2">
-        That measures <strong>what the most-endorsed reviews say</strong>, not “true quality.” The
-        rating distribution above is the whole population, so you can see the sample next to it.
-      </p>
-      <p class="mt-2">
-        {readOn ? `Reviews read on ${readOn}. ` : null}
-        <a
-          class="link link-hover"
-          href={`https://www.coursera.org/${key}/reviews`}
-          target="_blank"
-          rel="noopener noreferrer">Read them on Coursera ↗</a
-        >
-      </p>
+    <section class="mt-8 border-t border-base-300 pt-4">
+      <div class="grid gap-x-10 gap-y-2 sm:grid-cols-[1fr_auto]">
+        <p class="max-w-prose text-sm leading-relaxed text-base-content/60">
+          Scores come from the reviews learners voted most helpful, not a verdict on
+          quality — see{' '}
+          <a class="link link-hover font-medium text-base-content/90" href="/method"
+            >the method</a
+          >.
+        </p>
+        {
+          readOn && (
+            <p class="text-xs text-base-content/45 sm:pt-1 sm:text-right">
+              Reviews read on {readOn}
+            </p>
+          )
+        }
+      </div>
     </section>
   </article>
 </Base>
