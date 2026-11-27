@@ -12,20 +12,23 @@ export const SPREAD_MAX = 2.2;
 // spread of zero by definition. Matches the pipeline's `low_sample` bar.
 export const MIN_REVIEWS = 15;
 
+// Order matches the quadrant grid: rows are spread (high on top), columns are
+// score (low on the left), so reading left→right, top→bottom is contested,
+// divisive, consensus poor, consensus good.
 export const CELLS = [
   { id: 'contested', label: 'Contested', note: 'low score, reviews scatter', badge: 'badge-warning' },
   { id: 'divisive', label: 'Divisive', note: 'high score, reviews scatter', badge: 'badge-info' },
-  {
-    id: 'consensusGood',
-    label: 'Consensus Good',
-    note: 'high score, reviews agree',
-    badge: 'badge-success',
-  },
   {
     id: 'consensusPoor',
     label: 'Consensus Poor',
     note: 'low score, reviews agree',
     badge: 'badge-error',
+  },
+  {
+    id: 'consensusGood',
+    label: 'Consensus Good',
+    note: 'high score, reviews agree',
+    badge: 'badge-success',
   },
 ];
 
