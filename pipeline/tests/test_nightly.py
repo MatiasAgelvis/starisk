@@ -55,13 +55,14 @@ class DecideTest(unittest.TestCase):
         self.before = corpus(a=record(), b=record())
         self.before_stats = nightly.crawl.summarize(self.before)
 
-    def decide(self, after, changed=None, adapter_ok=True):
+    def decide(self, after, changed=None, adapter_ok=True, rehearsal=False):
         summary = nightly.diff_summary(self.before, after)
         return nightly.decide(
             DATA if changed is None else changed,
             summary,
             self.before_stats,
             adapter_ok=adapter_ok,
+            rehearsal=rehearsal,
         )
 
     def test_a_clean_run_commits(self):
@@ -144,6 +145,23 @@ class DecideTest(unittest.TestCase):
 
         self.assertEqual(decision.code, nightly.PARTIAL)
         self.assertTrue(decision.commit)
+
+    def test_a_rehearsal_does_not_claim_a_commit(self):
+        decision = self.decide(corpus(a=record(), b=record(score=4.4)), rehearsal=True)
+
+        self.assertEqual(decision.code, nightly.OK)
+        self.assertNotIn("committed", decision.reason)
+        self.assertIn("nothing published", decision.reason)
+
+    def test_a_rehearsal_still_reports_its_errors(self):
+        decision = self.decide(
+            corpus(a=record(), b=record(score=4.4), c=record(error="fetch: timeout")),
+            rehearsal=True,
+        )
+
+        self.assertEqual(decision.code, nightly.PARTIAL)
+        self.assertIn("1 record(s) with errors", decision.reason)
+        self.assertNotIn("committed", decision.reason)
 
 
 class MessageTest(unittest.TestCase):
@@ -266,6 +284,21 @@ class CooldownTest(unittest.TestCase):
 
         self.assertTrue(record["rateLimited"])
         self.assertEqual(record["status"], "partial")
+
+    def test_a_rehearsal_leaves_the_record_alone(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "last-run.json"
+            with mock.patch.object(nightly, "LAST_RUN", path):
+                code = nightly.finish(
+                    {},
+                    "2026-01-01T00:00:00Z",
+                    nightly.OK,
+                    "rehearsal: nothing published",
+                    persist=False,
+                )
+
+        self.assertEqual(code, nightly.OK)
+        self.assertFalse(path.exists())
 
 
 if __name__ == "__main__":
