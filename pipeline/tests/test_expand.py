@@ -8,12 +8,57 @@ from starisk.expand import (
     load_slugs,
     parse_args,
     plan,
+    publisher_candidates,
+    read_publishers,
     resolve_specialization,
 )
 
 
 def og(title: str) -> str:
     return f'<meta data-rh="true" property="og:title" content="{title}"/>'
+
+
+class PublisherCandidateTest(unittest.TestCase):
+    def test_flags_accounts_that_look_like_their_provider(self):
+        scores = {
+            "learn/a": {
+                "provider": "SkillUp",
+                "instructors": [{"slug": "skillup", "name": "SkillUp"}],
+            },
+            "learn/b": {
+                "provider": "IBM",
+                "instructors": [{"slug": "ibm-skills-network", "name": "IBM Skills Network Team"}],
+            },
+            "learn/c": {
+                "provider": "Coursera",
+                "instructors": [{"slug": "jeff", "name": "Jeff Maggioncalda, Coursera CEO"}],
+            },
+        }
+
+        found = publisher_candidates(scores, set())
+
+        self.assertEqual([slug for slug, _ in found], ["ibm-skills-network", "skillup"])
+
+    def test_the_verified_list_is_not_reported(self):
+        scores = {
+            "learn/a": {
+                "provider": "SkillUp",
+                "instructors": [{"slug": "skillup", "name": "SkillUp"}],
+            }
+        }
+
+        self.assertEqual(publisher_candidates(scores, {"skillup"}), [])
+
+    def test_reads_the_verified_list_and_survives_a_broken_file(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "publishers.json"
+            path.write_text('{"skillup": "profile is the partner name"}', encoding="utf-8")
+            self.assertEqual(read_publishers(path), {"skillup"})
+
+            broken = Path(tmp) / "broken.json"
+            broken.write_text("{not json", encoding="utf-8")
+            self.assertEqual(read_publishers(broken), set())
+            self.assertEqual(read_publishers(Path(tmp) / "missing.json"), set())
 
 
 class ParseArgsTest(unittest.TestCase):

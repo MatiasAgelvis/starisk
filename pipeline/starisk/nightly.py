@@ -602,6 +602,8 @@ def run(options) -> int:
 
         before = load_scores()
         rate_limited = False
+        index_refused = False
+        refusal: list[str] = []
         # Files already dirty when we started are not this run's doing: a stray
         # note in a dev clone must not gate the commit.
         baseline = set(changed())
@@ -630,13 +632,24 @@ def run(options) -> int:
             if options.offline
             else ["--discover", "--fetch", "--write"]
         )
+        if options.force_index:
+            # Used by hand after reading the refusal: the numbers are legitimately
+            # new, so publish them instead of freezing the directory.
+            index_args.append("--force")
 
         # Programs first: --fetch needs the page cache (a fresh clone has none), and
         # the expansion lever below queues the members of the index this writes.
-        index_code = groupings.main(index_args)
+        index_code = groupings.main(index_args, on_refusal=refusal.append)
         if index_code == 2:
             rate_limited = True
             print("[nightly] the program fetch was rate-limited; keeping the current index")
+        elif index_code == 1:
+            # The rebuild looked stale (fewer programs, or one that lost ratings or
+            # courses). Do not publish it, and do not stop the night: the crawl and
+            # scores are still useful, and the published index stays what it was.
+            index_refused = True
+            detail = refusal[0] if refusal else "reason unknown"
+            print(f"[nightly] the program index was refused ({detail}); keeping the current one")
         elif index_code != 0:
             return finish(env, started, FAILED, "the program index rebuild failed")
 
@@ -676,6 +689,18 @@ def run(options) -> int:
         summary = diff_summary(before, after)
         rate_limited = rate_limited or summary["rate_limited"]
         decision = decide(new_paths, summary, crawl.summarize(before))
+        refusal_detail = refusal[0] if refusal else "reason unknown"
+        if index_refused and decision.code == OK:
+            # Commit the night's data, but say out loud that the index was not
+            # refreshed: a silent refusal is how a directory stalls unseen.
+            decision = Decision(PARTIAL, f"program index refused: {refusal_detail}")
+        elif index_refused and decision.code == NOTHING:
+            return finish(
+                env,
+                started,
+                PARTIAL,
+                f"program index refused: {refusal_detail}",
+            )
 
         commit_hash = None
         pr_url = None
@@ -774,6 +799,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--no-cooldown",
         action="store_true",
         help="run even if the previous run was rate-limited",
+    )
+    parser.add_argument(
+        "--force-index",
+        action="store_true",
+        help="publish the program index even if the rebuild looks stale",
     )
     return parser.parse_args(argv)
 

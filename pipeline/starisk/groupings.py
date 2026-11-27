@@ -22,9 +22,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import sys
 import time
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -45,6 +46,13 @@ PROGRAMS_PATH = DATA_DIR / "programs.json"
 # Programs discovered per run. One request each, and each brings a handful of
 # courses into the queue, so this is the throttle on corpus growth.
 DISCOVER_PER_RUN = 20
+
+# A single program can move between fetches (Coursera edits a bundle or recounts
+# its rating). A tenth of the directory moving at once is the stale-cache
+# signature the write guard refuses; the floor keeps small indexes from refusing
+# on one edit.
+MAX_MOVED_SHARE = 0.1
+MIN_MOVED = 5
 
 GROUPINGS_PATH = DATA_DIR / "groupings.json"
 
@@ -230,19 +238,31 @@ def fetch_missing(
     delay: float = 0.0,
     sleep=time.sleep,
     retired: dict | None = None,
+    log=print,
 ) -> int:
     """Fetch seeded program pages that are not in the cache. Returns the count.
 
     A 404/410 here means the program is gone, not that the run broke: it is
     tombstoned in `retired` (when a dict is given) so discovery never pays for it
     again.
+
+    Prints the pending count and one line per fetched page: this loop is where a
+    run spends minutes in silence, and silence looks like a hang.
     """
+    pending = list(
+        dict.fromkeys(
+            key
+            for key in keys
+            if not (retired and key in retired)
+            and not (load_page(key, cache_dir) or load_page(f"{key}.landing", cache_dir))
+        )
+    )
+    if not pending:
+        return 0
+    log(f"  fetching {len(pending)} program page(s)")
+
     fetched = 0
-    for key in keys:
-        if retired and key in retired:
-            continue
-        if load_page(key, cache_dir) or load_page(f"{key}.landing", cache_dir):
-            continue
+    for index, key in enumerate(pending, 1):
         try:
             html = fetch(f"https://www.coursera.org/{key}")
         except RateLimited:
@@ -260,6 +280,7 @@ def fetch_missing(
             continue
         store_page(key, html, cache_dir)
         fetched += 1
+        log(f"  [{index}/{len(pending)}] {key}")
         if delay:
             sleep(jitter(delay))
     return fetched
@@ -279,17 +300,57 @@ def read_index(path: Path = GROUPINGS_PATH) -> dict:
 def refuse_reason(new: dict, previous: dict, force: bool = False) -> str | None:
     """Why writing this index would be unsafe, or None when it is fine.
 
-    The index is derived from cached pages, so a smaller rebuild means the cache
-    is missing pages — not that Coursera removed programs. A fresh clone has an
-    empty cache and would otherwise delete the whole program directory on its
-    first run.
+    The index is derived from cached pages, so it may only ever say *more* than
+    the version on disk: a smaller rebuild means the cache is missing pages, and
+    that is always refused.
+
+    Per-program movement is different. Coursera edits bundles and recounts
+    ratings, so one program changing between fetches is news, not corruption.
+    A *batch* of them moving at once — course lists and counts both — is the
+    stale-cache signature the guard exists for. Only that is refused.
     """
-    if force or len(new) >= len(previous):
+    if force:
         return None
-    return (
-        f"refusing to write {len(new)} program(s) over {len(previous)}: the page cache "
-        "is incomplete. Re-run with --fetch, or --force if the drop is real."
-    )
+
+    if len(new) < len(previous):
+        return (
+            f"refusing to write {len(new)} program(s) over {len(previous)}: the page cache "
+            "is incomplete. Re-run with --fetch, or --force if the drop is real."
+        )
+
+    moved: list[tuple[str, str]] = []
+    for key, old in previous.items():
+        entry = new.get(key)
+        if entry is None:
+            return (
+                f"refusing to drop {key}: the page cache is incomplete. "
+                "Re-run with --fetch, or --force if the drop is real."
+            )
+
+        if (entry.get("courses") or []) != (old.get("courses") or []):
+            moved.append((key, "its course list changed"))
+            continue
+
+        for field, label in (("ratings_total", "ratings"), ("coursera", "bundle rating")):
+            before, after = old.get(field), entry.get(field)
+            if (
+                isinstance(before, (int, float))
+                and isinstance(after, (int, float))
+                and after < before
+            ):
+                moved.append((key, f"its {label} fell from {before} to {after}"))
+                break
+
+    limit = max(MIN_MOVED, math.ceil(len(previous) * MAX_MOVED_SHARE))
+    if len(moved) > limit:
+        key, why = moved[0]
+        return (
+            f"refusing to write: {len(moved)} of {len(previous)} programs moved "
+            f"({key}: {why}). Widespread movement is the signature of a stale cache, "
+            "not news from Coursera — --force if real."
+        )
+
+    return None
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -322,7 +383,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str]) -> int:
+def main(argv: list[str], on_refusal: Callable[[str], None] | None = None) -> int:
     options = parse_args(argv)
     retired = load_retired()
     known_retired = len(retired)
@@ -369,6 +430,10 @@ def main(argv: list[str]) -> int:
     reason = refuse_reason(groupings, read_index(), force=options.force)
     if reason:
         print(reason, file=sys.stderr)
+        # The nightly's notification carries this now: "the index was refused"
+        # without naming the program is not something anyone can act on.
+        if on_refusal is not None:
+            on_refusal(reason)
         return 1
 
     write_atomic(GROUPINGS_PATH, groupings)

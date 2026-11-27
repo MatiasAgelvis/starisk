@@ -8,13 +8,14 @@ import { buildInstructors } from '../../lib/instructors.js';
 import { buildMemberships, typeLabel } from '../../lib/groupings.js';
 import scores from '../../data/scores.json';
 import groupings from '../../data/groupings.json';
+import publishers from '../../data/publishers.json';
 
 export function getStaticPaths() {
   // One pass for every teacher page. A teacher's programs are inherited from
   // their courses, the same way the program page inherits its teaching team.
   const memberships = buildMemberships(groupings, scores);
 
-  return buildInstructors(scores).map((person) => ({
+  return buildInstructors(scores, publishers).map((person) => ({
     params: { slug: person.page },
     props: {
       person,
@@ -228,8 +229,9 @@ const description = single
       {
         person.publisher && (
           <p>
-            Coursera lists {name} as an instructor, but this is a publisher account — a team, not
-            a person. Its courses are scored and averaged exactly like anyone else's.
+            Coursera lists {name} as an instructor, but this is an account, not a person — a
+            publisher's team or an aggregate label. Its courses are scored and averaged
+            exactly like anyone else's.
           </p>
         )
       }

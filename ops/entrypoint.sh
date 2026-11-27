@@ -7,6 +7,10 @@
 # neither is authoritative: the page cache (best effort) and the run record.
 set -eu
 
+# Line-buffer stdout even when it is piped to logger: a nightly that looks stuck
+# for ten minutes is indistinguishable from one that is fetching.
+export PYTHONUNBUFFERED=1
+
 WORK=${STARISK_WORK:-/work}
 REPO_SLUG=${GITHUB_REPO:-MatiasAgelvis/starisk}
 # The branch to crawl from. `develop` in production; override it to run the

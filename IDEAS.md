@@ -1,84 +1,53 @@
 # Ideas
 
 Not commitments. A registry of threads that are worth keeping, with the reasoning
-attached so future-me doesn't have to re-derive it.
+attached so future-me doesn't have to re-derive it. Shipped and rejected threads
+move to [`ARCHIVE.md`](ARCHIVE.md) once the work is done.
 
 **Status key**
 
 - **accepted** — I want this; it's a matter of when.
 - **parked** — deliberately not now. The reason is written down; revisit if the
   reason stops being true.
-- **shipped** — done. Kept for the reasoning, and for what it left unfinished.
-- **rejected** — no. Kept here so it doesn't get re-proposed.
+- **partial** — shipped in part; what is left is named.
+- **shipped** — done, and still described here because the reasoning matters.
+  Older ones live in `ARCHIVE.md`.
+- **rejected** — no. Kept so it doesn't get re-proposed.
 
-The thing that makes all of this interesting is **corpus size**: 1064 courses
-indexed, 881 scored, 29 programs, 354 instructors. The patterns below — quadrants,
-per-instructor signal, per-subject posts — only earn their space at this scale; at
+The thing that makes all of this interesting is **corpus size**: 1,969 courses
+indexed, 1,453 scored, 150 programs, 430 instructors (2026-11-26 — the nightly
+moves these; `pipeline/data/stats.json` has the current counts). Quadrants,
+per-instructor signal and per-subject posts only earn their space at this scale; at
 six courses they were a demo.
 
 ## Registry
 
 | # | Idea | Status | Note |
 |---|------|--------|------|
-| I1 | Bookmarklet badge | shipped | live; batch asks still capped at 6/h |
-| I2 | Polarization + quadrants | accepted | the data ships, the surface doesn't |
+| I1 | Bookmarklet badge | shipped | [archived](ARCHIVE.md#i1--the-bookmarklet-badge--shipped); batch asks capped at 24/h |
+| I2 | Polarization + quadrants | shipped | folded into `/findings` and the table filters |
 | I3 | Grievance vs. quality split | parked | the honest escape hatch |
-| I4 | The scatter | shipped | `/findings` |
+| I4 | The scatter | shipped | [archived](ARCHIVE.md#i4--the-scatter--shipped); `/findings` |
 | I5 | Transcript + calibration corpus | partial | `/background` ships, labels stuck at 29 |
-| I6 | Publish the dataset | accepted | the part that outlives the site |
+| I6 | Publish the dataset | partial | JSON + `/data` ship; CSV and a citation line left |
 | I7 | SQLite as the pipeline store | parked | JSON is correct until it isn't |
 | I8 | Embeddable SVG badges | accepted | one file, no JS |
 | I9 | Compare two courses | accepted | client-side over scores.json |
 | I10 | Rot index | parked | needs I7 |
-| I11 | Request queue | shipped | Turso inbox → nightly drain |
-| I12 | Course thumbnails | rejected | replaced by provider marks |
+| I11 | Request queue | shipped | [archived](ARCHIVE.md#i11--the-request-queue--shipped) |
+| I12 | Course thumbnails | rejected | [archived](ARCHIVE.md#i12--real-course-thumbnails--rejected) |
 
 ---
 
-## A. Where people already are
-
-### I1 — The bookmarklet badge — **shipped**
-
-A draggable `javascript:` link. On a Coursera page, clicking it reads
-`location.pathname`, fetches the compact lookup, and injects a badge next to
-Coursera's headline rating.
-
-**Why it was the right first product:** no store, no manifest, no permissions
-prompt, no publish cycle. A bookmarklet is the only distribution channel that
-requires zero trust from a stranger, and it survives the MV3 tax entirely.
-
-**What shipped:** `/data/badge.json` — five fields per course instead of the whole
-record, 881 courses and 26 programs in **105 KB raw / 26 KB gzipped**, against
-3.45 MB (800 KB gzipped) for `scores.json`, which stays the dataset download.
-`/request` is the same-origin write path (the edge function only answers its own
-origin, and a JSON body from another site needs a preflight it doesn't implement),
-and `/bookmarklet` keeps its source in `lib/` percent-encoded into the drag target,
-exercised by `scripts/bookmarklet.test.mjs` against a stubbed DOM.
-
-**Why it was viable at all:** Coursera sends `content-security-policy:
-frame-ancestors 'self'` and nothing else — no `script-src`, no `connect-src`, no meta
-CSP — so neither the `javascript:` URL nor a cross-origin fetch is restricted, and
-both of our data endpoints answer `access-control-allow-origin: *`.
-
-**Still open**
-
-- **Batch asks.** `PER_HOUR = 6` per visitor, so "ask for these 7" from a results
-  page would 429 on the seventh. Per-card asking is what ships.
-- **Discovery.** It lives in the footer as *"The score, on Coursera's own pages."*
-  Deliberately quiet: the site's tone is academic, and anything louder reads as
-  SaaS. Revisit only if someone says they couldn't find it.
-
----
-
-## B. Making the score honest
+## A. Making the score honest
 
 ### I2 — Polarization, and the honest tierlist — **shipped**
 
-`spread` and `spread_weighted` ship in every record now; `/findings` plots the two
-star distributions and the same scale side by side, and carries the quadrant view
-(score on x, spread on y, four named cells at fixed 3.5 / 1.2 splits, with courses
-under 15 readable reviews left unlabelled). The leaderboard filters by the same
-cells, and each course page says where it lands.
+`spread` and `spread_weighted` ship in every record; `/findings` plots the two star
+distributions and the same scale side by side, and carries the quadrant view (score
+on x, spread on y, four named cells at fixed 3.5 / 1.2 splits, with courses under
+15 readable reviews left unlabelled). The leaderboard filters by the same cells, and
+each course page says where it lands.
 
 **Why:** it turns the model's worst weakness (one upvoted review owning a score)
 into a measured quantity instead of a hidden failure. The "contested" cell is
@@ -114,14 +83,7 @@ Finding that sentence inside praise is exactly what this would buy.
 
 ---
 
-## C. The corpus and the story
-
-### I4 — The scatter — **shipped**
-
-`/findings` is the finding: the histogram of both distributions on one axis
-(with the empty low-rated zone boxed, and the share Starisk disagrees on), then
-every course plotted on the same scale. That replaced a table of numbers with an
-argument, which was the point.
+## B. The corpus and the story
 
 ### I5 — My courses as the corpus, `/background`, and calibration — **partial**
 
@@ -130,7 +92,8 @@ argument, which was the point.
 
 **Data:** `calibration/courses.json` holds 74 entries with a `label` each, **29
 labelled**. That's the calibration set, and it is the thing blocking the
-low-sample fix.
+low-sample fix: the shrinkage weight `w = 1 - e^(-n/k)` with `k = 5` can't be
+judged from 2 low-sample labels.
 
 **Why it still matters:** it solves corpus *and* narrative in one move — the
 leaderboard stops being a generic Coursera list and becomes a personal dataset
@@ -144,14 +107,20 @@ People cluster courses; parent products don't, because Coursera recycles them.
 
 ---
 
-## D. The data asset
+## C. The data asset
 
-### I6 — Publish the dataset — **accepted**
+### I6 — Publish the dataset — **partial**
 
-A page for `scores.json` plus aggregates, a "cite this" line, and a CSV dump.
+**Shipped:** `/data` and `/data/dataset.json` — courses with their counts and
+identifiers, programs with their members and derived average, a schema table, CC
+BY 4.0, about a megabyte. No review text, no logos.
 
-**Why:** nobody else has upvote-weighted Coursera review data. This is the one
-thing here that outlives the website, and it costs almost nothing.
+**Left:** a CSV dump for people who don't want JSON, and a "cite this" line with
+the version and date. Both are an hour's work and are what make the file usable
+outside the site.
+
+**Why it matters:** nobody else has upvote-weighted Coursera review data. This is
+the one thing here that outlives the website.
 
 **Constraint:** **excerpts only** for review text. Other people's words, and the
 risk/benefit is bad. Aggregates and the single most-upvoted critical excerpt are
@@ -163,7 +132,7 @@ enough.
 score history. Turso later, if it ever needs to be remote — which it now partly is
 (the request inbox).
 
-**Why parked:** JSON plus git is correct until it isn't. The corpus is 1064
+**Why parked:** JSON plus git is correct until it isn't. The corpus is ~2,000
 records and the diffs are still readable.
 
 **Constraint that must not drift:** SQLite stays a **pipeline-internal store**;
@@ -183,7 +152,7 @@ appears *is* its arrival date.
   when the key is still unset. First appearance wins, and the walk can stop as soon
   as every key is assigned. (Newest → oldest, overwriting while the key is present,
   gives the same answer with more writes.)
-- Cost: ~50–100 commits × 3.4 MB parses. Seconds, once.
+- Cost: ~50–100 commits × a few MB parses. Seconds, once.
 - **Call it `added_at`, meaning "indexed at".** Nothing exists before the first
   commit, so the earliest cohort all share that date. Nothing may claim to be a
   crawl date.
@@ -211,40 +180,9 @@ of my 2020 courses didn't survive" is a real observation from a crawl. Needs I7 
 be a trend rather than a snapshot — the same git walk that backfills `added_at`
 yields `last_seen` per key, which is the other column this needs.
 
-### I11 — The request queue — **shipped**
-
-A visitor asks for a course that isn't indexed; the row is a job; the nightly
-drain resolves it. Nothing scrapes from a server, ever.
-
-**Shape, as built:** Turso holds only the inbox, and the pipeline never writes back
-to it. `pipeline:demand` reads pending rows, verifies each link against Coursera,
-resolves instructors to their course lists and programs to their members, appends
-new keys to `sources.json` / `programs.json`, and merges the ask into
-`data/requests.json` with `added_at`. `/wanted` and `/feed.xml` derive state by
-joining that list against `scores.json` / `groupings.json`: a score means
-fulfilled, no score means waiting. No status machine, no `crawled_at`.
-
-**Decisions worth keeping**
-
-- **No email.** Collecting an address means a legal basis, a privacy notice, a
-  deletion path and a processor. `/wanted` plus a feed needs none of that.
-- **No moderation, so no realtime.** The queue is a nightly batch for exactly this
-  reason.
-- **The ask list lives in the repo, not the database.** 12 rows today; if it
-  outgrows git, that's I7's problem.
-
-### I12 — Real course thumbnails — **rejected**
-
-Coursera's JSON-LD `image` is the *provider* logo, `og:image` is a generic
-placeholder, and the real thumbnails are stock photography with text legible only
-at full size. The provider marks (`tile` for tables, `full` for course pages)
-carry the identity better, are self-hosted, and cost one download per provider.
-For descriptions, we take what `syllabus-description-content` shows before its
-"read more".
-
 ---
 
-## E. Design notes worth keeping
+## D. Design notes worth keeping
 
 ### The dissent as a pull quote
 
@@ -271,13 +209,17 @@ anything.
 
 ## Order of work
 
-1. **I2 quadrants** — the data is already in `scores.json`; only the surface is
-   missing, and it pairs with the low-sample story.
-2. **Low-sample labels** — ~10 blind labels on low-sample courses, then `k` stops
-   being a guess. Same set as I5's calibration.
-3. **I6** — publish the dataset. Outlives the site, costs hours.
-4. **I8, I9** — the cheap ones, whenever.
-5. **I10** — only after I7.
+1. **Low-sample labels** — ~10 blind labels on low-sample courses, then `k` stops
+   being a guess. Same set as I5's calibration, and only you can do it.
+2. **I6 leftovers** — CSV dump and a citation line. An hour, and it makes the
+   dataset usable.
+3. **I8, I9** — the cheap surfaces, whenever.
+4. **I3** — only if the premise gets challenged in public, or calibration comes out
+   weak.
+5. **I7**, then **I10** — history and rot, once JSON stops being enough.
+
+Program coverage and the corpus edges are day-to-day work, not ideas; they live in
+[`TODO.md`](TODO.md).
 
 ---
 

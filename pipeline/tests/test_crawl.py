@@ -27,6 +27,16 @@ from starisk.fetch import RateLimited, Retired
 GOOD_FIXTURE = Path(__file__).resolve().parent / "fixtures" / "review_cards.html"
 STAMP = datetime(2026, 1, 1, tzinfo=timezone.utc)
 
+def run_crawl(*args, **kwargs):
+    """`crawl()` with a throwaway page cache.
+
+    Without it the tests fall back to `data/.cache`, leaving `learn/a` and
+    friends in the real cache — where `cache verify` reports them as unparsed.
+    """
+    with TemporaryDirectory() as tmp:
+        return crawl(*args, cache_dir=Path(tmp), **kwargs)
+
+
 EMPTY_HTML = (
     '<p data-testid="reviews-table-empty">No reviews found</p>'
     '<script type="application/ld+json">'
@@ -113,7 +123,7 @@ class CrawlTest(unittest.TestCase):
                 raise RuntimeError("boom")
             return "<html></html>"  # fetched, but no reviews
 
-        scores = crawl(
+        scores = run_crawl(
             ["learn/good", "learn/broken", "learn/empty"],
             fetch=fake_fetch,
             delay=0,
@@ -131,7 +141,7 @@ class CrawlTest(unittest.TestCase):
             "learn/good": {"starisk": 4.2, "reviews": 10, "scrapedAt": "old"}
         }
 
-        scores = crawl(
+        scores = run_crawl(
             ["learn/good"],
             fetch=lambda url: "<html></html>",
             existing=existing,
@@ -144,7 +154,7 @@ class CrawlTest(unittest.TestCase):
         self.assertIn("error", scores["learn/good"])
 
     def test_an_empty_page_is_recorded_as_an_observation(self):
-        scores = crawl(["learn/empty"], fetch=lambda url: EMPTY_HTML, now=STAMP)
+        scores = run_crawl(["learn/empty"], fetch=lambda url: EMPTY_HTML, now=STAMP)
         record = scores["learn/empty"]
 
         self.assertTrue(record["no_reviews"])
@@ -155,7 +165,7 @@ class CrawlTest(unittest.TestCase):
     def test_throttles_between_requests(self):
         slept = []
 
-        crawl(
+        run_crawl(
             ["learn/a", "learn/b", "learn/c"],
             fetch=lambda url: self.good_html,
             delay=1.5,
@@ -184,7 +194,7 @@ class RetiredCrawlTest(unittest.TestCase):
                 raise Retired("HTTP 404 for https://www.coursera.org/learn/gone/reviews")
             return self.good_html
 
-        scores = crawl(
+        scores = run_crawl(
             ["learn/gone", "learn/alive"],
             fetch=fetch,
             now=STAMP,
@@ -204,7 +214,7 @@ class RetiredCrawlTest(unittest.TestCase):
             calls.append(url)
             return self.good_html
 
-        crawl(
+        run_crawl(
             ["learn/gone", "learn/alive"],
             fetch=fetch,
             now=STAMP,
@@ -221,7 +231,7 @@ class RetiredCrawlTest(unittest.TestCase):
         def fetch(url):
             raise Retired("HTTP 410 for https://www.coursera.org/learn/old/reviews")
 
-        scores = crawl(
+        scores = run_crawl(
             ["learn/old"], fetch=fetch, existing=existing, now=STAMP, retired=retired
         )
 
@@ -241,7 +251,7 @@ class RetiredCrawlTest(unittest.TestCase):
             calls.append(url)
             return self.good_html
 
-        scores = crawl(
+        scores = run_crawl(
             ["specializations/ai-healthcare", "learn/good"],
             fetch=fetch,
             now=STAMP,
@@ -259,7 +269,7 @@ class RetiredCrawlTest(unittest.TestCase):
             calls.append(url)
             return self.good_html
 
-        scores = crawl(
+        scores = run_crawl(
             ["learn/gone", "learn/alive"],
             fetch=fetch,
             now=STAMP,
@@ -365,7 +375,7 @@ class IncrementalCrawlTest(unittest.TestCase):
         existing = {"learn/fresh": {"starisk": 3.0, "scrapedAt": STAMP.isoformat()}}
         now = datetime(2026, 1, 2, tzinfo=timezone.utc)
 
-        crawl(["learn/fresh", "learn/new"], fetch=fetch, existing=existing, now=now, max_age_days=30)
+        run_crawl(["learn/fresh", "learn/new"], fetch=fetch, existing=existing, now=now, max_age_days=30)
 
         self.assertEqual([u for u in calls if u.endswith("/reviews")], [reviews_url("learn/new")])
 
@@ -376,7 +386,7 @@ class IncrementalCrawlTest(unittest.TestCase):
             calls.append(url)
             return self.html
 
-        crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP, limit=2)
+        run_crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP, limit=2)
 
         self.assertEqual(
             [u for u in calls if u.endswith("/reviews")],
@@ -392,7 +402,7 @@ class IncrementalCrawlTest(unittest.TestCase):
                 raise RateLimited("HTTP 429")
             return self.html
 
-        scores = crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP)
+        scores = run_crawl(["learn/a", "learn/b", "learn/c"], fetch=fetch, now=STAMP)
 
         self.assertIn("learn/a", scores)
         self.assertTrue(str(scores["learn/b"]["error"]).startswith("rate limited"))
@@ -408,7 +418,7 @@ class IncrementalCrawlTest(unittest.TestCase):
                 return self.html
             raise RateLimited("HTTP 429")
 
-        scores = crawl(["learn/a", "learn/b"], fetch=fetch, now=STAMP)
+        scores = run_crawl(["learn/a", "learn/b"], fetch=fetch, now=STAMP)
 
         self.assertIn("starisk", scores["learn/a"])
         self.assertTrue(scores["learn/a"]["landing_error"].startswith("rate limited"))
@@ -425,7 +435,7 @@ class IncrementalCrawlTest(unittest.TestCase):
         existing = {"learn/empty": {"no_reviews": True, "scrapedAt": STAMP.isoformat()}}
         now = datetime(2026, 1, 2, tzinfo=timezone.utc)
 
-        crawl(
+        run_crawl(
             ["learn/empty", "learn/new"],
             fetch=fetch,
             existing=existing,
@@ -809,7 +819,7 @@ class CacheTest(unittest.TestCase):
             "learn/a": {"starisk": 4.2, "reviews": 10, "scrapedAt": "old"}
         }
 
-        scores = crawl(
+        scores = run_crawl(
             ["learn/a"],
             fetch=lambda url: EMPTY_HTML,
             existing=existing,
