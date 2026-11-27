@@ -76,8 +76,9 @@ mise run setup                # install web dependencies
 mise run pipeline:lint        # ruff
 mise run pipeline:test        # python unit tests (stdlib only)
 mise run pipeline:groupings   # rebuild the program index
+mise run pipeline:discover    # discover the next programs, fetch, rebuild
 mise run pipeline:seed-programs  # fetch seeded program pages, then rebuild
-mise run pipeline:all             # expand, crawl, localise, rebuild, sync
+mise run pipeline:all         # discover, expand, crawl, localise, rebuild, sync
 mise run web:dev              # astro dev server
 mise run check                # lint + tests + a full site build
 mise run pr:release          # open the develop → main PR, dated
