@@ -57,15 +57,18 @@ never scored (554 have no written reviews at all).
   still refusing widespread change) or clearing `cache/pages/specializations/*` and
   re-running `pipeline:seed-programs` (one night of requests).
 
-- **Program coverage: 200 of ~3,604 sitemap slugs.** Discovery samples the sitemap
-  20 a night (stable hash order, so it spreads across the catalogue instead of
-  stopping at `advanced-*`) and skips pages already in the cache, so the budget no
-  longer goes to pages that fetched but never yielded a course list (15 collections
-  such as `specializations/excel`). To go faster, run `--discover-limit 100 --fetch
-  --write` **where the cache lives** (the crawl server), not on a laptop: groupings
-  is derived, and a rebuild from a partial cache diverges from the server's in hunks
-  git cannot merge. Raising `DISCOVER_PER_RUN` only grows a queue the crawl drains
-  at 100 a night, so measure queue depth before changing it.
+- **Program coverage: ~200 of ~3,600 specializations and ~300 Professional
+  Certificates.** Discovery samples both sitemaps 20 a night (one shared budget,
+  taken round-robin; stable hash order so it spreads across each catalogue instead
+  of stopping at `advanced-*`) and skips pages already in the cache, so the budget
+  no longer goes to pages that fetched but never yielded a course list. Localized
+  alias slugs (`.../analytique-des-donnees-google`) redirect to the canonical page;
+  its JSON-LD `url` lets the build drop the duplicate. To go faster, run
+  `--discover-limit 100 --fetch --write` **where the cache lives** (the crawl
+  server), not on a laptop: groupings is derived, and a rebuild from a partial
+  cache diverges from the server's in hunks git cannot merge. Raising
+  `DISCOVER_PER_RUN` only grows a queue the crawl drains at 100 a night, so measure
+  queue depth before changing it.
 - **Teacher pages are only as good as the corpus.** 147 of 430 teachers have exactly
   one course; the surface gets interesting at 3+ per person, which is a crawl
   problem, not a code one.

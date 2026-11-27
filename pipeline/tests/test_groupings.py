@@ -12,6 +12,7 @@ from starisk.groupings import (
     extract_grouping,
     fetch_missing,
     grouping_key,
+    interleave,
     load_seed_keys,
     main,
     read_index,
@@ -19,6 +20,7 @@ from starisk.groupings import (
     refuse_reason,
     spread,
 )
+from starisk.sitemap import procert_slugs
 
 PAGE = (
     '<meta property="og:title" content="Algorithms">'
@@ -271,6 +273,24 @@ class SeedTest(unittest.TestCase):
 
             self.assertEqual(fetch_missing([key], fetch=failing, cache_dir=directory), 0)
 
+    def test_an_alias_page_is_cached_under_its_canonical_key_too(self):
+        page = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Google Data Analytics",'
+            '"url":"https://www.coursera.org/professional-certificates/'
+            'google-data-analytics"}'
+            "</script>"
+        )
+        alias = "professional-certificates/analitik-data-google"
+        canonical = "professional-certificates/google-data-analytics"
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            fetch_missing([alias], fetch=lambda url: page, cache_dir=directory)
+
+            self.assertEqual(load_page(alias, directory), page)
+            self.assertEqual(load_page(canonical, directory), page)
+
 
 class RefuseReasonTest(unittest.TestCase):
     def test_an_empty_rebuild_over_a_full_index_is_refused(self):
@@ -431,6 +451,54 @@ class DiscoverTest(unittest.TestCase):
 
         self.assertEqual(candidates, ["specializations/fresh"])
 
+    def test_the_kind_prefixes_the_candidate(self):
+        candidates = discover_candidates(
+            {},
+            [],
+            {},
+            ["google-data-analytics"],
+            limit=5,
+            kind="professional-certificates",
+        )
+
+        self.assertEqual(
+            candidates, ["professional-certificates/google-data-analytics"]
+        )
+
+
+class InterleaveTest(unittest.TestCase):
+    def test_round_robins_and_respects_the_shared_budget(self):
+        pools = [
+            ["specializations/a", "specializations/b"],
+            ["professional-certificates/p"],
+        ]
+
+        self.assertEqual(
+            interleave(pools, 3),
+            ["specializations/a", "professional-certificates/p", "specializations/b"],
+        )
+
+    def test_an_exhausted_source_does_not_block_the_other(self):
+        pools = [[], ["professional-certificates/p", "professional-certificates/q"]]
+
+        self.assertEqual(
+            interleave(pools, 2),
+            ["professional-certificates/p", "professional-certificates/q"],
+        )
+
+
+class ProcertSlugsTest(unittest.TestCase):
+    def test_keeps_professional_certificates_and_drops_marketing_pages(self):
+        xml = (
+            "<url><loc>https://www.coursera.org/professional-certificates/google-data-analytics</loc></url>"
+            "<url><loc>https://www.coursera.org/certificates/advance-your-career</loc></url>"
+        )
+
+        with TemporaryDirectory() as tmp:
+            slugs = procert_slugs(fetch=lambda url: xml, cache_path=Path(tmp) / "procert.txt")
+
+        self.assertEqual(slugs, ["google-data-analytics"])
+
     def test_reads_the_seed_list(self):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "programs.json"
@@ -499,25 +567,54 @@ class RefusalReportTest(unittest.TestCase):
         self.assertIn("page cache", reasons[0])
 
 
+class CanonicalAliasTest(unittest.TestCase):
+    def test_a_localized_alias_does_not_become_a_second_program(self):
+        page = (
+            '<meta property="og:title" content="Google Data Analytics">'
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Google Data Analytics",'
+            '"url":"https://www.coursera.org/professional-certificates/'
+            'google-data-analytics"}'
+            "</script>"
+            '<a href="/learn/course-a" data-e2e="sdp-course-list-link">A</a>'
+        )
+
+        with TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            store_page("professional-certificates/google-data-analytics", page, tmp)
+            store_page(
+                "professional-certificates/analytique-des-donnees-google", page, tmp
+            )
+
+            groupings = build_groupings(directory=tmp)
+
+        self.assertEqual(
+            list(groupings), ["professional-certificates/google-data-analytics"]
+        )
+
+
 class SitemapRefreshTest(unittest.TestCase):
     def _discover(self, argv):
         with (
-            mock.patch("starisk.groupings.program_slugs", return_value=[]) as slugs,
+            mock.patch("starisk.groupings.program_slugs", return_value=[]) as spec,
+            mock.patch("starisk.groupings.procert_slugs", return_value=[]) as cert,
             mock.patch("starisk.groupings.read_index", return_value={}),
             mock.patch("starisk.groupings.read_seeds", return_value=[]),
             mock.patch("starisk.groupings.cached_grouping_keys", return_value=[]),
             mock.patch("starisk.groupings.build_groupings", return_value={}),
         ):
             main(argv)
-        return slugs
+        return spec, cert
 
-    def test_discovery_reuses_the_cached_sitemap_by_default(self):
-        slugs = self._discover(["--discover"])
-        slugs.assert_called_once_with(refresh=False)
+    def test_discovery_reuses_the_cached_sitemaps_by_default(self):
+        spec, cert = self._discover(["--discover"])
+        spec.assert_called_once_with(refresh=False)
+        cert.assert_called_once_with(refresh=False)
 
-    def test_discovery_can_refresh_the_sitemap(self):
-        slugs = self._discover(["--discover", "--refresh"])
-        slugs.assert_called_once_with(refresh=True)
+    def test_discovery_can_refresh_the_sitemaps(self):
+        spec, cert = self._discover(["--discover", "--refresh"])
+        spec.assert_called_once_with(refresh=True)
+        cert.assert_called_once_with(refresh=True)
 
 
 if __name__ == "__main__":
