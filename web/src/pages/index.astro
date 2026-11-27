@@ -6,10 +6,13 @@ import { buildInstructors, teacherIndex } from '../lib/instructors.js';
 import { buildLookup } from '../lib/lookup.js';
 import { buildProgramLookup } from '../lib/groupings.js';
 import { buildFindings } from '../lib/findings.js';
-import { courses } from '../lib/courses.js';
+import { courses, typeOf } from '../lib/courses.js';
 import groupings from '../data/groupings.json';
 
 const rows = Object.entries(courses)
+  // The home table is the course leaderboard. Guided Projects are their own
+  // product and get their own listing, not a row here.
+  .filter(([key, record]) => typeOf(key, record) === 'course')
   .map(([slug, record], index) => ({
     slug,
     title: record.title,

@@ -18,7 +18,8 @@ const asOfLabel = asOf
   : null;
 
 const COURSE_FIELDS = [
-  ['key', '`learn/…` — the Coursera path, and the join key everywhere'],
+  ['key', '`learn/…` or `projects/…` — the Coursera path, and the join key everywhere'],
+  ['type', '`course` or `project`; older records without it are `course`'],
   ['title, provider, categories, level', 'Identifiers, as Coursera states them'],
   ['coursera, ratings, ratingCounts', "Coursera's own number and the whole population behind it"],
   ['starisk, spread', 'What the written reviews we read came to'],

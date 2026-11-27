@@ -20,6 +20,7 @@ import scores from '../data/scores.json' with { type: 'json' };
  * @typedef {Object} Course
  * @property {string} [title]
  * @property {string} [slug]
+ * @property {string} [type]
  * @property {string} [provider]
  * @property {string} [description]
  * @property {string} [image]
@@ -49,6 +50,19 @@ import scores from '../data/scores.json' with { type: 'json' };
 
 /** @type {Record<string, Course>} */
 export const courses = /** @type {any} */ (scores);
+
+/**
+ * The product family. `type` is optional on records written before Guided
+ * Projects existed, so a missing value falls back to the key prefix.
+ *
+ * @param {string} key
+ * @param {Course} [course]
+ * @returns {'course' | 'project'}
+ */
+export function typeOf(key, course = {}) {
+  if (course.type === 'project' || course.type === 'course') return course.type;
+  return key.startsWith('projects/') ? 'project' : 'course';
+}
 
 /** @param {Course} course @returns {course is Scored} */
 export function isScored(course) {
