@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-11-21T03:30:23Z",
+  "generatedAt": "2026-11-27T16:25:25Z",
   "rows": [
+    {
+      "key": "specializations/python",
+      "type": "specialization",
+      "query": "specializations/python",
+      "requests": 1,
+      "first_seen": "2026-11-27T09:34:25Z",
+      "last_seen": "2026-11-27T09:34:25Z",
+      "title": "Python for Everybody",
+      "added_at": "2026-11-27T16:25:25Z"
+    },
     {
       "key": "specializations/object-oriented-programming-s12n",
       "type": "specialization",
