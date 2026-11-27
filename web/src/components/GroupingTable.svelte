@@ -12,7 +12,10 @@
   let query = $state('');
   let type = $state('all');
   let provider = $state('all');
-  let hideIncomplete = $state(true);
+  // What the directory admits. A set with nothing scored has no number to compare
+  // on either side, so it is noise on a comparison table — but it is a third of the
+  // index, so it stays one click away rather than being dropped.
+  let scope = $state('complete');
   // One drawer at a time: a 12-course program is a tall panel, and two open rows
   // would push the rest of the directory off the screen.
   let open = $state(null);
@@ -25,6 +28,13 @@
     { id: 'specialization', label: 'Specializations' },
     { id: 'professional-certificate', label: 'Professional Certificates' },
   ];
+
+  // Narrowest to widest, so the counts read as cumulative.
+  const SCOPES = {
+    complete: { label: 'Complete sets', test: (row) => row.complete },
+    scored: { label: 'At least one score', test: (row) => row.scored > 0 },
+    all: { label: 'All programs', test: () => true },
+  };
 
   // The same three columns as the leaderboard: Coursera's number, ours, and the
   // badge that names the distance between them. Ours is the review-weighted
@@ -93,8 +103,8 @@
     page = 1;
   }
 
-  function toggleIncomplete() {
-    hideIncomplete = !hideIncomplete;
+  function pickScope(event) {
+    scope = event.currentTarget.value;
     page = 1;
   }
 
@@ -107,7 +117,7 @@
     query = '';
     type = 'all';
     provider = 'all';
-    hideIncomplete = true;
+    scope = 'complete';
     page = 1;
   }
 
@@ -135,10 +145,10 @@
       const key = decodeURIComponent(location.hash.slice(1));
       if (!key || !rows.some((row) => row.key === key)) return;
       // A deep link wins over the default filters: the point of the link is to
-      // see the courses, including when the program is one of the partial sets.
+      // see the courses, including when the program is partial or barely scored.
       query = '';
       type = 'all';
-      hideIncomplete = false;
+      scope = 'all';
       open = key;
       // The drawer may have landed on another page of the directory.
       await tick();
@@ -150,40 +160,60 @@
     return () => window.removeEventListener('hashchange', reveal);
   });
 
-  const completeCount = $derived(rows.filter((row) => row.complete).length);
-  const partialCount = $derived(rows.length - completeCount);
   const sortMode = $derived(`${sortKey}:${sortDir}`);
+  const needle = $derived(query.trim().toLowerCase());
 
-  // Providers come from the data, ordered by coverage — the useful axis once the
-  // list is longer than a screen.
-  const providers = $derived.by(() => {
-    const counts = new Map();
-    for (const row of rows) {
-      const name = row.provider ?? 'Unknown provider';
-      counts.set(name, (counts.get(name) ?? 0) + 1);
+  /**
+   * Faceted filtering, the same rule as the course table: each lane leaves its own
+   * selection out, so its counts show the alternatives under the other filters.
+   */
+  function matches(
+    row,
+    { ignoreType = false, ignoreProvider = false, ignoreScope = false } = {},
+  ) {
+    if (!ignoreScope && !SCOPES[scope].test(row)) return false;
+    if (!ignoreType && type !== 'all' && row.type !== type) return false;
+    if (!ignoreProvider && provider !== 'all' && (row.provider ?? 'Unknown provider') !== provider) {
+      return false;
     }
-    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  });
+    if (!needle) return true;
+    return `${row.title ?? ''} ${row.provider ?? ''} ${typeLabel(row.type)}`
+      .toLowerCase()
+      .includes(needle);
+  }
 
-  // Counts describe the whole directory, not what the toggle leaves visible: "All"
-  // means all, and the toggle carries its own count.
-  const typeCounts = $derived.by(() => {
-    const counts = new Map([['all', rows.length]]);
-    for (const row of rows) counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
+  const scopeRows = $derived.by(() => rows.filter((row) => matches(row, { ignoreScope: true })));
+  const typeRows = $derived.by(() => rows.filter((row) => matches(row, { ignoreType: true })));
+  const providerRows = $derived.by(() => rows.filter((row) => matches(row, { ignoreProvider: true })));
+  const filtered = $derived.by(() => rows.filter((row) => matches(row)));
+
+  // Cumulative by construction, and scoped to the other filters so the three
+  // numbers move the same way as everything else on the bar.
+  const scopeCounts = $derived.by(() => {
+    const counts = {};
+    for (const [id, option] of Object.entries(SCOPES)) {
+      counts[id] = scopeRows.filter((row) => option.test(row)).length;
+    }
     return counts;
   });
 
-  const filtered = $derived.by(() => {
-    const needle = query.trim().toLowerCase();
-    return rows.filter((row) => {
-      if (hideIncomplete && !row.complete) return false;
-      if (type !== 'all' && row.type !== type) return false;
-      if (provider !== 'all' && (row.provider ?? 'Unknown provider') !== provider) return false;
-      if (!needle) return true;
-      return `${row.title ?? ''} ${row.provider ?? ''} ${typeLabel(row.type)}`
-        .toLowerCase()
-        .includes(needle);
-    });
+  const typeCounts = $derived.by(() => {
+    const counts = new Map([['all', typeRows.length]]);
+    for (const row of typeRows) counts.set(row.type, (counts.get(row.type) ?? 0) + 1);
+    return counts;
+  });
+
+  // Providers come from the data, ordered by coverage — the useful axis once the
+  // list is longer than a screen. The selected one survives a filter that empties
+  // it, so the select never renders blank.
+  const providers = $derived.by(() => {
+    const counts = new Map();
+    for (const row of providerRows) {
+      const name = row.provider ?? 'Unknown provider';
+      counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+    if (provider !== 'all' && !counts.has(provider)) counts.set(provider, 0);
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   });
 
   const ordered = $derived.by(() => [...filtered].sort(compare));
@@ -245,15 +275,20 @@
         {/each}
       </select>
     </label>
-    <label class="label cursor-pointer gap-2 p-0 text-xs text-base-content/60 sm:ml-auto">
-      <input
-        type="checkbox"
-        class="toggle toggle-sm"
-        checked={hideIncomplete}
-        onchange={toggleIncomplete}
-      />
-      Hide incomplete sets
-      <span class="badge badge-ghost badge-sm">{partialCount}</span>
+    <label class="flex items-center gap-1.5 sm:ml-auto">
+      <span class="text-[0.65rem] font-semibold uppercase tracking-wider text-base-content/40">
+        Show
+      </span>
+      <select
+        class="select select-xs"
+        value={scope}
+        onchange={pickScope}
+        aria-label="Which programs to list"
+      >
+        {#each Object.entries(SCOPES) as [id, option] (id)}
+          <option value={id}>{option.label} ({scopeCounts[id] ?? 0})</option>
+        {/each}
+      </select>
     </label>
   </div>
 </div>
@@ -347,12 +382,10 @@
                     {row.total === 1 ? 'course' : 'courses'}
                   </span>
                   {#if !row.complete}
-                    <span
-                      class="badge badge-sm shrink-0 whitespace-nowrap {row.scored
-                        ? 'badge-warning'
-                        : 'badge-ghost'}"
-                    >
-                      {row.scored ? `Incomplete ${row.scored}/${row.total}` : 'No scores'}
+                    <!-- The same badge at any level of coverage: a program with none
+                         scored is the most incomplete one, not a quieter case. -->
+                    <span class="badge badge-warning badge-sm shrink-0 whitespace-nowrap">
+                      Incomplete {row.scored}/{row.total}
                     </span>
                   {/if}
                 </div>
@@ -399,12 +432,18 @@
                     </p>
                   {/if}
                 </div>
-                <ScoreTable
-                  rows={row.courses}
-                  showFilters={false}
-                  compact={true}
-                  defaultSortKey="starisk"
-                />
+                {#if row.courses.some((course) => course.read)}
+                  <ScoreTable
+                    rows={row.courses.filter((course) => course.read)}
+                    showFilters={false}
+                    compact={true}
+                    defaultSortKey="starisk"
+                  />
+                {:else}
+                  <p class="px-3 pb-2 text-xs text-base-content/60 sm:px-4">
+                    None of these courses is read yet.
+                  </p>
+                {/if}
               </div>
             </td>
           </tr>
@@ -416,7 +455,7 @@
   {#if ordered.length === 0}
     <div class="py-10 text-center text-sm text-base-content/60">
       <p>
-        {hideIncomplete
+        {scope === 'complete'
           ? 'No complete program matches those filters.'
           : 'No program matches those filters.'}
       </p>
