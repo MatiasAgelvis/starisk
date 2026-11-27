@@ -9,7 +9,7 @@ import { verdictOf, VERDICT } from '../../lib/verdict.js';
 import { buildMemberships } from '../../lib/groupings.js';
 import groupings from '../../data/groupings.json';
 import { courses, isScoredEntry } from '../../lib/courses.js';
-import { CELLS, TOO_FEW, cellOf, spreadShareBelow } from '../../lib/contested.js';
+import { CELLS, TOO_FEW, cellOf } from '../../lib/contested.js';
 
 export function getStaticPaths() {
   return Object.entries(courses)
@@ -35,10 +35,6 @@ const spreadLabel = spreadCell
     ? TOO_FEW.label
     : (CELLS.find((cell) => cell.id === spreadCell)?.label ?? null)
   : null;
-const spreadTop =
-  spread == null || tooFew
-    ? null
-    : Math.max(1, Math.round((1 - spreadShareBelow(spread)) * 100));
 
 const description =
   record.coursera == null
@@ -171,15 +167,8 @@ const about = splitDescription(aboutText);
     {
       spread != null && spreadLabel && (
         <p class="mt-3 flex flex-wrap items-center gap-2 text-sm text-base-content/60">
-          <span class="badge badge-ghost badge-sm">
-            {spreadLabel} · spread {spread.toFixed(1)}
-          </span>
-          <span>
-            {tooFew
-              ? `Only ${record.reviews} readable ${record.reviews === 1 ? 'review' : 'reviews'}, so there is no consensus label.`
-              : `Top ${spreadTop}% by disagreement across ${record.reviews} reviews.`}{' '}
-            <a class="link link-hover" href="/findings#contested">What this means</a>
-          </span>
+          <span class="badge badge-ghost badge-sm">{spreadLabel}</span>
+          <a class="link link-hover" href="/findings#contested">What this means</a>
         </p>
       )
     }
