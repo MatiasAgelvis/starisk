@@ -416,7 +416,8 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
     <section class="mt-12">
       <h2 class="font-display text-xl font-bold">Where the gap is widest</h2>
       <p class="mt-2 text-sm text-base-content/60">
-        The eight largest gaps between the headline and the reviews.
+        The eight widest gaps between Coursera's headline rating and the reviews, in stars out of 5.
+        Gap is Coursera minus Starisk.
       </p>
       <table class="table table-sm table-zebra mt-4">
         <thead>
@@ -468,7 +469,8 @@ const description = `${rated.length} Coursera courses plotted: ${pct(
         The caveats travel with it. We read one page of reviews per course — about twenty — so a
         score is a reading of the most-endorsed reviews, not a survey. {scored.length - rated.length}
         {' '}scored courses have no Coursera rating to compare against and are absent from the
-        A course counts as different when its score rounds to a different number of stars than Coursera's: {differentStars} of {rated.length} do.
+        comparison. A course counts as different when its score rounds to a different number of
+        stars than Coursera's: {differentStars} of {rated.length} do.{' '}
         <a class="link link-hover" href="/method">The full method.</a>
       </p>
     </section>
