@@ -626,11 +626,13 @@ def run(options) -> int:
             )
 
         # Offline keeps to the page cache: expansion only fetches, and discovery has
-        # no network to walk the sitemap with.
+        # no network to walk the sitemap with. Online, discovery refreshes the sitemap
+        # first — it is now the only place that re-downloads it, so programs created
+        # later are still found.
         index_args = (
             ["--fetch", "--write"]
             if options.offline
-            else ["--discover", "--fetch", "--write"]
+            else ["--discover", "--refresh", "--fetch", "--write"]
         )
         if options.force_index:
             # Used by hand after reading the refusal: the numbers are legitimately
