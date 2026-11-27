@@ -334,5 +334,21 @@
   "illinois-tech": {
     "tile": "/logos/tile/illinois-tech.png",
     "full": "/logos/full/illinois-tech.png"
+  },
+  "ai-business-school": {
+    "tile": "/logos/tile/ai-business-school.jpg",
+    "full": "/logos/full/ai-business-school.jpg"
+  },
+  "chegg-skills": {
+    "tile": "/logos/tile/chegg-skills.jpg",
+    "full": "/logos/full/chegg-skills.jpg"
+  },
+  "packt": {
+    "tile": "/logos/tile/packt.jpg",
+    "full": "/logos/full/packt.jpg"
+  },
+  "marshall-university": {
+    "tile": "/logos/tile/marshall-university.png",
+    "full": "/logos/full/marshall-university.png"
   }
 }

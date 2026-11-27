@@ -1,13 +1,13 @@
 {
-  "at": "2026-11-26T12:42:37.761670+00:00",
+  "at": "2026-11-27T03:51:05.239177+00:00",
   "mode": "live",
-  "added": 100,
-  "rescored": 0,
-  "records": 1969,
-  "scored": 1453,
-  "noReviews": 516,
+  "added": 96,
+  "rescored": 4,
+  "records": 2065,
+  "scored": 1520,
+  "noReviews": 545,
   "errors": 0,
   "listed": 2068,
-  "queued": 96,
+  "queued": 0,
   "retired": 3
 }
