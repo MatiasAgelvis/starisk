@@ -110517,5 +110517,451 @@
     ],
     "slug": "learn/strategic-leadership-influence-thought-leadership",
     "scrapedAt": "2026-11-27T08:45:17.847893+00:00"
+  },
+  "learn/survey-samples-size-and-methods": {
+    "title": "Survey Samples: Size and Methods",
+    "provider": "Coursera",
+    "description": "Survey Samples: Size and Methods is a foundational course for aspiring market research analysts and professionals designing statistically sound studies. It builds essential quantitative skills to move from guesswork to confident, data-driven research design. You will learn the key differences between probability and non-probability sampling and how to select the proper method for any research objective.\n\nThe course emphasizes practical application, guiding you through calculating valid sample sizes using confidence levels and margins of error, with hands-on practice using a sample size calculator to ensure reliable, defensible results. By the end of this course, you will be able to justify your methodological choices and design surveys that deliver trustworthy, decision-ready insights—balancing rigor with real-world business constraints of speed and cost.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Business",
+      "Data Science"
+    ],
+    "slug": "learn/survey-samples-size-and-methods",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/tableau-trading-dashboard": {
+    "title": "Tableau Trading Dashboard",
+    "provider": "Corporate Finance Institute",
+    "description": "In this case study, you’ll take on the role of a Business Intelligence Analyst in an investment bank. The Sales and Trading team at CFI Capital Partners need you to develop customized dashboards to help their team with bespoke market analysis. \n\nYou will be creating candlestick charts, Bollinger bands, market cap tree maps, growth plots, and much more in this exciting real-world scenario.\n\nWith plenty of extended student challenges and interactive exercises, this course is the perfect scenario-based case study to reinforce your fundamental knowledge of Tableau.\n\nThis case study is the perfect way to practice your Tableau and BI skills, and will help reinforce five key areas of Tableau:  \n•\tCreating Advanced Visuals - Candlesticks, Bollinger Bands and more \n•\tParameters - for filtering and highlighting \n•\tOrder of Operations - The key unlocking your Tableau superpowers \n•\tTable Calculations - for moving averages and rolling maximums \n•\tParameter Actions - for next-level dashboard interactivity\n\nThis course is perfect for anyone who would like to practice their Tableau and SQL skills in a real-world scenario. There is no better way to kick-start a career in data analysis, quantitative analysis, business intelligence, or other areas of finance with applied, practical knowledge of Tableau and related BI tools.",
+    "image": "/logos/corporate-finance-institute.png",
+    "coursera": null,
+    "starisk": 4.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 1,
+    "review_counts": {
+      "4.0": 1
+    },
+    "top_review": null,
+    "model": "sqrt-likes",
+    "ratings_total": 8,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 6
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "CFI (Corporate Finance Institute)",
+        "slug": "~144114998",
+        "url": "https://www.coursera.org/instructor/~144114998",
+        "page": "cfi-corporate-finance-institute",
+        "id": "144114998",
+        "role": null,
+        "department": null,
+        "learners": 254683,
+        "courses_taught": 50,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/ba/5bd24ebfed49db83e976cfefc752ea/Logo-Icon_PennBlue-1x.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/tableau-trading-dashboard",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/test-and-secure-your-ai-code": {
+    "title": "Test and Secure Your AI Code",
+    "provider": "Coursera",
+    "description": "Learners will demonstrate mastery by completing a Secure AI Testing Toolkit, where they will evaluate a dependency update, run integration tests, and document their findings, while developing a comprehensive testing suite with pytest that achieves at least 88% coverage. As part of this process, learners will evaluate a sample PR upgrading LangChain from version 0.1.5 to 0.1.8. Working in an off-platform Python environment, they will review changelogs for deprecated features, run security scans to identify vulnerabilities, and perform integration tests to validate compatibility. They will submit a structured report that includes an evaluation of a LangChain upgrade, a testing strategy documentation, and a reflection on the CI/CD pipeline improvements.\n\nThroughout the course, learners will engage in hands-on labs, guided coding exercises, in-video questions, interactive dialogues, and scenario-based video quizzes to apply their skills to real-world challenges. The final submission works as a personalized security and testing resource that enables learners to safeguard AI code, improve long-term reliability, and prove readiness to apply critical testing practices in professional AI development environments.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 1,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Data Science"
+    ],
+    "slug": "learn/test-and-secure-your-ai-code",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/transform-analyze-and-report-data-with-r": {
+    "title": "Transform, Analyze, and Report Data with R",
+    "provider": "Coursera",
+    "description": "This beginner-level course is your entry into the world of robust, scalable data analysis with R. Designed for aspiring analysts, you will learn to build sophisticated, end-to-end projects from the ground up. You'll master the \"Tidyverse\" approach, using dplyr to write clean, pipe-based workflows that merge, filter, and prepare complex raw data for analysis.\n\nYou will also master automation—the hallmark of a modern analyst. Using R Markdown and knitr, you'll transform static scripts into dynamic reports that automatically update visualizations with new data. Finally, you'll dive into data science by rigorously evaluating predictive models with diagnostic tools such as ROC curves and cross-validation. Through hands-on learnings, you'll leave with a portfolio-ready project and the ability to build efficient, reproducible workflows. No prior R experience is necessary.",
+    "image": "/logos/coursera.png",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "Professionals in the Industry",
+        "slug": "~199677978",
+        "url": "https://www.coursera.org/instructor/~199677978",
+        "page": "professionals-in-the-industry",
+        "id": "199677978",
+        "role": null,
+        "department": null,
+        "learners": 60749,
+        "courses_taught": 276,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/1b/5ffd005a504157bcc3a922d16053a4/apple-touch-icon.jpg"
+      }
+    ],
+    "categories": [
+      "Data Science",
+      "Business"
+    ],
+    "slug": "learn/transform-analyze-and-report-data-with-r",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/unity-create-2d-jetpack-joyride-clone-game": {
+    "title": "Unity: Create a 2D Jetpack Joyride Clone Game",
+    "provider": "EDUCBA",
+    "description": "Build a 2D endless runner inspired by Jetpack Joyride while strengthening your Unity game development skills through a practical, project-based workflow. In this course, you will create a playable game by setting up a Unity project, building and animating a player character, and implementing responsive jetpack movement using physics and scripting.\n\nAs you progress, you will design animated environments, add hazards and collectibles, and generate reusable game objects with prefabs and runtime instantiation. You will also enhance the player experience by creating an interactive user interface, integrating sound effects and music, and applying parallax scrolling to produce a polished, immersive game world.\n\nDesigned for intermediate Unity learners, this course emphasizes hands-on development and real-world game creation techniques. By the end of the course, you will be able to develop core gameplay systems, implement dynamic game elements, organize reusable assets, and evaluate gameplay flow using Unity features such as prefabs, physics, animation, and scripting. If you're ready to expand your 2D game development skills by building a complete Unity project from start to finish, this course provides a structured and practical learning experience.",
+    "image": "/logos/educba.jpg",
+    "coursera": 5.0,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 13,
+    "review_counts": {
+      "5.0": 13
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "I liked seeing how these elements work together to create an engaging game, and the project gave me more confidence in game development.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 13,
+    "ratings_total": 13,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 13
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "EDUCBA",
+        "slug": "~136048342",
+        "url": "https://www.coursera.org/instructor/~136048342",
+        "page": "educba",
+        "id": "136048342",
+        "role": null,
+        "department": null,
+        "learners": 513769,
+        "courses_taught": 1786,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/45/9fb4dc67aa400684506807b78bf757/Educba-logo-Symbol-360-x-360-with-White-BG.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "slug": "learn/unity-create-2d-jetpack-joyride-clone-game",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/unity-design-build-advanced-3d-game-levels": {
+    "title": "Unity: Design & Build Advanced 3D Game Levels",
+    "provider": "EDUCBA",
+    "description": "Take your Unity environment design skills to the next level by learning how to design, build, and implement advanced 3D game levels through a structured production workflow. In this advanced course, you'll progress from understanding the complete 3D asset pipeline to constructing detailed environments and delivering a polished, playable level.\n\nYou'll begin by exploring the 3D workflow for Unity, building and scaling assets, and adapting them for use in a game scene. Next, you'll construct modular environmental structures, organize level elements for effective player navigation, and enhance visual quality using UV mapping, normal mapping, camouflage texturing, and texture alignment techniques. Finally, you'll integrate assets into a complete scene, optimize environments with props and background elements, implement camera controls, and refine the level for playability and presentation.\n\nDesigned for learners with prior Unity experience, this course emphasizes practical level construction through a professional 3D production pipeline. By the end of the course, you'll have created a complete 3D game level in Unity while strengthening your skills in asset integration, environmental design, scene optimization, and real-time level development.",
+    "image": "/logos/educba.jpg",
+    "coursera": 5.0,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 14,
+    "review_counts": {
+      "5.0": 14
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "Excellent course with clear explanations and practical projects. I learned advanced 3D level design techniques in Unity that I can apply to real game development. Highly recommended for anyone looking to improve their level design skills.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 14,
+    "ratings_total": 14,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 14
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "EDUCBA",
+        "slug": "~136048342",
+        "url": "https://www.coursera.org/instructor/~136048342",
+        "page": "educba",
+        "id": "136048342",
+        "role": null,
+        "department": null,
+        "learners": 513769,
+        "courses_taught": 1786,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/45/9fb4dc67aa400684506807b78bf757/Educba-logo-Symbol-360-x-360-with-White-BG.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Advanced",
+    "slug": "learn/unity-design-build-advanced-3d-game-levels",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/unity-design-build-procedural-hex-maps": {
+    "title": "Unity: Design & Build Procedural Hex Maps",
+    "provider": "EDUCBA",
+    "description": "Advance your Unity development skills by designing and constructing procedural hexagonal maps through a structured, mastery-based approach. Designed for intermediate-to-advanced Unity developers, this course takes you from pointy-top hex grid fundamentals and coordinate systems to dynamic, visually refined procedural terrain.\n\nYou’ll construct scalable hex grids, generate mesh geometry through triangulation, and apply cube and offset coordinate systems for accurate cell placement. You’ll use debugging and coordinate tools to verify grid behavior, then enhance your maps with Unity surface shaders, vertex color blending, interactive canvas-based UI, elevation systems, interpolation, and slope classification.\n\nAs you progress, you’ll create more natural terrain using Perlin noise and vertex perturbation while developing reusable mesh structures, neighbor-based logic, and advanced triangulation methods. You’ll learn to handle elevation differences, sloped and cliff transitions, color interpolation, and structured vertex logic for greater mesh control.\n\nBy the end of the course, you’ll be able to build, visualize, debug, and refine modular procedural hex map systems in Unity for games, simulations, and strategy environments. The progressive, hands-on structure connects grid geometry, mesh construction, visual styling, elevation, and procedural refinement into one practical development workflow.",
+    "image": "/logos/educba.jpg",
+    "coursera": null,
+    "ratings_total": 0,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "reviews": 0,
+    "no_reviews": true,
+    "instructors": [
+      {
+        "name": "EDUCBA",
+        "slug": "~136048342",
+        "url": "https://www.coursera.org/instructor/~136048342",
+        "page": "educba",
+        "id": "136048342",
+        "role": null,
+        "department": null,
+        "learners": 513769,
+        "courses_taught": 1786,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/45/9fb4dc67aa400684506807b78bf757/Educba-logo-Symbol-360-x-360-with-White-BG.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "slug": "learn/unity-design-build-procedural-hex-maps",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/unity-design-develop-role-playing-games-rpgs": {
+    "title": "Unity: Design & Develop Role-Playing Games (RPGs)",
+    "provider": "EDUCBA",
+    "description": "Bring your own role-playing game to life by learning how to design and develop RPGs in Unity through a hands-on, project-based approach. In this course, you'll build the essential systems that power immersive RPG experiences, from character progression and quest design to inventory management and interactive user interfaces.\n\nYou'll begin by exploring core RPG mechanics, narrative-driven quests, world building, and terrain design to create engaging game environments. Next, you'll develop animated player characters and NPCs, implement inverse kinematics (IK), build character customization features, and create player interaction systems. You'll then construct game logic using Unity scripting, manage data persistence and scene transitions, and organize gameplay flow with global game management techniques. Finally, you'll develop a dynamic inventory system, interactive inventory UI, and a real-time HUD that reflects changing game states.\n\nThis course is designed for learners who want to strengthen their Unity game development skills by building practical RPG features through guided implementation. By the end of the course, you'll be able to design interconnected RPG gameplay systems, manage scenes and data effectively, and create interactive gameplay experiences using Unity's development tools.",
+    "image": "/logos/educba.jpg",
+    "coursera": 4.9,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 20,
+    "review_counts": {
+      "5.0": 20
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "This course was exactly what I needed to move from basic Unity skills to building something real. The step-by-step approach to creating a full RPG was incredibly clear. I learned so much about character animation, inventory systems, and scene management. By the end, I had my own working RPG prototype—super proud of it!",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 28,
+    "ratings_total": 29,
+    "rating_counts": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 28
+    },
+    "instructors": [
+      {
+        "name": "EDUCBA",
+        "slug": "~136048342",
+        "url": "https://www.coursera.org/instructor/~136048342",
+        "page": "educba",
+        "id": "136048342",
+        "role": null,
+        "department": null,
+        "learners": 513769,
+        "courses_taught": 1786,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/45/9fb4dc67aa400684506807b78bf757/Educba-logo-Symbol-360-x-360-with-White-BG.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "slug": "learn/unity-design-develop-role-playing-games-rpgs",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/unity-design-implement-advanced-rendering-effects": {
+    "title": "Unity: Design & Implement Advanced Rendering Effects",
+    "provider": "EDUCBA",
+    "description": "Take your Unity rendering skills further by designing and implementing advanced rendering effects with Unity’s built-in shader system. Designed for intermediate-to-advanced Unity developers, this course combines rendering mathematics with hands-on shader development to help you create visually rich real-time applications.\n\nYou’ll explore the Unity rendering pipeline, coordinate systems, and transformation matrices for translation, rotation, scaling, and camera positioning. You’ll then develop shaders using SubShaders, surface functions, shader properties, textures, GPU-based logic, compilation, and debugging techniques.\n\nAs you progress, you’ll apply advanced texturing techniques, including multi-texture sampling, gamma space correction, texture splatting, splatmaps, and RGB slate maps. You’ll learn to customize surface rendering and dynamically blend multiple materials to create layered visual effects.\n\nBy the end of the course, you’ll be able to apply transformation matrices, build and debug shader-based effects, optimize texture sampling, and construct dynamic material-blending systems. The course’s combination of rendering fundamentals, shader implementation, and advanced texturing provides a practical workflow for enhancing the visual quality of Unity projects.",
+    "image": "/logos/educba.jpg",
+    "coursera": 4.5,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 12,
+    "review_counts": {
+      "5.0": 12
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "Great course. Has helped me get up to speed at my new role and I feel well equipped after the class.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 12,
+    "ratings_total": 14,
+    "rating_counts": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 12
+    },
+    "low_sample": true,
+    "instructors": [
+      {
+        "name": "EDUCBA",
+        "slug": "~136048342",
+        "url": "https://www.coursera.org/instructor/~136048342",
+        "page": "educba",
+        "id": "136048342",
+        "role": null,
+        "department": null,
+        "learners": 513769,
+        "courses_taught": 1786,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/45/9fb4dc67aa400684506807b78bf757/Educba-logo-Symbol-360-x-360-with-White-BG.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science"
+    ],
+    "level": "Intermediate",
+    "slug": "learn/unity-design-implement-advanced-rendering-effects",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
+  },
+  "learn/unix-performance-signals-and-system-internals": {
+    "title": "Unix Performance, Signals, and System Internals",
+    "provider": "EDUCBA",
+    "description": "Develop practical Unix system administration skills by exploring how performance, process signals, logging, environment variables, and file system operations work together. Designed for learners who want to strengthen their Unix fundamentals or prepare for advanced scripting and automation, this course combines system-level concepts with realistic command-line practice.\n\nYou’ll analyze Unix performance metrics and CPU time states, interpret process signals, and configure system logging with syslog.conf. You’ll differentiate hardware interrupts from traps and modify environment variables to control execution contexts. You’ll also navigate and organize Unix file systems, manage directories and files, and use essential utilities for process, file, and system operations.\n\nBy the end of the course, you’ll be able to analyze system behavior, manage signals and interrupts, configure logging, control environment variables, and apply Unix commands to practical administration tasks. What makes this course distinctive is its structured connection between Unix system internals and hands-on operations, reinforced through a complete review of key concepts. Enroll to build the confidence to manage and troubleshoot Unix environments and progress toward more advanced system administration, scripting, and automation tasks.",
+    "image": "/logos/educba.jpg",
+    "coursera": 4.8,
+    "starisk": 5.0,
+    "spread": 0.0,
+    "spread_weighted": 0.0,
+    "reviews": 20,
+    "review_counts": {
+      "5.0": 20
+    },
+    "top_review": {
+      "kind": "consensus",
+      "text": "This course helped me connect the dots between Unix theory and real-world system admin work. The task scheduling and profiling activities were directly applicable to my job. If I had to suggest an improvement, it would be to add a final lab that simulates a real troubleshooting session.",
+      "stars": 5.0,
+      "likes": 0
+    },
+    "model": "sqrt-likes",
+    "reviews_total": 27,
+    "ratings_total": 27,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 6,
+      "5": 21
+    },
+    "instructors": [
+      {
+        "name": "EDUCBA",
+        "slug": "~136048342",
+        "url": "https://www.coursera.org/instructor/~136048342",
+        "page": "educba",
+        "id": "136048342",
+        "role": null,
+        "department": null,
+        "learners": 513769,
+        "courses_taught": 1786,
+        "photo": "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/45/9fb4dc67aa400684506807b78bf757/Educba-logo-Symbol-360-x-360-with-White-BG.jpg"
+      }
+    ],
+    "categories": [
+      "Computer Science",
+      "Information Technology"
+    ],
+    "level": "Intermediate",
+    "slug": "learn/unix-performance-signals-and-system-internals",
+    "scrapedAt": "2026-11-27T09:17:48.894974+00:00"
   }
 }
