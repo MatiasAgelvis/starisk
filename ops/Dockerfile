@@ -1,9 +1,10 @@
 # One run of the nightly job.
 #
-# The image is runtimes plus the launcher: Python for the pipeline, git to clone
+# The image is runtimes plus a bootstrap: Python for the pipeline, git to clone
 # and publish, node for `web/scripts/sync-data.mjs`. No application code is baked
 # in — the container clones `develop` at run time, so merging a fix to the
-# crawler is all it takes to update the job.
+# crawler is all it takes to update the job. Only `ops/bootstrap.sh` is baked; it
+# execs the cloned `ops/entrypoint.sh`, so ops changes ship by merge too.
 #
 # The pipeline has no third-party dependencies (see pipeline/pyproject.toml), so
 # there is no pip install here.
@@ -33,8 +34,8 @@ COPY --from=node /usr/local/bin/node /usr/local/bin/node
 RUN git config --system user.name "Starisk Bot" \
  && git config --system user.email "bot@matiasagelvis.com"
 
-COPY ops/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY ops/bootstrap.sh /usr/local/bin/bootstrap.sh
+RUN chmod +x /usr/local/bin/bootstrap.sh
 
 WORKDIR /work
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/bootstrap.sh"]
