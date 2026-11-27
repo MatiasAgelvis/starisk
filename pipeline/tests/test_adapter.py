@@ -158,6 +158,20 @@ class ProviderFallbackTest(unittest.TestCase):
         self.assertIsNone(details["level"])
         self.assertIsNone(details["enrollment"])
 
+    def test_reads_the_canonical_url_when_present(self):
+        html = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"X",'
+            '"url":"https://www.coursera.org/professional-certificates/'
+            'google-data-analytics#specialization"}'
+            "</script>"
+        )
+
+        self.assertEqual(
+            extract_details(html)["url"],
+            "https://www.coursera.org/professional-certificates/google-data-analytics",
+        )
+
 
 class PopulationTest(unittest.TestCase):
     BLOB = (
