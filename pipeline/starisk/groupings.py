@@ -294,6 +294,21 @@ def load_seed_keys(path: Path = PROGRAMS_PATH, index_path: Path = GROUPINGS_PATH
     return list(dict.fromkeys(keys))
 
 
+def _canonical_key(html: str) -> str | None:
+    """The canonical program key named by the page, when it differs from its slug.
+
+    Coursera lists localized aliases in the sitemap but serves the English page,
+    whose JSON-LD `url` is the canonical slug. Caching that page under both keys
+    keeps the alias from ever being published as a second program.
+    """
+    url = extract_details(html).get("url")
+    if not url or "coursera.org/" not in url:
+        return None
+    path = url.split("coursera.org/", 1)[-1].strip("/")
+    kind = path.split("/", 1)[0]
+    return path if kind in GROUPING_TYPES and path.count("/") == 1 else None
+
+
 def fetch_missing(
     keys: list[str],
     fetch=fetch_page,
@@ -352,6 +367,9 @@ def fetch_missing(
             print(f"  ! seed failed ({key}): {error}")
             continue
         store_page(key, html, cache_dir)
+        canonical = _canonical_key(html)
+        if canonical and canonical != key:
+            store_page(canonical, html, cache_dir)
         fetched += 1
         log(f"  [{index}/{len(pending)}] {key}")
         if delay:

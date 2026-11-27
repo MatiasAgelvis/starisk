@@ -273,6 +273,24 @@ class SeedTest(unittest.TestCase):
 
             self.assertEqual(fetch_missing([key], fetch=failing, cache_dir=directory), 0)
 
+    def test_an_alias_page_is_cached_under_its_canonical_key_too(self):
+        page = (
+            '<script type="application/ld+json">'
+            '{"@type":"Course","name":"Google Data Analytics",'
+            '"url":"https://www.coursera.org/professional-certificates/'
+            'google-data-analytics"}'
+            "</script>"
+        )
+        alias = "professional-certificates/analitik-data-google"
+        canonical = "professional-certificates/google-data-analytics"
+
+        with TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            fetch_missing([alias], fetch=lambda url: page, cache_dir=directory)
+
+            self.assertEqual(load_page(alias, directory), page)
+            self.assertEqual(load_page(canonical, directory), page)
+
 
 class RefuseReasonTest(unittest.TestCase):
     def test_an_empty_rebuild_over_a_full_index_is_refused(self):
