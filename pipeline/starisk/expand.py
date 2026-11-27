@@ -15,9 +15,11 @@ publish, not everything a publisher ever taught.
 Neither lever is "crawl Coursera": the sitemap has ~23k courses and this stays
 explicit and small.
 
-The nightly runs **specializations** and **programs** only. Instructor profiles are
+The nightly runs **programs** only. The specializations lever re-reads my completed
+certificates to extract members that are already in `sources.json`, so once seeded it
+is a cached no-op; run it by hand when a certificate is added. Instructor profiles are
 a catalogue rather than a curriculum — one scored course hands over everything the
-person teaches — so that lever stays manual (`--instructors`).
+person teaches — so that lever stays manual too (`--instructors`).
 
     cd pipeline
     python3 -m starisk.expand                 # report every lever, write nothing

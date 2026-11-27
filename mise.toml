@@ -54,6 +54,8 @@ dir = "pipeline"
 # Composed rather than copied, so the order and the derived steps live in one
 # place. Discovery comes before expansion because `expand --programs` reads the
 # groupings.json that discovery rewrites; this is the nightly's order too.
+# Specializations are excluded: they re-read my completed certificates to find
+# members already queued, so that lever is run by hand when a cert is added.
 # groupings.json is derived from the page cache, so a full run you intend to
 # commit belongs where that cache lives (the crawl box), not a partial laptop one.
 # The shebang keeps `-- --limit 20` flowing to `pipeline:crawl`.
@@ -65,7 +67,7 @@ set -e
 mise run pipeline:demand -- --env-file "${STARISK_ENV_FILE:-.env.prod}" --write \\
   || echo "[all] the queue read failed; crawling the sources we already have"
 mise run pipeline:discover
-mise run pipeline:expand -- --refresh --write
+mise run pipeline:expand -- --write --programs --instructors
 mise run pipeline:crawl -- "$@"
 mise run web:sync
 """
@@ -112,7 +114,7 @@ run = "python -m starisk.groupings --write"
 [tasks."pipeline:discover"]
 description = "Discover the next programs from the sitemap, fetch their pages, rebuild the index"
 dir = "pipeline"
-run = "python -m starisk.groupings --discover --fetch --write"
+run = "python -m starisk.groupings --discover --refresh --fetch --write"
 
 [tasks."pipeline:seed-programs"]
 description = "Fetch seeded program pages, then rebuild data/groupings.json"

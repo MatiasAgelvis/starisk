@@ -661,11 +661,12 @@ def run(options) -> int:
             # Instructor profiles are a catalogue, not a curriculum: one scored
             # course handed over 455 unrelated slugs, most of them other publishers'
             # courses. Programs are the bounded, deliberate lever, so they are what
-            # runs unattended; `--instructors` stays available by hand.
+            # runs unattended; `--instructors` stays available by hand. The
+            # specializations lever is excluded for the same reason: it re-reads my
+            # completed certificates to extract members that are already queued, so
+            # once seeded it is a cached no-op. Run it by hand when a cert is added.
             try:
-                grown = expand.main(
-                    ["--refresh", "--write", "--programs", "--specializations"]
-                )
+                grown = expand.main(["--write", "--programs"])
             except Exception as error:  # noqa: BLE001 - discovery is an input, not a prerequisite
                 print(f"[nightly] the expansion failed: {error}")
                 grown = 1
