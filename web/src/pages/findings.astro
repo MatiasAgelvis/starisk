@@ -10,6 +10,7 @@ const { theirs, ours, rated, scored, differentStars, topGaps, inflated, padded, 
 // "1 in N" rather than a percentage: half the catalogue is easier to picture
 // than 52%, and the exact count is in the footnote.
 const clashIn = Math.max(1, Math.round(rated.length / Math.max(1, differentStars)));
+const maxGap = topGaps.length ? Math.max(...topGaps.map((course) => course.gap)) : 1;
 
 const pct = (share: number) => `${Math.round(share * 100)}%`;
 // One decimal is more than a 560px chart can show, and it keeps the HTML small:
