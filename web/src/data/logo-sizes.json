@@ -390,5 +390,25 @@
   "madecraft": {
     "tile": "/logos/tile/madecraft.png",
     "full": "/logos/full/madecraft.png"
+  },
+  "advancing-women-in-tech": {
+    "tile": "/logos/tile/advancing-women-in-tech.jpg",
+    "full": "/logos/full/advancing-women-in-tech.jpg"
+  },
+  "tally-education-and-distribution-services-private-limited": {
+    "tile": "/logos/tile/tally-education-and-distribution-services-private-limited.png",
+    "full": "/logos/full/tally-education-and-distribution-services-private-limited.png"
+  },
+  "the-skill-valley": {
+    "tile": "/logos/tile/the-skill-valley.jpg",
+    "full": "/logos/full/the-skill-valley.jpg"
+  },
+  "skillsbooster-academy": {
+    "tile": "/logos/tile/skillsbooster-academy.png",
+    "full": "/logos/full/skillsbooster-academy.png"
+  },
+  "amazon-web-services": {
+    "tile": "/logos/tile/amazon-web-services.png",
+    "full": "/logos/full/amazon-web-services.png"
   }
 }
