@@ -21,6 +21,27 @@
       "5": 229
     }
   },
+  "professional-certificates/aws-generative-ai-developers": {
+    "key": "professional-certificates/aws-generative-ai-developers",
+    "type": "professional-certificate",
+    "title": "AWS Generative AI and AI Agents with Amazon Bedrock",
+    "url": "https://www.coursera.org/professional-certificates/aws-generative-ai-developers",
+    "courses": [
+      "learn/getting-started-aws-generative-ai-developers",
+      "learn/generative-ai-applications-amazon-bedrock",
+      "learn/amazon-bedrock-customization-optimization-automation"
+    ],
+    "provider": "Amazon Web Services",
+    "coursera": 4.6,
+    "ratings_total": 135,
+    "rating_counts": {
+      "1": 3,
+      "2": 1,
+      "3": 3,
+      "4": 24,
+      "5": 104
+    }
+  },
   "professional-certificates/aws-security-engineer-advanced": {
     "key": "professional-certificates/aws-security-engineer-advanced",
     "type": "professional-certificate",
@@ -78,6 +99,59 @@
       "5": 13
     }
   },
+  "professional-certificates/canva-essentials": {
+    "key": "professional-certificates/canva-essentials",
+    "type": "professional-certificate",
+    "title": "Canva Essentials",
+    "url": "https://www.coursera.org/professional-certificates/canva-essentials",
+    "courses": [
+      "learn/canva-design-fundamentals",
+      "learn/typography-and-color-theory-in-design-with-canva",
+      "learn/brand-identity-design-in-canva",
+      "learn/social-media-content-creation-with-canva",
+      "learn/presentation-design-mastery-in-canva",
+      "learn/marketing-material-design-in-canva",
+      "learn/video-content-creation-in-canva",
+      "learn/interactive-document-design-in-canva",
+      "learn/event-marketing-design-in-canva",
+      "learn/ai-powered-design-with-canva-magic-studio",
+      "learn/advanced-branding-in-canva",
+      "learn/portfolio-development-in-canva",
+      "learn/event-video--social-media-experience-design-in-canva"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.5,
+    "ratings_total": 111,
+    "rating_counts": {
+      "1": 5,
+      "2": 2,
+      "3": 0,
+      "4": 16,
+      "5": 88
+    }
+  },
+  "professional-certificates/data-engineering": {
+    "key": "professional-certificates/data-engineering",
+    "type": "professional-certificate",
+    "title": "DeepLearning.AI Data Engineering",
+    "url": "https://www.coursera.org/professional-certificates/data-engineering",
+    "courses": [
+      "learn/intro-to-data-engineering",
+      "learn/source-systems-data-ingestion-and-pipelines",
+      "learn/data-storage-and-queries",
+      "learn/data-modeling-transformation-serving"
+    ],
+    "provider": "DeepLearning.AI",
+    "coursera": 4.7,
+    "ratings_total": 853,
+    "rating_counts": {
+      "1": 23,
+      "2": 19,
+      "3": 15,
+      "4": 76,
+      "5": 720
+    }
+  },
   "professional-certificates/dell-technologies-sales-rep": {
     "key": "professional-certificates/dell-technologies-sales-rep",
     "type": "professional-certificate",
@@ -124,6 +198,55 @@
       "3": 76,
       "4": 138,
       "5": 560
+    }
+  },
+  "professional-certificates/excel-financial-modeling-mastery-in-depth-training": {
+    "key": "professional-certificates/excel-financial-modeling-mastery-in-depth-training",
+    "type": "professional-certificate",
+    "title": "Excel Financial Modeling Mastery: In-Depth Training",
+    "url": "https://www.coursera.org/professional-certificates/excel-financial-modeling-mastery-in-depth-training",
+    "courses": [
+      "learn/excel-financial-statement-modeling-and-bookkeeping-automation",
+      "learn/excel-functions-lookups-and-secure-spreadsheet-automation",
+      "learn/advanced-excel-data-processing-and-vba-automation",
+      "learn/advanced-excel-financial-modeling-risk-analysis-and-auditing",
+      "learn/financial-valuation-and-deal-modeling-with-excel",
+      "learn/financial-data-storytelling-executive-reporting-excel",
+      "learn/modeling-portfolios--job-search"
+    ],
+    "provider": "Coursera",
+    "ratings_total": 15,
+    "rating_counts": {
+      "1": 10,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 4
+    }
+  },
+  "professional-certificates/gcp-cloud-architect": {
+    "key": "professional-certificates/gcp-cloud-architect",
+    "type": "professional-certificate",
+    "title": "Preparing for Google Cloud Certification: Cloud Architect",
+    "url": "https://www.coursera.org/professional-certificates/gcp-cloud-architect",
+    "courses": [
+      "learn/gcp-fundamentals",
+      "learn/gcp-infrastructure-foundation",
+      "learn/gcp-infrastructure-core-services",
+      "learn/gcp-infrastructure-scaling-automation",
+      "learn/cloud-infrastructure-design-process",
+      "learn/google-kubernetes-engine",
+      "learn/preparing-cloud-professional-cloud-architect-exam"
+    ],
+    "provider": "Google Cloud",
+    "coursera": 4.7,
+    "ratings_total": 98875,
+    "rating_counts": {
+      "1": 500,
+      "2": 437,
+      "3": 2561,
+      "4": 19732,
+      "5": 75645
     }
   },
   "professional-certificates/goodwill-career-coach-and-navigator": {
@@ -239,9 +362,9 @@
     ],
     "provider": "Google",
     "coursera": 4.8,
-    "ratings_total": 129265,
+    "ratings_total": 129266,
     "rating_counts": {
-      "1": 586,
+      "1": 587,
       "2": 468,
       "3": 1982,
       "4": 15147,
@@ -308,6 +431,33 @@
       "3": 401,
       "4": 2692,
       "5": 12988
+    }
+  },
+  "professional-certificates/ibm-data-analyst-r-excel": {
+    "key": "professional-certificates/ibm-data-analyst-r-excel",
+    "type": "professional-certificate",
+    "title": "IBM Data Analytics with Excel and R",
+    "url": "https://www.coursera.org/professional-certificates/ibm-data-analyst-r-excel",
+    "courses": [
+      "learn/introduction-to-data-analytics",
+      "learn/excel-basics-data-analysis-ibm",
+      "learn/data-visualization-dashboards-excel-cognos",
+      "learn/data-analysis-visualization-foundations-assessment",
+      "learn/introducton-r-programming-data-science",
+      "learn/sql-data-science-r",
+      "learn/data-analysis-with-r",
+      "learn/data-visualization-r",
+      "learn/data-science-with-r-capstone-project"
+    ],
+    "provider": "IBM",
+    "coursera": 4.7,
+    "ratings_total": 38515,
+    "rating_counts": {
+      "1": 395,
+      "2": 259,
+      "3": 900,
+      "4": 6235,
+      "5": 30726
     }
   },
   "professional-certificates/ibm-data-science": {
@@ -416,6 +566,33 @@
       "5": 6542
     }
   },
+  "professional-certificates/ibm-systems-analyst": {
+    "key": "professional-certificates/ibm-systems-analyst",
+    "type": "professional-certificate",
+    "title": "IBM Systems Analyst",
+    "url": "https://www.coursera.org/professional-certificates/ibm-systems-analyst",
+    "courses": [
+      "learn/introduction-to-systems-analysis",
+      "learn/project-stakeholder-and-requirements-management-fundamentals",
+      "learn/business-process-modeling-analysis-and-improvement",
+      "learn/data-visualization-dashboards-excel-cognos",
+      "learn/information-technology-it-fundamentals-for-everyone",
+      "learn/it-systems-design-and-analysis",
+      "learn/software-testing-deployment-and-maintenance-strategies",
+      "learn/systems-analyst-capstone-project",
+      "learn/generative-ai-advancing-systems-analysis-and-architecture"
+    ],
+    "provider": "IBM",
+    "coursera": 4.7,
+    "ratings_total": 5006,
+    "rating_counts": {
+      "1": 67,
+      "2": 68,
+      "3": 137,
+      "4": 844,
+      "5": 3890
+    }
+  },
   "professional-certificates/llm-engineering-that-works-prompting-tuning-and-retrieval": {
     "key": "professional-certificates/llm-engineering-that-works-prompting-tuning-and-retrieval",
     "type": "professional-certificate",
@@ -437,6 +614,29 @@
       "3": 2,
       "4": 0,
       "5": 1
+    }
+  },
+  "professional-certificates/microsoft-account-manager-with-generative-ai": {
+    "key": "professional-certificates/microsoft-account-manager-with-generative-ai",
+    "type": "professional-certificate",
+    "title": "Microsoft Account Manager with Generative AI",
+    "url": "https://www.coursera.org/professional-certificates/microsoft-account-manager-with-generative-ai",
+    "courses": [
+      "learn/microsoft-foundations-of-account-management",
+      "learn/microsoft-advanced-customer-relationship-management",
+      "learn/microsoft-data-driven-decision-making-in-account-management",
+      "learn/strategic-pm-using-genai-for-account-managers",
+      "learn/microsoft-negotiation-and-ethical-practices-in-account-management"
+    ],
+    "provider": "Microsoft",
+    "coursera": 4.4,
+    "ratings_total": 11,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 1,
+      "4": 3,
+      "5": 6
     }
   },
   "professional-certificates/microsoft-aspnet-core-developer": {
@@ -3266,6 +3466,34 @@
       "5": 5259
     }
   },
+  "specializations/cin-boost-personal-productivity": {
+    "key": "specializations/cin-boost-personal-productivity",
+    "type": "specialization",
+    "title": "Boost Personal Productivity",
+    "url": "https://www.coursera.org/specializations/cin-boost-personal-productivity",
+    "courses": [
+      "learn/leveraging-virtual-assistants-for-personal-productivity",
+      "learn/use-generativeai-as-your-thought-partner",
+      "learn/bing-copilot-for-beginners-enhancing-productivity-with-ai",
+      "learn/automation-for-everyone-tech-benefits-unleashed",
+      "learn/create-tasks-lists-clickup",
+      "learn/automate-document-review-process-sharepoint-power-automate",
+      "learn/obsidian-for-beginners-journal-and-track-tasks",
+      "learn/create-a-simple-project-timeline",
+      "learn/efficient-scheduling-with-microsoft-bookings",
+      "learn/improve-productivity-performance-canva"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.6,
+    "ratings_total": 1878,
+    "rating_counts": {
+      "1": 45,
+      "2": 22,
+      "3": 71,
+      "4": 325,
+      "5": 1415
+    }
+  },
   "specializations/climate-change-leadership-community-resilience": {
     "key": "specializations/climate-change-leadership-community-resilience",
     "type": "specialization",
@@ -3480,6 +3708,29 @@
       "5": 33
     }
   },
+  "specializations/data-analytics-and-big-data": {
+    "key": "specializations/data-analytics-and-big-data",
+    "type": "specialization",
+    "title": "Data Analytics and Big Data",
+    "url": "https://www.coursera.org/specializations/data-analytics-and-big-data",
+    "courses": [
+      "learn/illinois-tech-introduction-to-relational-databases",
+      "learn/illinois-tech-relational-database-design",
+      "learn/illinois-tech-relational-database-implementation-and-applications",
+      "learn/illinois-tech-data-preparation-and-analysis",
+      "learn/illinois-tech-big-data-technologies"
+    ],
+    "provider": "Illinois Tech",
+    "coursera": 4.5,
+    "ratings_total": 130,
+    "rating_counts": {
+      "1": 4,
+      "2": 3,
+      "3": 10,
+      "4": 19,
+      "5": 94
+    }
+  },
   "specializations/data-analytics-and-visualization": {
     "key": "specializations/data-analytics-and-visualization",
     "type": "specialization",
@@ -3645,6 +3896,33 @@
       "5": 3595
     }
   },
+  "specializations/diversity-and-inclusion": {
+    "key": "specializations/diversity-and-inclusion",
+    "type": "specialization",
+    "title": "DEI: Diversity And Inclusion In The Workplace",
+    "url": "https://www.coursera.org/specializations/diversity-and-inclusion",
+    "courses": [
+      "learn/anti-bullying-in-the-workplace",
+      "learn/supporting-co-workers-with-disabilities",
+      "learn/conflict-resolution-at-work",
+      "learn/neurodiversity",
+      "learn/non-verbal-communication-body-language",
+      "learn/assertive-communication",
+      "learn/cross-cultural-communication-in-the-workplace",
+      "learn/microaggressions-in-the-workplace",
+      "learn/prevent-gaslighting-and-manipulation"
+    ],
+    "provider": "Alex Genadinik",
+    "coursera": 4.8,
+    "ratings_total": 16,
+    "rating_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 14
+    }
+  },
   "specializations/e-commerce-y-marketing-digital-con-ia-para-crecimiento-comercial": {
     "key": "specializations/e-commerce-y-marketing-digital-con-ia-para-crecimiento-comercial",
     "type": "specialization",
@@ -3734,6 +4012,21 @@
       "5": 16
     }
   },
+  "specializations/evaluate-optimize-enterprise-log-analytics": {
+    "key": "specializations/evaluate-optimize-enterprise-log-analytics",
+    "type": "specialization",
+    "title": "Evaluate and Optimize Enterprise Log Analytics",
+    "url": "https://www.coursera.org/specializations/evaluate-optimize-enterprise-log-analytics",
+    "courses": [
+      "learn/optimize-splunk-performance-for-scalable-data-analysis",
+      "learn/analyze-and-automate-splunk-reporting-with-data-models",
+      "learn/analyze-windows-data-ingestion-with-splunk-projects",
+      "learn/analyze-and-implement-splunk-authentication-controls",
+      "learn/splunk-universal-forwarder-configuration-and-management",
+      "learn/apply-splunk-configuration-and-index-management-concepts"
+    ],
+    "provider": "EDUCBA"
+  },
   "specializations/exam-prep-az-500-microsoft-azure-security-engineer-associate": {
     "key": "specializations/exam-prep-az-500-microsoft-azure-security-engineer-associate",
     "type": "specialization",
@@ -3797,6 +4090,28 @@
       "3": 0,
       "4": 0,
       "5": 30
+    }
+  },
+  "specializations/foundational-finance": {
+    "key": "specializations/foundational-finance",
+    "type": "specialization",
+    "title": "Foundational Finance for Strategic Decision Making",
+    "url": "https://www.coursera.org/specializations/foundational-finance",
+    "courses": [
+      "learn/time-value-of-money",
+      "learn/time-value-of-money-two",
+      "learn/bonds-and-stocks",
+      "learn/bonds-and-stocks-two"
+    ],
+    "provider": "University of Michigan",
+    "coursera": 4.7,
+    "ratings_total": 1563,
+    "rating_counts": {
+      "1": 15,
+      "2": 6,
+      "3": 41,
+      "4": 224,
+      "5": 1277
     }
   },
   "specializations/foundations-of-web-and-cloud-development": {
@@ -4418,6 +4733,27 @@
       "5": 294
     }
   },
+  "specializations/linear-algebra-elementary-to-advanced": {
+    "key": "specializations/linear-algebra-elementary-to-advanced",
+    "type": "specialization",
+    "title": "Linear Algebra from Elementary to Advanced",
+    "url": "https://www.coursera.org/specializations/linear-algebra-elementary-to-advanced",
+    "courses": [
+      "learn/linear-systems-and-matrix-equations",
+      "learn/matrix-algebra-determinants-and-eigenvectors",
+      "learn/orthogonality-and-diagonalization"
+    ],
+    "provider": "Johns Hopkins University",
+    "coursera": 4.7,
+    "ratings_total": 324,
+    "rating_counts": {
+      "1": 6,
+      "2": 0,
+      "3": 11,
+      "4": 46,
+      "5": 261
+    }
+  },
   "specializations/master-go-programming-concurrency": {
     "key": "specializations/master-go-programming-concurrency",
     "type": "specialization",
@@ -4601,6 +4937,35 @@
       "3": 88,
       "4": 458,
       "5": 3343
+    }
+  },
+  "specializations/next-gen-brand-management": {
+    "key": "specializations/next-gen-brand-management",
+    "type": "specialization",
+    "title": "Next-Gen Brand Management",
+    "url": "https://www.coursera.org/specializations/next-gen-brand-management",
+    "courses": [
+      "learn/brand-management-strategies-for-a-strong-brand",
+      "learn/create-business-marketing-brand-kit-using-canva",
+      "learn/brand-voice-for-social-content",
+      "learn/digital-marketing-trends",
+      "learn/brand-awareness-digital-brand-activation",
+      "learn/brand-marketing-seo-tools-using-wix",
+      "learn/build-a-social-media-presence-for-your-business-using-canva",
+      "learn/social-listening",
+      "learn/genai-for-digital-marketing-specialists",
+      "learn/genai-for-social-media-and-influencer-marketing",
+      "learn/genai-for-digital-marketing-and-ecommerce-analysts"
+    ],
+    "provider": "Coursera",
+    "coursera": 4.6,
+    "ratings_total": 1823,
+    "rating_counts": {
+      "1": 41,
+      "2": 17,
+      "3": 81,
+      "4": 353,
+      "5": 1331
     }
   },
   "specializations/object-oriented-programming-s12n": {
@@ -5272,6 +5637,18 @@
       "5": 82
     }
   },
+  "specializations/sage-the-sage-handbook-responsible-management-education": {
+    "key": "specializations/sage-the-sage-handbook-responsible-management-education",
+    "type": "specialization",
+    "title": "The SAGE Handbook: Responsible Management Education",
+    "url": "https://www.coursera.org/specializations/sage-the-sage-handbook-responsible-management-education",
+    "courses": [
+      "learn/sage-responsible-management-principles-and-challenges",
+      "learn/sage-responsible-management-ethics-impact-and-competencies",
+      "learn/sage-management-education-critical-research-perspectives"
+    ],
+    "provider": "Sage Publications"
+  },
   "specializations/school-health-for-children-and-adolescents": {
     "key": "specializations/school-health-for-children-and-adolescents",
     "type": "specialization",
@@ -5542,6 +5919,27 @@
       "5": 933
     }
   },
+  "specializations/strategies-for-heavy-lifting": {
+    "key": "specializations/strategies-for-heavy-lifting",
+    "type": "specialization",
+    "title": "Strategies for Heavy Lifting",
+    "url": "https://www.coursera.org/specializations/strategies-for-heavy-lifting",
+    "courses": [
+      "learn/concepts-of-heavy-lifting",
+      "learn/machineries-for-heavy-lifting",
+      "learn/planning--execution-plan-in-heavy-lifting"
+    ],
+    "provider": "L&T EduTech",
+    "coursera": 4.6,
+    "ratings_total": 28,
+    "rating_counts": {
+      "1": 2,
+      "2": 0,
+      "3": 1,
+      "4": 5,
+      "5": 20
+    }
+  },
   "specializations/strategy-innovation-agile-organizations": {
     "key": "specializations/strategy-innovation-agile-organizations",
     "type": "specialization",
@@ -5691,6 +6089,27 @@
       "learn/create-advanced-unity-shader-effects"
     ],
     "provider": "EDUCBA"
+  },
+  "specializations/uw-html": {
+    "key": "specializations/uw-html",
+    "type": "specialization",
+    "title": "Front-End Web Development for Beginners",
+    "url": "https://www.coursera.org/specializations/uw-html",
+    "courses": [
+      "learn/building-webpages-with-html-css",
+      "learn/creating-responsive-websites-for-any-device",
+      "learn/guided-website-development-capstone"
+    ],
+    "provider": "University of Washington",
+    "coursera": 4.7,
+    "ratings_total": 36,
+    "rating_counts": {
+      "1": 0,
+      "2": 1,
+      "3": 2,
+      "4": 4,
+      "5": 29
+    }
   },
   "specializations/wiley-cost-accounting-for-dummies": {
     "key": "specializations/wiley-cost-accounting-for-dummies",
